@@ -6,6 +6,65 @@ export class ToneDriver extends BaseDriver {
 
   schedulers = {
 
+    // Set meter (time signature formatted as [ a, b ])
+    meter: async ({ event }) => {
+      this.logger.todo(`render.session.event.meter: [+] at = ${event.at}`);
+      this.logger.todo(`render.session.event.meter:     meter = ${event.value}`);
+    },
+
+    // Set tempo (in bpm)
+    tempo: async ({ event }) => {
+      this.logger.todo(`render.session.event.tempo: [+] at = ${event.at}`);
+      this.logger.todo(`render.session.event.tempo:     tempo = ${event.value}`);
+
+      Tone.Transport.set({
+        position: event.at.toMBS(),
+        bpm: event.value,
+      });
+    },
+
+    // Set swing constant (0 to 1)
+    swing: async ({ event }) => {
+      this.logger.todo(`render.session.event.swing: [+] at = ${event.at}`);
+      this.logger.todo(`render.session.event.swing:     swing = ${event.value}`);
+    },
+
+    // Set key (root note)
+    key: async ({ event }) => {
+      this.logger.todo(`render.session.event.key: [+] at = ${event.at}`);
+      this.logger.todo(`render.session.event.key:     key = ${event.value}`);
+    },
+
+    // Set scale/mode (?)
+    scale: async ({ event }) => {
+      this.logger.todo(`render.session.event.scale: [+] at = ${event.at}`);
+      this.logger.todo(`render.session.event.scale:     scale = ${event.value}`);
+    },
+
+    // Set volume (0 to 1)
+    volume: async ({ event, track }) => {
+      this.logger.todo(`render.session.event.volume: [+] at = ${event.at}`);
+      this.logger.todo(`render.session.event.volume:     meter = ${event.value}`);
+    },
+
+    // Set pan (-1 to 1)
+    pan: async ({ event, track }) => {
+      this.logger.todo(`render.session.event.pan: [+] at = ${event.at}`);
+      this.logger.todo(`render.session.event.pan:     pan = ${event.value}`);
+    },
+
+    // Set mute flag (true or false)
+    mute: async ({ event, track }) => {
+      this.logger.todo(`render.session.event.mute: [+] at = ${event.at}`);
+      this.logger.todo(`render.session.event.mute:     mute = ${event.value}`);
+    },
+
+    // Set solo flag (true or false)
+    solo: async ({ event, track }) => {
+      this.logger.todo(`render.session.event.solo: [+] at = ${event.at}`);
+      this.logger.todo(`render.session.event.solo:     solo = ${event.value}`);
+    },
+    
     // Play a sequence of notes (phrase)
     phrase: async ({ event, track, instrument }) => {
       const phraseName = event.value;
@@ -14,6 +73,7 @@ export class ToneDriver extends BaseDriver {
       
       let position = Tone.Time(event.at.toString());
 
+      this.logger.debug(`render.session.event.phrase: at = ${event.at}`);
       this.logger.debug(`render.session.event.phrase: phrase = ${phraseName}`);
       this.logger.debug(`render.session.event.phrase: number of steps = ${phrase.steps.length}`);
       this.logger.debug(`render.session.event.phrase: position = ${position.toBarsBeatsSixteenths()}`);
@@ -69,17 +129,6 @@ export class ToneDriver extends BaseDriver {
 
       this.logger.info(`markTime: realtime = ${realtime}s; measure = ${measure}; beat = ${beat}`);
     }, 500);
-  }
-
-  async scheduleTrackEvent({ event }) {
-    const scheduler = this.schedulers[event.type];
-
-    if (scheduler) {
-      return scheduler.apply(this, arguments);
-    }
-    else {
-      this.logger.error(`missing scheduler for type "${event.type}"`);
-    }
   }
 
   async startAudioBuffer() {

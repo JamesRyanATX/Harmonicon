@@ -37,6 +37,8 @@ export class BaseDriver {
     this.logger.debug(`render.session.event: [+] at = ${event.at}`);
     this.logger.debug(`render.session.event:     type = ${event.type}`);
     this.logger.debug(`render.session.event:     value = ${event.value}`);
+
+    return this.scheduleEvent({ event });
   }
 
   async renderPhrases() {
@@ -85,7 +87,7 @@ export class BaseDriver {
     this.logger.debug(`render.session.track.event:     type = ${event.type}`);
     this.logger.debug(`render.session.track.event:     value = ${event.value}`);
 
-    return this.scheduleTrackEvent({ event, track, instrument })
+    return this.scheduleEvent({ event, track, instrument })
   }
 
   async reset() {
@@ -100,19 +102,21 @@ export class BaseDriver {
     return this.startAudioBuffer();
   }
 
+  async scheduleEvent({ event }) {
+    const scheduler = this.schedulers[event.type];
+
+    if (scheduler) {
+      return scheduler.apply(this, arguments);
+    }
+    else {
+      this.logger.error(`missing scheduler for type "${event.type}"`);
+    }
+  }
   
   // == override in driver subclasses
 
   async markTime() {
     this.logger.error('markTime() not implemented');
-  }
-
-  async scheduleTrackEvent({ event, track, instrument }) {
-    this.logger.error('scheduleTrackEvent() not implemented');
-  }
-
-  async scheduleSessionEvent({ event, session }) {
-    this.logger.error('scheduleSessionEvent() not implemented');
   }
 
   async startAudioBuffer() {

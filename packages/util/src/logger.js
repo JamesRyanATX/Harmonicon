@@ -13,6 +13,10 @@ export class Logger {
     console.info(chalk.white.bold(this.format(message)));
   }
 
+  todo(message) {
+    console.info(chalk.white.bold(`${this.format(message)} (todo)`));
+  }
+
   header(message) {
     console.error(chalk.yellow.bold(this.format(`[${message}]`)));
   }
