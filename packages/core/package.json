@@ -1,0 +1,25 @@
+{
+  "name": "@composer/core",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/.bin/jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "jest": {
+    "transform": {}
+  },
+  "dependencies": {
+    "@composer/driver-mock": "1.0.0",
+    "@composer/driver-tone": "1.0.0",
+    "@composer/util": "1.0.0",
+    "@tonaljs/tonal": "^4.6.2"
+  },
+  "devDependencies": {
+    "jest": "^27.0.6"
+  }
+}
