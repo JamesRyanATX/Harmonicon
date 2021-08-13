@@ -8,14 +8,19 @@ export class ToneDriver extends BaseDriver {
 
     // Set meter (time signature formatted as [ a, b ])
     meter: async ({ event }) => {
-      this.logger.todo(`render.session.event.meter: [+] at = ${event.at}`);
-      this.logger.todo(`render.session.event.meter:     meter = ${event.value}`);
+      this.logger.debug(`render.session.event.meter: [+] at = ${event.at}`);
+      this.logger.debug(`render.session.event.meter:     meter = ${event.value}`);
+
+      Tone.Transport.set({
+        position: event.at.toMBS(),
+        timeSignature: event.value,
+      });
     },
 
     // Set tempo (in bpm)
     tempo: async ({ event }) => {
-      this.logger.todo(`render.session.event.tempo: [+] at = ${event.at}`);
-      this.logger.todo(`render.session.event.tempo:     tempo = ${event.value}`);
+      this.logger.debug(`render.session.event.tempo: [+] at = ${event.at}`);
+      this.logger.debug(`render.session.event.tempo:     tempo = ${event.value}`);
 
       Tone.Transport.set({
         position: event.at.toMBS(),
@@ -25,8 +30,13 @@ export class ToneDriver extends BaseDriver {
 
     // Set swing constant (0 to 1)
     swing: async ({ event }) => {
-      this.logger.todo(`render.session.event.swing: [+] at = ${event.at}`);
-      this.logger.todo(`render.session.event.swing:     swing = ${event.value}`);
+      this.logger.debug(`render.session.event.swing: [+] at = ${event.at}`);
+      this.logger.debug(`render.session.event.swing:     swing = ${event.value}`);
+    
+      Tone.Transport.set({
+        position: event.at.toMBS(),
+        swing: event.value,
+      });
     },
 
     // Set key (root note)
@@ -120,15 +130,17 @@ export class ToneDriver extends BaseDriver {
     Tone.Transport.start();
   }
 
-  markTime() {
+  markTime({ interval }) {
     setInterval(() => {
+      const ticks = Tone.Transport.ticks
       const parts = Tone.Transport.position.split(':');
       const measure = parts[0];
       const beat = parts[1];
-      const realtime = Math.round(Tone.Transport.seconds);
+      const subdivision = Number(parts[2]).toFixed(3);
+      const realtime = (Math.round(Tone.Transport.seconds * 100) / 100).toFixed(2);
 
-      this.logger.info(`markTime: realtime = ${realtime}s; measure = ${measure}; beat = ${beat}`);
-    }, 500);
+      this.logger.info(`markTime: transport = ${measure}:${beat}:${subdivision} (${realtime}s, ${ticks}t)`);
+    }, interval * 1000);
   }
 
   async startAudioBuffer() {

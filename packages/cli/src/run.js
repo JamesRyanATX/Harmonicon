@@ -53,7 +53,9 @@ export async function run(options) {
         const driver = renderer.driver;
 
         driver.setTransportPosition('0:0:0');
-        driver.markTime();
+        driver.markTime({
+          interval: 0.5
+        });
         driver.play();
       }
       else {
