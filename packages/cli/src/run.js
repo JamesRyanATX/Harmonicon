@@ -30,17 +30,22 @@ export async function run(options) {
   const server = await start(options);
   const source = fs.readFileSync(options.file, 'utf8');
 
+  logger.cli.header('Starting server');
+
   // Ensure audio driver is ready
   await server.execute(async () => {
     return Tone.start();
   });
+
+
+  logger.cli.header('Parsing session file');
 
   // Parse composition
   await server.execute(source);
 
   // Render and play audio
   setTimeout(async () => {
-    logger.cli.debug('parsed; starting render')
+    logger.cli.header('Rendering session');
 
     await server.execute(async () => {
       if (SessionComposer.current) {
@@ -52,7 +57,7 @@ export async function run(options) {
         driver.play();
       }
       else {
-        console.debug('no session detected; skipping render')
+        console.debug('no session detected; skipping render');
       }
     });
   }, options.wait * 1000);

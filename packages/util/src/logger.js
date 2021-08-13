@@ -9,6 +9,14 @@ export class Logger {
     console.error(chalk.red(this.format(message)));
   }
 
+  info(message) {
+    console.info(chalk.white.bold(this.format(message)));
+  }
+
+  header(message) {
+    console.error(chalk.yellow.bold(this.format(`[${message}]`)));
+  }
+
   debug(message) {
     console.log(this.format(message));
   }

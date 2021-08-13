@@ -25,7 +25,6 @@ export class ToneDriver extends BaseDriver {
       steps.forEach((step) => {
         this.logger.debug(`render.session.event.phrase: + position = ${Tone.Transport.position}`);
         this.logger.debug(`render.session.event.phrase:   duration = ${step.duration.toDecimal()}`);
-        this.logger.debug(`render.session.event.phrase:   step = ${JSON.stringify(step)}`);
 
         this.schedulers.note.call(this, {
           event: event.constructor.parse({
@@ -68,7 +67,7 @@ export class ToneDriver extends BaseDriver {
       const beat = parts[1];
       const realtime = Math.round(Tone.Transport.seconds);
 
-      this.logger.debug(`markTime: realtime = ${realtime}s; measure = ${measure}; beat = ${beat}`);
+      this.logger.info(`markTime: realtime = ${realtime}s; measure = ${measure}; beat = ${beat}`);
     }, 500);
   }
 
