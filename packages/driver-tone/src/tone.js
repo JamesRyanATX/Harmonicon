@@ -41,14 +41,14 @@ export class ToneDriver extends BaseDriver {
 
     // Set key (root note)
     key: async ({ event }) => {
-      this.logger.todo(`render.session.event.key: [+] at = ${event.at}`);
-      this.logger.todo(`render.session.event.key:     key = ${event.value}`);
+      this.logger.debug(`render.session.event.key: [+] at = ${event.at}`);
+      this.logger.debug(`render.session.event.key:     key = ${event.value}`);
     },
 
     // Set scale/mode (?)
     scale: async ({ event }) => {
-      this.logger.todo(`render.session.event.scale: [+] at = ${event.at}`);
-      this.logger.todo(`render.session.event.scale:     scale = ${event.value}`);
+      this.logger.debug(`render.session.event.scale: [+] at = ${event.at}`);
+      this.logger.debug(`render.session.event.scale:     scale = ${event.value}`);
     },
 
     // Set volume (0 to 1)
@@ -93,9 +93,6 @@ export class ToneDriver extends BaseDriver {
       });
 
       steps.forEach((step) => {
-        this.logger.debug(`render.session.event.phrase: + position = ${Tone.Transport.position}`);
-        this.logger.debug(`render.session.event.phrase:   duration = ${step.duration.toDecimal()}`);
-
         this.schedulers.note.call(this, {
           event: event.constructor.parse({
             value: step,
@@ -112,13 +109,16 @@ export class ToneDriver extends BaseDriver {
     },
 
     // Play a single note
-    note: async ({ event, track, instrument }) => {
+    note: ({ event, track, instrument }) => {
       const note = event.value;
-      const pitch = note.computedPitch();
       const duration = `0:${note.duration.toDecimal()}:0`;
+      const keySignature = track.keySignatureAt(event.at);
+      const pitch = note.computedPitch(keySignature);
 
-      this.logger.debug(`render.session.event.note: pitch = ${note.pitch} => ${pitch}`);
-      this.logger.debug(`render.session.event.note: duration = ${duration}`);
+      this.logger.debug(`render.session.event.note: [+] position = ${event.at}`);
+      this.logger.debug(`render.session.event.note:     pitch = ${note.pitch} => ${pitch}`);
+      this.logger.debug(`render.session.event.note:     duration = ${duration}`);
+      this.logger.debug(`render.session.event.note:     key signature = ${keySignature}`);
 
       Tone.Transport.schedule((time) => {
         instrument.triggerAttackRelease(pitch, duration, time);
@@ -146,7 +146,7 @@ export class ToneDriver extends BaseDriver {
   async startAudioBuffer() {
     this.logger.debug('starting ToneJS audio buffer');
     await Tone.start();
-    this.logger.debug('ready for business');
+    this.logger.debug('ready for business times');
   }
 
   async setTransportPosition (position) {

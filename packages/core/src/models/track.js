@@ -15,6 +15,10 @@ export class TrackModel extends BaseModel {
     }
   }
 
+  keySignatureAt(position) {
+    return this.session.keySignatureAt(position);
+  }
+
 }
 
 TrackModel.init();
