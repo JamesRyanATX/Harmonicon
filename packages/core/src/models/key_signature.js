@@ -1,5 +1,6 @@
 import { BaseModel } from './base';
-import { Mode } from "@tonaljs/tonal";
+import { NoteModel } from './note';
+import { Note, Mode } from "@tonaljs/tonal";
 
 export class KeySignatureModel extends BaseModel {
 
@@ -18,6 +19,17 @@ export class KeySignatureModel extends BaseModel {
 
   get notes () {
     return this._notes = this._notes || Mode.notes(this.mode, this.tonic)
+  }
+
+  computeRelativeNote(note) {
+    const pitch = this.notes.at(note.pitch % this.notes.length);
+    const octaveDelta = Math.floor(note.pitch / this.notes.length);
+    const pitchClass = Note.pitchClass(pitch);
+    const octave = Note.octave(pitch) + octaveDelta;
+
+    return NoteModel.parse({
+      pitch: `${pitchClass}${octave}`
+    });
   }
   
   toString () {

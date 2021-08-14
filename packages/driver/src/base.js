@@ -46,7 +46,7 @@ export class BaseDriver {
   }
 
   async renderPhrase (phrase) {
-    this.logger.debug(`render.session.phrase: [+] name = ${phrase.name}`);
+    this.logger.info(`render.session.phrase: [+] name = ${phrase.name}`);
     this.logger.debug(`render.session.phrase:     number of steps = ${phrase.steps.length}`);
 
     this.phrases[phrase.name] = phrase;
@@ -60,32 +60,34 @@ export class BaseDriver {
     const rendered = await instrument.fn();
     this.instruments[instrument.name] = rendered;
 
-    this.logger.debug(`render.instrument: [+] name = ${instrument.name}`);
+    this.logger.info(`render.instrument: [+] name = ${instrument.name}`);
     this.logger.debug(`render.instrument:     fn = ${typeof instrument.fn}`);
     this.logger.debug(`render.instrument:     rendered = ${rendered}`);
   }
 
   async renderTracks () {
-    return this.session.tracks.mapParallel(this.renderTrack.bind(this));
+    return this.session.tracks.mapSeries(this.renderTrack.bind(this));
   }
 
   async renderTrack (track) {
     const instrumentName = track.name;
     const instrument = this.instruments[instrumentName];
 
-    this.logger.debug(`render.session.track: [+] name = ${track.name}`);
+    this.logger.info(`render.session.track: [+] name = ${track.name}`);
     this.logger.debug(`render.session.track:     number of events = ${track.events.length}`);
-    this.logger.debug(`render.session.track:     instrument = ${instrumentName}`);
+    this.logger.debug(`render.session.track:     instrument name = ${instrumentName}`);
+    this.logger.debug(`render.session.track:     instrument = ${instrument}`);
 
-    return track.events.mapSeries((event) => {
+    return await track.events.mapSeries(async (event) => {
       return this.renderTrackEvent({ event, track, instrument });
     });
   }
 
   async renderTrackEvent ({ event, track, instrument }) {
-    this.logger.debug(`render.session.track.event: [+] at = ${event.at}`);
+    this.logger.info(`render.session.track.event: [+] at = ${event.at}`);
     this.logger.debug(`render.session.track.event:     type = ${event.type}`);
     this.logger.debug(`render.session.track.event:     value = ${event.value}`);
+    this.logger.debug(`render.session.track.event:     instrument = ${instrument}`);
 
     return this.scheduleEvent({ event, track, instrument })
   }
@@ -106,7 +108,7 @@ export class BaseDriver {
     const scheduler = this.schedulers[event.type];
 
     if (scheduler) {
-      return scheduler.apply(this, arguments);
+      return await scheduler.apply(this, arguments);
     }
     else {
       this.logger.error(`missing scheduler for type "${event.type}"`);

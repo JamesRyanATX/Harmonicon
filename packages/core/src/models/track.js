@@ -1,7 +1,7 @@
-import { BaseModel } from './base';
+import { BaseSequencedModel } from './base/sequenced';
 import { SequencedEventModel } from './sequenced_event';
 
-export class TrackModel extends BaseModel {
+export class TrackModel extends BaseSequencedModel {
 
   static properties = {
     events: {

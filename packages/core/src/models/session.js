@@ -1,4 +1,4 @@
-import { BaseModel } from './base';
+import { BaseSequencedModel } from './base/sequenced';
 import { SequencedEventModel } from './sequenced_event';
 import { InstrumentModel } from './instrument';
 import { TrackModel } from './track';
@@ -7,7 +7,7 @@ import { RendererModel } from './renderer';
 import { PhraseModel } from './phrase';
 import { KeySignatureModel } from './key_signature';
 
-export class SessionModel extends BaseModel {
+export class SessionModel extends BaseSequencedModel {
 
   static properties = {
 
@@ -40,25 +40,6 @@ export class SessionModel extends BaseModel {
       defaultValue: 'Untitled'
     }
 
-  }
-
-  getLastEventByTypeAndPosition(type, position) {
-    return this.events.all
-      .filter((event) => {
-        return (
-          event.type === type &&
-          event.at.measure <= position.measure &&
-          event.at.beat <= position.beat &&
-          event.at.subdivision <= position.subdivision
-        );
-      })
-      .sort((a, b) => {
-        return (
-          a.measure < b.measure &&
-          a.beat < b.beat &&
-          a.subdivision < b.subdivision
-        ) ? -1 : 1
-      })[0];
   }
 
   keySignatureAt(position) {

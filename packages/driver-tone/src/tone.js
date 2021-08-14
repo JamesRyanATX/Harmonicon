@@ -1,4 +1,5 @@
 import { BaseDriver } from '@composer/driver';
+import { mapSeries } from '@composer/util';
 import * as Tone from 'tone';
 
 
@@ -8,7 +9,7 @@ export class ToneDriver extends BaseDriver {
 
     // Set meter (time signature formatted as [ a, b ])
     meter: async ({ event }) => {
-      this.logger.debug(`render.session.event.meter: [+] at = ${event.at}`);
+      this.logger.info(`render.session.event.meter: [+] at = ${event.at}`);
       this.logger.debug(`render.session.event.meter:     meter = ${event.value}`);
 
       Tone.Transport.set({
@@ -19,7 +20,7 @@ export class ToneDriver extends BaseDriver {
 
     // Set tempo (in bpm)
     tempo: async ({ event }) => {
-      this.logger.debug(`render.session.event.tempo: [+] at = ${event.at}`);
+      this.logger.info(`render.session.event.tempo: [+] at = ${event.at}`);
       this.logger.debug(`render.session.event.tempo:     tempo = ${event.value}`);
 
       Tone.Transport.set({
@@ -30,7 +31,7 @@ export class ToneDriver extends BaseDriver {
 
     // Set swing constant (0 to 1)
     swing: async ({ event }) => {
-      this.logger.debug(`render.session.event.swing: [+] at = ${event.at}`);
+      this.logger.info(`render.session.event.swing: [+] at = ${event.at}`);
       this.logger.debug(`render.session.event.swing:     swing = ${event.value}`);
     
       Tone.Transport.set({
@@ -83,17 +84,18 @@ export class ToneDriver extends BaseDriver {
       
       let position = Tone.Time(event.at.toString());
 
-      this.logger.debug(`render.session.event.phrase: at = ${event.at}`);
-      this.logger.debug(`render.session.event.phrase: phrase = ${phraseName}`);
-      this.logger.debug(`render.session.event.phrase: number of steps = ${phrase.steps.length}`);
-      this.logger.debug(`render.session.event.phrase: position = ${position.toBarsBeatsSixteenths()}`);
+      this.logger.info(`render.session.event.phrase: [+] at = ${event.at}`);
+      this.logger.debug(`render.session.event.phrase:   phrase = ${phraseName}`);
+      this.logger.debug(`render.session.event.phrase:   number of steps = ${phrase.steps.length}`);
+      this.logger.debug(`render.session.event.phrase:   position = ${position.toBarsBeatsSixteenths()}`);
+      this.logger.debug(`render.session.event.phrase:   instrument = ${instrument}`);
 
-      Tone.Transport.set({
+      await Tone.Transport.set({
         position: position.toBarsBeatsSixteenths()
       });
 
-      steps.forEach((step) => {
-        this.schedulers.note.call(this, {
+      return await mapSeries(steps, async (step) => {
+        await this.schedulers.note.call(this, {
           event: event.constructor.parse({
             value: step,
             at: event.at.constructor.parse(Tone.Transport.position.toString())
@@ -102,25 +104,26 @@ export class ToneDriver extends BaseDriver {
           instrument: instrument
         });
 
-        Tone.Transport.set({
+        return await Tone.Transport.set({
           position: `+${step.duration.definition.fraction[1]}n`,
         });
       });
     },
 
     // Play a single note
-    note: ({ event, track, instrument }) => {
+    note: async ({ event, track, instrument }) => {
       const note = event.value;
       const duration = `0:${note.duration.toDecimal()}:0`;
       const keySignature = track.keySignatureAt(event.at);
       const pitch = note.computedPitch(keySignature);
 
-      this.logger.debug(`render.session.event.note: [+] position = ${event.at}`);
+      this.logger.info(`render.session.event.note: [+] position = ${event.at}`);
       this.logger.debug(`render.session.event.note:     pitch = ${note.pitch} => ${pitch}`);
       this.logger.debug(`render.session.event.note:     duration = ${duration}`);
       this.logger.debug(`render.session.event.note:     key signature = ${keySignature}`);
+      this.logger.debug(`render.session.event.note:     instrument = ${instrument}`);
 
-      Tone.Transport.schedule((time) => {
+      return await Tone.Transport.schedule((time) => {
         instrument.triggerAttackRelease(pitch, duration, time);
       }, event.at.toString());
     }

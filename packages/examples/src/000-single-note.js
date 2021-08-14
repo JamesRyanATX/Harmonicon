@@ -5,7 +5,7 @@ session('single note', async ({ session }) => {
   });
 
   session.track('bass', async ({ track }) => {
-    track.at.measure(0).play(quarter.note('c2'));
+    track.at.measure(0).play(quarter.note('c1'));
   });
 
 });

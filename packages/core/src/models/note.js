@@ -42,12 +42,7 @@ export class NoteModel extends BaseModel {
 
   computedPitch(keySignature) {
     if (this.relative) {
-      const pitch = keySignature.notes[this.pitch % keySignature.notes.length];
-      const octaveDelta = Math.floor(this.pitch / keySignature.notes.length);
-      const pitchClass = Note.pitchClass(pitch);
-      const octave = Note.octave(pitch) + octaveDelta;
-
-      return `${pitchClass}${octave}`;
+      return keySignature.computeRelativeNote(this).pitch;
     }
     else {
       return this.pitch;

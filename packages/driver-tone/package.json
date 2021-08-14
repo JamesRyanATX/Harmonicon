@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@composer/driver": "1.0.0",
+    "@composer/util": "1.0.0",
     "tone": "^14.7.77"
   },
   "devDependencies": {

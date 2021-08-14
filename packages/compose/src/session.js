@@ -77,7 +77,7 @@ export class SessionComposer extends BaseSequencedComposer {
   async track(name, fn) {
     const track = TrackModel.parse({
       session: this.model,
-      name: name
+      name: name,
     });
 
     this.model.tracks.add(track);
