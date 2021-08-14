@@ -17,8 +17,14 @@ export class Logger {
     console.info(chalk.white.bold(`${this.format(message)} (todo)`));
   }
 
+  hr(length = 80, color = 'white') {
+    this.info(chalk.bold[color](''.padEnd(length, '-')));
+  }
+
   header(message) {
-    console.error(chalk.yellow.bold(this.format(`[${message}]`)));
+    this.info(chalk.yellow.bold(`+${''.padEnd(78, '-')}+`));
+    this.info(chalk.yellow.bold(`| ${message.padEnd(76)} |`));
+    this.info(chalk.yellow.bold(`+${''.padEnd(78, '-')}+`));
   }
 
   debug(message) {

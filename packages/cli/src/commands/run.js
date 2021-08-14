@@ -30,38 +30,38 @@ export async function run(options) {
   const server = await start(options);
   const source = fs.readFileSync(options.file, 'utf8');
 
-  logger.cli.header('Starting server');
+  async function group(name, toExec) {
+    logger.cli.header(name);
+    return server.execute(toExec);
+  }
 
-  // Ensure audio driver is ready
-  await server.execute(async () => {
-    return Tone.start();
+  await group('1. Connecting to Server', `
+    (async () => {
+      console.debug('Hello from the browser!')
+      return Tone.start();
+    })();
+  `);
+
+  await group('2. Parsing Session', `
+    (async () => {
+      return window.SessionComposer.parse({
+        code: ${JSON.stringify(source)}
+      });
+    })()
+  `);  
+
+  await new Promise((proceed) => {
+    logger.cli.debug(`Pausing for ${options.wait}s for dangling asyncs`)
+    setTimeout(proceed, options.wait * 1000);
   });
 
+  await group('3. Rendering Session', async () => {
+    return SessionComposer.current.render(ToneDriver);
+  });
 
-  logger.cli.header('Parsing session file');
-
-  // Parse composition
-  await server.execute(source);
-
-  // Render and play audio
-  setTimeout(async () => {
-    logger.cli.header('Rendering session');
-
-    await server.execute(async () => {
-      if (SessionComposer.current) {
-        const renderer = await SessionComposer.current.render(ToneDriver);
-        const driver = renderer.driver;
-
-        driver.setTransportPosition('0:0:0');
-        driver.markTime({
-          interval: 0.5
-        });
-        driver.play();
-      }
-      else {
-        console.debug('no session detected; skipping render');
-      }
+  await group('4. Playing Session', async () => {
+    return SessionComposer.current.renderer.play({
+      markTime: true,
     });
-  }, options.wait * 1000);
-
+  });
 }

@@ -18,6 +18,22 @@ export class RendererModel extends BaseModel {
 
     return this;
   }
+
+  play (options) {
+    options = Object.assign({
+      at: '0:0:0',
+      markTime: true,
+      markTimeInterval: 0.5
+    }, options);
+
+    this.driver.setTransportPosition(options.at);
+
+    if (options.markTime) {
+      this.driver.markTime({ interval: options.markTimeInterval });
+    }
+
+    return this.driver.play();
+  }
 }
 
 RendererModel.init();

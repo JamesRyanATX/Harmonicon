@@ -28,7 +28,7 @@ const optionDefinitions = [
     name: 'server', 
     alias: 's', 
     type: Number, 
-    defaultValue: 'http://localhost:3000/',
+    defaultValue: 'http://localhost:3000/remote',
     description: 'Composer server to use for rendering',
   },
   {

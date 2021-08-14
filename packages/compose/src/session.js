@@ -103,7 +103,11 @@ export class SessionComposer extends BaseSequencedComposer {
   }
 
   async render (driver) {
-    return this.model.render(driver);
+    return (this.renderer = await this.model.render(driver));
+  }
+
+  play (options) {
+    return this.renderer.play(options);
   }
 }
 
