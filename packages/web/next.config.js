@@ -1,3 +1,12 @@
+//const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+
 module.exports = {
-  reactStrictMode: true,
-}
+
+  // webpack(config, options) {
+  //   config.plugins.push(new MonacoWebpackPlugin());
+  //   return config;
+  // },
+
+  //cssLoaderOptions: { url: false }
+
+};

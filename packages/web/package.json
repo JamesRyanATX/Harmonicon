@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "@composer/web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,12 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@composer/compose": "1.0.0",
+    "@composer/core": "1.0.0",
+    "@composer/driver-tone": "1.0.0",
+    "@monaco-editor/react": "^4.2.2",
     "next": "11.0.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "@composer/core": "1.0.0",
-    "@composer/compose": "1.0.0",
-    "@composer/driver-tone": "1.0.0"
+    "react-icons": "^4.2.0"
   },
   "devDependencies": {
     "eslint": "7.32.0",

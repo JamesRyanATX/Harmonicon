@@ -19,10 +19,14 @@ export class RendererModel extends BaseModel {
     return this;
   }
 
+  get position () {
+    return this.driver.position;
+  }
+
   play (options) {
     options = Object.assign({
       at: '0:0:0',
-      markTime: true,
+      markTime: false,
       markTimeInterval: 0.5
     }, options);
 
@@ -34,6 +38,30 @@ export class RendererModel extends BaseModel {
 
     return this.driver.play();
   }
+
+  pause () {
+    return this.driver.pause();
+  }
+
+  goToBeginning () {
+    return this.driver.setTransportPosition('0:0:0');
+  }
+
+  goBackwardsByMeasure () {
+    const {
+      measure,
+      beat,
+      subdivision
+    } = this.driver.position;
+
+    if (beat === 0 && subdivision === 0) {
+      return this.driver.setTransportPosition(`${measure - 1}:0:0`)
+    }
+    else if (measure > 0) {
+      return this.driver.setTransportPosition(`${measure}:0:0`)
+    }
+  }
+
 }
 
 RendererModel.init();

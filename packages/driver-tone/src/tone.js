@@ -129,18 +129,38 @@ export class ToneDriver extends BaseDriver {
     }
   }
 
+  get state () {
+    return Tone.Transport.state; // started|stopped
+  }
+
+  get position () {
+    const ticks = Tone.Transport.ticks
+    const parts = Tone.Transport.position.split(':');
+    const measure = Number(parts[0]);
+    const beat = Number(parts[1]);
+    const subdivision = Number(parts[2]);
+    const realtime = (Math.round(Tone.Transport.seconds * 100) / 100).toFixed(2);
+
+    return { ticks, measure, beat, subdivision, realtime }
+  }
+
+  pause() {
+    return Tone.Transport.pause();
+  }
+
   play() {
-    Tone.Transport.start();
+    return Tone.Transport.start();
   }
 
   markTime({ interval }) {
     setInterval(() => {
-      const ticks = Tone.Transport.ticks
-      const parts = Tone.Transport.position.split(':');
-      const measure = parts[0];
-      const beat = parts[1];
-      const subdivision = Number(parts[2]).toFixed(3);
-      const realtime = (Math.round(Tone.Transport.seconds * 100) / 100).toFixed(2);
+      const {
+        ticks,
+        measure,
+        beat,
+        subdivision,
+        realtime
+      } = this.position;
 
       this.logger.info(`markTime: transport = ${measure}:${beat}:${subdivision} (${realtime}s, ${ticks}t)`);
     }, interval * 1000);

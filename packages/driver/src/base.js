@@ -114,8 +114,18 @@ export class BaseDriver {
       this.logger.error(`missing scheduler for type "${event.type}"`);
     }
   }
-  
-  // == override in driver subclasses
+
+
+  // Override in driver subclasses
+  // =============================
+
+  get state () {
+    this.logger.error(`${this.name}.state not implemented`);
+  }
+
+  get position () {
+    this.logger.error(`${this.name}.position not implemented`);
+  }
 
   async markTime() {
     this.logger.error('markTime() not implemented');
