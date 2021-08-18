@@ -14,7 +14,8 @@ export function Editor ({ controller }) {
         theme="vs-dark"
         options={{
           folding: true,
-          tabSize: 2
+          tabSize: 2,
+          padding: { top: 10 },
         }}
       />
     </div>

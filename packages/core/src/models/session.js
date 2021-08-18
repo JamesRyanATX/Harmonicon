@@ -55,7 +55,7 @@ export class SessionModel extends BaseSequencedModel {
   async render (driver) {
     this.renderer = this.renderer || RendererModel.parse({
       session: this,
-      driver: new driver()
+      driver: driver
     })
 
     await this.renderer.render();

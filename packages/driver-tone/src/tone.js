@@ -144,36 +144,27 @@ export class ToneDriver extends BaseDriver {
     return { ticks, measure, beat, subdivision, realtime }
   }
 
+  // Remove all events from timeline
+  unscheduleAll() {
+    return Tone.Transport.cancel(0);
+  }
+
+  // Pause transport at current position
   pause() {
     return Tone.Transport.pause();
   }
 
+  // Play transport from current position
   play() {
     return Tone.Transport.start();
   }
 
-  markTime({ interval }) {
-    setInterval(() => {
-      const {
-        ticks,
-        measure,
-        beat,
-        subdivision,
-        realtime
-      } = this.position;
-
-      this.logger.info(`markTime: transport = ${measure}:${beat}:${subdivision} (${realtime}s, ${ticks}t)`);
-    }, interval * 1000);
-  }
-
   async startAudioBuffer() {
-    this.logger.debug('starting ToneJS audio buffer');
-    await Tone.start();
-    this.logger.debug('ready for business times');
+    return Tone.start();
   }
 
   async setTransportPosition (position) {
-    Tone.Transport.set({ position })
+    return Tone.Transport.set({ position })
   }
 
   async stopAudioBuffer() {

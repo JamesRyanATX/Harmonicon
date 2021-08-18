@@ -1,6 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,300;0,400;0,700;1,400&display=swap');
+
+/* brand colors */
+:root {
+  --brand-color-1: 37, 105, 246;
+  --brand-color-2: 46, 207, 235;
+  --brand-color-3: 32, 212, 190;
+  --brand-color-4: 37, 246, 161;
+}
+
+/* theme */
+:root {
+  --theme-body-font-family: 'Raleway', helvetica neue, arial, sans-serif;
+  --theme-body-font-size: 9pt;
+  --theme-fixed-font-family: Menlo, Monaco, "Courier New", monospace;
+
+  --theme-color-error: 255, 51, 35;
+  --theme-background-color: 30, 30, 30;
+}
+
+
 body {
   margin: 0;
   padding: 0;
+  font-family: var(--theme-body-font-family);
+  font-size: var(--theme-body-font-size);
+  background-color: rgb(var(--theme-background-color));
 }
 
 #__next {

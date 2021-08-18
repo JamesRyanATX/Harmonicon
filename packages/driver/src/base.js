@@ -97,7 +97,9 @@ export class BaseDriver {
     this.tracks = {};
     this.phrases = {};
 
-    this.resetAudioBuffer();
+    await this.unscheduleAll();
+    await this.resetAudioBuffer();
+    await this.setTransportPosition('0:0:0');
   }
 
   async start() {
@@ -115,6 +117,19 @@ export class BaseDriver {
     }
   }
 
+  markTime({ interval }) {
+    setInterval(() => {
+      const {
+        ticks,
+        measure,
+        beat,
+        subdivision,
+        realtime
+      } = this.position;
+
+      this.logger.info(`markTime: transport = ${measure}:${beat}:${subdivision} (${realtime}s, ${ticks}t)`);
+    }, interval * 1000);
+  }
 
   // Override in driver subclasses
   // =============================
@@ -127,8 +142,8 @@ export class BaseDriver {
     this.logger.error(`${this.name}.position not implemented`);
   }
 
-  async markTime() {
-    this.logger.error('markTime() not implemented');
+  async unscheduleAll () {
+    this.logger.error('unscheduleAll() not implemented');
   }
 
   async startAudioBuffer() {

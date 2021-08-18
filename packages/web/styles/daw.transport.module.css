@@ -1,12 +1,137 @@
 .transport {
+  --item-spacing: 4px;
+  --item-elevation: 2px;
+  
+  --item-border-radius: 3px;
+  --item-primary-color: #ffffff;
+  --item-primary-active-color: rgba(var(--brand-color-2), 1);
+  --item-primary-icon-font-size: 12px;
+  --item-primary-font-size: 15px;
+  --item-primary-font-family: Menlo, Monaco, "Courier New", monospace;
+  --item-primary-input-color: #ffffff;
+
+  --item-label-font-family: Menlo, Monaco, "Courier New", monospace;
+  --item-label-color: rgba(var(--brand-color-2), 1);
+  --item-label-font-size: 7px;
+}
+
+.transport {
   height: 50px;
   background-color: #001020;
   display: flex;
   flex-direction: row;
   color: #fff;
   border-top: 1px solid #ffffff22;
-
 }
+
+
+
+/* transport items (base styling) */
+
+.items {
+  display: flex;
+  flex-direction: row;
+  margin-left: var(--item-spacing);
+  padding-bottom: 2px;
+}
+
+.item {
+  background-color: rgba(var(--brand-color-2), 0.2);
+  background: rgb(2,0,36);
+  background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(var(--brand-color-2),0.2) 100%);
+  border: 1px solid rgba(var(--brand-color-2), 0.3);
+  border-bottom: var(--item-elevation) solid rgba(var(--brand-color-2), 1);
+  border-radius: var(--item-border-radius);
+  color: rgba(var(--brand-color-2), 1);
+  cursor: pointer;
+  margin: var(--item-spacing) var(--item-spacing) var(--item-spacing) 0;
+  min-width: 30px;
+  padding-left: var(--item-spacing);
+  padding-right: var(--item-spacing);
+  position: relative;
+}
+
+.itemIndicatorLight {
+  width: 4px;
+  height: 4px;
+  border-radius: 5px;
+  top: 3px;
+  right: 3px;
+  position: absolute;
+  background-color: rgba(var(--brand-color-4), 1);
+}
+
+.itemPrimary,
+.itemPrimary input {
+  font-size: var(--item-primary-font-size);
+  font-family: var(--item-primary-font-family);
+}
+
+.itemPrimary {
+  color: var(--item-primary-color);
+  flex: 1;
+  padding-top: 4px;
+  text-align: center;
+}
+
+.itemPrimary svg {
+  font-size: var(--item-primary-icon-font-size);
+}
+
+.itemPrimary input {
+  color: var(--item-primary-input-color);
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  text-align: center;
+  width: 40px;
+}
+
+.itemLabel {
+  color: var(--item-label-color);
+  font-family: var(--item-label-font-family);
+  font-size: var(--item-label-font-size);
+  font-weight: 100;
+  padding-bottom: 5px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.itemIsActive {
+  border-bottom-width: 1px;
+  margin-top: 7px;
+}
+
+.itemIsActive .itemPrimary {
+  color: var(--item-primary-active-color);
+}
+
+.itemIsSelected {
+  border-color: rgba(var(--brand-color-2), .7);
+}
+
+.itemIsDisabled {
+  opacity: 0.25;
+}
+
+.itemIsFlat {
+  border: 0px;
+  border-radius: 2px;
+  padding-top: 2px;
+  background: rgba(var(--brand-color-2), 0.2);
+}
+
+.itemIsWide {
+  min-width: 60px;
+}
+
+.itemIsWide .itemPrimary input {
+  width: 60px;
+}
+
+
+/* logo */
 
 .logo {
   padding: 13px 10px 13px 20px;
@@ -23,44 +148,15 @@
   border-radius: 2px;
 }
 
-.logo > div:nth-child(1) { background-color: #2569F6; margin-top: 17px; }
-.logo > div:nth-child(2) { background-color: #2089D4; margin-top: 16px; }
-.logo > div:nth-child(3) { background-color: #2ECFEB; margin-top: 14px; }
-.logo > div:nth-child(4) { background-color: #20D4BE; margin-top: 9px; }
+.logo > div:nth-child(1) { background-color: #2569F6; margin-top: 0; }
+.logo > div:nth-child(2) { background-color: #2569F6; margin-top: 10px; margin-bottom: 10px; }
+.logo > div:nth-child(3) { background-color: #2ECFEB; margin-top: 9px; margin-bottom: 8px; }
+.logo > div:nth-child(4) { background-color: #20D4BE; margin-top: 5px; margin-bottom: 5px; }
 .logo > div:nth-child(5) { background-color: #25F6A1; margin-top: 0px; }
 
-.actions {
+
+/* timeline */
+
+.timeline {
   flex: 1;
-  flex-direction: row;
-  display: flex;
-  padding: 8px 8px 8px 18px;
-}
-
-.action {
-  border-radius: 25px;
-  display: block;
-  margin-right: 10px;
-  font-size: 16px;
-  padding-top: 8px;
-  width: 34px;
-  text-align: center;
-  color: #ffffffcc;
-}
-
-.action:hover {
-  cursor: pointer;
-  color: #fff;
-}
-
-.actionSelected {
-  color: #25F6A1;
-}
-
-.display {
-  font-family: Menlo, Monaco, "Courier New", monospace;
-  font-weight: 100;
-  font-size: 17px;
-  text-align: right;
-  padding: 14px 20px;
-  color: #ffffffaa;
 }

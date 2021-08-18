@@ -1,0 +1,77 @@
+.tabs {
+  --background-color: rgb(30, 30, 30);
+  --active-color: rgba(var(--brand-color-2), 1);
+  --border-color: rgb(60, 60, 60);
+  --active-text-color: #ffffff;
+}
+
+.tabs {
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  color: #fff;
+  border-bottom: 1px solid var(--border-color);
+  padding-left: 5px;
+}
+
+.tab {
+  border: 1px solid var(--border-color);
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-top: 3px solid var(--border-color);
+  border-bottom-color: var(--border-color);
+  color: var(--brand-color-2);
+  cursor: pointer;
+  font-weight: light;
+  margin: 10px 0 -1px 5px;
+  min-width: 25px;
+  padding: 8px 4px;
+  text-align: center;
+}
+
+  .tabIcon {
+  }
+
+  .tabLabel {
+    vertical-align: 1px;
+    margin: 0 10px;
+    color: #FFF;
+  }
+
+  .tabMenu {
+    color: #ffffff55;
+  }
+
+  .tabMenu:hover {
+    color: rgb(var(--brand-color-2), 1);
+  }
+
+.tabIsSelected {
+  border-top: 3px solid rgba(var(--brand-color-2), 1);
+  border-bottom: 1px solid var(--background-color);
+  color: rgba(var(--brand-color-2), 1);
+  padding: 8px 15px 10px 15px;
+}
+
+  .tabIsSelected .tabIcon {
+    color: rgba(var(--brand-color-2), 1);
+    display: inline-block;
+  }
+
+  .tabIsSelected .tabMenu {
+    display: inline-block;
+  }
+
+.tabIsUnselected:hover {
+  color: rgb(var(--brand-color-2), 1);
+}
+
+  .tabIsUnselected .tabIcon {
+    display: none;
+  }
+
+  .tabIsUnselected .tabMenu {
+    color: #ffffff55;
+    display: none;
+  }
+

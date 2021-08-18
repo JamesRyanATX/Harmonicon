@@ -1,69 +1,71 @@
 import { useState } from 'react';
-import styles from '../../../styles/daw.transport.module.css';
+import { Items, Item, ItemPrimary, ItemLabel } from './item';
 
 import {
+  IoStopSharp,
   IoPlaySharp,
-  IoPauseSharp,
-  IoPlayForwardSharp,
-  IoPlayBackSharp,
-  IoPlaySkipBackSharp,
+  IoReloadSharp,
 } from "react-icons/io5";
 
 function Action ({
-  title,
+  label,
   icon,
   selected,
+  indicator,
+  disabled,
   onClick
 }) {
   const Icon = icon;
 
   return (
-    <a 
+    <Item
       onClick={onClick}
-      title={title}
-      className={[ styles.action, selected ? styles.actionSelected : null ].join(' ')}
+      selected={selected}
+      disabled={disabled}
+      indicator={indicator}
     >
-      <Icon />
-    </a>
+      <ItemPrimary>
+        <Icon />
+      </ItemPrimary>
+      <ItemLabel>
+        {label}
+      </ItemLabel>
+    </Item>
   )
 }
 
 export function Actions ({ controller }) {
-  const [ state, setState ] = useState({
-    state: controller.state
-  });
+  const [ loaded, setLoaded ] = useState(false);
+  const [ state, setState ] = useState(controller.state);
+  const [ changed, setChanged ] = useState(controller.changed);
 
-  controller.registerStateListener(setState);
+  if (!loaded) {
+    controller.on('state', setState);
+    controller.on('changed', setChanged);
+
+    setLoaded(true);
+  }
 
   return (
-    <div className={styles.actions}>
-      {(state === 'started') ? (
-        <Action 
-          icon={IoPauseSharp}
-          label="Pause session audio"
-          onClick={controller.playOrPause.bind(controller)}
-          selected
-        />
-      ) : (
-        <Action 
-          icon={IoPlaySharp}
-          label="Play session audio"
-          onClick={controller.playOrPause.bind(controller)}
-        />
-      )}
-      <Action
-        icon={IoPlaySkipBackSharp}
-        label="Go back to the beginning"
-        onClick={controller.goToBeginning.bind(controller)}
-      />
-      <Action
-        icon={IoPlayBackSharp}
-        onClick={controller.goBackwardsByMeasure.bind(controller)}
+    <Items>
+      <Action 
+        icon={IoPlaySharp}
+        label="Play"
+        onClick={controller.play.bind(controller)}
+        selected={state === 'started'}
+        indicator={state === 'started'}
       />
       <Action 
-        icon={IoPlayForwardSharp}
-        onClick={controller.goForwardsByMeasure.bind(controller)}
+        icon={IoStopSharp}
+        label="Stop"
+        onClick={controller.stop.bind(controller)}
       />
-    </div>
+      <Action
+        icon={IoReloadSharp}
+        label="Reload"
+        onClick={controller.reload.bind(controller)}
+        disabled={!changed}
+      />
+    </Items>
   )
 }
