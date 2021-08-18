@@ -1,3 +1,5 @@
+export { BaseModel } from './src/models/base';
+export { BaseSequencedModel } from './src/models/base/sequenced';
 export { PositionModel } from './src/models/position';
 export { SessionModel } from './src/models/session';
 export { SequencedEventModel } from './src/models/sequenced_event';

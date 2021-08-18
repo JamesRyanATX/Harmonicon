@@ -36,9 +36,15 @@ export class SessionModel extends BaseSequencedModel {
       collection: true,
     },
 
+    source: {
+      defaultValue: 'Untitled',
+    },
+
     name: {
       defaultValue: 'Untitled'
-    }
+    },
+
+    id: {}
 
   }
 

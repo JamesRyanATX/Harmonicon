@@ -12,7 +12,12 @@ export class Controller {
     return this.driver.position;
   }
 
-  constructor({ driver, source }) {
+  constructor({
+    driver,
+    source,
+    workspace
+  }) {
+    this.workspace = workspace;
     this.driver = driver;
     this.source = source;
     this.renderedSource = null;

@@ -1,9 +1,9 @@
-import { BaseDriver } from '@composer/driver';
+import { BaseAudioDriver } from '@composer/driver';
 import { mapSeries } from '@composer/util';
 import * as Tone from 'tone';
 
 
-export class ToneDriver extends BaseDriver {
+export class ToneDriver extends BaseAudioDriver {
 
   schedulers = {
 
