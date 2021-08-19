@@ -18,6 +18,7 @@ export class Collection {
 
   add(record) {
     this.records.push(record);
+    return record;
   }
 
   at(index) {
@@ -30,6 +31,18 @@ export class Collection {
 
   last() {
     return this.at(this.length - 1);
+  }
+
+  async destroy(record) {
+    const index = this.records.indexOf(record);
+
+    await record.destroy();
+
+    if (index > -1) {
+      this.records.splice(index, 1);
+    }
+
+    return this.obj.save();
   }
 
   async load() {

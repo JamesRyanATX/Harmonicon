@@ -1,7 +1,8 @@
 import { BaseModel } from './base';
+import { storable } from "./mixins";
 import { v4 as uuidv4 } from 'uuid';
 
-export class FileModel extends BaseModel {
+export class FileModel extends storable(BaseModel) {
 
   static properties = {
     id: {
@@ -9,7 +10,7 @@ export class FileModel extends BaseModel {
       defaultValue: () => (uuidv4()),
     },
     workspace: {
-      persist: false,
+      json: (v) => (v.id),
     },
     name: {},
     source: {},

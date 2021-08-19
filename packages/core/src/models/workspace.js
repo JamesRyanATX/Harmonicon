@@ -1,7 +1,9 @@
 import { BaseModel } from './base';
 import { FileModel } from './file';
 
-export class WorkspaceModel extends BaseModel {
+import { storable } from './mixins';
+
+export class WorkspaceModel extends storable(BaseModel) {
 
   static properties = {
 
@@ -17,34 +19,26 @@ export class WorkspaceModel extends BaseModel {
 
     // Audio driver (tone, mock, etc.)
     audio: {
-      persist: false,
+      json: false,
     },
 
     // Storage driver (localstorage, mock, etc.)
     storage: {
-      persist: false,
+      json: false,
     }
 
   }
 
-  // static async find  () {
-  //   await this.files.load();
+  static async load (id, storage) {
+    const workspace = await this.find(id, storage);
+    const files = workspace.properties.files.records;
 
-  //   if ()
-  //   // const sessions = await this.storage.get('sessions', () => {
-  //   //   return [ {
-  //   //     source: 'console.log("ok")'
-  //   //   } ]
-  //   // });
+    for (let i = 0; i < files.length; i += 1) {
+      files[i] = await FileModel.find(files[i], storage);
+    }
 
-  //   // sessions.forEach((session) => {
-  //   //   console.debug(session)
-  //   //   this.sessions.add(SessionModel.parse(session))
-  //   // });
-
-  //   this.logger.debug(`loaded ${this.files.length} file(s)`);
-  // }
-
+    return workspace;
+  }
 }
 
 WorkspaceModel.init();

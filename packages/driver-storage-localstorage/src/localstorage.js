@@ -37,7 +37,7 @@ export class LocalStorageDriver extends BaseStorageDriver {
     if (fn && !(await this.exists(key))) {
       await this.set(key, await fn());
     }
-console.log(this.localStorage[this.key(key)]);
+
     return this.decode(this.localStorage[this.key(key)]);
   }
 

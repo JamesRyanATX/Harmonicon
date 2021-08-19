@@ -1,16 +1,10 @@
+import { Logger } from "@composer/util";
 import { Collection } from "../util/collection";
-import { Logger } from "../util/logger";
 
 export class BaseModel {
 
   static parse (properties) {
     return new this(properties);
-  }
-
-  static async create(properties) {
-    const record = this.parse(properties)
-    await record.save();
-    return record;
   }
 
   static forEachProperty (fn) {
@@ -39,30 +33,6 @@ export class BaseModel {
     });
   }
 
-  static storageKey(id) {
-    return [ this.name.toLowerCase(), id ];
-  }
-
-  static async find(id, storage) {
-    const properties = await storage.get(this.storageKey(id));
-
-    if (!properties) {
-      return null;
-    }
-    else {
-      return this.parse(properties);
-    }
-  }
-
-  static async findOrCreate(id, properties, storage) {
-    return (await this.find(id, storage))
-        || (this.create(Object.assign({ id }, properties), storage));
-  }
-
-  get storageKey () {
-    return this.constructor.storageKey(this.id);
-  }
-
   constructor (properties) {
     this.logger = new Logger(this.constructor.name);
     this.properties = Object.assign({}, properties);
@@ -89,6 +59,10 @@ export class BaseModel {
     });
   }
 
+  setProperties(properties = {}) {
+    Object.assign(this.properties, properties);
+  }
+
   clone () {
     return new this.constructor(Object.assign({}, this.properties));
   }
@@ -100,23 +74,30 @@ export class BaseModel {
       const definition = this.constructor.properties[property];
       const value = this[property];
 
-      if (value instanceof Collection) {
-        json[property] = value.records.map((r) => (r.id));
+      // If definition has json function, it overrides all
+      if (typeof definition.json === 'function') {
+        json[property] = definition.json(value, this);
       }
+
+      // Handle collections
+      else if (value instanceof Collection) {
+        json[property] = value.records.map((r) => {
+          return deep ? r.toJSON() : r.id;
+        });
+      }
+
+      // Include child model JSON (deep=true) or ID (deep=false)
       else if (value instanceof BaseModel) {
-        json[property] = deep ? value : { id: value.id };
+        json[property] = deep ? value.toJSON() : value.id;
       }
-      else if (definition.persist !== false) {
+
+      // Properties with json: false are excluded
+      else if (definition.json !== false) {
         json[property] = value;
       }
 
       return json;
     }, {});
-  }
-
-  async save() {
-    return this.storage.set(this.storageKey, this.toJSON({ deep: false }))
-      .then(() => (true));
   }
 
 }

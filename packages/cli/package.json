@@ -8,7 +8,9 @@
     "examples:000": "bin/composer ../examples/src/000-single-note.js",
     "examples:001": "bin/composer ../examples/src/001-c-major-scale.js",
     "examples:002": "bin/composer ../examples/src/002-relative-pitch.js",
-    "examples:003": "bin/composer ../examples/src/003-multitrack.js"
+    "examples:003": "bin/composer ../examples/src/003-multitrack.js",
+    "test": "node --experimental-vm-modules node_modules/.bin/jest",
+    "test:watch": "node --experimental-vm-modules node_modules/.bin/jest --watch"
   },
   "type": "module",
   "keywords": [],
