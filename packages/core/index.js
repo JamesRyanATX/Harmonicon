@@ -9,6 +9,7 @@ export { RestModel } from './src/models/rest';
 export { RendererModel } from './src/models/renderer';
 export { PhraseModel } from './src/models/phrase';
 export { KeySignatureModel } from './src/models/key_signature';
+export { FileModel } from './src/models/file';
 
 export { WholeUnit } from './src/units/whole';
 export { HalfUnit } from './src/units/half';

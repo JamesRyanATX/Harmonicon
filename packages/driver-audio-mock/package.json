@@ -1,5 +1,5 @@
 {
-  "name": "@composer/driver-tone",
+  "name": "@composer/driver-audio-mock",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -14,9 +14,7 @@
     "transform": {}
   },
   "dependencies": {
-    "@composer/driver": "1.0.0",
-    "@composer/util": "1.0.0",
-    "tone": "^14.7.77"
+    "@composer/driver": "1.0.0"
   },
   "devDependencies": {
     "jest": "^27.0.6"

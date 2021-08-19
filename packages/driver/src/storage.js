@@ -10,7 +10,7 @@ export class BaseStorageDriver extends BaseDriver {
     this.logger.error('list() not implemented');
   }
 
-  async get (key) {
+  async get (key, fn) {
     this.logger.error('get() not implemented');
   }
 

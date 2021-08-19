@@ -1,0 +1,1 @@
+export { LocalStorageDriver } from './src/localstorage';

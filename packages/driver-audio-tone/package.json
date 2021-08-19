@@ -1,0 +1,24 @@
+{
+  "name": "@composer/driver-audio-tone",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "jest": {
+    "transform": {}
+  },
+  "dependencies": {
+    "@composer/driver": "1.0.0",
+    "@composer/util": "1.0.0",
+    "tone": "^14.7.77"
+  },
+  "devDependencies": {
+    "jest": "^27.0.6"
+  }
+}

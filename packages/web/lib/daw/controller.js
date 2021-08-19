@@ -4,25 +4,30 @@ import { parse } from '@composer/compose';
 
 export class Controller {
 
+  get audio () {
+    return this.workspace.audio;
+  }
+
+  get storage () {
+    return this.workspace.storage;
+  }
+
   get state () {
-    return this.driver.state;
+    return this.audio.state;
   }
 
   get position () {
-    return this.driver.position;
+    return this.audio.position;
   }
 
-  constructor({
-    driver,
-    source,
-    workspace
-  }) {
+  constructor({ workspace }) {
     this.workspace = workspace;
-    this.driver = driver;
-    this.source = source;
-    this.renderedSource = null;
-    this.listeners = {};
+
     this.changed = false;
+    this.source = '';
+    this.renderedSource = null;
+
+    this.listeners = {};
   }
 
   // events:
@@ -76,7 +81,7 @@ export class Controller {
     try {
       this.renderedSource = this.source;
       this.composer = await parse({ code: this.source });
-      this.renderer = await this.composer.render(this.driver);
+      this.renderer = await this.composer.render(this.audio);
     }
     catch (e) {
       console.error(e);
@@ -95,12 +100,12 @@ export class Controller {
       }, time);
     }, '8n', 0);
 
-    this.driver.setTransportPosition('0:0:0');
+    this.audio.setTransportPosition('0:0:0');
   }
 
   // Reset Audio buffer (implementation up to driver)
   async reset () {
-    await this.driver.reset();
+    await this.audio.reset();
 
     delete this.renderer;
     delete this.composer;
@@ -118,12 +123,12 @@ export class Controller {
   async play () {
     await this.prepare();
 
-    this.driver.play();
+    this.audio.play();
     this.emitStateAndPosition();  
   }
 
   async pause () {
-    await this.driver.pause();
+    await this.audio.pause();
 
     this.emitStateAndPosition();
   }
@@ -134,38 +139,7 @@ export class Controller {
   }
 
   async goToBeginning () {
-    await this.driver.setTransportPosition(`0:0:0`);
-
-    this.emitStateAndPosition();
-  }
-
-  async goBackwardsByMeasure() {
-    const {
-      measure,
-      beat,
-      subdivision
-    } = this.driver.position;
-
-    console.log(JSON.stringify(this.driver.position));
-
-    if (beat === 0 && subdivision === 0) {
-      return this.driver.setTransportPosition(`${measure - 1}:0:0`);
-    }
-    else if (measure > 0) {
-      return this.driver.setTransportPosition(`${measure - 1}:0:0`);
-    }
-    
-    this.emitStateAndPosition();
-  }
-
-  async goForwardsByMeasure() {
-    const {
-      measure,
-      beat,
-      subdivision
-    } = this.driver.position;
-
-    await this.driver.setTransportPosition(`${measure + 1}:0:0`);
+    await this.audio.setTransportPosition(`0:0:0`);
 
     this.emitStateAndPosition();
   }

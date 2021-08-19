@@ -1,0 +1,1 @@
+export { MockStorageDriver } from './src/mock';

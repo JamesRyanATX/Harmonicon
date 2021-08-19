@@ -3,7 +3,7 @@ import { mapSeries } from '@composer/util';
 import * as Tone from 'tone';
 
 
-export class ToneDriver extends BaseAudioDriver {
+export class ToneAudioDriver extends BaseAudioDriver {
 
   schedulers = {
 

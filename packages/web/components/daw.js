@@ -4,6 +4,7 @@ import { Transport } from './daw/transport';
 import { Editor } from './daw/editor';
 import { Debugger } from './daw/debugger';
 import { ToneDriver, Tone } from '@composer/driver-tone';
+import { LocalStorageDriver } from '@composer/driver-localstorage';
 import { SessionComposer } from '@composer/compose';
 import { Controller } from '../lib/daw/controller';
 
@@ -63,6 +64,8 @@ export function DAW ({
   const [ storageDriver, setStorageDriver ] = useState();
   const [ controller, setController ] = useState();
 
+  console.log(`controller: ${!!controller}; audioDriver: ${!!audioDriver}; storageDriver: ${!!storageDriver}; loaded: ${!!loaded}`)
+
   // Initialize audio driver
   if (!audioDriver) {
     setAudioDriver(new ToneDriver(audioDriverOptions));
@@ -75,16 +78,18 @@ export function DAW ({
 
   // Initialize controller
   if (!controller && audioDriver && storageDriver) {
-    setController(new Controller({
-      workspace: WorkspaceModel.parse(Object.assign({
-        audio: audioDriver,
-        storage: storageDriver,
-      }, workspaceOptions))
-    }));
+    (async () => {
+      setController(new Controller({
+        workspace: await WorkspaceModel.parse(Object.assign({
+          audio: audioDriver,
+          storage: storageDriver,
+        }, workspaceOptions))
+      }));
+    })();
   }
 
   // ...and we're off to the races!
-  if (controller) {
+  if (!loaded && controller) {
     setLoaded(true);
   }
 

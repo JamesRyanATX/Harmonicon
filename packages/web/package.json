@@ -11,7 +11,8 @@
   "dependencies": {
     "@composer/compose": "1.0.0",
     "@composer/core": "1.0.0",
-    "@composer/driver-tone": "1.0.0",
+    "@composer/driver-audio-tone": "1.0.0",
+    "@composer/driver-storage-localstorage": "1.0.0",
     "@monaco-editor/react": "^4.2.2",
     "next": "11.0.1",
     "react": "17.0.2",

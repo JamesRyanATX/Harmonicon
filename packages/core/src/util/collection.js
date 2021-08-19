@@ -10,8 +10,9 @@ export class Collection {
     return this.records;
   }
 
-  constructor(obj, records) {
+  constructor({ obj, type, records }) {
     this.obj = obj;
+    this.type = type;
     this.records = records;
   }
 
@@ -29,6 +30,14 @@ export class Collection {
 
   last() {
     return this.at(this.length - 1);
+  }
+
+  async load() {
+    console.log(this.type);
+  }
+
+  async find(id) {
+    return this.type.find(id, obj.storage);
   }
 
   async mapParallel(fn) {

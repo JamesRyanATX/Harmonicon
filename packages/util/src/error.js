@@ -1,6 +1,6 @@
 const dictionary = {};
 
-class ExpandedError extends Error {
+export class ExpandedError extends Error {
 
   // Create a new error subclass
   static extend({

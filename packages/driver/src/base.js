@@ -6,7 +6,7 @@ export class BaseDriver {
     return this.constructor.name;
   }
 
-  constructor(options) {
+  constructor(options = {}) {
     this.options = options;
     this.logger = new Logger(this.constructor.name);
   }
