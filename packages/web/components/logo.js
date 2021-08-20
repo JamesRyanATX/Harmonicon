@@ -22,6 +22,7 @@ function Shape({ letter }) {
 }
 
 export function Logo ({
+  size = 'large',
   speed = 5,
   animate = true,
   letters = [ 
@@ -46,7 +47,11 @@ export function Logo ({
   }
 
   return (
-    <div className={styles.logo}>
+    <div className={[
+      styles.logo,
+      size === 'small' ? styles.logoIsSmall : '',
+      size === 'large' ? styles.logoIsLarge : '',
+    ].join(' ')}>
       {letters.map((letter, i) => (
         <Letter index={(i + offset) % 10}>{letter}</Letter>
       ))}

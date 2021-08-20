@@ -15,6 +15,10 @@
   padding-left: 3px;
 }
 
+.tabSpace {
+  flex: 1;
+}
+
 .tab {
   border: 1px solid var(--border-color);
   border-top-left-radius: 3px;
@@ -77,3 +81,6 @@
     /* display: none; */
   }
 
+.logo {
+  margin: 15px 15px 0 25px;
+}

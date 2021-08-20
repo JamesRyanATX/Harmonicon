@@ -61,6 +61,12 @@ export function NewTab ({
   )
 }
 
+export function TabSpace () {
+  return (
+    <div className={styles.tabSpace} />
+  )
+}
+
 export function Tabs ({ children }) {
   return (
     <div className={styles.tabs}>

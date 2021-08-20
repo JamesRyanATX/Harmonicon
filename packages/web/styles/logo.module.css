@@ -19,10 +19,6 @@
   display: flex;
   flex-direction: row;
   text-transform: uppercase;
-  font-size: 72px;
-  justify-content: center;
-  flex: 1;
-  line-height: 72px;
 }
 
 .letter {
@@ -37,25 +33,74 @@
 
 .shapeO {
   border-radius: 100px;
-  width: 55px;
-  height: 55px;
   position: relative;
-  margin: 7px 7px 0 7px;
 }
 
   .shapeO > div {
     width: 2px;
-    height: 40px;
     position: absolute;
   }
 
   .shapeO > div:nth-child(1) {
-    top: -10px;
     right: 0;
   }
 
   .shapeO > div:nth-child(2) {
+  }
+
+
+/* flavors */
+
+.logoIsLarge {
+  font-size: 72px;
+  line-height: 72px;
+}
+
+.logoIsLarge .shapeO {
+  width: 55px;
+  height: 55px;
+  margin: 7px 7px 0 7px;
+}
+
+  .logoIsLarge .shapeO > div {
+    width: 2px;
+    height: 40px;
+  }
+
+  .logoIsLarge .shapeO > div:nth-child(1) {
+    top: -10px;
+  }
+
+  .logoIsLarge .shapeO > div:nth-child(2) {
     bottom: -10px;
+  }
+
+.logoIsSmall {
+  font-size: 18px;
+  line-height: 18px;
+}
+
+  .logoIsSmall .letter {
+    margin-left: 3px;
+  }
+
+  .logoIsSmall .shapeO {
+    width: 14px;
+    height: 14px;
+    margin: 1px 2px 0 2px;
+  }
+
+  .logoIsSmall .shapeO > div {
+    width: 1px;
+    height: 22px;
+  }
+
+  .logoIsSmall .shapeO > div:nth-child(1) {
+    top: -15px;
+  }
+
+  .logoIsSmall .shapeO > div:nth-child(2) {
+    bottom: -15px;
   }
 
 

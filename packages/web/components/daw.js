@@ -56,6 +56,7 @@ function Interface ({ children }) {
 export function DAW ({
   audioDriverOptions = {},
   storageDriverOptions = {},
+  logo = null,
 }) {
 
   const [ loaded, setLoaded ] = useState(false);
@@ -117,7 +118,7 @@ export function DAW ({
   if (loaded) {
     return (
       <Interface>
-        <Switcher controller={controller} />
+        <Switcher controller={controller} logo={logo} />
         <Editor controller={controller} />
         <Debugger controller={controller} />
         <Transport controller={controller} />
@@ -125,9 +126,11 @@ export function DAW ({
     );
   }
   else {
+    const Logo = logo;
+
     return (
       <Interface>
-        loading...
+        <Logo size="large" />
       </Interface>
     )
   }
