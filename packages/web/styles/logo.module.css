@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Poiret+One&display=swap');
+
+.logo {
+  --color-1: #D60427;
+  --color-2: #F94144;
+  --color-3: #f3722c;
+  --color-4: #f8961e;
+  --color-5: #f9c74f;
+  --color-6: #90be6d;
+  --color-7: #43aa8b;
+  --color-8: #5151d6;
+  --color-9: #0b0bfe;
+  --color-10: #cc50b5;
+}
+
+.logo {
+  font-family: 'Poiret One';
+  color: #fff;
+  display: flex;
+  flex-direction: row;
+  text-transform: uppercase;
+  font-size: 72px;
+  justify-content: center;
+  flex: 1;
+  line-height: 72px;
+}
+
+.letter {
+  display: flex;
+  flex-direction: column;
+  transition: color 5s;
+}
+
+.shape {
+  transition: background-color 5s;
+}
+
+.shapeO {
+  border-radius: 100px;
+  width: 55px;
+  height: 55px;
+  position: relative;
+  margin: 7px 7px 0 7px;
+}
+
+  .shapeO > div {
+    width: 2px;
+    height: 40px;
+    position: absolute;
+  }
+
+  .shapeO > div:nth-child(1) {
+    top: -10px;
+    right: 0;
+  }
+
+  .shapeO > div:nth-child(2) {
+    bottom: -10px;
+  }
+
+
+/* animation states */
+
+.letter[data-index="0"] { color: var(--color-1); }
+.letter[data-index="1"] { color: var(--color-2); }
+.letter[data-index="2"] { color: var(--color-3); }
+.letter[data-index="3"] { color: var(--color-4); }
+.letter[data-index="4"] { color: var(--color-5); }
+.letter[data-index="5"] { color: var(--color-6); }
+.letter[data-index="6"] { color: var(--color-7); }
+.letter[data-index="7"] { color: var(--color-8); }
+.letter[data-index="8"] { color: var(--color-9); }
+.letter[data-index="9"] { color: var(--color-10); }
+
+.letter[data-index="0"] .shape { background-color: var(--color-1); }
+.letter[data-index="1"] .shape { background-color: var(--color-2); }
+.letter[data-index="2"] .shape { background-color: var(--color-3); }
+.letter[data-index="3"] .shape { background-color: var(--color-4); }
+.letter[data-index="4"] .shape { background-color: var(--color-5); }
+.letter[data-index="5"] .shape { background-color: var(--color-6); }
+.letter[data-index="6"] .shape { background-color: var(--color-7); }
+.letter[data-index="7"] .shape { background-color: var(--color-8); }
+.letter[data-index="8"] .shape { background-color: var(--color-9); }
+.letter[data-index="9"] .shape { background-color: var(--color-10); }

@@ -8,14 +8,31 @@
   --brand-color-4: 37, 246, 161;
 }
 
-/* theme */
+/* base theme */
 :root {
+
+  /* color palette */
+  --theme-palette-red: #D60427;
+  --theme-palette-red-lighter: #F94144;
+  --theme-palette-orange: #f3722c;
+  --theme-palette-orange-lighter: #f8961e;
+  --theme-palette-yellow: #f9c74f;
+  --theme-palette-green: #90be6d;
+  --theme-palette-aqua: #43aa8b;
+  --theme-palette-blue-lighter: #5191d6;
+  --theme-palette-blue: #0b0bfe;
+  --theme-palette-purple: #cc50b5;
+
+  /* background color of app (should contrast with other colors) */
+  --theme-background-color: 30, 30, 30;
+
+  /* body text */
   --theme-body-font-family: 'Raleway', helvetica neue, arial, sans-serif;
   --theme-body-font-size: 9pt;
   --theme-fixed-font-family: Menlo, Monaco, "Courier New", monospace;
 
+  /* colors by purpose */
   --theme-color-error: 255, 51, 35;
-  --theme-background-color: 30, 30, 30;
 }
 
 
