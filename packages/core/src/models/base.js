@@ -53,7 +53,9 @@ export class BaseModel {
         this.properties[property] = new Collection({
           obj: this,
           type: definition.type,
-          records: this.properties[property] || []
+          records: this.properties[property] || [],
+          property: property,
+          definition: definition,
         });
       }
     });
@@ -61,6 +63,7 @@ export class BaseModel {
 
   setProperties(properties = {}) {
     Object.assign(this.properties, properties);
+    return this;
   }
 
   clone () {

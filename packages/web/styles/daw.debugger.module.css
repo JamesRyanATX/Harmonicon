@@ -18,8 +18,8 @@
 
 .debuggerSummary {
   font-weight: bold;
-  margin-bottom: 5px;
 }
 
 .debuggerDetails {
+  margin-top: 5px;
 }

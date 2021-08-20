@@ -10,10 +10,16 @@ export class Collection {
     return this.records;
   }
 
-  constructor({ obj, type, records }) {
+  get foreignKey () {
+    return this.definition.foreignKey;
+  }
+
+  constructor({ obj, type, records, property, definition }) {
     this.obj = obj;
     this.type = type;
     this.records = records;
+    this.property = property;
+    this.definition = definition;
   }
 
   add(record) {
@@ -31,6 +37,18 @@ export class Collection {
 
   last() {
     return this.at(this.length - 1);
+  }
+
+  async create(properties = {}) {
+    const record = this.add(
+      await this.type.create(Object.assign({
+        [this.foreignKey]: this.obj,
+      }, properties))
+    );
+
+    await this.obj.save();
+
+    return record;
   }
 
   async destroy(record) {
@@ -51,6 +69,10 @@ export class Collection {
 
   async find(id) {
     return this.type.find(id, obj.storage);
+  }
+
+  map(fn) {
+    return this.records.map(fn);
   }
 
   async mapParallel(fn) {

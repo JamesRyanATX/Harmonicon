@@ -25,13 +25,15 @@ export function Debugger ({ controller }) {
       <div className={styles.debuggerSummary}>
         {error.message}
       </div>
-      <div className={styles.debuggerDetails}>
-        {details.slice(1, 3).map((line) => {
-          return (
-            <div>{line}</div>
-          );
-        })}
-      </div>
+      {details.length > 0 ? (
+        <div className={styles.debuggerDetails}>
+          {details.slice(1, 3).map((line) => {
+            return (
+              <div>{line}</div>
+            );
+          })}
+        </div>
+      ) : ''}
     </div>
   )
 }

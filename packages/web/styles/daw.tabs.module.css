@@ -1,8 +1,9 @@
 .tabs {
   --background-color: rgb(30, 30, 30);
-  --active-color: rgba(var(--brand-color-2), 1);
   --border-color: rgb(60, 60, 60);
+  --active-color: rgba(var(--brand-color-2), 1);
   --active-text-color: #ffffff;
+  --inactive-text-color: #ffffff88;
 }
 
 .tabs {
@@ -11,7 +12,7 @@
   flex-direction: row;
   color: #fff;
   border-bottom: 1px solid var(--border-color);
-  padding-left: 5px;
+  padding-left: 3px;
 }
 
 .tab {
@@ -25,7 +26,7 @@
   font-weight: light;
   margin: 10px 0 -1px 5px;
   min-width: 25px;
-  padding: 8px 4px;
+  padding: 8px 10px 10px 10px;
   text-align: center;
 }
 
@@ -35,7 +36,6 @@
   .tabLabel {
     vertical-align: 1px;
     margin: 0 10px;
-    color: #FFF;
   }
 
   .tabMenu {
@@ -49,8 +49,7 @@
 .tabIsSelected {
   border-top: 3px solid rgba(var(--brand-color-2), 1);
   border-bottom: 1px solid var(--background-color);
-  color: rgba(var(--brand-color-2), 1);
-  padding: 8px 15px 10px 15px;
+  color: var(--active-text-color);
 }
 
   .tabIsSelected .tabIcon {
@@ -62,16 +61,19 @@
     display: inline-block;
   }
 
+.tabIsUnselected {
+  color: var(--inactive-text-color);
+}
+
 .tabIsUnselected:hover {
-  color: rgb(var(--brand-color-2), 1);
+  color: var(--active-text-color);
 }
 
   .tabIsUnselected .tabIcon {
-    display: none;
+    /* display: none; */
   }
 
   .tabIsUnselected .tabMenu {
-    color: #ffffff55;
-    display: none;
+    /* display: none; */
   }
 

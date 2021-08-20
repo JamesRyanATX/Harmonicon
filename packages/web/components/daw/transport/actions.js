@@ -60,12 +60,12 @@ export function Actions ({ controller }) {
         label="Stop"
         onClick={controller.stop.bind(controller)}
       />
-      <Action
+      {/* <Action
         icon={IoReloadSharp}
         label="Reload"
         onClick={controller.reload.bind(controller)}
         disabled={!changed}
-      />
+      /> */}
     </Items>
   )
 }

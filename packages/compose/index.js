@@ -109,3 +109,10 @@ export const parse = async (options = {}) => {
     })();
   });
 }
+
+export const render = async (options = {}, driver) => {
+  const composer = await parse(options);
+  const renderer = await composer.render(driver);
+
+  return { composer, renderer };
+}

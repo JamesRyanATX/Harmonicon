@@ -3,8 +3,8 @@ import { Switcher } from './daw/switcher';
 import { Transport } from './daw/transport';
 import { Editor } from './daw/editor';
 import { Debugger } from './daw/debugger';
-import { ToneDriver, Tone } from '@composer/driver-tone';
-import { LocalStorageDriver } from '@composer/driver-localstorage';
+import { ToneAudioDriver, Tone } from '@composer/driver-audio-tone';
+import { LocalStorageDriver } from '@composer/driver-storage-localstorage';
 import { SessionComposer } from '@composer/compose';
 import { Controller } from '../lib/daw/controller';
 
@@ -56,19 +56,19 @@ function Interface ({ children }) {
 export function DAW ({
   audioDriverOptions = {},
   storageDriverOptions = {},
-  workspaceOptions = {}
 }) {
 
   const [ loaded, setLoaded ] = useState(false);
   const [ audioDriver, setAudioDriver ] = useState();
   const [ storageDriver, setStorageDriver ] = useState();
   const [ controller, setController ] = useState();
+  const [ file, setFile ] = useState();
 
   console.log(`controller: ${!!controller}; audioDriver: ${!!audioDriver}; storageDriver: ${!!storageDriver}; loaded: ${!!loaded}`)
 
   // Initialize audio driver
   if (!audioDriver) {
-    setAudioDriver(new ToneDriver(audioDriverOptions));
+    setAudioDriver(new ToneAudioDriver(audioDriverOptions));
   }
 
   // Initialize storage driver
@@ -80,23 +80,38 @@ export function DAW ({
   if (!controller && audioDriver && storageDriver) {
     (async () => {
       setController(new Controller({
-        workspace: await WorkspaceModel.parse(Object.assign({
-          audio: audioDriver,
-          storage: storageDriver,
-        }, workspaceOptions))
+        workspace: (await WorkspaceModel.loadOrCreate('default', {}, storageDriver))
+          .setProperties({
+            audio: audioDriver,
+            storage: storageDriver,  
+          })
       }));
     })();
   }
 
+  // Select a file
+  if (!file && controller) {
+    (async () => {
+      if (controller.workspace.files.length === 0) {
+        throw new Error('here!');
+      }
+      else {
+        setFile(await controller.selectFile(
+          controller.workspace.files.records[0]
+        ));
+      }
+    })();
+  }
+
   // ...and we're off to the races!
-  if (!loaded && controller) {
+  if (!loaded && file) {
     setLoaded(true);
   }
 
   // [TODO] eventually, this should not be necessary
   window.controller = controller;
   window.SessionComposer = SessionComposer;
-  window.ToneDriver = ToneDriver;
+  window.ToneAudioDriver = ToneAudioDriver;
   window.Tone = Tone; 
 
   if (loaded) {

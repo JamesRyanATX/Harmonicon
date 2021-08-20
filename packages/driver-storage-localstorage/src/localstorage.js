@@ -55,4 +55,23 @@ export class LocalStorageDriver extends BaseStorageDriver {
     });
   }
 
+  dump () {
+    return Object.keys(this.localStorage).reduce((memo, key) => {
+      const value = this.localStorage[key];
+
+      try {
+        memo[key] = this.decode(value);
+      }
+      catch {
+        memo[key] = value;
+      }
+
+      return memo;
+    }, {});
+  }
+
+  inspect() {
+    return JSON.stringify(this.dump(), null, 2);
+  }
+
 }

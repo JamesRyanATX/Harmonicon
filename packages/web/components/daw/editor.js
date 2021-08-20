@@ -9,8 +9,8 @@ export function Editor ({ controller }) {
         height="100%"
         width="100%"
         defaultLanguage="javascript"
-        defaultValue={controller.source}
-        onChange={controller.setSource.bind(controller)}
+        defaultValue={controller.file.source}
+        onChange={controller.setFileSource.bind(controller)}
         theme="vs-dark"
         options={{
           folding: true,

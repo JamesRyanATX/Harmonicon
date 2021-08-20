@@ -15,6 +15,7 @@ export class WorkspaceModel extends storable(BaseModel) {
     files: {
       type: FileModel,
       collection: true,
+      foreignKey: 'workspace',
     },
 
     // Audio driver (tone, mock, etc.)
@@ -29,8 +30,8 @@ export class WorkspaceModel extends storable(BaseModel) {
 
   }
 
-  static async load (id, storage) {
-    const workspace = await this.find(id, storage);
+  static async loadOrCreate (id, properties, storage) {
+    const workspace = await this.findOrCreate(id, properties, storage);
     const files = workspace.properties.files.records;
 
     for (let i = 0; i < files.length; i += 1) {
