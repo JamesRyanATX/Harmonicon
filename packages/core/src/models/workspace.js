@@ -36,6 +36,7 @@ export class WorkspaceModel extends storable(BaseModel) {
 
     for (let i = 0; i < files.length; i += 1) {
       files[i] = await FileModel.find(files[i], storage);
+      files[i].setProperties({ workspace });
     }
 
     return workspace;

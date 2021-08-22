@@ -11,7 +11,7 @@ export function Display ({ controller }) {
   });
 
   if (!loaded) {
-    controller.on('position', setPosition);
+    controller.on('transport:position', setPosition);
     setLoaded(true);
   }
 

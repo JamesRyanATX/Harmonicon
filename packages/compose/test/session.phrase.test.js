@@ -9,20 +9,25 @@ import {
   sixtyfourth,
 } from '../';
 
-async function testPhrase() {
+async function testPhrase(steps) {
   const results = {};
 
   await session('my-song', async function ({ session }) {
     session.phrase('a-phrase', ({ phrase }) => {
-      phrase.steps(
-        whole.note(0),
-        half.note(1),
-        quarter.note(2),
-        eighth.note(3),
-        sixteenth.note(4),
-        thirtysecond.note(5),
-        sixtyfourth.note(6),
-      );
+      if (steps) {
+        phrase.steps(steps);
+      }
+      else {
+        phrase.steps(
+          whole.note(0),
+          half.note(1),
+          quarter.note(2),
+          eighth.note(3),
+          sixteenth.note(4),
+          thirtysecond.note(5),
+          sixtyfourth.note(6),
+        );  
+      }
 
       results.phrase = phrase;
       results.session = session;
@@ -40,4 +45,20 @@ describe('session.phrase', function () {
     expect(phrase.model.name).toEqual('a-phrase');
     expect(phrase.model.steps.length).toEqual(7);
   });
+
+  it('parses phrases as arrays', async function () {
+    const { session, phrase } = await testPhrase([
+      whole.note(0),
+      half.note(1),
+      quarter.note(2),
+      eighth.note(3),
+      sixteenth.note(4),
+      thirtysecond.note(5),
+      sixtyfourth.note(6),
+    ]);
+    
+    expect(session.model.phrases.length).toEqual(1);
+    expect(phrase.model.name).toEqual('a-phrase');
+    expect(phrase.model.steps.length).toEqual(7);
+  })
 });

@@ -1,6 +1,5 @@
-import { Tone } from '@composer/driver-audio-tone';
-import { parse } from '@composer/compose';
-
+import { Logger } from '@composer/util';
+import { render } from '@composer/compose';
 
 export class Controller {
 
@@ -21,26 +20,42 @@ export class Controller {
   }
 
   get changed () {
-    return this.source === this.renderedSource;
+    return this.file.source !== this.renderedSource;
   }
 
-  constructor({ workspace }) {
+  constructor({ workspace, templates }) {
     this.workspace = workspace;
-
-    this.source = '';
+    this.templates = templates;
     this.renderedSource = null;
-
     this.listeners = {};
 
+    this.logger = new Logger('Controller');
+
     this.allow('error');
-    this.allow('state');
     this.allow('changed');
-    this.allow('position');
+
+    this.allow('transport:start');
+    this.allow('transport:stop');
+    this.allow('transport:pause');
+    this.allow('transport:loop');
+    this.allow('transport:position');
 
     this.allow('file:selected');
     this.allow('file:created');
     this.allow('file:destroyed');
     this.allow('file:updated');
+
+    // Observe transport events directly from audio driver
+    [
+      'start',
+      'stop',
+      'pause',
+      'loop',
+    ].forEach((eventName) => {
+      this.audio.on(eventName, () => {
+        this.emit(`transport:${eventName}`, this.state);
+      });
+    });
   }
 
 
@@ -51,24 +66,33 @@ export class Controller {
     try {
       const file = await this.workspace.files.create({
         name: 'Untitled',
-        source: '1;',
+        source: this.templates.blank,
+        workspace: this.workspace,
       });
 
       this.emit('file:created', file);
+      this.selectFile(file);
     }
     catch (e) {
       console.error(e);
-      this.emit('error', new Error('Unable to add a new file.'));
+      this.emit('error', { message: 'Unable to add a new file.' });
     }
   }
 
-  async destroyFile() {
+  async destroyFile(file) {
     try {
-      await this.workspace.save(); 
+      await this.workspace.files.destroy(file);
+
+      if (file.id === this.file.id) {
+        this.selectFile(this.workspace.files.first());
+      }
+      else {
+        this.emit('file:destroyed', file);
+      }
     }
     catch (e) {
       console.error(e);
-      this.emit('error', 'Unable to delete file.');
+      this.emit('error', { message: 'Unable to delete file.' });
     }
   }
 
@@ -79,7 +103,7 @@ export class Controller {
     }
     catch (e) {
       console.error(e);
-      this.emit('error', 'Unable to save workspace.');
+      this.emit('error', { message: 'Unable to save workspace.' });
     }
   }
 
@@ -91,7 +115,7 @@ export class Controller {
     }
     catch (e) {
       console.error(e);
-      this.emit('error', 'Unable to select file.');
+      this.emit('error', { message: 'Unable to select file.' });
     }
   }
 
@@ -103,19 +127,25 @@ export class Controller {
     }
     catch (e) {
       console.error(e);
-      this.emit('error', new Error('Unable to play this file :-('));
+      this.emit('error', { message: 'Unable to play this file :-(' });
     }
   }
 
   async stop() {
     try {
       await this.withRendered(async () => {
-        return this.audio.pause();
+        await this.audio.stop();
+
+        this.emit('transport:position', {
+          measure: 0,
+          beat: 0,
+          subdivision: 0,
+        })
       });
     }
     catch (e) {
       console.error(e);
-      this.emit('error', new Error('Unable to stop audio, oh noes!'));
+      this.emit('error', { message: 'Unable to stop audio, oh noes!' });
     }
   }
 
@@ -127,7 +157,7 @@ export class Controller {
     }
     catch (e) {
       console.error(e);
-      this.emit('error', new Error('Unable to pause audio, oh noes!'));
+      this.emit('error', { message: 'Unable to pause audio, oh noes!' });
     }
   }
 
@@ -162,6 +192,8 @@ export class Controller {
       throw new Error(`Unregistered event name "${eventName}"`);
     }
 
+    console.log(`emit ${eventName} to ${this.listeners[eventName].length} listener(s)`);
+
     (this.listeners[eventName] || []).forEach((fn) => {
       fn(payload);
     });
@@ -173,7 +205,7 @@ export class Controller {
 
   async withRendered(fn) {
     if (this.changed) {
-      this.render();
+      await this.render();
     }
 
     return fn();
@@ -188,99 +220,11 @@ export class Controller {
 
     this.composer = composer;
     this.renderer = renderer;
-    this.renderedSource = source;
+    this.renderedSource = this.file.source;
 
-    this.emit('state', this.state);
-    this.emit('position', this.position);
+    this.audio.observePosition((position) => {
+      this.emit('transport:position', position);
+    });
   }
-
-
-  // Misc
-  // ----
-
-  // emitStateAndPosition () {
-  //   this.emit('position', this.position);
-  //   this.emit('state', this.state);
-  // }
-
-  // async reload () {
-  //   await this.pause();
-  //   await this.reset();
-  //   await this.prepare();
-
-  //   this.emit('changed', this.changed = false);
-  //   this.emitStateAndPosition();
-  // }
-
-  // async prepare () {
-  //   if (this.composer && this.renderer) {
-  //     return;
-  //   }
-
-  //   try {
-  //     this.renderedSource = this.source;
-  //     this.composer = await parse({ code: this.source });
-  //     this.renderer = await this.composer.render(this.audio);
-  //   }
-  //   catch (e) {
-  //     console.error(e);
-
-  //     this.emit('error', {
-  //       message: e.message,
-  //       error: e
-  //     });
-
-  //     return;
-  //   }
-
-  //   Tone.Transport.scheduleRepeat((time) => {
-  //     Tone.Draw.schedule(() => {
-  //       this.emit('position', this.position);
-  //     }, time);
-  //   }, '8n', 0);
-
-  //   this.audio.setTransportPosition('0:0:0');
-  // }
-
-  // // Reset Audio buffer (implementation up to driver)
-  // async reset () {
-  //   await this.audio.reset();
-
-  //   delete this.renderer;
-  //   delete this.composer;
-  // }
-
-  // async playOrPause () {
-  //   if (this.state === 'started') {
-  //     return this.pause();
-  //   }
-  //   else {
-  //     return this.play();
-  //   }
-  // }
-
-  // async play () {
-  //   await this.prepare();
-
-  //   this.audio.play();
-  //   this.emitStateAndPosition();  
-  // }
-
-  // async pause () {
-  //   await this.audio.pause();
-
-  //   this.emitStateAndPosition();
-  // }
-
-  // async stop () {
-  //   await this.pause();
-  //   await this.goToBeginning();
-  // }
-
-  // async goToBeginning () {
-  //   await this.audio.setTransportPosition(`0:0:0`);
-
-  //   this.emitStateAndPosition();
-  // }
 
 }

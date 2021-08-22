@@ -134,6 +134,15 @@ export class BaseAudioDriver extends BaseDriver {
     this.logger.error(`${this.name}.position not implemented`);
   }
 
+  observePosition(fn) {
+    this.logger.error('observePosition() not implemented');
+  }
+
+  // Events: start|stop|pause|loop
+  async on() {
+    this.logger.error('on() not implemented');
+  }
+
   async unscheduleAll () {
     this.logger.error('unscheduleAll() not implemented');
   }

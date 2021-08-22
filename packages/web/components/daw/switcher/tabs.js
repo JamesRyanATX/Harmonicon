@@ -1,22 +1,27 @@
 import styles from '../../../styles/daw.tabs.module.css';
-import { IoAddSharp, IoEllipsisVerticalSharp } from "react-icons/io5";
-
+import { IoAddSharp, IoCloseSharp } from "react-icons/io5";
+import { Editable } from '../controls/editable';
 
 export function Tab({
   label = null,
   icon = null,
   onIconClick = () => {},
   onTabClick = () => {},
-  onMenuClick = () => {},
+  onCloseClick = () => {},
+  onRename = () => {},
   selected = false,
-  menu = true,
+  close = true,
   children,
 }) {
   const Icon = icon || null;
 
   return (
     <div
-      onClick={onTabClick}
+      onClick={(e) => {
+        if (!selected) {
+          onTabClick(e)
+        }
+      }}
       className={[
         styles.tab,
         selected ? styles.tabIsSelected : styles.tabIsUnselected
@@ -33,16 +38,27 @@ export function Tab({
             </a>
           ) : ''}
           {label ? (
-            <span className={styles.tabLabel}>
-              {label}
-            </span>
-          ) : ''}
-          {menu ? (
             <a 
-              className={styles.tabMenu}
-              onClick={onMenuClick} 
+              className={styles.tabLabel}
             >
-              <IoEllipsisVerticalSharp/>
+              {selected ? (
+                <Editable
+                  value={label}
+                  onChange={onRename}
+                />
+              ) : label}
+            </a>
+          ) : ''}
+          {close ? (
+            <a 
+              className={styles.tabClose}
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                onCloseClick()
+              }}
+            >
+              <IoCloseSharp/>
             </a>
           ) : ''}
         </div>

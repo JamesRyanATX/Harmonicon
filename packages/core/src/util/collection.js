@@ -7,7 +7,7 @@ export class Collection {
   }
 
   get all () {
-    return this.records;
+    return this.records.concat([]);
   }
 
   get foreignKey () {

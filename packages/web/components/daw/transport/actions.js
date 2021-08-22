@@ -5,6 +5,8 @@ import {
   IoStopSharp,
   IoPlaySharp,
   IoReloadSharp,
+  IoPauseSharp,
+  IoSaveSharp,
 } from "react-icons/io5";
 
 function Action ({
@@ -36,11 +38,14 @@ function Action ({
 
 export function Actions ({ controller }) {
   const [ loaded, setLoaded ] = useState(false);
-  const [ state, setState ] = useState(controller.state);
+  const [ transportState, setTransportState ] = useState(controller.state);
   const [ changed, setChanged ] = useState(controller.changed);
 
   if (!loaded) {
-    controller.on('state', setState);
+    controller.on('transport:start', setTransportState);
+    controller.on('transport:stop', setTransportState);
+    controller.on('transport:pause', setTransportState);
+    controller.on('transport:loop', setTransportState);
     controller.on('changed', setChanged);
 
     setLoaded(true);
@@ -52,13 +57,24 @@ export function Actions ({ controller }) {
         icon={IoPlaySharp}
         label="Play"
         onClick={controller.play.bind(controller)}
-        selected={state === 'started'}
-        indicator={state === 'started'}
+        selected={transportState === 'started'}
+        indicator={transportState === 'started'}
+      />
+      <Action 
+        icon={IoPauseSharp}
+        label="Pause"
+        onClick={controller.pause.bind(controller)}
+        indicator={transportState === 'paused'}
       />
       <Action 
         icon={IoStopSharp}
         label="Stop"
         onClick={controller.stop.bind(controller)}
+      />
+      <Action 
+        icon={IoSaveSharp}
+        label="Save"
+        onClick={controller.save.bind(controller)}
       />
       {/* <Action
         icon={IoReloadSharp}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from '../styles/logo.module.css';
 
 function Letter ({ children, index }) {
@@ -41,9 +41,15 @@ export function Logo ({
   const [ offset, setOffset ] = useState(0);
 
   if (animate) {
-    setTimeout(() => {
-      setOffset(offset + 1);
-    }, speed * 1000);  
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setOffset(offset + 1);
+      }, speed * 1000);
+      
+      return () => {
+        clearTimeout(timer);
+      }
+    }, []);
   }
 
   return (
@@ -53,7 +59,7 @@ export function Logo ({
       size === 'large' ? styles.logoIsLarge : '',
     ].join(' ')}>
       {letters.map((letter, i) => (
-        <Letter index={(i + offset) % 10}>{letter}</Letter>
+        <Letter key={i} index={(i + offset) % 10}>{letter}</Letter>
       ))}
     </div>
   )

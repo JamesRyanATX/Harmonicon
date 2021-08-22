@@ -6,8 +6,8 @@ export class PhraseComposer extends BaseComposer {
   static composerContextName = 'phrase';
   static model = PhraseModel;
 
-  steps() {
-    this.model.properties.steps = [ ...arguments ];
+  steps(steps) {
+    this.model.properties.steps = Array.isArray(steps) ? steps : [ ...arguments ];
   }
 }
 

@@ -145,18 +145,39 @@ export class ToneAudioDriver extends BaseAudioDriver {
   }
 
   // Remove all events from timeline
-  unscheduleAll() {
+  async unscheduleAll() {
     return Tone.Transport.cancel(0);
   }
 
   // Pause transport at current position
-  pause() {
+  async pause() {
     return Tone.Transport.pause();
   }
 
+  // Stop transport and go back to 0:0:0
+  async stop() {
+    await Tone.Transport.stop();
+  }
+
   // Play transport from current position
-  play() {
+  async play() {
+    if (Tone.context.state === 'suspended') {
+      await Tone.start();
+    }
+
     return Tone.Transport.start();
+  }
+
+  on (eventName, fn) {
+    Tone.Transport.on(eventName, fn);
+  }
+
+  observePosition(fn) {
+    Tone.Transport.scheduleRepeat((time) => {
+      Tone.Draw.schedule(() => {
+        fn(this.position);
+      }, time);
+    }, '8n', 0);
   }
 
   async startAudioBuffer() {
