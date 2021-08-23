@@ -11,11 +11,11 @@ export { PhraseModel } from './src/models/phrase';
 export { KeySignatureModel } from './src/models/key_signature';
 export { FileModel } from './src/models/file';
 
-export { WholeUnit } from './src/units/whole';
-export { HalfUnit } from './src/units/half';
-export { QuarterUnit } from './src/units/quarter';
-export { EighthUnit } from './src/units/eighth';
-export { SixteenthUnit } from './src/units/sixteenth';
+export { WholeUnit, DottedWholeUnit, DoubleDottedWholeUnit } from './src/units/whole';
+export { HalfUnit, DottedHalfUnit, DoubleDottedHalfUnit } from './src/units/half';
+export { QuarterUnit, DottedQuarterUnit, DoubleDottedQuarterUnit } from './src/units/quarter';
+export { EighthUnit, DottedEighthUnit, DoubleDottedEighthUnit } from './src/units/eighth';
+export { SixteenthUnit, DottedSixteenthUnit, DoubleDottedSixteenthUnit } from './src/units/sixteenth';
 export { ThirtysecondUnit } from './src/units/thirtysecond';
 export { SixtyfourthUnit } from './src/units/sixtyfourth';
 
