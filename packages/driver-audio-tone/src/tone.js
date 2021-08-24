@@ -105,7 +105,7 @@ export class ToneAudioDriver extends BaseAudioDriver {
         });
 
         return await Tone.Transport.set({
-          position: `+${step.duration.definition.fraction[1]}n`,
+          position: `+${step.duration.toMBS(track.meterAt(event.at))}`,
         });
       });
     },
@@ -113,9 +113,10 @@ export class ToneAudioDriver extends BaseAudioDriver {
     // Play a single note
     note: async ({ event, track, instrument }) => {
       const note = event.value;
-      const duration = `0:${note.duration.toDecimal()}:0`;
       const keySignature = track.keySignatureAt(event.at);
+      const meter = track.meterAt(event.at);
       const pitch = note.computedPitch(keySignature);
+      const duration = note.duration.toMBS(meter);
 
       this.logger.info(`render.session.event.note: [+] position = ${event.at}`);
       this.logger.debug(`render.session.event.note:     pitch = ${note.pitch} => ${pitch}`);

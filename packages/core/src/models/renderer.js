@@ -13,8 +13,11 @@ export class RendererModel extends BaseModel {
   }
 
   async render () {
-    await this.driver.reset();
-    await this.driver.render(this.session);
+    const driver = this.driver;
+
+    await driver.reset();
+    await driver.render(this.session);
+    await driver.setTransportPosition('0:0:0');
 
     return this;
   }

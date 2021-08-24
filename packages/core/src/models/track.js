@@ -19,6 +19,10 @@ export class TrackModel extends BaseSequencedModel {
     return this.session.keySignatureAt(position);
   }
 
+  meterAt(position) {
+    return this.session.meterAt(position);
+  }
+
 }
 
 TrackModel.init();

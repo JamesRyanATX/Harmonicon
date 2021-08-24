@@ -1,6 +1,14 @@
 import { BaseUnit } from './base';
 import { DurationValue } from "@tonaljs/tonal";
 
-export class SixtyfourthUnit extends BaseUnit {
+export class SixtyFourthUnit extends BaseUnit {
   static definition = DurationValue.get('sixty-fourth');
+}
+
+export class DottedSixtyFourthUnit extends BaseUnit {
+  static definition = DurationValue.get('sixty-fourth.');
+}
+
+export class DoubleDottedSixtyFourthUnit extends BaseUnit {
+  static definition = DurationValue.get('sixty-fourth..');
 }

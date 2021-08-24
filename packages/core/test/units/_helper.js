@@ -8,13 +8,23 @@ export function testUnit(unit, expectations) {
       });
     });
 
+    if (expectations.toMBS) {
+      describe('.toMBS', function () {
+        expectations.toMBS.forEach((beat) => {
+          it(`returns the correct value for ${beat.timeSignature[0]}/${beat.timeSignature[1]}`, function () {
+            expect(unit.toMBS(beat.timeSignature)).toEqual(beat.expectedValue);
+          });  
+        });
+      });
+    }
+
     describe('.toBeats', function () {
       expectations.toBeats.forEach((beat) => {
         it(`returns the correct value for ${beat.timeSignature[0]}/${beat.timeSignature[1]}`, function () {
           expect(unit.toBeats(beat.timeSignature)).toEqual(beat.expectedValue);
         });  
       });
-    })
+    });
 
     describe('.toDecimal', function () {
       it('returns the correct value', function () {

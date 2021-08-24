@@ -56,6 +56,13 @@ export class SessionModel extends BaseSequencedModel {
     });
   }
 
+  meterAt(position) {
+    const event = this.getLastEventByTypeAndPosition('meter', position);
+    const meter = event ? event.value : [ 4, 4 ];
+
+    return meter;
+  }
+
   async render (driver) {
     this.renderer = this.renderer || RendererModel.parse({
       session: this,
