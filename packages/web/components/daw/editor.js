@@ -22,7 +22,7 @@ export function Editor ({ controller }) {
   }
 
   function onChange(value) {
-    controller.setFileSource(source);
+    controller.setFileSource(value);
   }
 
   function onKeyDown(e) {
