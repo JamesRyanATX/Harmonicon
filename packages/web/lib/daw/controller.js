@@ -56,6 +56,8 @@ export class Controller {
         this.emit(`transport:${eventName}`, this.state);
       });
     });
+
+    document.title = 'Harmonicon';
   }
 
 
