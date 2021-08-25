@@ -31,6 +31,26 @@ export class BaseComposer {
 
     this.constructor.current = this;
     this.logger = new Logger(this.constructor.name);
+
+    if (this.constructor.proxies) {
+      this.createProxies();
+    }
+  }
+
+  createProxies() {
+    const proxies = this.constructor.proxies;
+
+    Object.keys(proxies).forEach((attachTo) => {
+      Object.keys(proxies[attachTo]).forEach((proxyName) => {
+        this.createProxy(attachTo, proxyName, proxies[attachTo][proxyName]);
+      });
+    });
+  }
+
+  createProxy(attachTo, proxyName, fn) {
+    this[attachTo][proxyName] = function () {
+      return fn.apply(this, arguments);
+    }.bind(this)
   }
 
   async load() {

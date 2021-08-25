@@ -1,32 +1,22 @@
 import {
   SessionModel,
   TrackModel,
-  PhraseModel
+  PhraseModel,
+  PatchModel,
 } from '@composer/core';
 
 import { SequencedEventProxy } from './util/sequenced_event_proxy';
 import { BaseSequencedComposer } from './base/sequenced';
 import { TrackComposer } from './track';
 import { PhraseComposer } from './phrase';
+import { SessionComposerProxies } from './session/proxies';
+import { ComposerError } from './errors';
 
 
 export class SessionComposer extends BaseSequencedComposer {
   static composerContextName = 'session';
   static model = SessionModel;
-
-  get send() {
-    return {
-      instrument: (instrumentName) => {
-        return {
-          to: {
-            track: (trackName) => {
-              this.logger.error(`sending output of instrument "${instrumentName}" to track "${trackName}"`);
-            }
-          }
-        }
-      }
-    }
-  }
+  static proxies = SessionComposerProxies;
 
   meter(meter, proxy) {
     this.sequence({
@@ -74,7 +64,13 @@ export class SessionComposer extends BaseSequencedComposer {
     });
   }
 
-  async track(name, fn) {
+  effect(name, fn) {
+    // this.model.instruments.add({
+    //   name, fn
+    // });
+  }
+
+  track(name, fn) {
     const track = TrackModel.parse({
       session: this.model,
       name: name,
@@ -82,10 +78,31 @@ export class SessionComposer extends BaseSequencedComposer {
 
     this.model.tracks.add(track);
 
-    return await TrackComposer.compose(name, fn, {
+    return TrackComposer.compose(name, fn, {
       session: this,
       model: track,
     });
+  }
+
+  /**
+   * Send the output of one audio node to another.
+   * 
+   * @param  {object} properties
+   */
+  send(properties = {}) {
+    const patch = PatchModel.parse(Object.assign({
+      session: this.model,
+    }, properties));
+
+    const { valid, errors } = patch.validate();
+
+    if (!valid) {
+      throw new ComposerError(errors[0].message);
+    }
+
+    this.model.patches.add(patch);
+
+    return patch;
   }
 
   async phrase(name, fn) {

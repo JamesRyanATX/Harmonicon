@@ -103,4 +103,8 @@ export class BaseModel {
     }, {});
   }
 
+  validate() {
+    return { errors: [], valid: true };
+  }
+
 }

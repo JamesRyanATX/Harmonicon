@@ -10,6 +10,7 @@ export { RendererModel } from './src/models/renderer';
 export { PhraseModel } from './src/models/phrase';
 export { KeySignatureModel } from './src/models/key_signature';
 export { FileModel } from './src/models/file';
+export { PatchModel } from './src/models/patch';
 
 export { LargeUnit, DottedLargeUnit, DoubleDottedLargeUnit } from './src/units/large';
 export { LongUnit, DottedLongUnit, DoubleDottedLongUnit } from './src/units/long';

@@ -6,6 +6,7 @@ import { RouteModel } from './route';
 import { RendererModel } from './renderer';
 import { PhraseModel } from './phrase';
 import { KeySignatureModel } from './key_signature';
+import { PatchModel } from './patch';
 
 export class SessionModel extends BaseSequencedModel {
 
@@ -13,6 +14,11 @@ export class SessionModel extends BaseSequencedModel {
 
     events: {
       type: SequencedEventModel,
+      collection: true,
+    },
+
+    patches: {
+      type: PatchModel,
       collection: true,
     },
 
