@@ -42,22 +42,24 @@ export async function run(options) {
     })();
   `);
 
-  await group('2. Parsing Session', `
+  // await group('2. Parsing Session', `
+  //   (async () => {
+  //     return window.SessionComposer.parse({
+  //       code: ${JSON.stringify(source)}
+  //     });
+  //   })()
+  // `);  
+
+  // await new Promise((proceed) => {
+  //   logger.cli.debug(`Pausing for ${options.wait}s for dangling asyncs`)
+  //   setTimeout(proceed, options.wait * 1000);
+  // });
+
+  await group('3. Rendering Session', `
     (async () => {
-      return window.SessionComposer.parse({
-        code: ${JSON.stringify(source)}
-      });
-    })()
-  `);  
-
-  await new Promise((proceed) => {
-    logger.cli.debug(`Pausing for ${options.wait}s for dangling asyncs`)
-    setTimeout(proceed, options.wait * 1000);
-  });
-
-  await group('3. Rendering Session', async () => {
-    return SessionComposer.current.render(ToneDriver);
-  });
+      return SessionComposer.render({ code: ${JSON.stringify(source)} }, new ToneAudioDriver);
+    })();
+  `);
 
   await group('4. Playing Session', async () => {
     return SessionComposer.current.renderer.play({

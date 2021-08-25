@@ -1,7 +1,7 @@
 session('play a single note', async ({ session }) => {
 
   session.instrument('bass', async () => {
-    return new Tone.MonoSynth().toDestination();
+    return new Tone.MonoSynth();
   });
 
   session.track('bass', async ({ track }) => {

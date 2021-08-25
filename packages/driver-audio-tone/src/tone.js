@@ -2,6 +2,34 @@ import { BaseAudioDriver } from '@composer/driver';
 import { mapSeries } from '@composer/util';
 import * as Tone from 'tone';
 
+export class ToneAudioDriverNode {
+
+  get name() {
+    return this.properties.name;
+  }
+
+  get root() {
+    return !!this.properties.root;
+  }
+
+  constructor(properties) {
+    this.properties = properties;
+    this.node = properties.node || new Tone.Channel();
+
+    // Connect root node to direct output
+    if (this.root) {
+      this.node.toDestination();
+    }
+  }
+
+  connect(to) {
+    this.node.connect(to.node);
+  }
+
+  toString() {
+    return `ToneAudioDriverNode:${this.name} ${this.root ? ' (root)' : ''}`;
+  }
+};
 
 export class ToneAudioDriver extends BaseAudioDriver {
 
@@ -179,6 +207,10 @@ export class ToneAudioDriver extends BaseAudioDriver {
         fn(this.position);
       }, time);
     }, '8n', 0);
+  }
+
+  createNode(properties = {}) {
+    return new ToneAudioDriverNode(properties);
   }
 
   async startAudioBuffer() {

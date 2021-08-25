@@ -32,11 +32,6 @@ export class SessionModel extends BaseSequencedModel {
       collection: true,
     },
 
-    routes: {
-      type: RouteModel,
-      collection: true,
-    },
-
     phrases: {
       type: PhraseModel,
       collection: true,

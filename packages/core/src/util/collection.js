@@ -75,6 +75,10 @@ export class Collection {
     return this.records.map(fn);
   }
 
+  forEach(fn) {
+    this.records.map(fn);
+  }
+
   async mapParallel(fn) {
     return mapParallel(this.all, fn);
   }
