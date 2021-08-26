@@ -1,7 +1,8 @@
 import { Logger } from "@composer/util";
 import { Collection } from "../util/collection";
+import { composite, jsonnable } from "./mixins";
 
-export class BaseModel {
+export class BaseModel extends composite(class {}, jsonnable) {
 
   static parse (properties) {
     return new this(properties);
@@ -34,9 +35,15 @@ export class BaseModel {
   }
 
   constructor (properties) {
+    super(properties);
+
+    // Logger specific to this record
     this.logger = new Logger(this.constructor.name);
+
+    // Make a copy of original properties object
     this.properties = Object.assign({}, properties);
 
+    // Initialize properties
     this.constructor.forEachProperty((property, definition) => {
       const currentValue = this[property];
       const defaultValue = definition.defaultValue;
@@ -68,39 +75,6 @@ export class BaseModel {
 
   clone () {
     return new this.constructor(Object.assign({}, this.properties));
-  }
-
-  toJSON ({
-    deep = false
-  } = {}) {
-    return Object.keys(this.properties).reduce((json, property) => {
-      const definition = this.constructor.properties[property];
-      const value = this[property];
-
-      // If definition has json function, it overrides all
-      if (typeof definition.json === 'function') {
-        json[property] = definition.json(value, this);
-      }
-
-      // Handle collections
-      else if (value instanceof Collection) {
-        json[property] = value.records.map((r) => {
-          return deep ? r.toJSON() : r.id;
-        });
-      }
-
-      // Include child model JSON (deep=true) or ID (deep=false)
-      else if (value instanceof BaseModel) {
-        json[property] = deep ? value.toJSON() : value.id;
-      }
-
-      // Properties with json: false are excluded
-      else if (definition.json !== false) {
-        json[property] = value;
-      }
-
-      return json;
-    }, {});
   }
 
   validate() {

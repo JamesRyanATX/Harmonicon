@@ -6,12 +6,8 @@ import { MockAudioDriver } from '@composer/driver-audio-mock';
 describe('WorkspaceModel', function () {
   let storage, audio, workspace;
 
-  async function findWorkspace(id) {
-    return WorkspaceModel.find(id, storage);
-  }
-
   async function findOrCreateWorkspace(id) {
-    return WorkspaceModel.findOrCreate(id, { storage, audio }, storage);
+    return WorkspaceModel.loadOrCreate(id, { storage, audio }, storage);
   }
 
   beforeEach(async function () {
@@ -140,16 +136,17 @@ describe('WorkspaceModel', function () {
       // 5. User leaves and comes back, sees work
       // ----------------------------------------
 
-      const workspaceReloaded = await WorkspaceModel.load('default', storage);
+      workspace = await findOrCreateWorkspace('default');
 
-      expect(workspaceReloaded.toJSON({ deep: true })).toEqual({
+      expect(workspace.toJSON({ deep: true })).toEqual({
         id: 'default',
         files: [
           {
             id: file2.id,
             name: 'peter',
             source: 'frampton',
-            type: 'text/javascript'
+            type: 'text/javascript',
+            workspace: 'default'
           }
         ]
       });

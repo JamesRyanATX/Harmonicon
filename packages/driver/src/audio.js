@@ -113,10 +113,6 @@ export class BaseAudioDriver extends BaseDriver {
         return this.renderTrackEvent({ event, track, instrument: node });
       });  
     });
-
-
-    // this.logger.debug(`render.session.track:     source = ${JSON.stringify(source)}`);
-    // this.logger.debug(`render.session.track:     node = ${node}`);
   }
 
   async renderPatches () {
