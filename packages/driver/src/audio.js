@@ -1,3 +1,4 @@
+import { mapSeries } from '@composer/util';
 import { BaseDriver } from './base';
 
 export class BaseAudioDriver extends BaseDriver {
@@ -8,6 +9,7 @@ export class BaseAudioDriver extends BaseDriver {
     await this.renderSession();
     await this.renderSessionEvents();
     await this.renderInstruments();
+    await this.renderEffects();
     await this.renderPhrases();
     await this.renderTracks();
     await this.renderPatches();
@@ -63,35 +65,58 @@ export class BaseAudioDriver extends BaseDriver {
     this.logger.debug(`render.instrument:     rendered = ${rendered}`);
   }
 
+  async renderEffects () {
+    return this.session.effects.mapSeries(this.renderEffect.bind(this));
+  }
+
+  async renderEffect (effect) {
+    const rendered = await effect.fn();
+    
+    // Create an audio node
+    this.nodes.effect[effect.name] = this.createNode({
+      name: `effect:${effect.name}`,
+      node: rendered
+    }),
+
+    this.logger.info(`render.effect: [+] name = ${effect.name}`);
+    this.logger.debug(`render.effect:     fn = ${typeof effect.fn}`);
+    this.logger.debug(`render.effect:     rendered = ${rendered}`);
+  }
+
   async renderTracks () {
     return this.session.tracks.mapSeries(this.renderTrack.bind(this));
   }
 
   async renderTrack (track) {
-    const instrument = track.instrument;
+    const inputs = track.getSequenceableInputs();
 
-    // Create an audio node
+    // Create an audio node for this track
     this.nodes.track[track.name] = this.createNode({
       name: `track:${track.name}`,
     }),
 
     this.logger.info(`render.session.track: [+] name = ${track.name}`);
     this.logger.debug(`render.session.track:     number of events = ${track.events.length}`);
+    this.logger.debug(`render.session.track:     number of inputs = ${track.inputs.length}`);
 
-    if (!instrument) {
-      this.logger.error(`render.session.track:     instrument = none; patch missing?`);
+    if (inputs.length === 0) {
+      this.logger.error(`render.session.track:     no input nodes; is a patch missing?`);
       return;
     }
 
-    const instrumentName = instrument.name;
-    const node = this.nodes.instrument[instrumentName].node;
+    return mapSeries(inputs, async (input, i) => {
+      const node = this.getNode(input.inputType, input.input).node;
 
-    this.logger.debug(`render.session.track:     instrument name = ${instrument.name}`);
-    this.logger.debug(`render.session.track:     node = ${node}`);
-  
-    return await track.events.mapSeries(async (event) => {
-      return this.renderTrackEvent({ event, track, instrument: node });
-    });  
+      this.logger.debug(`render.session.track:     input ${i} source = ${input.inputType}:${input.input} (${node})`);
+
+      return await track.events.mapSeries(async (event) => {
+        return this.renderTrackEvent({ event, track, instrument: node });
+      });  
+    });
+
+
+    // this.logger.debug(`render.session.track:     source = ${JSON.stringify(source)}`);
+    // this.logger.debug(`render.session.track:     node = ${node}`);
   }
 
   async renderPatches () {
@@ -119,6 +144,10 @@ export class BaseAudioDriver extends BaseDriver {
     this.logger.debug(`render.session.track.event:     instrument = ${instrument}`);
 
     return this.scheduleEvent({ event, track, instrument })
+  }
+
+  getNode(type, name) {
+    return this.nodes[type][name];
   }
 
   async reset() {

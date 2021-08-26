@@ -1,25 +1,30 @@
-import { BaseSequencedModel } from './base/sequenced';
+import { BaseModel } from './base';
 import { SequencedEventModel } from './sequenced_event';
 import { InstrumentModel } from './instrument';
 import { TrackModel } from './track';
-import { RouteModel } from './route';
+import { EffectModel } from './effect';
 import { RendererModel } from './renderer';
 import { PhraseModel } from './phrase';
 import { KeySignatureModel } from './key_signature';
 import { PatchModel } from './patch';
+import { sequenceable } from './mixins/sequenceable';
 
-export class SessionModel extends BaseSequencedModel {
+export class SessionModel extends sequenceable(BaseModel) {
 
   static properties = {
+
+    effects: {
+      type: EffectModel,
+      collection: true,
+    },
 
     events: {
       type: SequencedEventModel,
       collection: true,
     },
 
-    patches: {
-      type: PatchModel,
-      collection: true,
+    id: {
+      type: String,
     },
 
     instruments: {
@@ -27,8 +32,12 @@ export class SessionModel extends BaseSequencedModel {
       collection: true,
     },
 
-    tracks: {
-      type: TrackModel,
+    name: {
+      defaultValue: 'Untitled'
+    },
+
+    patches: {
+      type: PatchModel,
       collection: true,
     },
 
@@ -37,13 +46,14 @@ export class SessionModel extends BaseSequencedModel {
       collection: true,
     },
 
-    source: {},
-
-    name: {
-      defaultValue: 'Untitled'
+    source: {
+      type: String,
     },
 
-    id: {}
+    tracks: {
+      type: TrackModel,
+      collection: true,
+    },
 
   }
 

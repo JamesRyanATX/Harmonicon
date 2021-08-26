@@ -65,9 +65,9 @@ export class SessionComposer extends BaseSequencedComposer {
   }
 
   effect(name, fn) {
-    // this.model.instruments.add({
-    //   name, fn
-    // });
+    this.model.effects.add({
+      name, fn
+    });
   }
 
   track(name, fn) {

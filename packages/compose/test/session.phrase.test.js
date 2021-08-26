@@ -5,8 +5,8 @@ import {
   quarter,
   eighth,
   sixteenth,
-  thirtysecond,
-  sixtyfourth,
+  thirtySecond,
+  sixtyFourth,
 } from '../';
 
 async function testPhrase(steps) {
@@ -24,8 +24,8 @@ async function testPhrase(steps) {
           quarter.note(2),
           eighth.note(3),
           sixteenth.note(4),
-          thirtysecond.note(5),
-          sixtyfourth.note(6),
+          thirtySecond.note(5),
+          sixtyFourth.note(6),
         );  
       }
 
@@ -53,8 +53,8 @@ describe('session.phrase', function () {
       quarter.note(2),
       eighth.note(3),
       sixteenth.note(4),
-      thirtysecond.note(5),
-      sixtyfourth.note(6),
+      thirtySecond.note(5),
+      sixtyFourth.note(6),
     ]);
     
     expect(session.model.phrases.length).toEqual(1);

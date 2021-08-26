@@ -27,7 +27,7 @@ export class ToneAudioDriverNode {
   }
 
   toString() {
-    return `ToneAudioDriverNode:${this.name} ${this.root ? ' (root)' : ''}`;
+    return `${this.name}${this.root ? ' (root)' : ''}`;
   }
 };
 

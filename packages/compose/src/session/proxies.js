@@ -52,6 +52,16 @@ export const SessionComposerProxies = {
     instrument: function (input) {
       return {
         to: {
+
+          effect: function (output) {
+            this.send({
+              inputType: 'instrument',
+              input: input,
+              outputType: 'effect',
+              output: output
+            });
+          }.bind(this),
+
           track: function (output) {
             this.send({
               inputType: 'instrument',

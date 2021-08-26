@@ -1,5 +1,4 @@
 export { BaseModel } from './src/models/base';
-export { BaseSequencedModel } from './src/models/base/sequenced';
 export { PositionModel } from './src/models/position';
 export { SessionModel } from './src/models/session';
 export { SequencedEventModel } from './src/models/sequenced_event';
@@ -11,6 +10,7 @@ export { PhraseModel } from './src/models/phrase';
 export { KeySignatureModel } from './src/models/key_signature';
 export { FileModel } from './src/models/file';
 export { PatchModel } from './src/models/patch';
+export { EffectModel } from './src/models/effect';
 
 export { LargeUnit, DottedLargeUnit, DoubleDottedLargeUnit } from './src/units/large';
 export { LongUnit, DottedLongUnit, DoubleDottedLongUnit } from './src/units/long';

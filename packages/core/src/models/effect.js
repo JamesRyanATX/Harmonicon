@@ -1,8 +1,11 @@
 import { BaseNodeModel } from './base/node';
 
-export class InstrumentModel extends BaseNodeModel {
+export class EffectModel extends BaseNodeModel {
 
   static properties = {
+    session: {
+      json: false,
+    },
     name: {
       type: String
     },
@@ -13,4 +16,4 @@ export class InstrumentModel extends BaseNodeModel {
 
 }
 
-InstrumentModel.init();
+EffectModel.init();

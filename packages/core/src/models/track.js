@@ -1,7 +1,9 @@
-import { BaseSequencedModel } from './base/sequenced';
+import { BaseNodeModel } from './base/node';
 import { SequencedEventModel } from './sequenced_event';
+import { sequenceable } from './mixins/sequenceable';
 
-export class TrackModel extends BaseSequencedModel {
+
+export class TrackModel extends sequenceable(BaseNodeModel) {
 
   static properties = {
     events: {
@@ -15,41 +17,33 @@ export class TrackModel extends BaseSequencedModel {
     }
   }
 
-  get patches() {
-    return this._patches = (this._patches || this.session.patches.reduce((patches, patch) => {
-      if (patch.outputType === 'track' && patch.output === this.name) {
-        patches.inputs.push(patch);
+  // // Return a (sequenceable) source for this track, like an instrument
+  // get source () {
+  //   console.log(JSON.stringify(this.inputs));
+  //   return null;
+  //   // const patch = this.inputs.filter((patch) => {
+  //   //   return patch.inputType === 'instrument';
+  //   // })[0]);
+
+  //   // if (patch) {
+  //   //   return this.session.instruments.filter((i) => (i.name === patch.input))[0];
+  //   // }
+  //   // else {
+  //   //   return null;
+  //   // }
+  // }
+
+  getSequenceableInputs() {
+    return this.inputs.reduce((sequenceables, input) => {
+      if (input.sequenceable) {
+        sequenceables.push(input);
       }
-      else if (patch.inputType === 'track' && patch.input === this.name) {
-        patches.outputs.push(patch);
+      else {
+        return sequenceables.concat(input.sequenceableAncestors);
       }
 
-      return patches;
-    }, {
-      inputs: [],
-      outputs: []
-    }));
-  }
-
-  get inputs () {
-    return this.patches.inputs;
-  }
-
-  get outputs () {
-    return this.patches.outputs;
-  }
-
-  get instrument () {
-    const patch = (this._instrument || this.inputs.filter((patch) => {
-      return patch.inputType === 'instrument';
-    })[0]);
-
-    if (patch) {
-      return this.session.instruments.filter((i) => (i.name === patch.input))[0];
-    }
-    else {
-      return null;
-    }
+      return sequenceables;
+    }, []);
   }
 
   keySignatureAt(position) {

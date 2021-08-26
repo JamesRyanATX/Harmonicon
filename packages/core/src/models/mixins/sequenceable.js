@@ -1,6 +1,6 @@
-import { BaseModel } from '../base';
+import { BaseModelMixin } from './base';
 
-export class BaseSequencedModel extends BaseModel {
+export const sequenceable = Base => class extends BaseModelMixin(Base) {
 
   getLastEventByTypeAndPosition(type, position) {
     return this.events.all
