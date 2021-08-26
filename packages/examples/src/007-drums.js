@@ -49,13 +49,16 @@ session('Drums', async ({ session }) => {
       return new Tone.Sampler({
         volume: 0,
         urls: { 'C4': `${instrumentName}.wav` },
-        baseUrl: "/instruments/drums/",
+        baseUrl: "/instruments/core/drums/",
       }).toDestination();
     });
 
     session.track(instrumentName, async ({ track }) => {
       track.at(i, 0, 0).play.phrase('quarters');
     });
+
+    session.send.instrument(instrumentName).to.track(instrumentName);
+    session.send.track(instrumentName).to.main();
   });
 
 });

@@ -51,7 +51,9 @@ session('Durations', async ({ session }) => {
   });
 
   session.track('bass', async ({ track }) => {
-    track.at.measure(1).play.phrase('durations');
+    track.at.measure(0).play.phrase('durations');
   });
 
+  session.send.instrument('bass').to.track('bass');
+  session.send.track('bass').to.main();
 });

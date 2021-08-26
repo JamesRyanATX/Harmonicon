@@ -7,7 +7,7 @@ session('c major scale', async ({ session }) => {
     .scale('major');
 
   session.instrument('bass', async () => {
-    return new Tone.MonoSynth().toDestination();
+    return new Tone.MonoSynth();
   });
 
   session.phrase('walk-the-abc-scale', ({ phrase }) => {
@@ -25,16 +25,11 @@ session('c major scale', async ({ session }) => {
 
   // Create a track for bass
   session.track('bass', async ({ track }) => {
-    track.at.measure(0)
-      .volume(1)
-      .pan(-0.5)
-      .mute(false)
-      .solo(false);
-
     track.at.measure(0).play.phrase('walk-the-abc-scale');
   });
 
   // Route instruments to tracks
   session.send.instrument('bass').to.track('bass');
+  session.send.track('bass').to.main();
 
 });

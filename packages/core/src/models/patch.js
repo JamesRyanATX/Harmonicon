@@ -3,6 +3,9 @@ import { BaseModel } from './base';
 export class PatchModel extends BaseModel {
 
   static properties = {
+    session: {
+      json: false,
+    },
     inputType: {
       type: String,
     },

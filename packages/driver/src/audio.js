@@ -4,14 +4,6 @@ export class BaseAudioDriver extends BaseDriver {
 
   async render(session) {
     this.session = session;
-    
-    this.nodes = {
-      instrument: {},
-      track: {
-        main: this.createNode({ name: 'track:main', root: true }),
-      },
-      effect: {},
-    };
 
     await this.renderSession();
     await this.renderSessionEvents();
@@ -60,9 +52,6 @@ export class BaseAudioDriver extends BaseDriver {
   async renderInstrument (instrument) {
     const rendered = await instrument.fn();
     
-    // [TODO] this should not be needed
-    this.instruments[instrument.name] = rendered;
-    
     // Create an audio node
     this.nodes.instrument[instrument.name] = this.createNode({
       name: `instrument:${instrument.name}`,
@@ -79,10 +68,7 @@ export class BaseAudioDriver extends BaseDriver {
   }
 
   async renderTrack (track) {
-
-    // Find instrument patched to track
-    const instrumentName = track.name;
-    const instrument = this.instruments[instrumentName];
+    const instrument = track.instrument;
 
     // Create an audio node
     this.nodes.track[track.name] = this.createNode({
@@ -91,12 +77,21 @@ export class BaseAudioDriver extends BaseDriver {
 
     this.logger.info(`render.session.track: [+] name = ${track.name}`);
     this.logger.debug(`render.session.track:     number of events = ${track.events.length}`);
-    this.logger.debug(`render.session.track:     instrument name = ${instrumentName}`);
-    this.logger.debug(`render.session.track:     instrument = ${instrument}`);
 
+    if (!instrument) {
+      this.logger.error(`render.session.track:     instrument = none; patch missing?`);
+      return;
+    }
+
+    const instrumentName = instrument.name;
+    const node = this.nodes.instrument[instrumentName].node;
+
+    this.logger.debug(`render.session.track:     instrument name = ${instrument.name}`);
+    this.logger.debug(`render.session.track:     node = ${node}`);
+  
     return await track.events.mapSeries(async (event) => {
-      return this.renderTrackEvent({ event, track, instrument });
-    });
+      return this.renderTrackEvent({ event, track, instrument: node });
+    });  
   }
 
   async renderPatches () {
@@ -127,7 +122,14 @@ export class BaseAudioDriver extends BaseDriver {
   }
 
   async reset() {
-    this.instruments = {};
+    this.nodes = {
+      instrument: {},
+      track: {
+        main: this.createNode({ name: 'track:main', root: true }),
+      },
+      effect: {},
+    };
+
     this.tracks = {};
     this.phrases = {};
 

@@ -9,6 +9,10 @@
     "examples:001": "bin/composer ../examples/src/001-c-major-scale.js",
     "examples:002": "bin/composer ../examples/src/002-relative-pitch.js",
     "examples:003": "bin/composer ../examples/src/003-multitrack.js",
+    "examples:004": "bin/composer ../examples/src/004-durations.js",
+    "examples:005": "bin/composer ../examples/src/005-clean-bass.js",
+    "examples:006": "bin/composer ../examples/src/006-multitrack.js --timeout=30",
+    "examples:007": "bin/composer ../examples/src/007-drums.js --timeout=60",
     "test": "node --experimental-vm-modules node_modules/.bin/jest",
     "test:watch": "node --experimental-vm-modules node_modules/.bin/jest --watch"
   },

@@ -79,6 +79,14 @@ export class Collection {
     this.records.map(fn);
   }
 
+  filter(fn) {
+    return this.records.filter(fn);
+  }
+
+  reduce(fn, memo) {
+    return this.records.reduce(fn, memo);
+  }
+
   async mapParallel(fn) {
     return mapParallel(this.all, fn);
   }

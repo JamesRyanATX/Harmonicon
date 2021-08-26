@@ -7,7 +7,7 @@ session('c major scale', async ({ session }) => {
     .scale('minor'); // ["ionian", "dorian", "phrygian", "lydian", "mixolydian", "aeolian", "locrian"];
 
   session.instrument('bass', async () => {
-    return new Tone.MembraneSynth().toDestination();
+    return new Tone.MembraneSynth();
   });
 
   session.phrase('walk-the-relative-scale', ({ phrase }) => {
@@ -40,5 +40,11 @@ session('c major scale', async ({ session }) => {
   session.track('bass', async ({ track }) => {
     track.at.measure(0).play.phrase('walk-the-relative-scale');
   });
+
+  // Route instrument to tracks
+  session.send.instrument('bass').to.track('bass');
+
+  // Send track to main
+  session.send.track('bass').to.main();
 
 });

@@ -1,4 +1,4 @@
-session('Durations', async ({ session }) => {
+session('multitrack', async ({ session }) => {
   session.at(0, 0, 0)
     .tempo(80)
     .swing(0)
@@ -84,7 +84,7 @@ session('Durations', async ({ session }) => {
         'C3': 'C3.ogg'
       },
 			//release: 1,
-			baseUrl: "/instruments/harp/",
+			baseUrl: "/instruments/core/harp/",
 		}).connect(reverb);
   });
 
@@ -111,7 +111,7 @@ session('Durations', async ({ session }) => {
         'A#1': 'As1.ogg'
       },
 			//release: 1,
-			baseUrl: "/instruments/trombone/",
+			baseUrl: "/instruments/core/trombone/",
 		}).connect(reverb);
   });
 
@@ -175,5 +175,17 @@ session('Durations', async ({ session }) => {
       track.at(i, 0, 0).play.phrase('beat');
     }
   });
+
+  session.send.instrument('trombone').to.track('trombone');
+  session.send.track('trombone').to.main();
+
+  session.send.instrument('bass').to.track('bass');
+  session.send.track('bass').to.main();
+
+  session.send.instrument('harp').to.track('harp');
+  session.send.track('harp').to.main();
+
+  session.send.instrument('beat').to.track('beat');
+  session.send.track('beat').to.main();
 
 });
