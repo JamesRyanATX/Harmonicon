@@ -9,8 +9,6 @@ export const extendable = Base => class extends Base {
    * @param {*} library 
    */
    static async use(library) {
-    this.logger.info(`installing ${library.name} library`);
-
     if (typeof library.build !== 'function') {
       throw new TypeError("Provided library cannot be installed.")
     }

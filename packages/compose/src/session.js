@@ -119,18 +119,30 @@ export class SessionComposer extends extendable(BaseSequencedComposer) {
     return patch;
   }
 
-  async phrase(name, fn) {
+  /**
+   * Create a phrase.
+   * 
+   * @param {String} name 
+   * @param {Function|Array} steps 
+   * @returns 
+   */
+  async phrase(name, steps) {
     const phrase = PhraseModel.parse({
       session: this.model,
-      name: name
+      name: name,
     });
 
     this.model.phrases.add(phrase);
 
-    return await PhraseComposer.compose(name, fn, {
-      session: this,
-      model: phrase,
-    });
+    if (typeof steps === 'function') {
+      return await PhraseComposer.compose(name, steps, {
+        session: this,
+        model: phrase,
+      });  
+    }
+    else {
+      phrase.properties.steps = steps;
+    }
   }
 
   async render (driver) {

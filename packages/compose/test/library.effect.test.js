@@ -13,7 +13,7 @@ describe('library.effect', function () {
     expect(composer.model.effects.first().name).toEqual('reverb');
   });
 
-  it('exposes itself to other sessions', async function () {
+  it('is exposed to other sessions', async function () {
 
     // Create a library
     const libraryComposer = await library('test', async function ({ library }) {
@@ -23,11 +23,14 @@ describe('library.effect', function () {
     });
 
     // Expose library to session composer
-    SessionComposer.use(libraryComposer.model);
+    await SessionComposer.use({
+      name: 'test',
+      build: () => (libraryComposer)
+    });
 
     // Create a session that uses something from the library
     const sessionComposer = await session('test', async function ({ session }) {
-      session.import.effect('reverb').from.library('test');
+      session.use.effect('reverb').from.library('test');
     });
 
     expect(sessionComposer.model.effects.length).toEqual(1);

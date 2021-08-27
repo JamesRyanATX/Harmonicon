@@ -13,7 +13,7 @@ describe('library.instrument', function () {
     expect(composer.model.instruments.first().name).toEqual('bass');
   });
 
-  it('exposes itself to other sessions', async function () {
+  it('can be used in sessions', async function () {
 
     // Create a library
     const libraryComposer = await library('test', async function ({ library }) {
@@ -23,17 +23,20 @@ describe('library.instrument', function () {
     });
 
     // Expose library to session composer
-    SessionComposer.use(libraryComposer.model);
+    await SessionComposer.use({
+      name: 'test',
+      build: () => (libraryComposer)
+    });
 
     // Create a session that uses something from the library
     const sessionComposer = await session('test', async function ({ session }) {
-      session.import.instrument('bass').from.library('test');
+      session.use.instrument('bass').from.library('test');
     });
 
     expect(sessionComposer.model.instruments.length).toEqual(1);
 
     const instrument = sessionComposer.model.instruments.first();
-console.log(instrument.fn.toString());
+
     expect(instrument.name).toEqual('bass');
     expect(instrument.name).toEqual('bass');
 
