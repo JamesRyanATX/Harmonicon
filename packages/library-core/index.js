@@ -51,8 +51,3 @@ export const build = async () => {
     xylophone({ library });
   });
 };
-
-// Install library
-export const install = async (to) => {
-  (to || SessionComposer).use((await build()).model);
-}

@@ -54,4 +54,26 @@ describe('session.track.play', function () {
     expect(event.type).toEqual('phrase');
     expect(event.value).toEqual('a-phrase');
   });
+
+  it('sequences anonymous phrases', async function () {
+    const { track } = await testTrack(({ track }) => {
+      track.at(0, 0, 0).play.phrase([
+        quarter.note(0),
+        quarter.note(1),
+        quarter.note(2),
+        quarter.note(3),
+      ]);
+    });
+
+    expect(track.model.events.length).toEqual(1);
+
+    const event = track.model.events.first();
+
+    expect(event.at).toBeInstanceOf(PositionModel);
+    expect(event.at.measure).toEqual(0);
+    expect(event.at.beat).toEqual(0);
+    expect(event.at.subdivision).toEqual(0);
+    expect(event.type).toEqual('phrase');
+    expect(event.value).toMatch(/^bass-[A-Z_a-z0-9]{8}/);
+  })
 });

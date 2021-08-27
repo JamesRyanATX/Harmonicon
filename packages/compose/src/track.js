@@ -1,7 +1,7 @@
 import { TrackModel } from '@composer/core';
 import { SequencedEventProxy } from './util/sequenced_event_proxy';
 import { BaseSequencedComposer } from './base/sequenced';
-
+import { generateIdentifier } from '@composer/util';
 
 export class TrackComposer extends BaseSequencedComposer {
   static composerContextName = 'track';
@@ -15,12 +15,30 @@ export class TrackComposer extends BaseSequencedComposer {
     })
   }
 
-  phrase(name, proxy) {
+  // By name:
+  //   phrase(name)
+  //
+  // By steps (anonymous)
+  //   phrase([ ... ])
+  phrase(nameOrSteps, proxy) {
+    const anonymous = typeof nameOrSteps !== 'string';
+    const phrase = (() => {
+      if (anonymous) {
+        return this.model.session.phrases.add({
+          name: `${this.model.name}-${generateIdentifier()}`,
+          steps: nameOrSteps
+        });
+      }
+      else {
+        return this.model.session.phrases.filterByProperty('name', nameOrSteps)[0];
+      }
+    })();
+
     this.sequence({
       type: 'phrase',
       at: proxy.data.at,
-      value: name,
-    })
+      value: phrase.name,
+    });
   }
 
   key(key, proxy) {
@@ -28,7 +46,7 @@ export class TrackComposer extends BaseSequencedComposer {
       type: 'key',
       at: proxy.data.at,
       value: key,
-    })
+    });
   }
 
   scale(scale, proxy) {
@@ -36,7 +54,7 @@ export class TrackComposer extends BaseSequencedComposer {
       type: 'scale',
       at: proxy.data.at,
       value: scale,
-    })
+    });
   }
 
   volume(volume, proxy) {
