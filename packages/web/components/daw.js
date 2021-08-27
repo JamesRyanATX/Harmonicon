@@ -11,6 +11,7 @@ import { Controller } from '../lib/daw/controller';
 import styles from '../styles/daw.module.css';
 import { WorkspaceModel } from '../../core/src/models/workspace';
 
+
 const DEMO_FILE = `
 //
 // [name] is a music-as-code DAW powered by your browser.

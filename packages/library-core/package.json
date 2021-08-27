@@ -1,5 +1,5 @@
 {
-  "name": "@composer/instruments",
+  "name": "@composer/library-core",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -15,6 +15,7 @@
     "transform": {}
   },
   "dependencies": {
+    "@composer/compose": "1.0.0"
   },
   "devDependencies": {
     "jest": "^27.0.6"

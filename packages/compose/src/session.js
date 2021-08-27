@@ -5,6 +5,9 @@ import {
   PatchModel,
 } from '@composer/core';
 
+import * as CoreLibrary from '@composer/library-core';
+import { Logger } from '@composer/util';
+
 import { SequencedEventProxy } from './util/sequenced_event_proxy';
 import { BaseSequencedComposer } from './base/sequenced';
 import { TrackComposer } from './track';
@@ -12,11 +15,22 @@ import { PhraseComposer } from './phrase';
 import { SessionComposerProxies } from './session/proxies';
 import { ComposerError } from './errors';
 
+import { extendable } from './mixins/extendable';
 
-export class SessionComposer extends BaseSequencedComposer {
+export class SessionComposer extends extendable(BaseSequencedComposer) {
   static composerContextName = 'session';
   static model = SessionModel;
   static proxies = SessionComposerProxies;
+  static logger = new Logger('SessionComposer');
+
+  // Install library-core by default
+  static defaultLibraries = [
+    CoreLibrary
+  ];
+
+  static async initialize() {
+    await this.initializeLibraries();
+  }
 
   meter(meter, proxy) {
     this.sequence({

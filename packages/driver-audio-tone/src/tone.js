@@ -12,6 +12,10 @@ export class ToneAudioDriverNode {
     return !!this.properties.root;
   }
 
+  get loaded() {
+    return this.node.loaded !== false;
+  }
+
   constructor(properties) {
     this.properties = properties;
     this.node = properties.node || new Tone.Channel();

@@ -71,6 +71,10 @@ export class Collection {
     return this.type.find(id, obj.storage);
   }
 
+  filterByProperty(property, value) {
+    return this.filter((item) => (item[property] === value));
+  }
+
   map(fn) {
     return this.records.map(fn);
   }

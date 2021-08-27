@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@composer/core": "1.0.0",
+    "@composer/library-core": "1.0.0",
     "@composer/util": "1.0.0"
   },
   "devDependencies": {

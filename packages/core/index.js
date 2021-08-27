@@ -11,6 +11,7 @@ export { KeySignatureModel } from './src/models/key_signature';
 export { FileModel } from './src/models/file';
 export { PatchModel } from './src/models/patch';
 export { EffectModel } from './src/models/effect';
+export { LibraryModel } from './src/models/library';
 
 export { LargeUnit, DottedLargeUnit, DoubleDottedLargeUnit } from './src/units/large';
 export { LongUnit, DottedLongUnit, DoubleDottedLongUnit } from './src/units/long';

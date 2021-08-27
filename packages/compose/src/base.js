@@ -3,8 +3,13 @@ import { Logger } from '@composer/util';
 export class BaseComposer {
   static composerContextName = 'base';
   static model = null;
+  static initialized = false;
 
   static async compose(name, fn, context) {
+    if (!this.initialized) {
+      await this.initialize();
+    }
+
     const composer = new this(name, fn, context);
 
     await composer.load();
@@ -20,6 +25,13 @@ export class BaseComposer {
     return (async function () {
       return this.compose.apply(this, arguments);
     }).bind(this);
+  }
+
+  /**
+   * 
+   */
+  static async initialize () {
+    this.initialized = true;
   }
 
   constructor(name, fn, context) {
@@ -54,7 +66,9 @@ export class BaseComposer {
   }
 
   async load() {
-    this.model = this.context.model || new this.constructor.model();
+    this.model = this.context.model || new this.constructor.model({
+      name: this.name
+    });
   }
 
   async evaluate () {

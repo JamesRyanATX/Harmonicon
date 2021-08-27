@@ -52,17 +52,31 @@ export class BaseAudioDriver extends BaseDriver {
   }
 
   async renderInstrument (instrument) {
-    const rendered = await instrument.fn();
-    
-    // Create an audio node
-    this.nodes.instrument[instrument.name] = this.createNode({
+    const node = this.nodes.instrument[instrument.name] = this.createNode({
       name: `instrument:${instrument.name}`,
-      node: rendered
-    }),
+      node: await instrument.fn({})
+    });
 
     this.logger.info(`render.instrument: [+] name = ${instrument.name}`);
     this.logger.debug(`render.instrument:     fn = ${typeof instrument.fn}`);
-    this.logger.debug(`render.instrument:     rendered = ${rendered}`);
+    this.logger.debug(`render.instrument:     rendered = ${node.node}`);
+    this.logger.debug(`render.instrument:     loaded = ${node.loaded}`);
+
+    if (node.loaded) {
+      return;
+    }
+
+    // Audio node may need time to load samples and external objects
+    return new Promise((accept, reject) => {
+      const interval = setInterval(() => {
+        this.logger.debug(`render.instrument:     loaded = ${node.loaded}`);
+
+        if (node.loaded) {
+          clearInterval(interval);
+          accept();
+        }
+      }, 500);
+    });
   }
 
   async renderEffects () {

@@ -1,4 +1,5 @@
 import { session, SessionComposer } from './src/session';
+import { library, LibraryComposer } from './src/library';
 import { instrument, InstrumentComposer } from './src/instrument';
 import { track, TrackComposer } from './src/track';
 
@@ -36,13 +37,17 @@ import {
 } from './src/util/note.js';
 
 export {
-  SessionComposer,
   InstrumentComposer,
+  LibraryComposer,
+  SessionComposer,
   TrackComposer,
-  session,
-  instrument,
-  track,
+
   doubleDottedLarge,
+  instrument,
+  library,
+  session,
+  track,
+
   dottedLarge,
   large,
   doubleDottedLong,
