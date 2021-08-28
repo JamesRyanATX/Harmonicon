@@ -1,5 +1,5 @@
 session('c major scale', async ({ session }) => {
-  session.at.measure(0)
+  session.at(0, 0, 0)
     .meter([ 4, 4 ])
     .tempo(160)
     .swing(0)

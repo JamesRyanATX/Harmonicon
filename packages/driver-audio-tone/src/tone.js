@@ -44,10 +44,11 @@ export class ToneAudioDriver extends BaseAudioDriver {
       this.logger.info(`render.session.event.meter: [+] at = ${event.at}`);
       this.logger.debug(`render.session.event.meter:     meter = ${event.value}`);
 
-      Tone.Transport.set({
-        position: event.at.toMBS(),
-        timeSignature: event.value,
-      });
+      return await Tone.Transport.schedule(() => {
+        Tone.Transport.set({
+          timeSignature: event.value,
+        });
+      }, event.at.toString());
     },
 
     // Set tempo (in bpm)
@@ -55,10 +56,11 @@ export class ToneAudioDriver extends BaseAudioDriver {
       this.logger.info(`render.session.event.tempo: [+] at = ${event.at}`);
       this.logger.debug(`render.session.event.tempo:     tempo = ${event.value}`);
 
-      Tone.Transport.set({
-        position: event.at.toMBS(),
-        bpm: event.value,
-      });
+      return await Tone.Transport.schedule(() => {
+        Tone.Transport.set({
+          bpm: event.value,
+        });
+      }, event.at.toString());
     },
 
     // Set swing constant (0 to 1)
@@ -66,10 +68,11 @@ export class ToneAudioDriver extends BaseAudioDriver {
       this.logger.info(`render.session.event.swing: [+] at = ${event.at}`);
       this.logger.debug(`render.session.event.swing:     swing = ${event.value}`);
     
-      Tone.Transport.set({
-        position: event.at.toMBS(),
-        swing: event.value,
-      });
+      return await Tone.Transport.schedule(() => {
+        Tone.Transport.set({
+          swing: event.value,
+        });
+      }, event.at.toString());
     },
 
     // Set key (root note)
