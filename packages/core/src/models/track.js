@@ -17,6 +17,10 @@ export class TrackModel extends sequenceable(BaseNodeModel) {
     }
   }
 
+  get patchType () {
+    return 'track';
+  }
+
   // // Return a (sequenceable) source for this track, like an instrument
   // get source () {
   //   console.log(JSON.stringify(this.inputs));

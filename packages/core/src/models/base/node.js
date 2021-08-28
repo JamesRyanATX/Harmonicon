@@ -3,11 +3,12 @@ import { BaseModel } from '../base';
 export class BaseNodeModel extends BaseModel {
 
   get patches() {
-    return this._patches = (this._patches || this.session.patches.reduce((patches, patch) => {
-      if (patch.outputType === 'track' && patch.output === this.name) {
+    console.log(this.patchType)
+    return this.session.patches.reduce((patches, patch) => {
+      if (patch.outputType === this.patchType && patch.output === this.name) {
         patches.inputs.push(patch);
       }
-      else if (patch.inputType === 'track' && patch.input === this.name) {
+      else if (patch.inputType === this.patchType && patch.input === this.name) {
         patches.outputs.push(patch);
       }
 
@@ -15,7 +16,7 @@ export class BaseNodeModel extends BaseModel {
     }, {
       inputs: [],
       outputs: []
-    }));
+    });
   }
 
   get inputs () {

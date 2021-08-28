@@ -15,6 +15,8 @@ export class RendererModel extends BaseModel {
   async render () {
     const driver = this.driver;
 
+    this.session.infer();
+
     await driver.reset();
     await driver.render(this.session);
     await driver.setTransportPosition('0:0:0');

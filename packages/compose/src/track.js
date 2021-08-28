@@ -1,4 +1,4 @@
-import { TrackModel } from '@composer/core';
+import { TrackModel, PhraseModel } from '@composer/core';
 import { SequencedEventProxy } from './util/sequenced_event_proxy';
 import { BaseSequencedComposer } from './base/sequenced';
 import { generateIdentifier } from '@composer/util';
@@ -24,10 +24,10 @@ export class TrackComposer extends BaseSequencedComposer {
     const anonymous = typeof nameOrSteps !== 'string';
     const phrase = (() => {
       if (anonymous) {
-        return this.model.session.phrases.add({
+        return this.model.session.phrases.add(PhraseModel.parse({
           name: `${this.model.name}-${generateIdentifier()}`,
           steps: nameOrSteps
-        });
+        }));
       }
       else {
         return this.model.session.phrases.filterByProperty('name', nameOrSteps)[0];

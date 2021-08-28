@@ -1,4 +1,6 @@
 import {
+  InstrumentModel,
+  EffectModel,
   SessionModel,
   TrackModel,
   PhraseModel,
@@ -73,15 +75,15 @@ export class SessionComposer extends extendable(BaseSequencedComposer) {
   }
 
   instrument(name, fn) {
-    this.model.instruments.add({
-      name, fn
-    });
+    this.model.instruments.add(InstrumentModel.parse({
+      name, fn, session: this.model
+    }));
   }
 
   effect(name, fn) {
-    this.model.effects.add({
-      name, fn
-    });
+    this.model.effects.add(EffectModel.parse({
+      name, fn, session
+    }));
   }
 
   track(name, fn) {

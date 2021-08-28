@@ -59,7 +59,6 @@ export class SequencedEventProxy {
   // correct methods.  The goal of aliases is to create human language-y code.
   initializeAliases() {
     this.aliases.forEach(({ attachTo, name, target }) => {
-      this.logger.debug(`aliasing #${attachTo}.${name}() to #${target}()`);
       this[attachTo][name] = this[target].bind(this);
     });
   }

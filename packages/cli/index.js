@@ -70,6 +70,7 @@ const usage = [
   else {
     options.puppeteer = {
       headless: true,
+      devtools: false,
       ignoreDefaultArgs: [
         "--mute-audio",
       ],

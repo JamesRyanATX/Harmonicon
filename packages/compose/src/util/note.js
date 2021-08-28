@@ -49,7 +49,12 @@ function composerFor (duration) {
     note: (pitch, options) => {
       return NoteModel.parse(Object.assign({ duration, pitch }, options));
     },
-    rest: (options) => {
+    notes: (pitches, options = {}) => {
+      return pitches.map((pitch) => {
+        return NoteModel.parse(Object.assign({ duration, pitch }, options));
+      });
+    },
+    rest: (options = {}) => {
       return RestModel.parse(Object.assign({ duration }, options));
     }
   }

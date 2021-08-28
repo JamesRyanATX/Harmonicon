@@ -7,6 +7,10 @@ export class RestModel extends BaseModel {
     }
   }
 
+  toString() {
+    return `Rest (${this.duration.name})`;
+  }
+
 }
 
 RestModel.init();

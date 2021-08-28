@@ -15,6 +15,7 @@
     "examples:007": "bin/composer ../examples/src/007-drums.js --timeout=60",
     "examples:008": "bin/composer ../examples/src/008-effects.js",
     "examples:009": "bin/composer ../examples/src/009-library.js",
+    "examples:010": "bin/composer ../examples/src/010-beat.js --timeout=30",
     "test": "node --experimental-vm-modules node_modules/.bin/jest",
     "test:watch": "node --experimental-vm-modules node_modules/.bin/jest --watch"
   },

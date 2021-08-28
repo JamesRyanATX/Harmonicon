@@ -12,6 +12,7 @@ export { FileModel } from './src/models/file';
 export { PatchModel } from './src/models/patch';
 export { EffectModel } from './src/models/effect';
 export { LibraryModel } from './src/models/library';
+export { InstrumentModel } from './src/models/instrument';
 
 export { LargeUnit, DottedLargeUnit, DoubleDottedLargeUnit } from './src/units/large';
 export { LongUnit, DottedLongUnit, DoubleDottedLongUnit } from './src/units/long';

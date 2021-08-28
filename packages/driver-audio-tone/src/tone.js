@@ -127,17 +127,29 @@ export class ToneAudioDriver extends BaseAudioDriver {
       });
 
       return await mapSeries(steps, async (step) => {
-        await this.schedulers.note.call(this, {
-          event: event.constructor.parse({
-            value: step,
-            at: event.at.constructor.parse(Tone.Transport.position.toString())
-          }),
-          track: track,
-          instrument: instrument
+        const notes = (Array.isArray(step)) ? step : [ step ];
+
+        await mapSeries(notes, async (note) => {
+
+          // quarter.rest()
+          if (typeof note.pitch === 'undefined') {
+            return;
+          }
+
+          // quarter.note()
+          return this.schedulers.note.call(this, {
+            event: event.constructor.parse({
+              value: note,
+              at: event.at.constructor.parse(Tone.Transport.position.toString())
+            }),
+            track: track,
+            instrument: instrument
+          });
+
         });
 
         return await Tone.Transport.set({
-          position: `+${step.duration.toMBS(track.meterAt(event.at))}`,
+          position: `+${notes[0].duration.toMBS(track.meterAt(event.at))}`,
         });
       });
     },
@@ -150,11 +162,11 @@ export class ToneAudioDriver extends BaseAudioDriver {
       const pitch = note.computedPitch(keySignature);
       const duration = note.duration.toMBS(meter);
 
-      this.logger.info(`render.session.event.note: [+] position = ${event.at}`);
-      this.logger.debug(`render.session.event.note:     pitch = ${note.pitch} => ${pitch}`);
-      this.logger.debug(`render.session.event.note:     duration = ${duration}`);
-      this.logger.debug(`render.session.event.note:     key signature = ${keySignature}`);
-      this.logger.debug(`render.session.event.note:     instrument = ${instrument}`);
+      // this.logger.info(`render.session.event.note: [+] position = ${event.at}`);
+      // this.logger.debug(`render.session.event.note:     pitch = ${note.pitch} => ${pitch}`);
+      // this.logger.debug(`render.session.event.note:     duration = ${duration}`);
+      // this.logger.debug(`render.session.event.note:     key signature = ${keySignature}`);
+      // this.logger.debug(`render.session.event.note:     instrument = ${instrument}`);
 
       return await Tone.Transport.schedule((time) => {
         instrument.triggerAttackRelease(pitch, duration, time);
