@@ -49,7 +49,7 @@ session('Drums', async ({ session }) => {
       return new Tone.Sampler({
         volume: 0,
         urls: { 'C4': `${instrumentName}.wav` },
-        baseUrl: "/instruments/core/drums/",
+        baseUrl: "/libraries/core/instruments/drums/",
       }).toDestination();
     });
 

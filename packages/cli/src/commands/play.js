@@ -23,10 +23,16 @@ export const options = [
     description: 'File to play'
   },
   { 
+    name: 'directory',
+    alias: 'd',
+    type: String, 
+    description: 'Directory containing file'
+  },
+  { 
     name: 'timeout', 
     alias: 't', 
     type: Number, 
-    defaultValue: 30,
+    defaultValue: 600,
     description: 'Max allowed run time, in seconds'
   },
   { 
@@ -64,6 +70,11 @@ async function start(options) {
 
   const page = await browser.newPage();
 
+  page.exposeFunction('endPlayback', () => {
+    logger.cli.info(`playback ended.`);
+    process.exit();
+  });
+
   await page.goto(options.server);
 
   page.on('console', (msg) => {
@@ -82,7 +93,7 @@ async function start(options) {
 
 export const run = async (options, context) => {
   const server = await start(options);
-  const source = fs.readFileSync(options.file, 'utf8');
+  const source = fs.readFileSync(options.directory ? `${options.directory}/${options.file}` : options.file, 'utf8');
 
   async function group(name, toExec) {
     logger.cli.header(name);
@@ -94,28 +105,17 @@ export const run = async (options, context) => {
       console.debug('Hello from the browser!')
       return Tone.start();
     })();
-  `);
+  `); 
 
-  // await group('2. Parsing Session', `
-  //   (async () => {
-  //     return window.SessionComposer.parse({
-  //       code: ${JSON.stringify(source)}
-  //     });
-  //   })()
-  // `);  
-
-  // await new Promise((proceed) => {
-  //   logger.cli.debug(`Pausing for ${options.wait}s for dangling asyncs`)
-  //   setTimeout(proceed, options.wait * 1000);
-  // });
-
-  await group('3. Rendering Session', `
+  await group('2. Rendering Session', `
     (async () => {
-      return SessionComposer.render({ code: ${JSON.stringify(source)} }, new ToneAudioDriver);
+      const driver = new ToneAudioDriver();
+      driver.on('stop', window.endPlayback);
+      return SessionComposer.render({ code: ${JSON.stringify(source)} }, driver);
     })();
   `);
 
-  await group('4. Playing Session', async () => {
+  await group('3. Playing Session', async () => {
     return SessionComposer.current.renderer.play({
       markTime: true,
     });

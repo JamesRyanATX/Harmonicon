@@ -12,7 +12,7 @@ session('effects', async ({ session }) => {
   // Reverb for main output
   session.effect('main-reverb', () => {
     return new Tone.Reverb({
-      wet: 0.5
+      wet: 0.75
     });
   });
 
@@ -22,7 +22,7 @@ session('effects', async ({ session }) => {
       urls: { 
         'C4': 'snare.wav'
       },
-      baseUrl: "/instruments/core/drums/",
+      baseUrl: "/libraries/core/instruments/drums/",
     });
   });
 

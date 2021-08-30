@@ -84,7 +84,7 @@ session('multitrack', async ({ session }) => {
         'C3': 'C3.ogg'
       },
 			//release: 1,
-			baseUrl: "/instruments/core/harp/",
+			baseUrl: "/libraries/core/instruments/harp/",
 		}).connect(reverb);
   });
 
@@ -111,7 +111,7 @@ session('multitrack', async ({ session }) => {
         'A#1': 'As1.ogg'
       },
 			//release: 1,
-			baseUrl: "/instruments/core/trombone/",
+			baseUrl: "/libraries/core/instruments/trombone/",
 		}).connect(reverb);
   });
 

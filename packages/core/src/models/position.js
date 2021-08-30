@@ -22,9 +22,9 @@ export class PositionModel extends BaseModel {
         typeof c !== 'undefined'
     ) {
       return new this({
-        measure: a,
-        beat: b,
-        subdivision: c
+        measure: Number(a),
+        beat: Number(b),
+        subdivision: Number(c)
       })
     }
 
@@ -37,7 +37,11 @@ export class PositionModel extends BaseModel {
     else if (typeof a === 'string') {
       const [ measure, beat, subdivision ] = a.split(':');
 
-      return new this({ measure, beat, subdivision });
+      return new this({ 
+        measure: Number(measure),
+        beat: Number(beat),
+        subdivision: Number(subdivision)
+      });
     }
     
     else {
@@ -46,7 +50,6 @@ export class PositionModel extends BaseModel {
   }
 
   add (units) {
-    console.log('here?')
     return this.clone();
   }
 

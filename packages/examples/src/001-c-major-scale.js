@@ -10,18 +10,17 @@ session('c major scale', async ({ session }) => {
     return new Tone.MonoSynth();
   });
 
-  session.phrase('walk-the-abc-scale', ({ phrase }) => {
-    phrase.steps(
-      quarter.note('c2'),
-      eighth.note('d2'),
-      eighth.note('e2'),
-      eighth.note('f2'),
-      eighth.note('g2'),
-      eighth.note('a2'),
-      eighth.note('b2'),
-      quarter.note('c3')
-    );
-  });
+  // Create a reusable phrase
+  session.phrase('walk-the-abc-scale', [
+    quarter.note('c2'),
+    eighth.note('d2'),
+    eighth.note('e2'),
+    eighth.note('f2'),
+    eighth.note('g2'),
+    eighth.note('a2'),
+    eighth.note('b2'),
+    quarter.note('c3')
+  ]);
 
   // Create a track for bass
   session.track('bass', async ({ track }) => {

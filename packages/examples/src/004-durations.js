@@ -1,59 +1,61 @@
 session('Durations', async ({ session }) => {
+  session.at.measure(0)
+    .tempo(160)
+    .key('d')
+    .scale('major');
 
-  session.instrument('bass', async () => {
-    return new Tone.MonoSynth().toDestination();
-  });
+  session.use.instrument('mono-synth').from.library('core');
 
   session.phrase('durations', ({ phrase }) => {
     phrase.steps([
 
-      doubleDottedLarge.note('A0'),
-      dottedLarge.note('B0'),
-      large.note('C1'),
+      doubleDottedLarge.note(-14),
+      dottedLarge.note(-13),
+      large.note(-12),
       
-      doubleDottedLong.note('D1'),
-      dottedLong.note('E1'),
-      long.note('F1'),
+      doubleDottedLong.note(-11),
+      dottedLong.note(-10),
+      long.note(-9),
       
-      doubleDottedDoubleWhole.note('G1'),
-      dottedDoubleWhole.note('A1'),
-      doubleWhole.note('B1'),
+      doubleDottedDoubleWhole.note(-8),
+      dottedDoubleWhole.note(-7),
+      doubleWhole.note(-6),
       
-      doubleDottedWhole.note('C2'),
-      dottedWhole.note('D2'),
-      whole.note('E2'),
+      doubleDottedWhole.note(-5),
+      dottedWhole.note(-4),
+      whole.note(-3),
       
-      doubleDottedHalf.note('F2'),
-      dottedHalf.note('G2'),
-      half.note('A2'),
+      doubleDottedHalf.note(-2),
+      dottedHalf.note(-1),
+      half.note(0),
       
-      doubleDottedQuarter.note('B2'),
-      dottedQuarter.note('C3'),
-      quarter.note('D3'),
+      doubleDottedQuarter.note(1),
+      dottedQuarter.note(2),
+      quarter.note(3),
 
-      doubleDottedEighth.note('E3'),
-      dottedEighth.note('F3'),      
-      eighth.note('G3'),
+      doubleDottedEighth.note(4),
+      dottedEighth.note(5),
+      eighth.note(6),
       
-      doubleDottedSixteenth.note('A3'),
-      dottedSixteenth.note('B3'),
-      sixteenth.note('C4'),
+      doubleDottedSixteenth.note(7),
+      dottedSixteenth.note(8),
+      sixteenth.note(9),
       
-      doubleDottedThirtySecond.note('D4'),
-      dottedThirtySecond.note('E4'),
-      thirtySecond.note('F4'),
+      doubleDottedThirtySecond.note(10),
+      dottedThirtySecond.note(11),
+      thirtySecond.note(12),
 
-      doubleDottedSixtyFourth.note('G4'),
-      dottedSixtyFourth.note('C5'),
-      sixtyFourth.note('D5'),
+      doubleDottedSixtyFourth.note(13),
+      dottedSixtyFourth.note(14),
+      sixtyFourth.note(15),
 
     ]);
   });
 
-  session.track('bass', async ({ track }) => {
+  session.track('durations', async ({ track }) => {
     track.at.measure(0).play.phrase('durations');
   });
 
-  session.send.instrument('bass').to.track('bass');
-  session.send.track('bass').to.main();
+  session.send.instrument('mono-synth').to.track('durations');
+  session.send.track('durations').to.main();
 });

@@ -39,6 +39,16 @@ export class ToneAudioDriver extends BaseAudioDriver {
 
   schedulers = {
 
+    // End the composition (trigger transport stop)
+    end: async ({ event }) => {
+      this.logger.info(`render.session.event.end: [+] at = ${event.at}`);
+      this.logger.debug(`render.session.event.end:     value = ${event.value}`);
+
+      return await Tone.Transport.schedule(() => {
+        Tone.Transport.stop();
+      }, event.at.toMBS());
+    },
+
     // Set meter (time signature formatted as [ a, b ])
     meter: async ({ event }) => {
       this.logger.info(`render.session.event.meter: [+] at = ${event.at}`);
@@ -140,13 +150,14 @@ export class ToneAudioDriver extends BaseAudioDriver {
           }
 
           // quarter.note()
-          return this.schedulers.note.call(this, {
+          return this.scheduleEvent({
             event: event.constructor.parse({
               value: note,
+              type: 'note',
               at: event.at.constructor.parse(Tone.Transport.position.toString())
             }),
             track: track,
-            instrument: instrument
+            instrument: instrument,
           });
 
         });

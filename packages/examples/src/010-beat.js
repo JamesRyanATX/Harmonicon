@@ -148,8 +148,7 @@ session('c major scale', async ({ session }) => {
     whole.note('C3maj7'),
     whole.note('D3maj7'),
     whole.rest(),
-    half.note('D3maj7'),
-    half.note('F2maj7'),
+    whole.note('D3maj7'),
   ])
 
   session.track('drums', async ({ track }) => {
