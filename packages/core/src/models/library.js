@@ -1,9 +1,9 @@
-import { BaseModel } from './base';
-import { InstrumentModel } from './instrument';
-import { TrackModel } from './track';
-import { EffectModel } from './effect';
-import { PhraseModel } from './phrase';
-import { sequenceable } from './mixins/sequenceable';
+import { BaseModel } from './base.js';
+import { InstrumentModel } from './instrument.js';
+import { TrackModel } from './track.js';
+import { EffectModel } from './effect.js';
+import { PhraseModel } from './phrase.js';
+import { sequenceable } from './mixins/sequenceable.js';
 
 export class LibraryModel extends sequenceable(BaseModel) {
 

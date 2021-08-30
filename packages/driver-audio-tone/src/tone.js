@@ -119,11 +119,11 @@ export class ToneAudioDriver extends BaseAudioDriver {
       
       let position = Tone.Time(event.at.toString());
 
-      this.logger.info(`render.session.event.phrase: [+] at = ${event.at}`);
-      this.logger.debug(`render.session.event.phrase:   phrase = ${phraseName}`);
-      this.logger.debug(`render.session.event.phrase:   number of steps = ${phrase.steps.length}`);
-      this.logger.debug(`render.session.event.phrase:   position = ${position.toBarsBeatsSixteenths()}`);
-      this.logger.debug(`render.session.event.phrase:   instrument = ${instrument}`);
+      // this.logger.info(`render.session.event.phrase: [+] at = ${event.at}`);
+      // this.logger.debug(`render.session.event.phrase:   phrase = ${phraseName}`);
+      // this.logger.debug(`render.session.event.phrase:   number of steps = ${phrase.steps.length}`);
+      // this.logger.debug(`render.session.event.phrase:   position = ${position.toBarsBeatsSixteenths()}`);
+      // this.logger.debug(`render.session.event.phrase:   instrument = ${instrument}`);
 
       await Tone.Transport.set({
         position: position.toBarsBeatsSixteenths()

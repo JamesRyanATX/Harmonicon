@@ -22,4 +22,5 @@ export class BaseUnit {
   static toString() {
     return JSON.stringify(this.definition);
   }
+
 }

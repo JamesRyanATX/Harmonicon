@@ -1,13 +1,13 @@
-import { BaseModel } from './base';
-import { SequencedEventModel } from './sequenced_event';
-import { InstrumentModel } from './instrument';
-import { TrackModel } from './track';
-import { EffectModel } from './effect';
-import { RendererModel } from './renderer';
-import { PhraseModel } from './phrase';
-import { KeySignatureModel } from './key_signature';
-import { PatchModel } from './patch';
-import { sequenceable } from './mixins/sequenceable';
+import { BaseModel } from './base.js';
+import { SequencedEventModel } from './sequenced_event.js';
+import { InstrumentModel } from './instrument.js';
+import { TrackModel } from './track.js';
+import { EffectModel } from './effect.js';
+import { RendererModel } from './renderer.js';
+import { PhraseModel } from './phrase.js';
+import { KeySignatureModel } from './key_signature.js';
+import { PatchModel } from './patch.js';
+import { sequenceable } from './mixins/sequenceable.js';
 
 export class SessionModel extends sequenceable(BaseModel) {
 

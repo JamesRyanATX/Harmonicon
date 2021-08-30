@@ -2,7 +2,7 @@ export const piano = async ({ library }) => {
 
   library.instrument('piano', async ({ instrument }) => {
     return new Tone.Sampler({
-      volume: 0,
+      volume: -10,
       urls: {
         'A0': 'A0.ogg',
         'A1': 'A1.ogg',

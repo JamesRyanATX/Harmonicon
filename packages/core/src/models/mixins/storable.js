@@ -1,4 +1,4 @@
-import { BaseModelMixin } from './base';
+import { BaseModelMixin } from './base.js';
 
 export const storable = Base => class extends BaseModelMixin(Base) {
 

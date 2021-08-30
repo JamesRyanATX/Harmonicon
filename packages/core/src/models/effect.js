@@ -1,4 +1,4 @@
-import { BaseNodeModel } from './base/node';
+import { BaseNodeModel } from './base/node.js';
 
 export class EffectModel extends BaseNodeModel {
 

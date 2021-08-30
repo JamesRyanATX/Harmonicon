@@ -1,6 +1,6 @@
 import { Logger } from "@composer/util";
-import { Collection } from "../util/collection";
-import { composite, jsonnable } from "./mixins";
+import { Collection } from "../util/collection.js";
+import { composite, jsonnable } from "./mixins.js";
 
 export class BaseModel extends composite(class {}, jsonnable) {
 

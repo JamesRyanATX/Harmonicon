@@ -1,5 +1,5 @@
-import { BaseModel } from './base';
-import { NoteModel } from './note';
+import { BaseModel } from './base.js';
+import { NoteModel } from './note.js';
 import { Note, Mode } from "@tonaljs/tonal";
 
 export class KeySignatureModel extends BaseModel {

@@ -30,7 +30,8 @@ async function testTrack(fn) {
 }
 
 describe('session.track.play', function () {
-  describe('notes', function () {
+
+  describe('.note()', function () {
     it('sequences single notes', async function () {
       const { track } = await testTrack(({ track }) => {
         track.at(0, 0, 0).play(quarter.note(0));
@@ -40,7 +41,7 @@ describe('session.track.play', function () {
     });
   });
 
-  describe('phrases', function () {
+  describe('.phrase()', function () {
 
     it('sequences phrases by name', async function () {
       const { track } = await testTrack(({ track }) => {
@@ -84,7 +85,7 @@ describe('session.track.play', function () {
     it('sequences multiple pitches in one phrase step', async () => {
       const results = await testTrack(({ track }) => {
         track.at(0, 0, 0).play.phrase([
-          quarter.notes([ 0, 2, 3 ]),
+          quarter.note([ 0, 2, 3 ]),
           quarter.note(1),
           quarter.note(2),
           quarter.note(3),
@@ -101,27 +102,27 @@ describe('session.track.play', function () {
       expect(steps[0].length).toEqual(3);
 
       expect(steps[0][0].duration).toEqual(QuarterUnit);
-      expect(steps[0][0].octave).toEqual(4);
+      expect(steps[0][0].octave).toEqual(null);
       expect(steps[0][0].pitch).toEqual(0);
 
       expect(steps[0][1].duration).toEqual(QuarterUnit);
-      expect(steps[0][1].octave).toEqual(4);
+      expect(steps[0][1].octave).toEqual(null);
       expect(steps[0][1].pitch).toEqual(2);
 
       expect(steps[0][2].duration).toEqual(QuarterUnit);
-      expect(steps[0][2].octave).toEqual(4);
+      expect(steps[0][2].octave).toEqual(null);
       expect(steps[0][2].pitch).toEqual(3);
 
       expect(steps[1].duration).toEqual(QuarterUnit);
-      expect(steps[1].octave).toEqual(4);
+      expect(steps[1].octave).toEqual(null);
       expect(steps[1].pitch).toEqual(1);
 
       expect(steps[2].duration).toEqual(QuarterUnit);
-      expect(steps[2].octave).toEqual(4);
+      expect(steps[2].octave).toEqual(null);
       expect(steps[2].pitch).toEqual(2);
 
       expect(steps[3].duration).toEqual(QuarterUnit);
-      expect(steps[3].octave).toEqual(4);
+      expect(steps[3].octave).toEqual(null);
       expect(steps[3].pitch).toEqual(3);
     });
 

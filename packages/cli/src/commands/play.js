@@ -2,13 +2,66 @@ import puppeteer from 'puppeteer';
 import fs from 'fs';
 import { Logger } from '@composer/util';
 
+export const description = 'Render and play a session file';
+
+export const examples = [
+  {
+    name: 'Play a session file',
+    code: [ 'composer play --file=/path/to/session.js' ]
+  },
+  {
+    name: 'Play a session file with a longer timeout',
+    code: [ 'composer play --file=/path/to/session.js --timeout=60' ]
+  },
+]
+
+export const options = [
+  { 
+    name: 'file',
+    alias: 'f',
+    type: String, 
+    description: 'File to play'
+  },
+  { 
+    name: 'timeout', 
+    alias: 't', 
+    type: Number, 
+    defaultValue: 30,
+    description: 'Max allowed run time, in seconds'
+  },
+  { 
+    name: 'server', 
+    alias: 's', 
+    type: Number, 
+    defaultValue: 'http://localhost:3000/remote',
+    description: 'Composer server to use for rendering',
+  },
+  {
+    name: 'headless', 
+    type: Boolean, 
+    defaultValue: true,
+    description: 'Run browser in headless mode'
+  },
+];
+
+
 const logger = {
   cli: new Logger('Client'),
   browser: new Logger(),
 };
 
 async function start(options) {
-  const browser = await puppeteer.launch(options.puppeteer);
+  const browser = await puppeteer.launch({
+    headless: true,
+    devtools: false,
+    ignoreDefaultArgs: [
+      "--mute-audio",
+    ],
+    args: [
+      "--autoplay-policy=no-user-gesture-required",
+    ],
+  });
+
   const page = await browser.newPage();
 
   await page.goto(options.server);
@@ -26,7 +79,8 @@ async function start(options) {
   return { execute: page.evaluate.bind(page) };
 }
 
-export async function run(options) {
+
+export const run = async (options, context) => {
   const server = await start(options);
   const source = fs.readFileSync(options.file, 'utf8');
 

@@ -1,4 +1,4 @@
-import { BaseModel } from './base';
+import { BaseModel } from './base.js';
 
 export class PhraseModel extends BaseModel {
 

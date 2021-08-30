@@ -1,7 +1,7 @@
-import { BaseModel } from './base';
-import { FileModel } from './file';
+import { BaseModel } from './base.js';
+import { FileModel } from './file.js';
 
-import { storable } from './mixins';
+import { storable } from './mixins.js';
 
 export class WorkspaceModel extends storable(BaseModel) {
 

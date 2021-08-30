@@ -1,4 +1,4 @@
-import { BaseUnit } from './base';
+import { BaseUnit } from './base.js';
 import { DurationValue } from "@tonaljs/tonal";
 
 export class HalfUnit extends BaseUnit {

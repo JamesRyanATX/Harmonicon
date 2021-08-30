@@ -9,6 +9,7 @@ session('c major scale', async ({ session }) => {
   session.use.instrument('drums').from.library('core');
   session.use.instrument('electric-bass').from.library('core');
   session.use.instrument('xylophone').from.library('core');
+  session.use.instrument('piano').from.library('core');
 
   session.instrument('bass', async () => {
     return new Tone.MonoSynth({
@@ -83,7 +84,7 @@ session('c major scale', async ({ session }) => {
     eighth.note('c2'),
     quarter.rest(),
     eighth.note('e4'),
-    eighth.notes([ 'c2', 'e4' ]),
+    eighth.note([ 'c2', 'e4' ]),
 
   ]);
 
@@ -129,24 +130,59 @@ session('c major scale', async ({ session }) => {
     half.rest(),
   ]);
 
+  session.phrase('piano-a', [
+    whole.note('D3maj7'),
+    whole.note('C3maj7'),
+    whole.rest(),
+    whole.rest(),
+    whole.note('C3maj7'),
+    whole.note('D3maj7'),
+    whole.rest(),
+    half.note('D3maj7'),
+    half.note('F2maj7'),
+
+    whole.note('E2min7'),
+    whole.note('F2maj7'),
+    whole.rest(),
+    whole.rest(),
+    whole.note('C3maj7'),
+    whole.note('D3maj7'),
+    whole.rest(),
+    half.note('D3maj7'),
+    half.note('F2maj7'),
+  ])
+
   session.track('drums', async ({ track }) => {
     track.at(1, 0, 0).play.phrase('beat-a');
     track.at(9, 0, 0).play.phrase('beat-a');
+    track.at(17, 0, 0).play.phrase('beat-a');
+    track.at(25, 0, 0).play.phrase('beat-a');
   });
 
   session.track('bass', async ({ track }) => {
     track.at(1, 0, 0).play.phrase('bass-a');
     track.at(9, 0, 0).play.phrase('bass-a');
+    track.at(17, 0, 0).play.phrase('bass-a');
+    track.at(25, 0, 0).play.phrase('bass-a');
   });
 
   session.track('lead', async ({ track }) => {
     track.at(1, 0, 0).play.phrase('bass-a');
     track.at(9, 0, 0).play.phrase('bass-a');
+    track.at(17, 0, 0).play.phrase('bass-a');
+    track.at(25, 0, 0).play.phrase('bass-a');
   });
 
   session.track('xylophone', async ({ track }) => {
     track.at(1, 0, 0).play.phrase('bass-a');
     track.at(9, 0, 0).play.phrase('bass-a');
+    track.at(17, 0, 0).play.phrase('bass-a');
+    track.at(25, 0, 0).play.phrase('bass-a');
+  });
+
+  session.track('piano', async ({ track }) => {
+    track.at(9, 0, 0).play.phrase('piano-a');
+    track.at(25, 0, 0).play.phrase('piano-a');
   });
 
   session.effect('fx-delay', () => {
@@ -175,15 +211,17 @@ session('c major scale', async ({ session }) => {
   session.send.instrument('bass').to.track('bass');
   session.send.instrument('lead').to.track('lead');
   session.send.instrument('xylophone').to.track('xylophone');
+  session.send.instrument('piano').to.track('piano');
 
   session.send.track('drums').to.track('fx');
   session.send.track('bass').to.track('fx');
   session.send.track('xylophone').to.track('fx');
   session.send.track('lead').to.track('fx');
+  session.send.track('piano').to.track('fx');
 
   session.send.track('fx').to.effect('fx-delay');
-  session.send.effect('fx-delay').to.effect('fx-phaser');
-  session.send.effect('fx-phaser').to.effect('fx-reverb');
+  session.send.effect('fx-delay').to.effect('fx-reverb');
+  ///session.send.effect('fx-phaser').to.effect('fx-reverb');
   session.send.effect('fx-reverb').to.main();
 
 

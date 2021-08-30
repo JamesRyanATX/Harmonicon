@@ -1,4 +1,7 @@
 import {
+  ApplicationError,
+
+  ChordModel,
   NoteModel,
   RestModel,
 
@@ -43,17 +46,72 @@ import {
   SixtyFourthUnit,
 
 } from "@composer/core";
+import { ComposerError } from "../errors";
+
+function isNote (pitch) {
+  return (
+    typeof pitch === 'number' ||
+    (
+      typeof pitch === 'string' &&
+      pitch.match(/^[abcdefg][b\#]{0,1}[0-9]{0,1}$/i)
+    )
+  );
+}
 
 function composerFor (duration) {
   return {
-    note: (pitch, options) => {
-      return NoteModel.parse(Object.assign({ duration, pitch }, options));
+    duration,
+
+    // note('c') => Note(C4)
+    // note('c', { octave: 2 }) => Note(C2)
+    // note('c4') => Note(C4)
+    // note('cmaj7') => [ Note(C4), ...]
+    // note('c5maj7') => [ Note(C5), ... ]
+    // note('c0 f4') => [ Note(C0), Note(F4) ]
+    // note(['c0', f4']) => [ Note(C0), Note(F4) ]
+    note: (input, options) => {
+
+      function single(pitch) {
+        return NoteModel.parse(
+          Object.assign({ duration, pitch }, options)
+        );
+      }
+
+      function multiple(pitches) {
+        return pitches.map((pitch) => {
+          return NoteModel.parse(
+            Object.assign({ duration, pitch }, options)
+          );
+        });
+      }
+
+      function chord(symbol) {
+        return ChordModel.parse(
+          Object.assign({ duration, symbol }, options)
+        ).toNotes();
+      }
+
+      try {
+        if (Array.isArray(input)) {
+          return multiple(input);
+        }
+        else if (typeof input === 'string' && input.match(/ /)) {
+          return multiple(input.split(/ +/));
+        }
+        else if (isNote(input)) {
+          return single(input);
+        }
+        else {
+          return chord(input);
+        }
+      }
+      catch (e) {
+        if (e instanceof ApplicationError) {
+          throw new ComposerError(e.message);
+        }
+      }
     },
-    notes: (pitches, options = {}) => {
-      return pitches.map((pitch) => {
-        return NoteModel.parse(Object.assign({ duration, pitch }, options));
-      });
-    },
+
     rest: (options = {}) => {
       return RestModel.parse(Object.assign({ duration }, options));
     }

@@ -1,3 +1,6 @@
 #!/usr/bin/env bash
 
-node ./index.js $@
+node \
+  --experimental-specifier-resolution=node \
+  --experimental-vm-modules \
+  ./index.js $@

@@ -1,6 +1,6 @@
-import { BaseNodeModel } from './base/node';
-import { SequencedEventModel } from './sequenced_event';
-import { sequenceable } from './mixins/sequenceable';
+import { BaseNodeModel } from './base/node.js';
+import { SequencedEventModel } from './sequenced_event.js';
+import { sequenceable } from './mixins/sequenceable.js';
 
 
 export class TrackModel extends sequenceable(BaseNodeModel) {

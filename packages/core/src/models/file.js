@@ -1,5 +1,5 @@
-import { BaseModel } from './base';
-import { storable } from "./mixins";
+import { BaseModel } from './base.js';
+import { storable } from "./mixins.js";
 import { v4 as uuidv4 } from 'uuid';
 
 export class FileModel extends storable(BaseModel) {

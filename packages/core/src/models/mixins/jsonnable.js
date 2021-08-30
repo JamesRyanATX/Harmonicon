@@ -1,6 +1,6 @@
-import { BaseModelMixin } from './base';
-import { BaseModel } from '../base';
-import { Collection } from "../../util/collection";
+import { BaseModelMixin } from './base.js';
+import { BaseModel } from '../base.js';
+import { Collection } from "../../util/collection.js";
 
 export const jsonnable = Base => class extends BaseModelMixin(Base) {
 
@@ -8,7 +8,7 @@ export const jsonnable = Base => class extends BaseModelMixin(Base) {
     deep = false
   } = {}) {
     return Object.keys(this.properties).reduce((json, property) => {
-      const definition = this.constructor.properties[property];
+      const definition = this.constructor.properties[property] || {};
       const value = this[property];
 
       // If definition has json function, it overrides all

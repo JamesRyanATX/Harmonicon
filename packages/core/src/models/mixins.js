@@ -1,6 +1,6 @@
-export { composite } from './mixins/base';
+export { composite } from './mixins/base.js';
 
-export { storable } from './mixins/storable';
-export { emittable } from './mixins/emittable';
-export { jsonnable } from './mixins/jsonnable';
-export { sequenceable } from './mixins/sequenceable';
+export { storable } from './mixins/storable.js';
+export { emittable } from './mixins/emittable.js';
+export { jsonnable } from './mixins/jsonnable.js';
+export { sequenceable } from './mixins/sequenceable.js';
