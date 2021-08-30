@@ -1,6 +1,7 @@
 import { BaseModel } from './base.js';
 import { PositionModel } from './position.js';
 import { SequencedEventModel } from './sequenced_event.js';
+import { SequencedEventLogModel } from './sequenced_event_log.js';
 import { mapSeries } from '@composer/util';
 
 export class RendererModel extends BaseModel {
@@ -15,6 +16,18 @@ export class RendererModel extends BaseModel {
     this.drivers[name] = driver;
   }
 
+  get position () {
+    return this.driver.position;
+  }
+
+  get state () {
+    return this.driver.state;
+  }
+
+
+  // Renderers
+  // ---------
+
   async render () {
     this.session.infer();
 
@@ -27,6 +40,7 @@ export class RendererModel extends BaseModel {
 
   async renderSession (session) {
     this.driver.session = session;
+    this.driver.renderer = this;
 
     this.logger.debug(`render.session: [+] name = ${this.session.name}`);
     this.logger.debug(`render.session:     number of events = ${this.session.events.length}`);
@@ -55,7 +69,7 @@ export class RendererModel extends BaseModel {
     this.logger.debug(`render.session.event:     type = ${event.type}`);
     this.logger.debug(`render.session.event:     value = ${event.value}`);
 
-    return this.driver.scheduleEvent({ event });
+    return this.scheduleEvent({ event });
   }
 
   async renderInstruments () {
@@ -63,8 +77,9 @@ export class RendererModel extends BaseModel {
   }
 
   async renderInstrument (instrument) {
-    const node = this.driver.nodes.instrument[instrument.name] = this.driver.createNode({
-      name: `instrument:${instrument.name}`,
+    const node = this.createNode({
+      type: 'instrument',
+      name: instrument.name, 
       node: await instrument.fn({})
     });
 
@@ -94,18 +109,16 @@ export class RendererModel extends BaseModel {
     return this.session.effects.mapSeries(this.renderEffect.bind(this));
   }
 
-  async renderEffect (effect) {
-    const rendered = await effect.fn();
-    
-    // Create an audio node
-    this.driver.nodes.effect[effect.name] = this.createNode({
-      name: `effect:${effect.name}`,
-      node: rendered
-    }),
+  async renderEffect (effect) {    
+    const node = this.createNode({
+      type: 'effect',
+      name: effect.name,
+      node: await effect.fn()
+    });
 
     this.logger.info(`render.effect: [+] name = ${effect.name}`);
     this.logger.debug(`render.effect:     fn = ${typeof effect.fn}`);
-    this.logger.debug(`render.effect:     rendered = ${rendered}`);
+    this.logger.debug(`render.effect:     rendered = ${node.node}`);
   }
 
   async renderPhrases() {
@@ -116,10 +129,18 @@ export class RendererModel extends BaseModel {
     this.logger.info(`render.session.phrase: [+] name = ${phrase.name}`);
     this.logger.debug(`render.session.phrase:     number of steps = ${phrase.steps.length}`);
 
-    this.driver.phrases[phrase.name] = phrase;
+    this.cache.phrases[phrase.name] = phrase;
   }
 
   async renderTracks () {
+
+    // Create a root main output track
+    this.createNode({
+      type: 'track',
+      name: 'main',
+      root: true,
+    });
+
     return this.session.tracks.mapSeries(this.renderTrack.bind(this));
   }
 
@@ -127,9 +148,10 @@ export class RendererModel extends BaseModel {
     const inputs = track.getSequenceableInputs();
 
     // Create an audio node for this track
-    this.driver.nodes.track[track.name] = this.driver.createNode({
-      name: `track:${track.name}`,
-    }),
+    await this.createNode({
+      type: 'track',
+      name: track.name
+    });
 
     this.logger.info(`render.session.track: [+] name = ${track.name}`);
     this.logger.debug(`render.session.track:     number of events = ${track.events.length}`);
@@ -141,7 +163,7 @@ export class RendererModel extends BaseModel {
     }
 
     return mapSeries(inputs, async (input, i) => {
-      const node = this.driver.getNode(input.inputType, input.input).node;
+      const node = this.getNode(input.inputType, input.input).node;
 
       this.logger.debug(`render.session.track:     input ${i} source = ${input.inputType}:${input.input} (${node})`);
 
@@ -157,7 +179,7 @@ export class RendererModel extends BaseModel {
     this.logger.debug(`render.session.track.event:     value = ${event.value}`);
     this.logger.debug(`render.session.track.event:     instrument = ${instrument}`);
 
-    return this.driver.scheduleEvent({ event, track, instrument })
+    return this.scheduleEvent({ event, track, instrument })
   }
 
   async renderPatches () {
@@ -165,8 +187,8 @@ export class RendererModel extends BaseModel {
   }
 
   async renderPatch (patch) {
-    const inputNode = this.driver.nodes[patch.inputType][patch.input];
-    const outputNode = this.driver.nodes[patch.outputType][patch.output];
+    const inputNode = this.getNode(patch.inputType, patch.input);
+    const outputNode = this.getNode(patch.outputType, patch.output);
 
     this.logger.info(`render.session.patch: [+] path = ${patch.inputType}:${patch.input} -> ${patch.outputType}:${patch.output}`);
     this.logger[inputNode ? 'debug' : 'error'](`render.session.patch:     input node = ${inputNode}`);
@@ -178,7 +200,7 @@ export class RendererModel extends BaseModel {
   }
 
   async renderEnd() {
-    const lastEvent = this.driver.sequencedEventLog.last;
+    const lastEvent = this.cache.events.last;
     const sustainFor = 2;
     const stopAt = PositionModel.parse({
       measure: lastEvent ? Number(lastEvent.at.measure) + sustainFor : sustainFor,
@@ -190,7 +212,7 @@ export class RendererModel extends BaseModel {
     this.logger.debug(`render.session.end:     last event = ${lastEvent ? lastEvent.at : 'unknown'}`)
     this.logger.debug(`render.session.end:     sustain for = ${sustainFor} measures`);
 
-    return this.driver.scheduleEvent({
+    return this.scheduleEvent({
       log: false,
       event: new SequencedEventModel({
         value: true,
@@ -200,13 +222,65 @@ export class RendererModel extends BaseModel {
     });
   }
 
-  get position () {
-    return this.driver.position;
+
+  // Events
+  // ------
+
+  async scheduleEvent({ event, log = true }) {
+
+    // Find driver scheduler for this event
+    const scheduler = this.driver.schedulers[event.type];
+
+    // Add to global event log
+    if (log) {
+      this.cache.events.push(event);
+    }
+
+    if (scheduler) {
+      return await scheduler.apply(this, arguments);
+    }
+    else {
+      this.logger.error(`missing scheduler for type "${event.type}"`);
+    }
   }
 
-  async reset () {
-    return this.driver.reset();
+  async unscheduleAll() {
+    return this.driver.unscheduleAll();
   }
+
+
+  // Audio nodes
+  // -----------
+
+  createNode({ type, name, node, root }) {
+    this.cache.nodes = this.cache.nodes || {};
+    this.cache.nodes[type] = this.cache.nodes[type] || {};
+
+    return this.cache.nodes[type][name] = this.driver.createNode({
+      root, node, name: `${type}:${name}`,
+    });
+  }
+
+  getNode(type, name) {
+    return this.cache.nodes[type][name];
+  }
+
+
+  // Cache
+  // -----
+
+  resetCache () {
+    this.cache = {
+      nodes: {},
+      tracks: {},
+      phrases: {},
+      events: new SequencedEventLogModel()
+    };
+  }
+
+
+  // Transport
+  // ---------
 
   play (options) {
     options = Object.assign({
@@ -218,7 +292,7 @@ export class RendererModel extends BaseModel {
     this.driver.setTransportPosition(options.at);
 
     if (options.markTime) {
-      this.driver.markTime({ interval: options.markTimeInterval });
+      this.markTime({ interval: options.markTimeInterval });
     }
 
     return this.driver.play();
@@ -232,19 +306,28 @@ export class RendererModel extends BaseModel {
     return this.driver.setTransportPosition('0:0:0');
   }
 
-  goBackwardsByMeasure () {
-    const {
-      measure,
-      beat,
-      subdivision
-    } = this.driver.position;
 
-    if (beat === 0 && subdivision === 0) {
-      return this.driver.setTransportPosition(`${measure - 1}:0:0`)
-    }
-    else if (measure > 0) {
-      return this.driver.setTransportPosition(`${measure}:0:0`)
-    }
+  // Misc
+  // ----
+
+  async reset () {
+    this.resetCache();
+
+    return this.unscheduleAll();
+  }
+
+  markTime({ interval }) {
+    setInterval(() => {
+      const {
+        ticks,
+        measure,
+        beat,
+        subdivision,
+        realtime
+      } = this.position;
+
+      this.logger.info(`markTime: transport = ${measure}:${beat}:${subdivision} (${realtime}s, ${ticks}t)`);
+    }, interval * 1000);
   }
 
 }

@@ -124,7 +124,7 @@ export class ToneAudioDriver extends BaseAudioDriver {
     // Play a sequence of notes (phrase)
     phrase: async ({ event, track, instrument }) => {
       const phraseName = event.value;
-      const phrase = this.phrases[phraseName];
+      const phrase = this.renderer.cache.phrases[phraseName];
       const steps = phrase.steps;
       
       let position = Tone.Time(event.at.toString());
@@ -144,13 +144,12 @@ export class ToneAudioDriver extends BaseAudioDriver {
 
         await mapSeries(notes, async (note) => {
 
-          // quarter.rest()
+          // Understood to be a rest
           if (typeof note.pitch === 'undefined') {
             return;
           }
 
-          // quarter.note()
-          return this.scheduleEvent({
+          return this.renderer.scheduleEvent({
             event: event.constructor.parse({
               value: note,
               type: 'note',
@@ -243,18 +242,11 @@ export class ToneAudioDriver extends BaseAudioDriver {
     return new ToneAudioDriverNode(properties);
   }
 
-  async startAudioBuffer() {
-    return Tone.start();
-  }
-
   async setTransportPosition (position) {
     return Tone.Transport.set({ position })
   }
 
-  async stopAudioBuffer() {
+  async startAudioBuffer() {
+    return Tone.start();
   }
-
-  async resetAudioBuffer() {
-  }
-
 }

@@ -16,6 +16,7 @@ export { EffectModel } from './src/models/effect.js';
 export { LibraryModel } from './src/models/library.js';
 export { InstrumentModel } from './src/models/instrument.js';
 export { ChordModel } from './src/models/chord.js';
+export { SequencedEventLogModel } from './src/models/sequenced_event_log.js';
 
 export { LargeUnit, DottedLargeUnit, DoubleDottedLargeUnit } from './src/units/large.js';
 export { LongUnit, DottedLongUnit, DoubleDottedLongUnit } from './src/units/long.js';
