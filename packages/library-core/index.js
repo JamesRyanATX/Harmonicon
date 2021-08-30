@@ -12,6 +12,7 @@ import { flute } from './src/instruments/flute';
 import { frenchHorn } from './src/instruments/french-horn';
 import { harmonium } from './src/instruments/harmonium';
 import { harp } from './src/instruments/harp';
+import { monoSynth } from './src/instruments/mono-synth';
 import { nylonGuitar } from './src/instruments/nylon-guitar';
 import { organ } from './src/instruments/organ';
 import { piano } from './src/instruments/piano';
@@ -40,6 +41,7 @@ export const build = async () => {
     frenchHorn({ library });
     harmonium({ library });
     harp({ library });
+    monoSynth({ library });
     nylonGuitar({ library });
     organ({ library });
     piano({ library });

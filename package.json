@@ -2,7 +2,8 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "example:011": "cd packages/cli && bin/composer play --file=../examples/src/011-chords.js"
+    "example:011": "cd packages/cli && bin/composer play --file=../examples/src/011-chords.js",
+    "example:012": "cd packages/cli && bin/composer play --file=../examples/src/012-arpeggiator.js"
   },
   "devDependencies": {
     "lerna": "^4.0.0"

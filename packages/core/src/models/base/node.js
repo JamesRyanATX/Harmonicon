@@ -3,7 +3,6 @@ import { BaseModel } from '../base.js';
 export class BaseNodeModel extends BaseModel {
 
   get patches() {
-    console.log(this.patchType)
     return this.session.patches.reduce((patches, patch) => {
       if (patch.outputType === this.patchType && patch.output === this.name) {
         patches.inputs.push(patch);
