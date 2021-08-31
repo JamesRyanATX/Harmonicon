@@ -1,4 +1,5 @@
 pages:
+  image: node:10.13-alpine
   stage: deploy
   script:
     - npm ci --ignore-scripts --production --no-optional
