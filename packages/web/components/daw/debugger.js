@@ -27,9 +27,9 @@ export function Debugger ({ controller }) {
       </div>
       {details.length > 0 ? (
         <div className={styles.debuggerDetails}>
-          {details.slice(1, 3).map((line) => {
+          {details.slice(1, 3).map((line, i) => {
             return (
-              <div>{line}</div>
+              <div key={i}>{line}</div>
             );
           })}
         </div>

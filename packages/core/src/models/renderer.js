@@ -32,7 +32,7 @@ export class RendererModel extends BaseModel {
     this.session.infer();
 
     await this.reset();
-    await this.renderSession(this.session);
+    await this.renderSession(this.session)
     await this.goToBeginning();
 
     return this;

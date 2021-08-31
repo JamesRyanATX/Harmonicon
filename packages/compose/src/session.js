@@ -5,6 +5,7 @@ import {
   TrackModel,
   PhraseModel,
   PatchModel,
+  NoteModel,
 } from '@composer/core';
 
 import * as CoreLibrary from '@composer/library-core';
@@ -34,6 +35,12 @@ export class SessionComposer extends extendable(BaseSequencedComposer) {
     await this.initializeLibraries();
   }
 
+  /**
+   * Set meter (time signature).
+   * 
+   * @param {*} meter 
+   * @param {*} proxy 
+   */
   meter(meter, proxy) {
     this.sequence({
       type: 'meter',
@@ -42,6 +49,12 @@ export class SessionComposer extends extendable(BaseSequencedComposer) {
     });
   }
 
+  /**
+   * Set swing amount.
+   * 
+   * @param {*} swing 
+   * @param {*} proxy 
+   */
   swing(swing, proxy) {
     this.sequence({
       type: 'swing',
@@ -50,6 +63,12 @@ export class SessionComposer extends extendable(BaseSequencedComposer) {
     })
   }
 
+  /**
+   * Set tempo.
+   * 
+   * @param {*} tempo 
+   * @param {*} proxy 
+   */
   tempo(tempo, proxy) {
     this.sequence({
       type: 'tempo',
@@ -58,14 +77,32 @@ export class SessionComposer extends extendable(BaseSequencedComposer) {
     });
   }
 
+  /**
+   * Set key.  Accepts any valid ABC note.
+   * 
+   * @param {*} key 
+   * @param {*} proxy 
+   */
   key(key, proxy) {
+    const formattedKey = NoteModel.simplifyAbsolutePitch(key[0]);
+
+    if (!formattedKey) {
+      throw new ComposerError(`Invalid key "${key[0]}"; must be a single note (A..G)`);
+    }
+
     this.sequence({
       type: 'key',
       at: proxy.data.at,
-      value: key,
+      value: [ formattedKey ],
     })
   }
 
+  /**
+   * Set scale/mode.  Accepts any valid mode.
+   * 
+   * @param {*} scale 
+   * @param {*} proxy 
+   */
   scale(scale, proxy) {
     this.sequence({
       type: 'scale',
@@ -74,18 +111,37 @@ export class SessionComposer extends extendable(BaseSequencedComposer) {
     })
   }
 
+  /**
+   * Create an instrument.
+   * 
+   * @param {*} name 
+   * @param {*} fn 
+   */
   instrument(name, fn) {
     this.model.instruments.add(InstrumentModel.parse({
       name, fn, session: this.model
     }));
   }
 
+  /**
+   * Create an effect.
+   * 
+   * @param {*} name 
+   * @param {*} fn 
+   */
   effect(name, fn) {
     this.model.effects.add(EffectModel.parse({
       name, fn, session
     }));
   }
 
+  /**
+   * Create a track.
+   * 
+   * @param {*} name 
+   * @param {*} fn 
+   * @returns 
+   */
   track(name, fn) {
     const track = TrackModel.parse({
       session: this.model,
@@ -101,7 +157,7 @@ export class SessionComposer extends extendable(BaseSequencedComposer) {
   }
 
   /**
-   * Send the output of one audio node to another.
+   * Create a patch (send the output of one audio node to another)
    * 
    * @param  {object} properties
    */

@@ -1,4 +1,7 @@
-export { ApplicationError } from './src/errors.js';
+export {
+  ApplicationError,
+  InvalidPositionError
+} from './src/errors.js';
 
 export { BaseModel } from './src/models/base.js';
 export { PositionModel } from './src/models/position.js';

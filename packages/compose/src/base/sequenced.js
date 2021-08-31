@@ -1,21 +1,28 @@
-import { PositionModel, SequencedEventModel } from '@composer/core';
+import { PositionModel, SequencedEventModel, InvalidPositionError } from '@composer/core';
 import { BaseComposer } from '../base';
+import { ComposerError } from '../errors';
 
 export class BaseSequencedComposer extends BaseComposer {
   static sequencerProxy = null;
 
   constructor(name, fn, context) {
     super(name, fn, context);
-
-    this.at.measure = (measure) => {
-      return this.at(measure, 0, 0);
-    }
   }
 
   at() {
-    return new this.constructor.sequencerProxy(this, {
-      at: PositionModel.parse.apply(PositionModel, arguments)
-    });
+    try {
+      return new this.constructor.sequencerProxy(this, {
+        at: PositionModel.parse.apply(PositionModel, arguments)
+      });  
+    }
+    catch (e) {
+      if (e instanceof InvalidPositionError) {
+        throw new ComposerError(e.message);
+      }
+      else {
+        throw e;
+      }
+    }
   }
 
   sequence(event) {

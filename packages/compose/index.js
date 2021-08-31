@@ -3,6 +3,8 @@ import { library, LibraryComposer } from './src/library';
 import { instrument, InstrumentComposer } from './src/instrument';
 import { track, TrackComposer } from './src/track';
 
+export { ComposerError } from './src/errors';
+
 import {
   doubleDottedLarge,
   dottedLarge,

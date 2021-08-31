@@ -27,6 +27,10 @@ export class NoteModel extends BaseModel {
     return this.pitchType === 'relative';
   }
 
+  static simplifyAbsolutePitch(pitch) {
+    return TonalNote.simplify(pitch);
+  }
+
   static parseAbsolutePitch({ pitch, octave }) {
     const inlineOctave = TonalNote.octave(pitch);
 

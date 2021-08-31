@@ -34,26 +34,27 @@ export function Logo ({
     'n', 
     'i',
     'c',
-    <Shape letter="O" />,
+    <Shape letter="O" key="o" />,
     'n'
   ]
 }) {
   const [ offset, setOffset ] = useState(0);
 
-  if (animate) {
-    useEffect(() => {
-      let timer;
+  useEffect(() => {
+    let timer;
 
-      (function updateOffset () {
+    (function updateOffset () {
+      if (animate) {
         setOffset(offset + 1);
-        timer = setTimeout(updateOffset, speed * 1000);
-      })();
-      
-      return () => {
-        clearTimeout(timer);
       }
-    }, []);
-  }
+
+      timer = setTimeout(updateOffset, speed * 1000);
+    })();
+    
+    return () => {
+      clearTimeout(timer);
+    }
+  }, []);
 
   return (
     <div className={[

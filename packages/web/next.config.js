@@ -1,5 +1,3 @@
-//const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
-
 module.exports = {
 
   // webpack(config, options) {

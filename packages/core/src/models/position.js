@@ -1,6 +1,12 @@
 import { BaseModel } from './base.js';
+import { InvalidPositionError } from '../errors';
 
 export class PositionModel extends BaseModel {
+
+  static MEASURE_REGEX = /^[0-9]+$/;
+  static BEAT_REGEX = /^[0-9]+\.{0,1}[0-9]*$/;
+  static SUBDIVISION_REGEX = /^[0-9]+\.{0,1}[0-9]*$/;
+  static MEASURE_BEAT_SUBDIVISION_REGEX = /^[0-9]+:[0-9]+\.{0,1}[0-9]*:[0-9]+\.{0,1}[0-9]*$/;
 
   static properties = {
     measure: {
@@ -14,38 +20,60 @@ export class PositionModel extends BaseModel {
     },
   }
   
-  static parse(a, b, c) {
+  static parse(measure, beat, subdivision) {
 
-    // .parse(0, 0, 0)
-    if (typeof a !== 'undefined' &&
-        typeof b !== 'undefined' &&
-        typeof c !== 'undefined'
+    if (
+      typeof measure === 'object' &&
+      typeof measure.measure !== 'undefined' &&
+      typeof measure.beat !== 'undefined' &&
+      typeof measure.subdivision !== 'undefined'
     ) {
-      return new this({
-        measure: Number(a),
-        beat: Number(b),
-        subdivision: Number(c)
-      })
+      subdivision = measure.subdivision;
+      beat = measure.beat;
+      measure = measure.measure;
     }
 
-    // .parse({ measure: 0, ... })
-    else if (typeof a === 'object') {
-      return new this(a);
+    if (typeof measure === 'string' && measure.match(this.MEASURE_REGEX)) {
+      measure = Number(measure);
+    }
+
+    if (typeof beat === 'string' && beat.match(this.BEAT_REGEX)) {
+      beat = Number(beat);
+    }
+
+    if (typeof subdivision === 'string' && subdivision.match(this.SUBDIVISION_REGEX)) {
+      subdivision = Number(subdivision);
     }
 
     // .parse('0:0:0')
-    else if (typeof a === 'string') {
-      const [ measure, beat, subdivision ] = a.split(':');
-
-      return new this({ 
-        measure: Number(measure),
-        beat: Number(beat),
-        subdivision: Number(subdivision)
-      });
+    if (
+      typeof measure === 'string' && 
+      typeof beat === 'undefined' &&
+      typeof subdivision === 'undefined' &&
+      measure.match(this.MEASURE_BEAT_SUBDIVISION_REGEX)
+    ) {
+      [ measure, beat, subdivision ] = measure.split(':').map(Number);
     }
-    
+
+    // 0:undefined => 0:0
+    if (typeof measure === 'number' && typeof beat === 'undefined') {
+      beat = 0;
+    }
+
+    // 0:0:undefined => 0:0:0
+    if (typeof measure === 'number' && typeof subdivision === 'undefined') {
+      subdivision = 0;
+    }
+
+    if (
+      typeof measure === 'number' &&
+      typeof beat === 'number' &&
+      typeof subdivision === 'number'
+    ) {
+      return new this({ measure, beat, subdivision });
+    }
     else {
-      throw new TypeError(`PositionModel.parse: unrecognized position format`);
+      throw new InvalidPositionError(`PositionModel.parse: unrecognized position format ${measure}:${beat}:${subdivision}`);
     }
   }
 
