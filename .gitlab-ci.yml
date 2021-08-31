@@ -6,8 +6,8 @@ pages:
     - npx lerna bootstrap --hoist --ignore-scripts -- --production --no-optional
     - cd packages/web
     - npm run export
-    - mkdir -p out/librares/core/instruments
-    - mv ../library-core/samples/* out/librares/core/instruments
+    - mkdir -p out/libraries/core/instruments
+    - mv ../library-core/samples/* out/libraries/core/instruments
     - mv out ../../public
   artifacts:
     paths:
