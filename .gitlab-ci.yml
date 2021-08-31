@@ -1,0 +1,15 @@
+pages:
+  stage: deploy
+  script:
+    - npm ci --ignore-scripts --production --no-optional
+    - npx lerna bootstrap --hoist --ignore-scripts -- --production --no-optional
+    - cd packages/web
+    - npm run export
+    - mkdir -p out/librares/core/instruments
+    - mv ../library-core/samples/* out/librares/core/instruments
+    - mv out ../../public
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
