@@ -1,5 +1,5 @@
 import { Logger } from '@composer/util';
-import { render } from '@composer/compose';
+import { ComposerError, render } from '@composer/compose';
 
 export class Controller {
 
@@ -58,6 +58,16 @@ export class Controller {
     });
 
     document.title = 'Harmonicon';
+    
+    // Should not need this!
+    window.addEventListener('unhandledrejection', function (e) {
+      if (e.reason instanceof ComposerError) {
+        this.emit('error', { message: e.reason.message, error: e.reason });
+        e.cancelBubble = true;
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+      }
+    }.bind(this));
   }
 
 
@@ -214,7 +224,7 @@ export class Controller {
   }
 
   async render () {
-    await this.audio.reset();
+    await this.audio.startAudioBuffer();
 
     const { composer, renderer } = await render({
       code: this.file.source
