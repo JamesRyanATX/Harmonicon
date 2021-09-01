@@ -11,6 +11,11 @@ export class WorkspaceModel extends storable(BaseModel) {
       defaultValue: 'default'
     },
 
+    // Currently selected file
+    selectedFile: {
+      defaultValue: null
+    },
+
     // Tabs in the UI
     files: {
       type: FileModel,

@@ -36,12 +36,26 @@ function Action ({
   )
 }
 
-export function Actions ({ controller }) {
+export function Actions ({
+  controller = null,
+  play = true,
+  pause = false,
+  stop = true,
+  save = false,
+  wipe = false,
+  status = true,
+}) {
   const [ loaded, setLoaded ] = useState(false);
   const [ transportState, setTransportState ] = useState(controller.state);
   const [ changed, setChanged ] = useState(controller.changed);
+  const [ statusText, setStatusText ] = useState('');
 
   if (!loaded) {
+    controller.on('composer:parsing', () => (setStatusText('Parsing...')));
+    controller.on('composer:parsed', () => (setStatusText('')));
+    controller.on('composer:rendering', () => (setStatusText('Rendering...')));
+    controller.on('composer:rendered', () => (setStatusText('')));
+
     controller.on('transport:start', setTransportState);
     controller.on('transport:stop', setTransportState);
     controller.on('transport:pause', setTransportState);
@@ -53,35 +67,49 @@ export function Actions ({ controller }) {
 
   return (
     <Items>
-      <Action 
-        icon={IoPlaySharp}
-        label="Play"
-        onClick={controller.play.bind(controller)}
-        selected={transportState === 'started'}
-        indicator={transportState === 'started'}
-      />
-      <Action 
-        icon={IoPauseSharp}
-        label="Pause"
-        onClick={controller.pause.bind(controller)}
-        indicator={transportState === 'paused'}
-      />
-      <Action 
-        icon={IoStopSharp}
-        label="Stop"
-        onClick={controller.stop.bind(controller)}
-      />
-      <Action 
-        icon={IoSaveSharp}
-        label="Save"
-        onClick={controller.save.bind(controller)}
-      />
-      {/* <Action
-        icon={IoReloadSharp}
-        label="Reload"
-        onClick={controller.reload.bind(controller)}
-        disabled={!changed}
-      /> */}
+      {play ? (
+        <Action 
+          icon={IoPlaySharp}
+          label="Play"
+          onClick={controller.play.bind(controller)}
+          selected={transportState === 'started'}
+          indicator={transportState === 'started'}
+        />
+      ) : ''}
+      {pause ? (
+        <Action 
+          icon={IoPauseSharp}
+          label="Pause"
+          onClick={controller.pause.bind(controller)}
+          indicator={transportState === 'paused'}
+        />
+      ) : ''}
+      {stop ? (
+        <Action 
+          icon={IoStopSharp}
+          label="Stop"
+          onClick={controller.stop.bind(controller)}
+        />
+      ) : ''}
+      {save ? (
+        <Action 
+          icon={IoSaveSharp}
+          label="Save"
+          onClick={controller.save.bind(controller)}
+        />
+      ) : ''}
+      {wipe ? (
+        <Action 
+          icon={IoReloadSharp}
+          label="Wipe"
+          onClick={controller.wipe.bind(controller)}
+        />
+      ) : ''}
+      {status && statusText ? (
+        <Item flat text>
+          {statusText}
+        </Item>
+      ) : ''}
     </Items>
   )
 }

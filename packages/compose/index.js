@@ -2,8 +2,8 @@ import { session, SessionComposer } from './src/session';
 import { library, LibraryComposer } from './src/library';
 import { instrument, InstrumentComposer } from './src/instrument';
 import { track, TrackComposer } from './src/track';
-
-export { ComposerError } from './src/errors';
+import { ComposerError } from './src/errors';
+import { Harmonicon } from '@composer/core';
 
 import {
   doubleDottedLarge,
@@ -39,6 +39,7 @@ import {
 } from './src/util/note.js';
 
 export {
+  ComposerError,
   InstrumentComposer,
   LibraryComposer,
   SessionComposer,
@@ -142,47 +143,32 @@ export const parse = async (options = {}) => {
     silent: false,
   }, options);
 
-  try {
-    if (options.code) {
-      await parseCode(options.code, options);
-    }
-    else if (options.url) {
-      await parseUrl(options.url, options);
-    }
-    else if (options.file) {
-      await parseFile(options.file, options);
-    }
-    else {
-      throw new TypeError("no session source provided (expected code, url or file)");
-    }
-  }
-  catch (e) {
-    if (options.silent) {
-      console.warning('unable to parse session')
-      console.warning(e);
-    }
-    else {
-      throw (e);
-    }
-  }
+  return new Promise(async (accept) => {
+    try {
+      Harmonicon.once('composer:parsed', accept);
 
-  return new Promise((accept, reject) => {
-    const startedAt = new Date().getTime();
-    
-    (function pollForSession () {
-      const now = new Date().getTime();
-      const duration = (now - startedAt) / 1000;
-
-      if (SessionComposer.current) {
-        accept(SessionComposer.current);
+      if (options.code) {
+        await parseCode(options.code, options);
       }
-      else if (duration >= options.timeout) {
-        reject(`timeout reached (${options.timeout}s)`);
+      else if (options.url) {
+        await parseUrl(options.url, options);
+      }
+      else if (options.file) {
+        await parseFile(options.file, options);
       }
       else {
-        setTimeout(pollForSession, options.poll * 1000);
+        throw new TypeError("no session source provided (expected code, url or file)");
       }
-    })();
+    }
+    catch (e) {
+      if (options.silent) {
+        console.warning('unable to parse session')
+        console.warning(e);
+      }
+      else {
+        throw (e);
+      }
+    }
   });
 }
 

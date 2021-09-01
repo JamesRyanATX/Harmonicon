@@ -8,6 +8,8 @@ export function Display ({ controller }) {
     measure: 0,
     beat: 0,
     subdivision: 0,
+    tempo: null,
+    meter: null
   });
 
   if (!loaded) {
@@ -17,6 +19,30 @@ export function Display ({ controller }) {
 
   return (
     <Items>
+      <Item flat>
+        <ItemPrimary>
+          <input type="text" disabled value={position.key || '-'} />
+        </ItemPrimary>
+        <ItemLabel>
+        {position.scale || 'key'}
+        </ItemLabel>
+      </Item>
+      <Item flat>
+        <ItemPrimary>
+          <input type="text" disabled value={position.tempo || '-'} />
+        </ItemPrimary>
+        <ItemLabel>
+        tempo
+        </ItemLabel>
+      </Item>
+      <Item flat>
+        <ItemPrimary>
+          <input type="text" disabled value={position.meter || '-'} />
+        </ItemPrimary>
+        <ItemLabel>
+          meter
+        </ItemLabel>
+      </Item>
       <Item flat>
         <ItemPrimary>
           <input type="text" disabled value={String(position.measure).padStart(2, '0')} />

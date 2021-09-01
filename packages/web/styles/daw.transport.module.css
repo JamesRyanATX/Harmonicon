@@ -130,6 +130,21 @@
   width: 60px;
 }
 
+.itemIsXWide {
+  min-width: 100px;
+}
+
+.itemIsXWide .itemPrimary input {
+  width: 100px;
+}
+
+.itemIsText {
+  min-width: none;
+  padding: 12px 10px 0 10px;
+  background-color: transparent;
+  border: 1px solid rgba(var(--brand-color-2), 0.2);
+}
+
 
 /* logo */
 

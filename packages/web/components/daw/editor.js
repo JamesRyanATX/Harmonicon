@@ -33,6 +33,13 @@ export function Editor ({ controller }) {
       controller.setFileSource(editorRef.current.getValue());
       controller.save();
     }
+
+    if (e.metaKey && e.key === 'p') {
+      e.preventDefault();
+      e.stopPropagation();
+
+      controller.play();
+    }
   }
 
   return (

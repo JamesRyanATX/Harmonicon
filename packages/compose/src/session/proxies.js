@@ -11,13 +11,17 @@ function createSendFunction(input, inputType, outputType) {
 
 function createImportProxy({ collection, composer }) {
   return function (name) {
-    return {
-      from: {
-        library: function (libraryName) {
-          return this.use({ source: 'library', libraryName, name, collection, composer });
-        }.bind(this)
-      }
-    }
+    const source = 'library';
+    const libraryName = 'core';
+    
+    return this.use({ source, libraryName, name, collection, composer });
+    // return {
+    //   from: {
+    //     library: function (libraryName) {
+    //       return this.use({ source: 'library', libraryName, name, collection, composer });
+    //     }.bind(this)
+    //   }
+    // }
   }
 }
 

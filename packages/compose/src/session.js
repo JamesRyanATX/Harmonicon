@@ -6,6 +6,7 @@ import {
   PhraseModel,
   PatchModel,
   NoteModel,
+  Harmonicon,
 } from '@composer/core';
 
 import * as CoreLibrary from '@composer/library-core';
@@ -33,6 +34,10 @@ export class SessionComposer extends extendable(BaseSequencedComposer) {
 
   static async initialize() {
     await this.initializeLibraries();
+  }
+
+  static reset() {
+    delete this.current;
   }
 
   /**
@@ -203,8 +208,20 @@ export class SessionComposer extends extendable(BaseSequencedComposer) {
     }
   }
 
+  async begin () {
+    Harmonicon.emit('composer:parsing', this);
+  }
+
+  async finish () {
+    Harmonicon.emit('composer:parsed', this);
+  }
+
   async render (driver) {
-    return (this.renderer = await this.model.render(driver));
+    Harmonicon.emit('composer:rendering', this);
+    this.renderer = await this.model.render(driver);
+    Harmonicon.emit('composer:rendered', this);
+
+    return this.renderer;
   }
 
   play (options) {

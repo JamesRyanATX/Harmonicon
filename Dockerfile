@@ -45,8 +45,8 @@ RUN npx lerna bootstrap --hoist --ignore-scripts -- --production --no-optional
 COPY . /harmonicon/
 RUN cd packages/web && \
     npm run export && \
-    mkdir -p /harmonicon/packages/web/out/librares/core/instruments && \
-    mv /harmonicon/packages/library-core/samples/* /harmonicon/packages/web/out/librares/core/instruments
+    mkdir -p /harmonicon/packages/web/out/libraries/core/instruments && \
+    mv /harmonicon/packages/library-core/samples/* /harmonicon/packages/web/out/libraries/core/instruments
 
 
 # Serve

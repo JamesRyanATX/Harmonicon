@@ -15,6 +15,8 @@ export function Item({
   disabled,
   indicator,
   wide,
+  xWide,
+  text = false,
   flat,
   onClick,
   children
@@ -31,7 +33,9 @@ export function Item({
         selected ? styles.itemIsSelected : null,
         disabled ? styles.itemIsDisabled : null,
         wide ? styles.itemIsWide : null,
+        xWide ? styles.itemIsXWide : null,
         flat ? styles.itemIsFlat : null,
+        text ? styles.itemIsText : null,
         active ? styles.itemIsActive : null 
       ].join(' ')}
     >

@@ -1,5 +1,6 @@
 import { Logger } from '@composer/util';
 import { ComposerError, render } from '@composer/compose';
+import { Harmonicon } from '@composer/core';
 
 export class Controller {
 
@@ -45,6 +46,21 @@ export class Controller {
     this.allow('file:destroyed');
     this.allow('file:updated');
 
+    this.allow('composer:parsing');
+    this.allow('composer:parsed');
+    this.allow('composer:rendering');
+    this.allow('composer:rendered');
+
+    // Observe global Harmonicon events
+    Harmonicon.on('composer:error', () => {
+      this.emit('error', { message: e.message, error: e })
+    });
+
+    Harmonicon.on('composer:parsing', () => (this.emit('composer:parsing')));
+    Harmonicon.on('composer:parsed', () => (this.emit('composer:parsed')));
+    Harmonicon.on('composer:rendering', () => (this.emit('composer:rendering')));
+    Harmonicon.on('composer:rendered', () => (this.emit('composer:rendered')));
+
     // Observe transport events directly from audio driver
     [
       'start',
@@ -59,15 +75,15 @@ export class Controller {
 
     document.title = 'Harmonicon';
     
-    // Should not need this!
-    window.addEventListener('unhandledrejection', function (e) {
-      if (e.reason instanceof ComposerError) {
-        this.emit('error', { message: e.reason.message, error: e.reason });
-        e.cancelBubble = true;
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-      }
-    }.bind(this));
+    // // Should not need this!
+    // window.addEventListener('unhandledrejection', function (e) {
+    //   if (e.reason instanceof ComposerError) {
+    //     this.emit('error', { message: e.reason.message, error: e.reason });
+    //     e.cancelBubble = true;
+    //     e.stopPropagation();
+    //     e.stopImmediatePropagation();
+    //   }
+    // }.bind(this));
   }
 
 
@@ -77,7 +93,7 @@ export class Controller {
   async addFile() {
     try {
       const file = await this.workspace.files.create({
-        name: 'Untitled',
+        name: this.newFileName(),
         source: this.templates.blank,
         workspace: this.workspace,
       });
@@ -87,7 +103,11 @@ export class Controller {
     }
     catch (e) {
       console.error(e);
-      this.emit('error', { message: 'Unable to add a new file.' });
+
+      this.emit('error', {
+        message: 'Unable to add a new file.',
+        error: e
+      });
     }
   }
 
@@ -98,13 +118,16 @@ export class Controller {
       if (file.id === this.file.id) {
         this.selectFile(this.workspace.files.first());
       }
-      else {
-        this.emit('file:destroyed', file);
-      }
+
+      this.emit('file:destroyed', file);
     }
     catch (e) {
       console.error(e);
-      this.emit('error', { message: 'Unable to delete file.' });
+
+      this.emit('error', {
+        message: 'Unable to delete file.',
+        error: e
+      });
     }
   }
 
@@ -115,19 +138,30 @@ export class Controller {
     }
     catch (e) {
       console.error(e);
-      this.emit('error', { message: 'Unable to save workspace.' });
+
+      this.emit('error', {
+        message: 'Unable to save workspace.',
+        error: e,
+      });
     }
   }
 
   async selectFile(file) {
     try {
       this.file = file;
+      this.workspace.setProperties({  selectedFile: file.id });
+      this.workspace.save();
+
       this.emit('file:selected', file);
       return file;
     }
     catch (e) {
       console.error(e);
-      this.emit('error', { message: 'Unable to select file.' });
+
+      this.emit('error', {
+        message: 'Unable to select file.',
+        error: e
+      });
     }
   }
 
@@ -139,37 +173,45 @@ export class Controller {
     }
     catch (e) {
       console.error(e);
-      this.emit('error', { message: 'Unable to play this file :-(' });
+
+      this.emit('error', {
+        message: 'Unable to play this file :-(',
+        error: e
+      });
     }
   }
 
   async stop() {
     try {
-      await this.withRendered(async () => {
-        await this.audio.stop();
+      await this.audio.stop();
 
-        this.emit('transport:position', {
-          measure: 0,
-          beat: 0,
-          subdivision: 0,
-        })
+      this.emit('transport:position', {
+        measure: 0,
+        beat: 0,
+        subdivision: 0,
       });
     }
     catch (e) {
       console.error(e);
-      this.emit('error', { message: 'Unable to stop audio, oh noes!' });
+
+      this.emit('error', {
+        message: 'Unable to stop audio, oh noes!',
+        error: e,
+      });
     }
   }
 
   async pause() {
     try {
-      await this.withRendered(async () => {
-        return this.audio.pause();
-      });
+      await this.audio.pause();
     }
     catch (e) {
       console.error(e);
-      this.emit('error', { message: 'Unable to pause audio, oh noes!' });
+
+      this.emit('error', {
+        message: 'Unable to pause audio, oh noes!',
+        error: e
+      });
     }
   }
 
@@ -179,6 +221,7 @@ export class Controller {
 
   setFileSource (source) {
     this.file.setProperties({ source });
+    this.file.save();
     this.emit('changed', this.changed);
   }
 
@@ -234,9 +277,61 @@ export class Controller {
     this.renderer = renderer;
     this.renderedSource = this.file.source;
 
+    //debugger;
+
     this.audio.observePosition((position) => {
       this.emit('transport:position', position);
     });
+  }
+
+  // Misc
+  // ----
+
+  newFileName () {
+    const verbs = [
+      'Mad',
+      'Extrm',
+      'Mega',
+      'Tight',
+      'Clean',
+      'Rad',
+      'Cool',
+      'Funky',
+      'Epic',
+      'L33t',
+      'ZZZZ',
+      'EZ',
+      'Flowin',
+      'SpAcIn'
+    ];
+
+    const nouns = [
+      'Beatz',
+      'Sesh',
+      'Tunz',
+      'C0d3',
+      'Chart',
+      'Piece',
+      'Song',
+      'Rhymz',
+      'Ditty',
+      'Jam',
+      'Jamz',
+      'Trax'
+    ];
+
+    return [
+      verbs[Math.floor(Math.random() * verbs.length)],
+      nouns[Math.floor(Math.random() * nouns.length)],
+    ].join(' ');
+  }
+
+  // Debugging
+  // ---------
+
+  wipe () {
+    Object.keys(localStorage).forEach((k) => (delete localStorage[k]));
+    document.location.reload();
   }
 
 }

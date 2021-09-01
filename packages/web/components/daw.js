@@ -11,55 +11,9 @@ import { Controller } from '../lib/daw/controller';
 import styles from '../styles/daw.module.css';
 import { WorkspaceModel } from '../../core/src/models/workspace';
 
+import { source as demoSource } from '../templates/demo';
+import { source as blankSource } from '../templates/blank';
 
-const DEMO_FILE = `
-//
-// [name] is a music-as-code DAW powered by your browser.
-//
-
-session('Example', async ({ session }) => {
-  session.at.measure(0)   // At measure 0, do the following
-    .meter([ 4, 4 ])      // 4/4 time
-    .tempo(160)           // in beats per minute (bpm)
-    .swing(0)             // 0 to 1
-    .key('C')             // Root note of key (A, C, Db, F# etc.)
-    .scale('major');      // Mode/scale (major, minor, ionian, dorian, etc.)
-
-  session.instrument('bass', async () => {
-    return new Tone.MembraneSynth().toDestination();
-  });
-
-  session.phrase('walk-the-relative-scale', ({ phrase }) => {
-    phrase.steps(
-      quarter.note(-14),    // Play a full octave in the selected mode and tonic
-      eighth.note(-13),
-      eighth.note(-12),
-      eighth.note(-11),
-      eighth.note(-10),
-      eighth.note(-9),
-      eighth.note(-8),
-      eighth.note(-7),
-    );
-  });
-
-  session.track('bass', async ({ track }) => {
-    track.at.measure(1).play.phrase('walk-the-relative-scale');
-  });
-});
-`;
-
-const BLANK_FILE = `
-session('Untitled', async ({ session }) => {
-
-  // session.at.measure(0)
-  //   .meter([ 4, 4 ])
-  //   .tempo(120)
-
-  // session.instrument(...
-  // session.track(...
-
-});
-`.trim();
 
 function Interface ({ children }) {
   return (
@@ -101,8 +55,8 @@ export function DAW ({
 
       setController(new Controller({
         templates:{
-          blank: BLANK_FILE,
-          demo: DEMO_FILE,
+          blank: blankSource,
+          demo: demoSource,
         },
         workspace: (await WorkspaceModel.loadOrCreate('default', properties, storageDriver))
           .setProperties(properties)
@@ -113,17 +67,27 @@ export function DAW ({
   // Select a file
   if (!file && controller) {
     (async () => {
-      if (controller.workspace.files.length === 0) {
-        await controller.workspace.files.create({
-          name: 'Untitled',
-          source: DEMO_FILE,
+      const workspace = controller.workspace;
+
+      if (workspace.files.length === 0) {
+        await workspace.files.create({
+          name: 'Demo',
+          source: demoSource,
         });
       }
-      else {
-        setFile(await controller.selectFile(
-          controller.workspace.files.records[0]
-        ));
-      }
+
+      const selectedFile = (() => {
+        const selectedFileId = workspace.selectedFile;
+
+        if (selectedFileId) {
+          return workspace.files.filterByProperty('id', selectedFileId)[0];
+        }
+        else {
+          return workspace.files.records[0];
+        }
+      })();
+
+      setFile(await controller.selectFile(selectedFile));
     })();
   }
 

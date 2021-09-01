@@ -12,8 +12,10 @@ export class BaseComposer {
 
     const composer = new this(name, fn, context);
 
+    await composer.begin();
     await composer.load();
     await composer.evaluate();
+    await composer.finish();
 
     return composer;
   }
@@ -79,6 +81,12 @@ export class BaseComposer {
       this.logger.error(`${this.constructor.name}: ${e.message}`);
       throw e;
     }
+  }
+
+  async begin () {
+  }
+
+  async finish () {
   }
 
 }

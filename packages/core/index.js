@@ -33,3 +33,5 @@ export { ThirtySecondUnit, DottedThirtySecondUnit, DoubleDottedThirtySecondUnit 
 export { SixtyFourthUnit, DottedSixtyFourthUnit, DoubleDottedSixtyFourthUnit } from './src/units/sixtyfourth.js';
 
 export { Logger } from './src/util/logger.js';
+
+export { Harmonicon } from './src/harmonicon';

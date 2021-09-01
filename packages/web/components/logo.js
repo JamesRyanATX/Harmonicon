@@ -42,10 +42,11 @@ export function Logo ({
 
   useEffect(() => {
     let timer;
+    let offset = 0;
 
     (function updateOffset () {
       if (animate) {
-        setOffset(offset + 1);
+        setOffset(offset += 1);
       }
 
       timer = setTimeout(updateOffset, speed * 1000);

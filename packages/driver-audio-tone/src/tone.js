@@ -89,12 +89,20 @@ export class ToneAudioDriver extends BaseAudioDriver {
     key: async ({ event }) => {
       this.logger.debug(`render.session.event.key: [+] at = ${event.at}`);
       this.logger.debug(`render.session.event.key:     key = ${event.value}`);
+
+      return await Tone.Transport.schedule(() => {
+        Tone.Transport._key = event.value;
+      }, event.at.toString());
     },
 
     // Set scale/mode (?)
     scale: async ({ event }) => {
       this.logger.debug(`render.session.event.scale: [+] at = ${event.at}`);
       this.logger.debug(`render.session.event.scale:     scale = ${event.value}`);
+
+      return await Tone.Transport.schedule(() => {
+        Tone.Transport._scale = event.value;
+      }, event.at.toString());
     },
 
     // Set volume (0 to 1)
@@ -198,8 +206,26 @@ export class ToneAudioDriver extends BaseAudioDriver {
     const beat = Number(parts[1]);
     const subdivision = Number(parts[2]);
     const realtime = (Math.round(Tone.Transport.seconds * 100) / 100).toFixed(2);
+    const tempo = Tone.Transport.bpm.value;
+    const swing = Tone.Transport.swing.value;
+    const timeSignature = Tone.Transport.timeSignature;
+    const meter = timeSignature;
 
-    return { ticks, measure, beat, subdivision, realtime }
+    const key = Tone.Transport._key;
+    const scale = Tone.Transport._scale;
+
+    return { 
+      beat,
+      key,
+      measure,
+      meter,
+      realtime,
+      scale,
+      subdivision,
+      swing,
+      tempo,
+      ticks,
+    }
   }
 
   // Remove all events from timeline
