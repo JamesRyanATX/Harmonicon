@@ -1,2 +1,3 @@
 node_modules
 .DS_Store
+packages/web/public/libraries/core/instruments
