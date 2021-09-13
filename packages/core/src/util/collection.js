@@ -71,6 +71,15 @@ export class Collection {
     return this.type.find(id, obj.storage);
   }
 
+  // [todo] make dynamic
+  getByName(value) {
+    return this.filterByProperty('name', value)[0];
+  }
+
+  getByProperty(property, value) {
+    return this.filterByProperty(property, value)[0];
+  }
+
   filterByProperty(property, value) {
     return this.filter((item) => (item[property] === value));
   }

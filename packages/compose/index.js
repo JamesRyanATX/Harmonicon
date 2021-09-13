@@ -8,35 +8,64 @@ import { Harmonicon } from '@composer/core';
 import {
   doubleDottedLarge,
   dottedLarge,
-  large,
+  large
+} from './src/note/large';
+
+import {
   doubleDottedLong,
   dottedLong,
   long,
+} from './src/note/long';
+
+import {
   doubleDottedDoubleWhole,
   dottedDoubleWhole,
   doubleWhole,
+} from './src/note/double-whole';
+
+import {
   doubleDottedWhole,
   dottedWhole,
   whole,
+} from './src/note/whole';
+
+import {
   doubleDottedHalf,
   dottedHalf,
   half,
+} from './src/note/half';
+
+import {
   doubleDottedQuarter,
   dottedQuarter,
   quarter,
+} from './src/note/quarter';
+
+import {
   doubleDottedEighth,
   dottedEighth,
   eighth,
+} from './src/note/eighth';
+
+import {
   doubleDottedSixteenth,
   dottedSixteenth,
   sixteenth,
+} from './src/note/sixteenth';
+
+import {
   doubleDottedThirtySecond,
   dottedThirtySecond,
   thirtySecond,
+} from './src/note/thirty-second';
+
+import {
   doubleDottedSixtyFourth,
   dottedSixtyFourth,
   sixtyFourth
-} from './src/util/note.js';
+} from './src/note/sixty-fourth';
+
+import { dotted } from './src/note/dotted';
 
 export {
   ComposerError,
@@ -51,6 +80,7 @@ export {
   session,
   track,
 
+  dotted,
   dottedLarge,
   large,
   doubleDottedLong,

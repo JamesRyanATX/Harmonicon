@@ -2,7 +2,7 @@ import { ChordModel } from '@composer/core';
 import Table from 'cli-table2';
 import chalk from 'chalk';
 
-export const description = 'Lis supported chords and types';
+export const description = 'List supported chords and types';
 
 export const examples = [
   {

@@ -1,0 +1,26 @@
+{
+  "tags": {
+      "allowUnknownTags": true,
+      "dictionaries": ["jsdoc"]
+  },
+  "source": {
+      "include": ["index.js", "src", "package.json", "README.md"],
+      "includePattern": ".js$",
+      "excludePattern": "(node_modules/|docs)"
+  },
+  "plugins": [
+      "plugins/markdown"
+  ],
+  "templates": {
+      "referenceTitle": "Harmonicon",
+      "disableSort": true,
+      "collapse": false
+  },
+  "opts": {
+      "destination": "../web/public/doc/compose",
+      "encoding": "utf8",
+      "private": true,
+      "recurse": true,
+      "template": "../jsdoc-template"
+  }
+}

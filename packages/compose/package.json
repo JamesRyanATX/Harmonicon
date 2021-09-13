@@ -4,6 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build:docs": "npx jsdoc --configure jsdoc.json --verbose",
+    "watch:docs-src": "npx nodemon --exec 'npm run build:docs' --watch src",
+    "watch:docs-output": "npx livereload ../web/public/doc",
+    "watch:docs": "npm run watch:docs-output & npm run watch:docs-src",
     "test": "node --experimental-vm-modules node_modules/.bin/jest",
     "test:watch": "node --experimental-vm-modules node_modules/.bin/jest --watch"
   },
@@ -23,6 +27,9 @@
   "devDependencies": {
     "@composer/driver-audio-mock": "1.0.0",
     "@composer/driver-storage-mock": "1.0.0",
-    "jest": "^27.0.6"
+    "jest": "^27.0.6",
+    "jsdoc": "^3.6.7",
+    "livereload": "^0.9.3",
+    "nodemon": "^2.0.12"
   }
 }
