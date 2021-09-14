@@ -23,12 +23,29 @@ import { tuba } from './src/instruments/tuba';
 import { violin } from './src/instruments/violin';
 import { xylophone } from './src/instruments/xylophone';
 
+import { chorus } from './src/effects/chorus';
+import { delay } from './src/effects/delay';
+import { distortion } from './src/effects/distortion';
+import { phaser } from './src/effects/phaser';
+import { pitchShift } from './src/effects/pitch-shift';
+import { reverb } from './src/effects/reverb';
+import { tremolo } from './src/effects/tremolo';
+import { vibrato } from './src/effects/vibrato';
+
+import { kitchenSync } from './src/demos/kitchen-sync';
+
+import { effectChain } from './src/snippets/effect-chain';
+
+import { blank } from './src/templates/blank';
+
 // Library name
 export const name = 'core';
 
 // Build library
 export const build = async () => {
-  return library('core', function ({ library }) {
+  return library('core', async function ({ library }) {
+
+    // Instruments
     acousticGuitar({ library });
     bassoon({ library });
     cello({ library });
@@ -51,5 +68,25 @@ export const build = async () => {
     tuba({ library });
     violin({ library });
     xylophone({ library });
+
+    // Effects
+    chorus({ library });
+    delay({ library });
+    distortion({ library });
+    phaser({ library });
+    pitchShift({ library });
+    reverb({ library });
+    tremolo({ library });
+    vibrato({ library });
+
+    // Snippets
+    await effectChain({ library });
+
+    // Templates
+    await blank({ library });
+
+    // Demos
+    await kitchenSync({ library });
+
   });
 };

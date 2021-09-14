@@ -3,19 +3,20 @@ import { InstrumentModel } from './instrument.js';
 import { TrackModel } from './track.js';
 import { EffectModel } from './effect.js';
 import { PhraseModel } from './phrase.js';
+import { ScriptModel } from './script.js';
 import { sequenceable } from './mixins/sequenceable.js';
 
 export class LibraryModel extends sequenceable(BaseModel) {
 
   static properties = {
 
-    effects: {
-      type: EffectModel,
-      collection: true,
-    },
-
     id: {
       type: String,
+    },
+
+    name: {
+      type: String,
+      defaultValue: 'Untitled'
     },
 
     instruments: {
@@ -23,9 +24,9 @@ export class LibraryModel extends sequenceable(BaseModel) {
       collection: true,
     },
 
-    name: {
-      type: String,
-      defaultValue: 'Untitled'
+    effects: {
+      type: EffectModel,
+      collection: true,
     },
 
     phrases: {
@@ -35,6 +36,21 @@ export class LibraryModel extends sequenceable(BaseModel) {
 
     tracks: {
       type: TrackModel,
+      collection: true,
+    },
+
+    snippets: {
+      type: ScriptModel,
+      collection: true,
+    },
+
+    templates: {
+      type: ScriptModel,
+      collection: true,
+    },
+
+    demos: {
+      type: ScriptModel,
       collection: true,
     },
 
