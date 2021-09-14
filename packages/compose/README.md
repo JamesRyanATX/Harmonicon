@@ -1,10 +1,10 @@
-# Harmonicon Language Reference
+# Harmonicon Composer API
 
 ##### Version 1.0.0
 
 ## Overview
 
-[Harmonicon](https://harmonicon.studio) is a boutique [DAW](https://en.wikipedia.org/wiki/Digital_audio_workstation) for **composing music as code**.
+[Harmonicon](https://harmonicon.studio) is an experimental [DAW](https://en.wikipedia.org/wiki/Digital_audio_workstation) for **composing music as code**.
 
 It focuses on composition over live performance and emphasizes music theory in the songwriting process.
 
@@ -12,9 +12,9 @@ It focuses on composition over live performance and emphasizes music theory in t
 
 * Human-readable composition language based in JavaScript
 * Browser-based IDE with [Visual Studio Code](https://microsoft.github.io/monaco-editor/) technology
-* Tracks, Effects and Sends
-* Library of synthesizers and sample-based instruments
-* Global key signatures and realtime pitch transposition
+* Instruments, Tracks, Effects and Sends
+* Built-in synthesizers and instrument library
+* Key signatures and realtime pitch transposition
 * Powered by the [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API), [Tone.js](https://tonejs.github.io/), [Tonal](https://github.com/tonaljs/tonal), [Monaco](https://microsoft.github.io/monaco-editor/), and [NextJS](https://nextjs.org/).
 
 
@@ -53,25 +53,29 @@ instead of a GUI.
 
 ### Sessions
 
-Sessions are the top-level compositional object and defines overall details of the composition such
-as the time signature, tempo, and key signature.
+**Sessions** define global properties of the composition, like:
+
+* Time Signature
+* Key Signature (tonic and mode)
+* Tempo
+* Swing
 
 ### Instruments
 
-asdf
+**Instruments** are functions that produce sound for tracks.
 
 ### Tracks
 
-asdf
+**Tracks** represent a sequence of notes bound to the session's timeline.
 
-### Notes
+### Phrases
 
-asdf
+**Phrases** are reusable sequences of notes.
 
 ### Sends
 
-asdf
+**Sends** connect the output of one device to the input of another.
 
 ### Effects
 
-asdf
+**Effects** modify the output of instruments and tracks.

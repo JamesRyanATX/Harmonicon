@@ -189,7 +189,7 @@ h6 {
 
 tt, code, kbd, samp {
     font-family: "Source Code Pro", monospace;
-    background: #f4f4f4;
+    /* background: #f4f4f4; */
     padding: 1px 5px;
     border-radius: 5px;
 }
@@ -244,8 +244,8 @@ section {
 }
 
 ul {
-    list-style-type: none;
-    padding-left: 0;
+    /* list-style-type: none;
+    padding-left: 0; */
 }
 
 ul li a {
@@ -438,15 +438,6 @@ footer {
     margin-top: 14px;
     font-size: 13px;
     text-align: right;
-    background: #ffffff;
-    /* Old browsers */
-    background: -moz-linear-gradient(left, #ffffff 0%, #fafafa 100%);
-    /* FF3.6-15 */
-    background: -webkit-linear-gradient(left, #ffffff 0%, #fafafa 100%);
-    /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to right, #ffffff 0%, #fafafa 100%);
-    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#fafafa', GradientType=1);
     padding-right: 5px;
 }
 
@@ -492,10 +483,10 @@ footer {
 
 .prettyprint {
     font-size: 13px;
-    border: 1px solid #ddd;
+    /* border: 1px solid #ddd; */
     border-radius: 3px;
     overflow: auto;
-    background-color: #fbfbfb;
+    /* background-color: #fbfbfb; */
 }
 
 .prettyprint.source {
@@ -507,8 +498,8 @@ footer {
     line-height: 18px;
     display: block;
     margin: 0 30px;
-    background-color: #fbfbfb;
-    color: #4D4E53;
+    /* background-color: #fbfbfb; */
+    /* color: #4D4E53; */
 }
 
 .prettyprint>code {
@@ -776,18 +767,20 @@ dl.param-type {
 }
 
 table {
-    border-collapse: separate;
-    ;
-    display: block;
+    /* border-collapse: separate; */
+    border-collapse:collapse;
+    /* display: block; */
     overflow-x: auto;
     /*table-layout:fixed;*/
+    /* width: 100%; */
 }
 
 table tbody td {
-    border-top: 1px solid hsl(207, 10%, 86%);
-    border-right: 1px solid #eee;
+    /* border-top: 1px solid hsl(207, 10%, 86%);
+    border-right: 1px solid #eee; */
     padding: 5px;
     /*word-wrap: break-word;*/
+    margin: 0;
 }
 
 td table.params, td table.props {

@@ -4,22 +4,22 @@
 ?>
 
 <?js if (data.kind !== 'module') { ?>
-  <!--
-  <?js if (data.kind === 'class' && data.classdesc) { ?>
+  <?js if (data.kind === 'class' && data.classdesc && !data.hideconstructor) { ?>
     <h2>Constructor</h2>
   <?js } ?>
-  -->
 
-  <span class='name-container'>
-    <a class="link-icon" href="<?js= '#' + data.id ?>">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h4 class="name" id="<?js= id ?>">
-      <?js= data.attribs + (data.kind === 'class' ? 'new ' : '') + name + (data.signature || '') ?>
-    </h4>
-  </span>
+  <?js if (!(data.kind === 'class' && data.hideconstructor)) { ?>
+    <span class='name-container'>
+      <a class="link-icon" href="<?js= '#' + data.id ?>">
+        <svg height="20" width="20" style="fill: black;">
+          <use xlink:href="#linkIcon"></use>
+        </svg>
+      </a>
+      <h4 class="name" id="<?js= id ?>">
+        <?js= data.attribs + (data.kind === 'class' ? 'new ' : '') + name + (data.signature || '') ?>
+      </h4>
+    </span>
+  <?js } ?>
 
   <?js if (data.summary) { ?>
     <p class="summary">

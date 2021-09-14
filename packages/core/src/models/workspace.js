@@ -1,6 +1,5 @@
 import { BaseModel } from './base.js';
 import { FileModel } from './file.js';
-
 import { storable } from './mixins.js';
 
 export class WorkspaceModel extends storable(BaseModel) {
@@ -21,6 +20,25 @@ export class WorkspaceModel extends storable(BaseModel) {
       type: FileModel,
       collection: true,
       foreignKey: 'workspace',
+    },
+
+    // Configuration for tool panels in UI
+    panels: {
+      type: Object,
+      defaultValue: () => ({
+        library: {
+          enabled: true,
+        },
+        routes: {
+          enabled: true,
+        },
+        chords: {
+          enabled: true,
+        },
+        keyboard: {
+          enabled: true,
+        },
+      })
     },
 
     // Audio driver (tone, mock, etc.)

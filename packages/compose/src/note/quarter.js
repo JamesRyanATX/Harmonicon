@@ -2,6 +2,10 @@ import {
   DoubleDottedQuarterUnit,
   DottedQuarterUnit,
   QuarterUnit,
+  TripletQuarterUnit,
+  QuintupletQuarterUnit,
+  SeptupletQuarterUnit
+
 } from "@composer/core";
 
 import { NoteComposer } from "../note";
@@ -26,4 +30,15 @@ export class doubleDottedQuarter extends NoteComposer {
   static unit = DoubleDottedQuarterUnit;
 }
 
+export class tripletQuarter extends NoteComposer {
+  static unit = TripletQuarterUnit;
+}
+
+export class quintupletQuarter extends NoteComposer {
+  static unit = QuintupletQuarterUnit;
+}
+
+export class septupletQuarter extends NoteComposer {
+  static unit = SeptupletQuarterUnit;
+}
 

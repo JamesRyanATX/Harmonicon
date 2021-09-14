@@ -12,8 +12,6 @@
     "README.md"
   ],
   "scripts": {
-    "lint": "eslint .",
-    "test": "npm run lint",
     "preversion": "./scripts/preversion"
   },
   "repository": {
@@ -32,8 +30,6 @@
   },
   "homepage": "https://github.com/braintree/jsdoc-template",
   "devDependencies": {
-    "eslint": "^7.4.0",
-    "eslint-config-braintree": "^4.0.0",
     "taffydb": "^2.7.3"
   }
 }

@@ -1,4 +1,4 @@
-import { doubledoubleDottedEighth } from './eighth';
+import { doubleDottedEighth } from './eighth';
 import { doubleDottedLarge } from './large';
 import { doubleDottedLong } from './long';
 import { doubleDottedDoubleWhole } from './double-whole';
@@ -23,52 +23,51 @@ export const doubleDotted = {
   /**
    * Double dotted large note value.
    */
-   large: doubleDottedLarge,
+  large: doubleDottedLarge,
 
   /**
    * Double dotted long note value.
    */
-   long: doubleDottedLong,
+  long: doubleDottedLong,
 
   /**
    * Double dotted double whole note value.
    */
-   doubleWhole: doubleDottedDoubleWhole,
+  doubleWhole: doubleDottedDoubleWhole,
 
   /**
    * Double dotted whole note value.
    */
-   whole: doubleDottedWhole,
+  whole: doubleDottedWhole,
 
   /**
    * Double dotted half note value.
    */
-   half: doubleDottedHalf,
+  half: doubleDottedHalf,
 
   /**
    * Double dotted quarter note value.
    */
-   quarter: doubleDottedQuarter,
+  quarter: doubleDottedQuarter,
 
   /**
    * Double dotted eighth note value.
    */
-   eighth: doubleDottedEighth,
+  eighth: doubleDottedEighth,
 
   /**
    * Double dotted sixteenth note value.
    */
-   sixteenth: doubleDottedSixteenth,
+  sixteenth: doubleDottedSixteenth,
 
   /**
    * Double dotted thirty-second note value.
    */
-   thirtySecond: doubleDottedThirtySecond,
+  thirtySecond: doubleDottedThirtySecond,
 
   /**
    * Double dotted sixty-fourth note value.
    */
-   sixtyFourth: doubleDottedSixtyFourth,
-
+  sixtyFourth: doubleDottedSixtyFourth,
 
 }

@@ -1,14 +1,24 @@
-import { BaseComposer } from './base';
+import { BaseSequencedComposer } from './base/sequenced';
 import { EffectModel } from '@composer/core';
 
 /**
- * Create an effect.
+ * Create effects with {@link SessionComposer#effect|session.effect()}:
  * 
- * @sort 5
- * @label Effect
+ * ``` javascript
+ * session.effect('fx-reverb', ({ effect }) => {
+ *   return new Tone.Reverb({
+ *     wet: 0.5
+ *   });
+ * });
+ * ```
+ * 
+ * @sort 6
+ * @label Effects
  * @category Composers
+ * @extends BaseSequencedComposer
+ * @hideconstructor
  */
-export class EffectComposer extends BaseComposer {
+export class EffectComposer extends BaseSequencedComposer {
   static modelContextName = 'effect';
   static model = EffectModel;
 }

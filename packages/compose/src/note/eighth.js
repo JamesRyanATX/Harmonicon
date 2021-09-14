@@ -2,6 +2,9 @@ import {
   DoubleDottedEighthUnit,
   DottedEighthUnit,
   EighthUnit,
+  TripletEighthUnit,
+  QuintupletEighthUnit,
+  SeptupletEighthUnit,
 } from "@composer/core";
 
 import { NoteComposer } from "../note";
@@ -25,4 +28,14 @@ export class doubleDottedEighth extends NoteComposer {
   static unit = DoubleDottedEighthUnit;
 }
 
+export class tripletEighth extends NoteComposer {
+  static unit = TripletEighthUnit;
+}
 
+export class quintupletEighth extends NoteComposer {
+  static unit = QuintupletEighthUnit;
+}
+
+export class septupletEighth extends NoteComposer {
+  static unit = SeptupletEighthUnit;
+}

@@ -14,7 +14,8 @@
   "templates": {
       "referenceTitle": "Harmonicon",
       "disableSort": true,
-      "collapse": false
+      "collapse": true,
+      "search": false
   },
   "opts": {
       "destination": "../web/public/doc/compose",

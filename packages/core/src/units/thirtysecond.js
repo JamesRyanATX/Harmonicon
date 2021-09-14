@@ -1,14 +1,13 @@
 import { BaseUnit } from './base.js';
-import { DurationValue } from "@tonaljs/tonal";
 
 export class ThirtySecondUnit extends BaseUnit {
-  static definition = DurationValue.get('thirty-second');
+  static name = 'thirty-second';
 }
 
 export class DottedThirtySecondUnit extends BaseUnit {
-  static definition = DurationValue.get('thirty-second.');
+  static name = 'thirty-second.';
 }
 
 export class DoubleDottedThirtySecondUnit extends BaseUnit {
-  static definition = DurationValue.get('thirty-second..');
+  static name = 'thirty-second..';
 }

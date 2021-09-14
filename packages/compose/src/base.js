@@ -29,13 +29,13 @@ export class BaseComposer {
     }).bind(this);
   }
 
-  /**
-   * 
-   */
   static async initialize () {
     this.initialized = true;
   }
 
+  /**
+   * @ignore
+   */
   constructor(name, fn, context) {
     this.name = name;
     this.fn = fn;

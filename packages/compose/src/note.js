@@ -18,136 +18,191 @@ function isNote (pitch) {
 }
 
 /**
- * Sequence notes, pitches and and rests.
+ * Sequence single notes, chords and rests with note factories.
  * 
- * ### Helpers
+ * The following example uses {@link quarter}, {@link eighth} and {@link dotted.quarter} note factories:
  * 
- * As NoteComposer is an abstract class, you should author compositions
- * with the following globally available flavors:
+ * ``` javascript
+ * // Single note:
+ * track.at(0).play(quarter.note('C5'))
  * 
- * Regular        | Dotted               | Double Dotted
- * ---------------|----------------------|--------------------------
- * `large`        | `dottedLarge`        | `doubleDottedLarge`
- * `long`         | `dottedLong`         | `doubleDottedLong`
- * `doubleWhole`  | `dottedDoubleWhole`  | `doubleDottedDoubleWhole`
- * `whole`        | `dottedWhole`        | `doubleDottedWhole`
- * `half`         | `dottedHalf`         | `doubleDottedHalf`
- * `quarter`      | `dottedQuarter`      | `doubleDottedQuarter`
- * `eighth`       | `dottedEighth`       | `doubleDottedEighth`
- * `sixteenth`    | `dottedSixteenth`    | `doubleDottedSixteenth`
- * `thirtySecond` | `dottedThirtySecond` | `doubleDottedThirtySecond`
- * `sixtyFourth`  | `dottedSixtyFourth`  | `doubleDottedSixtyFourth`
+ * // Named chord:
+ * track.at(0).play(quarter.note('Cmaj7'))
+ *
+ * // Custom chord:
+ * track.at(0).play(quarter.note('C4 D4 E4 G5'))
  * 
- * @sort 5
- * @label Note
+ * // One bar phrase with chords and a rest:
+ * track.at(0).play.phrase([
+ *   dotted.quarter.note('Cmaj7'),
+ *   eighth.note('Dmin'),
+ *   quarter.rest(),
+ *   quarter.note('Bmaj')
+ * ]);
+ * ```
+ * 
+ * ### Note Factories
+ * 
+ * Note factories are subclasses of {@link NoteComposer} bound to a specific time unit.
+ * 
+ * **Standard**<br>
+ * {@link large}
+ * {@link long}
+ * {@link doubleWhole}
+ * {@link whole}
+ * {@link half}
+ * {@link quarter}
+ * {@link eighth}
+ * {@link sixteenth}
+ * {@link thirtySecond}
+ * {@link sixtyFourth}
+ * 
+ * **Dotted**<br>
+ * {@link dotted.large}
+ * {@link dotted.long}
+ * {@link dotted.doubleWhole}
+ * {@link dotted.whole}
+ * {@link dotted.half}
+ * {@link dotted.quarter}
+ * {@link dotted.eighth}
+ * {@link dotted.sixteenth}
+ * {@link dotted.thirtySecond}
+ * {@link dotted.sixtyFourth}
+ * 
+ * **Double Dotted**<br>
+ * {@link doubleDotted.large}
+ * {@link doubleDotted.long}
+ * {@link doubleDotted.doubleWhole}
+ * {@link doubleDotted.whole}
+ * {@link doubleDotted.half}
+ * {@link doubleDotted.quarter}
+ * {@link doubleDotted.eighth}
+ * {@link doubleDotted.sixteenth}
+ * {@link doubleDotted.thirtySecond}
+ * {@link doubleDotted.sixtyFourth}
+ * 
+ * **Triplets**<br>
+ * {@link triplet.quarter}
+ * {@link triplet.eighth}
+ * {@link triplet.sixteenth}
+ * 
+ * **Quintuplets**<br>
+ * {@link quintuplet.quarter}
+ * {@link quintuplet.eighth}
+ * {@link quintuplet.sixteenth}
+ * 
+ * **Septuplets**<br>
+ * {@link septuplet.quarter}
+ * {@link septuplet.eighth}
+ * {@link septuplet.sixteenth}
+ * 
+ * ### Pitches
+ * 
+ * Pitches are specified in {@link https://en.wikipedia.org/wiki/ABC_notation|ABC Notation} or as integers relative to the key signature.
+ *
+ * #### ABC Notation
+ * 
+ * ```
+ * // Default octave (4)
+ * track.at(0).play(quarter.note('C'));
+ * 
+ * // With specific octave:
+ * track.at(0).play(quarter.note('C2'));
+ * ```
+ *
+ * #### Relative Notation
+ * 
+ * Relative pitches are signed integers that will be transposed to notes in the appropriate key signature at the time they are played.
+ * 
+ * Consider the following:
+ * 
+ * ```
+ * session('my-song', async ({ session }) => {
+ *   session.at(0)
+ *     .key('C')
+ *     .scale('major');
+ * 
+ *   session.phrase('melody', [
+ *     quarter.note(0),
+ *     quarter.note(1),
+ *     quarter.note(2),
+ *     quarter.note(3),
+ *   ])
+ * 
+ *   track('my-track', async ({ track }) => {
+ *     track.at(0).play.phrase('melody'); // ==> C4, D4, E4, F4
+ *     track.at(2).play.phrase('melody'); // ==> C4, D4, E4, F4
+ *   });
+ * });
+ * ```
+ * 
+ * If we change the key signature at measure 2, the resulting notes are:
+ * 
+ * ```
+ * session('my-song', async ({ session }) => {
+ *   session.at(0)
+ *     .key('C')
+ *     .scale('major');
+ * 
+ *   session.at(2)
+ *     .key('E')
+ *     .scale('major');
+ * 
+ *   session.phrase('melody', [
+ *     quarter.note(0),
+ *     quarter.note(1),
+ *     quarter.note(2),
+ *     quarter.note(3),
+ *    ])
+ * 
+ *   track('my-track', async ({ track }) => {
+ *     track.at(0).play.phrase('melody'); // ==> C4, D4, E4, F4
+ *     track.at(2).play.phrase('melody'); // ==> E4, F#, G#, A4
+ *   });
+ * });
+ * ```
+ * 
+ * ### Chords
+ * 
+ * #### Named Chords
+ *
+ * Harmonicon supports a large number of chords that can be referenced by name:
+ * 
+ * ``` javascript
+ * session.track('my-track', async () => {
+ *  track.at(0).play(quarter.note('cmaj7'))
+ * })
+ * ```
+ * 
+ * #### Custom Chord Structures
+ * 
+ * To specify chord notes manually, provide an array of notes:
+ * 
+ * ``` javascript
+ * session.track('my-track', async () => {
+ *  track.at(0).play(quarter.note([ 'C4', 'E4', 'F4' ]));
+ * })
+ * ```
+ *
+ * Alternatively, a space-delimited string also works:
+ * 
+ * ``` javascript
+ * session.track('my-track', async () => {
+ *  track.at(0).play(quarter.note('C4 E4 F4');
+ * })
+ * ```
+ * 
  * @abstract
- * @class
  * @hideconstructor
+ * @sort 4
+ * @label Notes
  * @category Composers
  */
 export class NoteComposer {
 
   /**
-   * Sequence one or more notes at the same position on the timeline.
+   * Sequence one or more pitches at a position on the timeline.
    *
-   * ### Pitch Types
-   * 
-   * Pitches can be declared in **ABC Notation** or **Relative** to the declared key signature.
-   *
-   * #### ABC Notation
-   * 
-   * ```
-   * session('my-song', async ({ session }) => {
-   *   track('my-track', async ({ track }) => {
-   *     track.at(0).play(quarter.note('C'));
-   *   })
-   * })
-   * ```
-   *
-   * #### Relative Notation
-   * 
-   * Relative pitches are computed from the key signature.  The benefit of using
-   * relative pitches is that, by changing the key signature, a song can be transposed
-   * in realtime.
-   * 
-   * Consider the following:
-   * 
-   * ```
-   * session('my-song', async ({ session }) => {
-   *   session.at(0)
-   *     .key('C')
-   *     .scale('major');
-   * 
-   *   session.phrase('melody', [
-   *     quarter.note(0),
-   *     quarter.note(1),
-   *     quarter.note(2),
-   *     quarter.note(3),
-   *    ])
-   * 
-   *   track('my-track', async ({ track }) => {
-   *     track.at(0).play.phrase('melody'); // ==> C4, D4, E4, F4
-   *     track.at(2).play.phrase('melody'); // ==> C4, D4, E4, F4
-   *   });
-   * });
-   * ```
-   * 
-   * If we change the key signature at measure 2, the resulting notes are:
-   * 
-   * ```
-   * session('my-song', async ({ session }) => {
-   *   session.at(0)
-   *     .key('C')
-   *     .scale('major');
-   * 
-   *   session.at(2)
-   *     .key('E')
-   *     .scale('major');
-   * 
-   *   session.phrase('melody', [
-   *     quarter.note(0),
-   *     quarter.note(1),
-   *     quarter.note(2),
-   *     quarter.note(3),
-   *    ])
-   * 
-   *   track('my-track', async ({ track }) => {
-   *     track.at(0).play.phrase('melody'); // ==> C4, D4, E4, F4
-   *     track.at(2).play.phrase('melody'); // ==> E4, F#, G#, A4
-   *   });
-   * });
-   * ```
-   * ### Chords
-   * 
-   * #### Named Chords
-   *
-   * Harmonicon supports a large number of chords that can be referenced by name:
-   * 
-   * ``` javascript
-   * session.track('my-track', async () => {
-   *  track.at(0).play(quarter.note('cmaj7'))
-   * })
-   * ```
-   * 
-   * #### Custom Chord Structures
-   * 
-   * To specify chord notes manually, provide an array of notes:
-   * 
-   * ``` javascript
-   * session.track('my-track', async () => {
-   *  track.at(0).play(quarter.note([ 'C4', 'E4', 'F4' ]));
-   * })
-   * ```
-   *
-   * Alternatively, a space-delimited string also works:
-   * 
-   * ``` javascript
-   * session.track('my-track', async () => {
-   *  track.at(0).play(quarter.note('C4 E4 F4');
-   * })
-   * ```
-   *
-   * 
    * @param {(Array|Integer|String)} pitch - pitch, chord, or array of pitches
    * @param {Object} options
    * @param {Integer} options.octave - octave (0 to 7)
@@ -202,13 +257,12 @@ export class NoteComposer {
    * Sequence a rest inside a phrase.
    * 
    * @example
-   * ``` javascript
+   * // One bar phrase with a 2 beat rest:
    * session.phrase('my-phrase', [
    *   quarter.note('C'),
    *   half.rest(),
    *   quarter.note('D'),
    * ])
-   * ```
    * 
    * @param {*} options 
    * @returns {RestModel}
@@ -217,9 +271,4 @@ export class NoteComposer {
     return RestModel.parse(Object.assign({ duration: this.unit }, options));
   }
 
-  /**
-   * @hideconstructor
-   * @ignore
-   */
-  constructor () { }
 }

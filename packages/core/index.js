@@ -20,17 +20,77 @@ export { LibraryModel } from './src/models/library.js';
 export { InstrumentModel } from './src/models/instrument.js';
 export { ChordModel } from './src/models/chord.js';
 export { SequencedEventLogModel } from './src/models/sequenced_event_log.js';
+export { WorkspaceModel } from './src/models/workspace';
+export { ScriptModel } from './src/models/script';
 
-export { LargeUnit, DottedLargeUnit, DoubleDottedLargeUnit } from './src/units/large.js';
-export { LongUnit, DottedLongUnit, DoubleDottedLongUnit } from './src/units/long.js';
-export { DoubleWholeUnit, DottedDoubleWholeUnit, DoubleDottedDoubleWholeUnit } from './src/units/doublewhole.js';
-export { WholeUnit, DottedWholeUnit, DoubleDottedWholeUnit } from './src/units/whole.js';
-export { HalfUnit, DottedHalfUnit, DoubleDottedHalfUnit } from './src/units/half.js';
-export { QuarterUnit, DottedQuarterUnit, DoubleDottedQuarterUnit } from './src/units/quarter.js';
-export { EighthUnit, DottedEighthUnit, DoubleDottedEighthUnit } from './src/units/eighth.js';
-export { SixteenthUnit, DottedSixteenthUnit, DoubleDottedSixteenthUnit } from './src/units/sixteenth.js';
-export { ThirtySecondUnit, DottedThirtySecondUnit, DoubleDottedThirtySecondUnit } from './src/units/thirtysecond.js';
-export { SixtyFourthUnit, DottedSixtyFourthUnit, DoubleDottedSixtyFourthUnit } from './src/units/sixtyfourth.js';
+export {
+  LargeUnit,
+  DottedLargeUnit,
+  DoubleDottedLargeUnit
+} from './src/units/large.js';
+
+export {
+  LongUnit,
+  DottedLongUnit,
+  DoubleDottedLongUnit
+} from './src/units/long.js';
+
+export {
+  DoubleWholeUnit,
+  DottedDoubleWholeUnit,
+  DoubleDottedDoubleWholeUnit
+} from './src/units/doublewhole.js';
+
+export {
+  WholeUnit,
+  DottedWholeUnit,
+  DoubleDottedWholeUnit
+} from './src/units/whole.js';
+
+export {
+  HalfUnit,
+  DottedHalfUnit,
+  DoubleDottedHalfUnit,
+} from './src/units/half.js';
+
+export {
+  DottedQuarterUnit,
+  DoubleDottedQuarterUnit,
+  QuarterUnit,
+  QuintupletQuarterUnit,
+  SeptupletQuarterUnit,
+  TripletQuarterUnit,
+} from './src/units/quarter.js';
+
+export { 
+  DottedEighthUnit, 
+  DoubleDottedEighthUnit,
+  EighthUnit,
+  QuintupletEighthUnit,
+  SeptupletEighthUnit,
+  TripletEighthUnit,
+} from './src/units/eighth.js';
+
+export {
+  DottedSixteenthUnit,
+  DoubleDottedSixteenthUnit,
+  QuintupletSixteenthUnit,
+  SeptupletSixteenthUnit,
+  SixteenthUnit,
+  TripletSixteenthUnit,
+} from './src/units/sixteenth.js';
+
+export {
+  ThirtySecondUnit,
+  DottedThirtySecondUnit,
+  DoubleDottedThirtySecondUnit
+} from './src/units/thirtysecond.js';
+
+export {
+  SixtyFourthUnit,
+  DottedSixtyFourthUnit,
+  DoubleDottedSixtyFourthUnit
+} from './src/units/sixtyfourth.js';
 
 export { Logger } from './src/util/logger.js';
 

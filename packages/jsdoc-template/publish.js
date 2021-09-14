@@ -325,10 +325,10 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
             itemsNav += '<li data-type="method" id="' + item.name.replace('/', '_') + '-' + method.name + '-nav">';
 
             if (method.tags.proxiedBy) {
-              itemsNav += linkto(method.longname, `${method.tags.proxiedBy.value} › ${method.name}`);
+              itemsNav += linkto(method.longname, `.${method.tags.proxiedBy.value}().${method.name}`);
             }
             else {
-              itemsNav += linkto(method.longname, method.name);
+              itemsNav += linkto(method.longname, `.${method.name}()`);
             }
             itemsNav += '</li>';
           });
@@ -410,15 +410,16 @@ function buildNav(members) {
   //   }
   // }
 
-  nav += buildMemberNav(getCategoryMembers(members.globals || [], 'Documents'), 'Composition Types', seen, linkto);
-  nav += buildMemberNav(getCategoryMembers(members.classes, 'Composers'), 'Composers', seen, linkto);
-  nav += buildMemberNav(getCategoryMembers(members.classes, 'Notes'), 'Note Types', seen, linkto);
+  //nav += buildMemberNav(getCategoryMembers(members.globals || [], 'Documents'), 'Composition Types', seen, linkto);
+  nav += buildMemberNav(getCategoryMembers(members.classes, 'Composers'), 'Compose', seen, linkto);
+  //nav += buildMemberNav(getCategoryMembers(members.classes, 'Notes'), 'Note Factories', seen, linkto);
 
-  nav += buildMemberNav(members.classes, 'Classes', seen, linkto);
+  //nav += buildMemberNav(members.classes, 'Classes', seen, linkto);
 
 
-  nav += buildMemberNav(members.classes, 'Classes', seen, linkto);
-  nav += buildMemberNav(members.modules, 'Modules', {}, linkto);
+  //nav += buildMemberNav(members.classes, 'Classes', seen, linkto);
+  //nav += buildMemberNav(members.modules, 'Modules', {}, linkto);
+  
   // TODO: as needed, comment back in later
   // nav += buildMemberNav(members.externals, 'Externals', seen, linktoExternal);
   // nav += buildMemberNav(members.events, 'Events', seen, linkto);
@@ -662,7 +663,9 @@ exports.publish = function (taffyData, opts, tutorials) {
     var myClasses = helper.find(classes, {longname: longname});
 
     if (myClasses.length) {
-      generate('Class', myClasses[0].name, myClasses, helper.longnameToUrl[longname]);
+      const tags = myClasses[0].tags;
+      const title = (tags.label || myClasses[0].name);
+      generate('Class', title, myClasses, helper.longnameToUrl[longname]);
     }
 
     var myNamespaces = helper.find(namespaces, {longname: longname});

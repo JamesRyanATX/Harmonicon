@@ -4,10 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build:docs": "npx jsdoc --configure jsdoc.json --verbose",
-    "watch:docs-src": "npx nodemon --exec 'npm run build:docs' --watch src",
-    "watch:docs-output": "npx livereload ../web/public/doc",
-    "watch:docs": "npm run watch:docs-output & npm run watch:docs-src",
+    "doc": "npx jsdoc --configure jsdoc.json --verbose",
+    "doc:watch": "npx nodemon --exec 'npm run doc' --ext js,css,tmpl --watch src --watch ../jsdoc-template/static --watch ../jsdoc-template/tmpl --watch ../jsdoc-template/publish.js",
     "test": "node --experimental-vm-modules node_modules/.bin/jest",
     "test:watch": "node --experimental-vm-modules node_modules/.bin/jest --watch"
   },

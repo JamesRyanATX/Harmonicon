@@ -5,67 +5,22 @@ import { track, TrackComposer } from './src/track';
 import { ComposerError } from './src/errors';
 import { Harmonicon } from '@composer/core';
 
-import {
-  doubleDottedLarge,
-  dottedLarge,
-  large
-} from './src/note/large';
-
-import {
-  doubleDottedLong,
-  dottedLong,
-  long,
-} from './src/note/long';
-
-import {
-  doubleDottedDoubleWhole,
-  dottedDoubleWhole,
-  doubleWhole,
-} from './src/note/double-whole';
-
-import {
-  doubleDottedWhole,
-  dottedWhole,
-  whole,
-} from './src/note/whole';
-
-import {
-  doubleDottedHalf,
-  dottedHalf,
-  half,
-} from './src/note/half';
-
-import {
-  doubleDottedQuarter,
-  dottedQuarter,
-  quarter,
-} from './src/note/quarter';
-
-import {
-  doubleDottedEighth,
-  dottedEighth,
-  eighth,
-} from './src/note/eighth';
-
-import {
-  doubleDottedSixteenth,
-  dottedSixteenth,
-  sixteenth,
-} from './src/note/sixteenth';
-
-import {
-  doubleDottedThirtySecond,
-  dottedThirtySecond,
-  thirtySecond,
-} from './src/note/thirty-second';
-
-import {
-  doubleDottedSixtyFourth,
-  dottedSixtyFourth,
-  sixtyFourth
-} from './src/note/sixty-fourth';
+import { large } from './src/note/large';
+import { long } from './src/note/long';
+import { doubleWhole } from './src/note/double-whole';
+import { whole } from './src/note/whole';
+import { half } from './src/note/half';
+import { quarter } from './src/note/quarter';
+import { eighth } from './src/note/eighth';
+import { sixteenth } from './src/note/sixteenth';
+import { thirtySecond } from './src/note/thirty-second';
+import { sixtyFourth } from './src/note/sixty-fourth';
 
 import { dotted } from './src/note/dotted';
+import { doubleDotted } from './src/note/double-dotted';
+import { triplet } from './src/note/triplet';
+import { quintuplet } from './src/note/quintuplet';
+import { septuplet } from './src/note/septuplet';
 
 export {
   ComposerError,
@@ -74,41 +29,26 @@ export {
   SessionComposer,
   TrackComposer,
 
-  doubleDottedLarge,
   instrument,
   library,
   session,
   track,
 
   dotted,
-  dottedLarge,
+  doubleDotted,
+  triplet,
+  quintuplet,
+  septuplet,
+
   large,
-  doubleDottedLong,
-  dottedLong,
   long,
-  doubleDottedDoubleWhole,
-  dottedDoubleWhole,
   doubleWhole,
-  doubleDottedWhole,
-  dottedWhole,
   whole,
-  doubleDottedHalf,
-  dottedHalf,
   half,
-  doubleDottedQuarter,
-  dottedQuarter,
   quarter,
-  doubleDottedEighth,
-  dottedEighth,
   eighth,
-  doubleDottedSixteenth,
-  dottedSixteenth,
   sixteenth,
-  doubleDottedThirtySecond,
-  dottedThirtySecond,
   thirtySecond,
-  doubleDottedSixtyFourth,
-  dottedSixtyFourth,
   sixtyFourth
 }
 
@@ -118,35 +58,22 @@ export const parseCode = async (code) => {
     session,
     instrument,
     track,
-    doubleDottedLarge,
-    dottedLarge,
+
+    dotted,
+    doubleDotted,
+    triplet,
+    quintuplet,
+    septuplet,
+
     large,
-    doubleDottedLong,
-    dottedLong,
     long,
-    doubleDottedDoubleWhole,
-    dottedDoubleWhole,
     doubleWhole,
-    doubleDottedWhole,
-    dottedWhole,
     whole,
-    doubleDottedHalf,
-    dottedHalf,
     half,
-    doubleDottedQuarter,
-    dottedQuarter,
     quarter,
-    doubleDottedEighth,
-    dottedEighth,
     eighth,
-    doubleDottedSixteenth,
-    dottedSixteenth,
     sixteenth,
-    doubleDottedThirtySecond,
-    dottedThirtySecond,
     thirtySecond,
-    doubleDottedSixtyFourth,
-    dottedSixtyFourth,
     sixtyFourth
   };
 

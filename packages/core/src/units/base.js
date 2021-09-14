@@ -1,5 +1,24 @@
+import { DurationValue } from "@tonaljs/tonal";
+
 export class BaseUnit {
-  static definition = {};
+  static name = null;
+
+  static get definition () {
+    if (this.fraction) {
+      return {
+        dots: this.dots,
+        tuplet: this.tuplet,
+        fraction: this.fraction,
+        name: this.name,
+        names: [ this.name ], 
+        shorthand: this.shorthand, 
+        value: this.fraction[0] / this.fraction[1],
+      }
+    }
+    else {
+      return DurationValue.get(this.name);
+    }
+  };
 
   static toMBS(meter = [ 4, 4 ]) {
     const asBeats = this.toBeats(meter);

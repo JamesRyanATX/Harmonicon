@@ -23,52 +23,51 @@ export const dotted = {
   /**
    * Dotted large note value.
    */
-   large: dottedLarge,
+  large: dottedLarge,
 
   /**
    * Dotted long note value.
    */
-   long: dottedLong,
+  long: dottedLong,
 
   /**
    * Dotted double whole note value.
    */
-   doubleWhole: dottedDoubleWhole,
+  doubleWhole: dottedDoubleWhole,
 
   /**
    * Dotted whole note value.
    */
-   whole: dottedWhole,
+  whole: dottedWhole,
 
   /**
    * Dotted half note value.
    */
-   half: dottedHalf,
+  half: dottedHalf,
 
   /**
    * Dotted quarter note value.
    */
-   quarter: dottedQuarter,
+  quarter: dottedQuarter,
 
   /**
    * Dotted eighth note value.
    */
-   eighth: dottedEighth,
+  eighth: dottedEighth,
 
   /**
    * Dotted sixteenth note value.
    */
-   sixteenth: dottedSixteenth,
+  sixteenth: dottedSixteenth,
 
   /**
    * Dotted thirty-second note value.
    */
-   thirtySecond: dottedThirtySecond,
+  thirtySecond: dottedThirtySecond,
 
   /**
    * Dotted sixty-fourth note value.
    */
-   sixtyFourth: dottedSixtyFourth,
-
+  sixtyFourth: dottedSixtyFourth,
 
 }

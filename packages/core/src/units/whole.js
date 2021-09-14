@@ -1,14 +1,13 @@
 import { BaseUnit } from './base.js';
-import { DurationValue } from "@tonaljs/tonal";
 
 export class WholeUnit extends BaseUnit {
-  static definition = DurationValue.get('whole');
+  static name = 'whole';
 }
 
 export class DottedWholeUnit extends BaseUnit {
-  static definition = DurationValue.get('whole.');
+  static name = 'whole.';
 }
 
 export class DoubleDottedWholeUnit extends BaseUnit {
-  static definition = DurationValue.get('whole..');
+  static name = 'whole..';
 }
