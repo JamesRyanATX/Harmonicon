@@ -46,7 +46,7 @@ function Collection({
                 <>
                   {copy ? (
                     <a onClick={() => (onCopy(record))} title="Copy snippet to clipboard">
-                      <IoCopyOutline />
+                      <IoCodeSharp />
                     </a>
                   ) : ''}
                   {create ? (

@@ -36,14 +36,27 @@
   }
 
   .treeItemActions {
-    color: rgb(100, 100, 100);
     display: none;
   }
 
-  .treeItemActions > a:active {
-    color: white;
-    background-color: var(--item-hover-color);
-  }
+    .treeItemActions a {
+      margin-left: 5px;
+      background-color: rgb(70, 70, 70);
+      border-radius: var(--theme-border-radius);
+      height: 12px;
+      width: 12px;
+      padding: 2px 3px 0 3px;
+      color: #fff;
+    }
+
+    .treeItemActions > a:hover {
+      background-color: rgb(100, 100, 100);
+    }
+
+    .treeItemActions > a:active {
+      color: white;
+      background-color: var(--item-hover-color);
+    }
 
   .treeItem:hover {
     color: var(--item-hover-color);

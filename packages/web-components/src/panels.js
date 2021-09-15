@@ -27,7 +27,17 @@ function PanelContent ({ children, noscroll }) {
     }}>
       {children}
     </div>
-  )
+  );
+}
+
+export function PanelFilter({
+  children = null,
+}) {
+  return (
+    <div className={styles.panelFilter}>
+      {children}
+    </div>
+  );
 }
 
 export function Panel ({
@@ -40,6 +50,7 @@ export function Panel ({
   transparent = false,
   sticky = false,
   noscroll = false,
+  filter = null,
 }) {
 
   return (
@@ -51,6 +62,9 @@ export function Panel ({
       ].join(' ')}
     >
       <PanelHeader label={label} onClose={onClose} sticky={sticky} />
+      {filter ? (
+        <PanelFilter>{filter()}</PanelFilter>
+      ) : ''}
       <PanelContent children={children} noscroll={noscroll} />
     </div>
   )

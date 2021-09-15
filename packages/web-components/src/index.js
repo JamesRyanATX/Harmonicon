@@ -1,8 +1,13 @@
 "use strict";
 
 import {
+  Select
+} from './controls';
+
+import {
   Panels,
-  Panel
+  Panel,
+  PanelFilter,
  } from "./panels";
 
 import {
@@ -22,6 +27,8 @@ import {
 } from './tree';
 
 module.exports = {
+  Select,
+  PanelFilter,
   Panels,
   Panel,
   Menu,

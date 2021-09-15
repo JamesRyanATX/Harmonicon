@@ -80,7 +80,15 @@
     background-color: transparent;
   }
 
-  /* .panel[data-id="library"] {
-    min-width: 200px;
-    border-right: 1px solid rgb(60, 60, 60);
-  } */
+.panelFilter {
+  display: flex;
+  flex-direction: row;
+  padding: 3px 0 3px 3px;
+  border-bottom: 1px solid rgb(60, 60, 60);
+  background-color: rgb(45, 45, 45);
+}
+
+  .panelFilter > * {
+    flex: 1;
+    margin: 0 3px 0 0;
+  }

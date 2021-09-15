@@ -252,6 +252,17 @@ export class ToneAudioDriver extends BaseAudioDriver {
     return Tone.Transport.start();
   }
 
+  async playNote({ note }) {
+    const notes = Array.isArray(note) ? note : [ note ];
+
+    this.previewer = this.previewer || new Tone.PolySynth().toDestination();
+    this.previewer.releaseAll();
+
+    this.previewer.triggerAttackRelease(notes.map((note) => {
+      return note.computedPitch();
+    }), 1);
+  }
+
   on (eventName, fn) {
     Tone.Transport.on(eventName, fn);
   }

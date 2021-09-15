@@ -61,4 +61,8 @@ export class BaseAudioDriver extends BaseDriver {
     this.logger.error('stop() not implemented');
   }
 
+  async playNote() {
+    this.logger.error('playNote() not implemented');
+  }
+
 }

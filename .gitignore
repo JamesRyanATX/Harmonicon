@@ -1,4 +1,5 @@
 node_modules
 .DS_Store
 packages/web/public/libraries/core/instruments
+packages/web-components/dist
 lerna-debug.log

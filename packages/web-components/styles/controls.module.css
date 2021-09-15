@@ -1,0 +1,78 @@
+:root {
+  --control-border-color: rgb(100, 100, 100);
+  --control-color: rgb(200, 200, 200);
+  --control-padding: 4px;
+  --control-label-color: rgb(150, 150, 150);
+
+  --control-hover-border-color: rgb(150, 150, 150);
+}
+
+.control {
+  border: 1px solid var(--control-border-color);
+  display: flex;
+  color: var(--control-color);
+  padding: var(--control-padding);
+  position: relative;
+}
+
+  .control:hover {
+    border-color: var(--control-hover-border-color);
+  }
+
+  .control select {
+    flex: 1;
+    display: block;
+  }
+
+
+/* select */
+
+.select {
+  cursor: pointer;
+}
+
+  .select select {
+    appearance: none;
+    background-color: transparent;
+    border: none;
+    color: var(--control-color);
+    cursor: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    margin: 0;
+    outline: none;
+    padding: 0;
+    width: 100%;
+    text-align-last: right;    
+  }
+
+    .select select option {
+      direction: rtl;
+    }
+
+
+  .select select::-ms-expand {
+    display: none;
+  }
+
+  /* .select::after {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    margin-top: -4px;
+    content: "";
+    width: 8px;
+    height: 6px;
+    background-color: var(--control-border-color);
+    clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+  }
+
+  .select:hover::after {
+    background-color: var(--control-hover-border-color);
+  } */
+
+  .select label {
+    padding-right: 5px;
+    color: var(--control-label-color);
+  }

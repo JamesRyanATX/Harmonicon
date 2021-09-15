@@ -151,6 +151,20 @@ export class Controller {
   // Session Actions
   // ---------------
 
+  async playNote({ note, instrument }) {
+    try {
+      this.audio.playNote({ note, instrument });
+    }
+    catch (e) {
+      console.error(e);
+
+      this.emit('error', {
+        message: 'Unable to play audio.',
+        error: e
+      });
+    }
+  }
+
   async addFile({
     name = null,
     source = null
