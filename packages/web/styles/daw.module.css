@@ -3,4 +3,14 @@
   flex-direction: column;
   flex: 1;
   position: relative;
+  overflow: hidden;
+}
+
+.logo {
+  border-radius: var(--theme-border-radius);
+  border-radius: 25px;
+  padding: 7px 25px 6px 25px;
+  margin: 3px;
+  background-color: rgba(0, 0, 0, 0.8);
+  text-transform: uppercase;
 }

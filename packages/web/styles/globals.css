@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,300;0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poiret+One&display=swap');
 
 /* brand colors */
 :root {
@@ -24,15 +25,20 @@
   --theme-palette-purple: #cc50b5;
 
   /* background color of app (should contrast with other colors) */
-  --theme-background-color: 30, 30, 30;
+  --theme-background-color: 25, 25, 25;
 
   /* body text */
-  --theme-body-font-family: 'Raleway', helvetica neue, arial, sans-serif;
+  --theme-body-font-family: -apple-system, system-ui, "Segoe WPC", "Segoe UI", HelveticaNeue-Light, system-ui, Ubuntu, "Droid Sans", sans-serif;
   --theme-body-font-size: 9pt;
+  --theme-body-color: #fff;
   --theme-fixed-font-family: Menlo, Monaco, "Courier New", monospace;
 
   /* colors by purpose */
   --theme-color-error: 255, 51, 35;
+
+  /* generic values */
+  --theme-border-radius: 3px;
+
 }
 
 
@@ -42,6 +48,9 @@ body {
   font-family: var(--theme-body-font-family);
   font-size: var(--theme-body-font-size);
   background-color: rgb(var(--theme-background-color));
+  color: var(--theme-body-color);
+  overflow: hidden;
+  height: 100vh;
 }
 
 #__next {

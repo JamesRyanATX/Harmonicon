@@ -32,11 +32,12 @@ import { reverb } from './src/effects/reverb';
 import { tremolo } from './src/effects/tremolo';
 import { vibrato } from './src/effects/vibrato';
 
-import { kitchenSync } from './src/demos/kitchen-sync';
+import { kitchenSyncDemo } from './src/demos/kitchen-sync';
 
-import { effectChain } from './src/snippets/effect-chain';
+import { effectChainSnippet } from './src/snippets/effect-chain';
 
-import { blank } from './src/templates/blank';
+import { blankTemplate } from './src/templates/blank';
+import { pianoTemplate } from './src/templates/piano';
 
 // Library name
 export const name = 'core';
@@ -80,13 +81,14 @@ export const build = async () => {
     vibrato({ library });
 
     // Snippets
-    await effectChain({ library });
+    await effectChainSnippet({ library });
 
     // Templates
-    await blank({ library });
+    await blankTemplate({ library });
+    await pianoTemplate({ library });
 
     // Demos
-    await kitchenSync({ library });
+    await kitchenSyncDemo({ library });
 
   });
 };

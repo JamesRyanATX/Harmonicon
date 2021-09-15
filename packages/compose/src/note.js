@@ -200,6 +200,47 @@ function isNote (pitch) {
  */
 export class NoteComposer {
 
+  static inferParser(value) {
+
+    // Array of notes
+    if (Array.isArray(value)) {
+      return { value, parser: 'unnamedChord' };
+    }
+
+    value = String(value);
+
+    // Multiple space-delimited notes
+    if (value.match(/ /)) {
+      return {
+        value: value.split(/ /),
+        parser: 'unnamedChord' 
+      };
+    }
+
+    // Explicit chord (beginning with "*")
+    else if (value.match(/^\*/)) {
+      return { 
+        value: value.replace(/^\*/, ''),
+        parser: 'namedChord'
+      };
+    }
+
+    // Relative note
+    else if (value.match(/^\-{0,1}[0-9]+$/)) {
+      return { value, parser: 'note' };
+    }
+
+    // Absolute (ABC notation) note
+    else if (value.match(/^[abcdefg][b\#]{0,1}[0-9]{0,1}$/i)) {
+      return { value, parser: 'note' };
+    }
+
+    // Assume a chord of some kind...
+    else {
+      return { value, parser: 'namedChord' };
+    }
+  }
+
   /**
    * Sequence one or more pitches at a position on the timeline.
    *
@@ -210,14 +251,15 @@ export class NoteComposer {
    */
   static note(input, options = {}) {
     const duration = this.unit;
+    const parsers = {};
 
-    function single(pitch) {
+    parsers.note = (pitch) => {
       return NoteModel.parse(
         Object.assign({ duration, pitch }, options)
       );
     }
 
-    function multiple(pitches) {
+    parsers.unnamedChord = (pitches) => {
       return pitches.map((pitch) => {
         return NoteModel.parse(
           Object.assign({ duration, pitch }, options)
@@ -225,29 +267,28 @@ export class NoteComposer {
       });
     }
 
-    function chord(symbol) {
+    parsers.namedChord = (symbol) => {
       return ChordModel.parse(
         Object.assign({ duration, symbol }, options)
       ).toNotes();
     }
 
     try {
-      if (Array.isArray(input)) {
-        return multiple(input);
-      }
-      else if (typeof input === 'string' && input.match(/ /)) {
-        return multiple(input.split(/ +/));
-      }
-      else if (isNote(input)) {
-        return single(input);
+      const { parser, value } = this.inferParser(input);
+
+      if (parsers[parser]) {
+        return parsers[parser](value);
       }
       else {
-        return chord(input);
+        throw new ComposerError(`Unable to parse ${input}`);
       }
     }
     catch (e) {
       if (e instanceof ApplicationError) {
         throw new ComposerError(e.message);
+      }
+      else {
+        throw e;
       }
     }
   }

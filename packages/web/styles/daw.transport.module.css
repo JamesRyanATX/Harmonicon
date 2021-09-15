@@ -2,7 +2,7 @@
   --item-spacing: 4px;
   --item-elevation: 2px;
   
-  --item-border-radius: 3px;
+  --item-border-radius: var(--theme-border-radius);
   --item-primary-color: #ffffff;
   --item-primary-active-color: rgba(var(--brand-color-2), 1);
   --item-primary-icon-font-size: 12px;
@@ -23,7 +23,6 @@
   color: #fff;
   border-top: 1px solid #ffffff22;
 }
-
 
 
 /* transport items (base styling) */

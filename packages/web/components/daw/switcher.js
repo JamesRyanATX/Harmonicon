@@ -1,5 +1,4 @@
 import { Tabs, NewTab, Tab, TabSpace } from './switcher/tabs';
-import { Logo } from './switcher/logo';
 import { IoMusicalNotesSharp } from "react-icons/io5";
 import { useState } from 'react';
 
@@ -30,7 +29,7 @@ function FileTab({
   )
 }
 
-export function Switcher ({ controller, logo }) {
+export function Switcher ({ controller }) {
   const [ loaded, setLoaded ] = useState(false);
   const [ files, setFiles ] = useState(controller.workspace.files.all);
   const [ selectedFile, setSelectedFile ] = useState(controller.file);
@@ -60,8 +59,6 @@ export function Switcher ({ controller, logo }) {
       <NewTab 
         onClick={controller.addFile.bind(controller)}
       />
-      <TabSpace />
-      <Logo logo={logo} size="small" />
     </Tabs>
   )
 }

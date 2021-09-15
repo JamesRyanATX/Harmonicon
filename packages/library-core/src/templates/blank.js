@@ -1,4 +1,4 @@
-export const blank = async ({ library }) => {
+export const blankTemplate = async ({ library }) => {
 
   await library.template('Blank', async ({ template }) => {
     template.source(`

@@ -7,7 +7,6 @@ import {
   Chord as TonalChord,
   ChordType as TonalChordType
 } from "@tonaljs/tonal";
-import { Logger } from '../../../driver/node_modules/@composer/util/index.js';
 
 function firstNumber() {
   return [ ...arguments ].reduce((memo, toCheck) => {
@@ -108,7 +107,7 @@ export class ChordModel extends BaseModel {
     const definition = this.getDefinition({ symbol, root, tonic, pitch, octave });
 
     if (!definition) {
-      throw new ApplicationError(`Unable to interpret chord ${JSON.stringify([ ... arguments ])}.`);
+      throw new ApplicationError(`Unable to interpret chord: ${JSON.stringify(properties)}.`);
     }
 
     return new this(Object.assign({}, properties, {

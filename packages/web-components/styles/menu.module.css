@@ -1,0 +1,140 @@
+.menu {
+  --border-color: rgb(40, 40, 40);
+  --color: #fff;
+}
+
+.menu {
+  background: linear-gradient(90deg, 
+    var(--theme-palette-red),
+    var(--theme-palette-orange),
+    var(--theme-palette-yellow),
+    var(--theme-palette-green), 
+    var(--theme-palette-blue-lighter),
+    var(--theme-palette-purple)
+  );
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: #000 0px 0px 5px;
+  color: var(--color);
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 0px;
+  padding-left: 5px;
+  font-weight: 300;
+  z-index: 1;
+}
+
+.item {
+  font-size: 12px;
+}
+
+  .item > a {
+    color: var(--color);
+    padding: 4px 16px;
+    display: block;
+    text-decoration: none;
+    flex: 1;
+    cursor: pointer;
+    margin: 4px 0;
+    border-radius: 25px;
+  }
+
+    .item > a:hover {
+      background-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .item > a > svg {
+      vertical-align: -2px;
+      margin-left: 5px;
+    }
+
+
+/* dropdowns */
+
+.dropdown {
+  position: absolute;
+  background-color: rgb(60, 60, 60);
+  min-width: 150px;
+  box-shadow: rgba(0, 0, 0, 0.5) 5px 5px 20px;
+  border-left: 1px solid rgba(0, 0, 0, 0.45);
+  display: none;
+  z-index: 100;
+  padding: 3px 0;
+}
+
+  .dropdownIsActive {
+    display: block;
+  }
+
+.dropdownItem {
+  padding: 5px 0;
+  margin: 3px 0;
+  cursor: pointer;
+}
+
+  .dropdownItem:hover {
+    background-color: rgb(80, 80, 80)
+  }
+
+  .dropdownItem > a {
+    color: var(--color);
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+  }
+
+    /* icon */
+    .dropdownItem > a > span:nth-child(1) {
+      width: 30px;
+      text-align: center;
+      font-size: 12px;
+      padding-top: 1px
+    }
+
+    .dropdownItem > a > span:nth-child(2) {
+      flex: 1;
+    }
+
+    .dropdownItem > a > svg {
+      margin-left: 15px;
+      margin-top: 1px;
+    }
+
+  .dropdownItemIsDisabled {
+    opacity: 0.25;
+    cursor: default;
+  }
+
+    .dropdownItemIsDisabled:hover {
+      background-color: transparent;
+    }
+
+
+.dropdownDivider {
+  border-bottom: 1px solid rgb(120, 120, 120);
+  margin: 5px 10px;
+}
+
+.dropdownHeader {
+  text-transform: uppercase;
+  font-size: 8px;
+  padding: 2px 10px;
+  background-color: rgb(80, 80, 80);
+  color: #999;
+  margin-top: 5px;
+  font-weight: 600;
+}
+
+.dropdownMask {
+  position: absolute;
+  top: 32px;
+  left: 0px;
+  background-color: transparent;
+  right: 0px;
+  bottom: 0px;
+  z-index: 10;
+  display: none;
+}
+
+  .dropdownMaskIsActive {
+    display: block;
+  }

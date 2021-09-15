@@ -34,7 +34,7 @@ export function Logo ({
     'n', 
     'i',
     'c',
-    <Shape letter="O" key="o" />,
+    'o',
     'n'
   ]
 }) {

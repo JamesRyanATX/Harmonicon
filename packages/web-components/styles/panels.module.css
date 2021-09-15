@@ -1,0 +1,86 @@
+.panels {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+  .panelsAreVertical {
+    flex-direction: column;
+  }
+
+  .panelsAreHorizontal {
+    flex-direction: row;
+  }
+
+  .panels[data-id="sidebar"] {
+    width: 300px;
+    flex: none;
+    border-left: 1px solid rgb(60, 60, 60);
+  }
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  margin: 1px 1px 0 0;
+  min-width: 0;
+  min-height: 0;
+}
+
+  .panelHeader {
+    border-top: 1px solid rgb(60, 60, 60);
+    border-bottom: 1px solid rgb(60, 60, 60);
+    background-color: rgb(50, 50, 50);
+    text-transform: uppercase;
+    padding: 4px 6px;;
+    color: #fff;
+    font-size: 9px;
+    font-family: var(--theme-fixed-font-family);
+    color: rgb(150, 150, 150);
+    position: relative;
+  }
+
+    .panelHeader span {
+      font-size: 14px;
+      margin: -2px -2px 0 0;
+      display: block;
+      position: absolute;
+      top: 4px;
+      right: 4px;
+    }
+
+      .panelHeader span a:hover {
+        color: #fff;
+        cursor: pointer;
+      }
+
+
+  .panelContent {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(40, 40, 40);
+    flex: 1 1 auto;
+    overflow-y: auto;
+    min-width: 0;
+    min-height: 0;
+  }
+
+    .panelContent::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .panelContent::-webkit-scrollbar-track {
+      background: transparent;
+    }
+     
+    .panelContent::-webkit-scrollbar-thumb {
+      background: rgb(60, 60, 60); 
+    }
+
+  .panelIsTransparent .panelContent {
+    background-color: transparent;
+  }
+
+  /* .panel[data-id="library"] {
+    min-width: 200px;
+    border-right: 1px solid rgb(60, 60, 60);
+  } */

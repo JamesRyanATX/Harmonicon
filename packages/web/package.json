@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "npx livereload ./public/doc/ & next dev",
     "build": "next build",
     "start": "next start",
     "export": "next build && next export",
@@ -13,11 +13,12 @@
   },
   "dependencies": {
     "@composer/compose": "1.0.0",
-    "@composer/util": "1.0.0",
     "@composer/core": "1.0.0",
     "@composer/driver-audio-tone": "1.0.0",
     "@composer/driver-storage-localstorage": "1.0.0",
     "@composer/library-core": "1.0.0",
+    "@composer/util": "1.0.0",
+    "@composer/web-components": "1.0.0",
     "@monaco-editor/react": "^4.2.2",
     "next": "11.0.1",
     "react": "17.0.2",
@@ -28,6 +29,7 @@
   "devDependencies": {
     "eslint": "7.32.0",
     "eslint-config-next": "11.0.1",
-    "jest": "^27.0.6"
+    "jest": "^27.0.6",
+    "livereload": "^0.9.3"
   }
 }

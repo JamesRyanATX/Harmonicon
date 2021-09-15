@@ -1,0 +1,31 @@
+{
+  "name": "@composer/web-components",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "directories": {
+    "src": "src",
+    "test": "__tests__"
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "dev": "microbundle watch --css-modules true --jsx React.createElement src/*.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "peerDependencies": {
+    "react-icons": "^4.2.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.5",
+    "babel-loader": "^8.2.2",
+    "eslint": "7.32.0",
+    "jest": "^27.0.6",
+    "microbundle": "^0.13.3"
+  }
+}

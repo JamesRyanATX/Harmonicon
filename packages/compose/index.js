@@ -2,6 +2,7 @@ import { session, SessionComposer } from './src/session';
 import { library, LibraryComposer } from './src/library';
 import { instrument, InstrumentComposer } from './src/instrument';
 import { track, TrackComposer } from './src/track';
+
 import { ComposerError } from './src/errors';
 import { Harmonicon } from '@composer/core';
 

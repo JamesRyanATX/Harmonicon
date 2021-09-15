@@ -1,0 +1,61 @@
+.tree {
+  --indentation-color: rgb(70, 70, 70);
+  --indentation-size: 10px;
+  --item-hover-color: rgb(var(--brand-color-2));
+}
+
+.tree {
+  padding: 5px;
+}
+
+.treeGroup {}
+
+  .treeGroup > .treeGroupItems {
+    display: none;
+  }
+
+  .treeGroupIsOpen > .treeGroupItems {
+    display: block;
+  }
+
+.treeItem {
+  padding: 5px 2px 5px 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+}
+
+  .treeItemIcon {
+    font-size: 10px;
+    margin-right: 5px;
+    padding-top: 3px;
+  }
+
+  .treeItemLabel {
+    flex: 1;
+  }
+
+  .treeItemActions {
+    color: rgb(100, 100, 100);
+    display: none;
+  }
+
+  .treeItemActions > a:active {
+    color: white;
+    background-color: var(--item-hover-color);
+  }
+
+  .treeItem:hover {
+    color: var(--item-hover-color);
+  }
+
+    .treeItem:hover .treeItemActions {
+      display: block;
+      color: var(--item-hover-color);
+    }
+
+.treeGroupItems {
+  border-left: 1px solid var(--indentation-color);
+  padding-left: var(--indentation-size);
+  margin-left: 4px;
+}

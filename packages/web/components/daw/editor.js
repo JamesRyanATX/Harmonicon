@@ -3,7 +3,10 @@ import { useState, useRef } from "react";
 
 import styles from '../../styles/daw.editor.module.css';
 
-export function Editor ({ controller }) {
+export function Editor ({
+  controller = null,
+  layoutChangeDelay = 1000
+}) {
   const editorRef = useRef(null);
 
   const [ loaded, setLoaded ] = useState(false);

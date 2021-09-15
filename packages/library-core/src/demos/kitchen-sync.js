@@ -1,4 +1,4 @@
-export const kitchenSync = async ({ library }) => {
+export const kitchenSyncDemo = async ({ library }) => {
 
   await library.demo('Kitchen Sync', async ({ demo }) => {
     demo.source(`

@@ -2,6 +2,7 @@
   "name": "root",
   "private": true,
   "scripts": {
+    "dev": "npx lerna run dev --parallel",
     "play": "cd packages/cli && bin/composer play",
     "play:example": "npm run play -- --directory=../examples/src/",
     "play:example:000": "npm run play:example -- --file=000-single-note.js",

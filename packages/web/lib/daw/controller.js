@@ -51,6 +51,16 @@ export class Controller {
     this.allow('composer:rendering');
     this.allow('composer:rendered');
 
+    this.allow('workspace:panels:changed');
+    this.allow('workspace:panels:library:show');
+    this.allow('workspace:panels:library:hide');
+    this.allow('workspace:panels:routes:show');
+    this.allow('workspace:panels:routes:hide');
+    this.allow('workspace:panels:chords:show');
+    this.allow('workspace:panels:chords:hide');
+    this.allow('workspace:panels:keyboard:show');
+    this.allow('workspace:panels:keyboard:hide');
+
     // Observe global Harmonicon events
     Harmonicon.on('composer:error', () => {
       this.emit('error', { message: e.message, error: e })
@@ -73,6 +83,11 @@ export class Controller {
       });
     });
 
+    // Fan out panel changes
+    this.on('workspace:panels:changed', ({ panel, action }) => {
+      this.emit(`workspace:panels:${panel}:${action}`, {});
+    });
+
     document.title = 'Harmonicon';
     
     // // Should not need this!
@@ -87,14 +102,63 @@ export class Controller {
   }
 
 
-  // Actions
-  // -------
+  // Workspace Layout Actions
+  // ------------------------
 
-  async addFile() {
+  async showPanel(panel) {
+    try {
+      this.workspace.panels[panel].enabled = true;
+      this.emit(`workspace:panels:changed`, { panel, action: 'show' });  
+      return this.workspace.save();
+    }
+    catch (e) {
+      console.error(e);
+    }
+  }
+
+  async hidePanel(panel) {
+    try {
+      this.workspace.panels[panel].enabled = false;
+      this.emit(`workspace:panels:changed`, { panel, action: 'hide' });  
+      return this.workspace.save();
+    }
+    catch (e) {
+      console.error(e);
+    }
+  }
+
+  async togglePanel(panel) {
+    return this[this.workspace.panels[panel].enabled ? 'hidePanel' : 'showPanel'](panel);
+  }
+
+  async toggleLibraryPanel() {
+    return this.togglePanel('library');
+  }
+
+  async toggleRoutesPanel() {
+    return this.togglePanel('routes');
+  }
+
+  async toggleChordsPanel() {
+    return this.togglePanel('chords');
+  }
+
+  async toggleKeyboardPanel() {
+    return this.togglePanel('keyboard');
+  }
+
+
+  // Session Actions
+  // ---------------
+
+  async addFile({
+    name = null,
+    source = null
+  }) {
     try {
       const file = await this.workspace.files.create({
-        name: this.newFileName(),
-        source: this.templates.blank,
+        name: name || this.newFileName(),
+        source: source || this.templates.blank,
         workspace: this.workspace,
       });
 

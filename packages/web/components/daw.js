@@ -1,25 +1,17 @@
 import { useState } from 'react';
-import { Switcher } from './daw/switcher';
-import { Transport } from './daw/transport';
-import { Editor } from './daw/editor';
-import { Debugger } from './daw/debugger';
+
 import { ToneAudioDriver, Tone } from '@composer/driver-audio-tone';
 import { LocalStorageDriver } from '@composer/driver-storage-localstorage';
 import { SessionComposer } from '@composer/compose';
-import { Controller } from '../lib/daw/controller';
+import { WorkspaceModel } from '@composer/core';
 
-import styles from '../styles/daw.module.css';
-import { WorkspaceModel } from '../../core/src/models/workspace';
+import { Controller } from '../lib/daw/controller';
+import { ControllerContext } from './daw/providers/controller';
+import { Interface } from './daw/interface';
 
 import { source as demoSource } from '../templates/demo';
 import { source as blankSource } from '../templates/blank';
 
-
-function Interface ({ children }) {
-  return (
-    <div className={styles.daw}>{children}</div>
-  )
-}
 
 export function DAW ({
   audioDriverOptions = {},
@@ -104,21 +96,16 @@ export function DAW ({
 
   if (loaded) {
     return (
-      <Interface>
-        <Switcher controller={controller} logo={logo} />
-        <Editor controller={controller} />
-        <Debugger controller={controller} />
-        <Transport controller={controller} />
-      </Interface>
+      <ControllerContext.Provider value={controller}>
+        <Interface logo={logo} />
+      </ControllerContext.Provider>
     );
   }
   else {
     const Logo = logo;
 
     return (
-      <Interface>
-        <Logo size="large" />
-      </Interface>
+      <Logo size="large" />
     )
   }
 }
