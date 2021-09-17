@@ -156,7 +156,7 @@ export function Keyboard({
       onMouseLeave={release}
       className={styles.keyboard}
     >
-      {[ 6, 5, 4, 3, 2, 1 ].map((octave) => (
+      {[ 6, 5, 4, 3, 2, 1, 0 ].map((octave) => (
         <Octave
           key={octave}
           octave={octave}

@@ -44,7 +44,7 @@
   color: rgba(var(--brand-color-2), 1);
   cursor: pointer;
   margin: var(--item-spacing) var(--item-spacing) var(--item-spacing) 0;
-  min-width: 30px;
+  min-width: 40px;
   padding-left: var(--item-spacing);
   padding-right: var(--item-spacing);
   position: relative;

@@ -168,7 +168,7 @@ export class Controller {
   async addFile({
     name = null,
     source = null
-  }) {
+  } = {}) {
     try {
       const file = await this.workspace.files.create({
         name: name || this.newFileName(),

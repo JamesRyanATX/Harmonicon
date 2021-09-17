@@ -39,7 +39,21 @@ describe('WorkspaceModel', function () {
           id: workspace.id,
           files: [
             file1.id
-          ]
+          ],
+          panels: {
+            chords: {
+              enabled: true
+            },
+            keyboard: {
+              enabled: true
+            },
+            library: {
+              enabled: true
+            },
+            routes: {
+              enabled: true
+            },
+          }
         },
         [`composer:filemodel:${file1.id}`]: {
           id: file1.id,
@@ -63,7 +77,21 @@ describe('WorkspaceModel', function () {
           id: workspace.id,
           files: [
             file1.id
-          ]
+          ],
+          panels: {
+            chords: {
+              enabled: true
+            },
+            keyboard: {
+              enabled: true
+            },
+            library: {
+              enabled: true
+            },
+            routes: {
+              enabled: true
+            },
+          }
         },
         [`composer:filemodel:${file1.id}`]: {
           id: file1.id,
@@ -92,7 +120,21 @@ describe('WorkspaceModel', function () {
           files: [
             file1.id,
             file2.id
-          ]
+          ],
+          panels: {
+            chords: {
+              enabled: true
+            },
+            keyboard: {
+              enabled: true
+            },
+            library: {
+              enabled: true
+            },
+            routes: {
+              enabled: true
+            },
+          }
         },
         [`composer:filemodel:${file1.id}`]: {
           id: file1.id,
@@ -121,7 +163,21 @@ describe('WorkspaceModel', function () {
           id: workspace.id,
           files: [
             file2.id
-          ]
+          ],
+          panels: {
+            chords: {
+              enabled: true
+            },
+            keyboard: {
+              enabled: true
+            },
+            library: {
+              enabled: true
+            },
+            routes: {
+              enabled: true
+            },
+          }
         },
         [`composer:filemodel:${file2.id}`]: {
           id: file2.id,
@@ -148,7 +204,21 @@ describe('WorkspaceModel', function () {
             type: 'text/javascript',
             workspace: 'default'
           }
-        ]
+        ],
+        panels: {
+          chords: {
+            enabled: true
+          },
+          keyboard: {
+            enabled: true
+          },
+          library: {
+            enabled: true
+          },
+          routes: {
+            enabled: true
+          },
+        }
       });
     });
   });
