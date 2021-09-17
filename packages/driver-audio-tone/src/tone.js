@@ -1,3 +1,4 @@
+import { Harmonicon } from '@composer/core';
 import { BaseAudioDriver } from '@composer/driver';
 import { mapSeries } from '@composer/util';
 import * as Tone from 'tone';
@@ -191,6 +192,10 @@ export class ToneAudioDriver extends BaseAudioDriver {
 
       return await Tone.Transport.schedule((time) => {
         instrument.triggerAttackRelease(pitch, duration, time);
+
+        Tone.Draw.schedule(() => {
+          Harmonicon.emit(`play:${pitch.toLowerCase()}`);
+        }, time);
       }, event.at.toString());
     }
   }

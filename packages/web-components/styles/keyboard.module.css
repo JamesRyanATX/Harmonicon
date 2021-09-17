@@ -60,12 +60,12 @@
     box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 4px;
     border-top: 1px solid rgb(30, 30, 30);
     border-bottom: 1px solid rgb(30, 30, 30);
-    border-right: 5px solid rgba(0, 0, 0, 0.5);
+    border-right: 10px solid rgba(0, 0, 0, 0.5);
     border-radius: 0 var(--theme-border-radius) var(--theme-border-radius) 0;
     position: relative;
     height: 100%;
     flex: 1;
-    transition: border-right-width 0.1s,
+    /* transition: border-right-width 0.05s, */
   }
 
   .key label {

@@ -14,7 +14,7 @@
   "jest": {
     "transform": {}
   },
-  "dependencies": {
+  "peerDependencies": {
     "@composer/compose": "1.0.0"
   },
   "devDependencies": {

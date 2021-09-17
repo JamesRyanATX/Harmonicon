@@ -17,7 +17,7 @@ const Events = {
       throw new Error(`Unregistered event name "${eventName}"`);
     }
 
-    console.log(`emit ${eventName} to ${this.listeners[eventName].length} listener(s)`);
+    // console.log(`emit ${eventName} to ${this.listeners[eventName].length} listener(s)`);
 
     (this.listeners[eventName] || []).forEach((fn) => {
       fn(payload);

@@ -6,7 +6,7 @@ import {
 } from '@composer/web-components';
 
 import { whole } from '@composer/compose';
-import { ScaleModel } from '@composer/core';
+import { Harmonicon, ScaleModel } from '@composer/core';
 
 export function KeyboardPanel({ controller }) {
   const [ tonic, setTonic ] = useState('C');
@@ -52,7 +52,9 @@ export function KeyboardPanel({ controller }) {
         </>
       )}
     >
-      <Keyboard scale={scale} onPlayNote={(note) => {
+      <Keyboard 
+        emitter={Harmonicon}
+        scale={scale} onPlayNote={(note) => {
         controller.playNote({
           note: whole.note(note)
         });

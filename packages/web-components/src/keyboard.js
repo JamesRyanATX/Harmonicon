@@ -9,8 +9,10 @@ function Key({
   color,
   scale,
   playOnHover,
+  emitter,
   onPlayNote,
 }) {
+  const [ loaded, setLoaded ] = useState(false);
   const [ pressed, setPressed ] = useState(false);
   const isTonic = scale.tonic === note || scale.tonic === alias;
   const isHighlighted = scale.type !== 'chromatic' && (
@@ -30,6 +32,19 @@ function Key({
     if (playOnHover) {
       press();
     }
+  }
+
+  function played() {
+    setPressed(true);
+    setTimeout(release, 500);
+  }
+
+  if (!loaded) {
+    emitter.on(`play:${note.toLowerCase()}${octave}`, played);
+    if (alias) {
+      emitter.on(`play:${alias.toLowerCase()}${octave}`, played);
+    }
+    setLoaded(true);
   }
 
   return (
@@ -121,6 +136,7 @@ function Octave(props) {
 
 export function Keyboard({
   scale = null,
+  emitter = null,
   onPlayNote = (note) => { console.log(note); }
 }) {
   const [ pressed, setPressed ] = useState(false);
@@ -146,6 +162,7 @@ export function Keyboard({
           octave={octave}
           scale={scale}
           playOnHover={pressed}
+          emitter={emitter}
           onPlayNote={onPlayNote}
         />
       ))}
