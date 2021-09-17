@@ -43,10 +43,10 @@ session('demo', async ({ session }) => {
   // -----------
 
   // Import standard instruments from core library
-  session.use.instrument('drums');
-  session.use.instrument('electric-bass');
-  session.use.instrument('xylophone');
-  session.use.instrument('piano');
+  session.use.instrument('drums').from.library();
+  session.use.instrument('electric-bass').from.library();
+  session.use.instrument('xylophone').from.library();
+  session.use.instrument('piano').from.library();
 
   // Make a custom instrument with Tone.MonoSynth()
   session.instrument('bass', async () => {
@@ -85,45 +85,45 @@ session('demo', async ({ session }) => {
 
   session.phrase('beat-a', [
 
-    dottedQuarter.note('c2'),
+    dotted.quarter.note('c2'),
     eighth.note('c2'),
     quarter.rest(),
     quarter.note('c4'),
 
-    dottedQuarter.note('c2'),
+    dotted.quarter.note('c2'),
     eighth.note('c2'),
     quarter.rest(),
     eighth.note('c4'),
     eighth.note('g2'),
 
-    dottedQuarter.note('c2'),
+    dotted.quarter.note('c2'),
     eighth.note('c2'),
     quarter.rest(),
     quarter.note('c4'),
 
-    dottedQuarter.note('c2'),
+    dotted.quarter.note('c2'),
     eighth.note('c2'),
     quarter.rest(),
     eighth.note('e4'),
     eighth.note('c2'),
 
-    dottedQuarter.note('c2'),
+    dotted.quarter.note('c2'),
     eighth.note('c2'),
     quarter.rest(),
     quarter.note('c4'),
 
-    dottedQuarter.note('c2'),
+    dotted.quarter.note('c2'),
     eighth.note('c2'),
     quarter.rest(),
     eighth.note('c4'),
     eighth.note('g2'),
 
-    dottedQuarter.note('c2'),
+    dotted.quarter.note('c2'),
     eighth.note('c2'),
     quarter.rest(),
     quarter.note('c4'),
 
-    dottedQuarter.note('c2'),
+    dotted.quarter.note('c2'),
     eighth.note('c2'),
     quarter.rest(),
     eighth.note('e4'),
@@ -139,15 +139,15 @@ session('demo', async ({ session }) => {
     quarter.rest(),
     quarter.note(-7),
 
-    dottedQuarter.note(-14),
+    dotted.quarter.note(-14),
     eighth.note(-14),
     half.rest(),
 
-    dottedQuarter.note(-14),
+    dotted.quarter.note(-14),
     eighth.note(-14),
     half.rest(),
 
-    dottedQuarter.note(-14),
+    dotted.quarter.note(-14),
     eighth.note(-14),
     half.rest(),
 
@@ -160,15 +160,15 @@ session('demo', async ({ session }) => {
     eighth.note(-13),
     eighth.note(-15),
 
-    dottedQuarter.note(-14),
+    dotted.quarter.note(-14),
     eighth.note(-14),
     half.rest(),
 
-    dottedQuarter.note(-14),
+    dotted.quarter.note(-14),
     eighth.note(-14),
     half.rest(),
 
-    dottedQuarter.note(-14),
+    dotted.quarter.note(-14),
     eighth.note(-14),
     half.rest(),
   ]);

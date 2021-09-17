@@ -146,7 +146,7 @@ export function LibraryPanel({ controller }) {
 
   return (
     <Panel 
-      width="175px"
+      flex={1}
       id="library"
       label="Library"
       onClose={controller.toggleLibraryPanel.bind(controller)}

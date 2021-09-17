@@ -18,7 +18,7 @@ export function KeyboardPanel({ controller }) {
     <Panel
       id="keyboard"
       label="Keyboard"
-      flex={1}
+      flex={2}
       filter={() => (
         <>
           <Select label="Tonic" value={tonic} onChange={setTonic} span={1}>

@@ -66,10 +66,10 @@ export class Controller {
       this.emit('error', { message: e.message, error: e })
     });
 
-    Harmonicon.on('composer:parsing', () => (this.emit('composer:parsing')));
-    Harmonicon.on('composer:parsed', () => (this.emit('composer:parsed')));
-    Harmonicon.on('composer:rendering', () => (this.emit('composer:rendering')));
-    Harmonicon.on('composer:rendered', () => (this.emit('composer:rendered')));
+    Harmonicon.on('composer:parsing', (c) => (this.emit('composer:parsing', c)));
+    Harmonicon.on('composer:parsed', (c) => (this.emit('composer:parsed', c)));
+    Harmonicon.on('composer:rendering', (c) => (this.emit('composer:rendering', c)));
+    Harmonicon.on('composer:rendered', (c) => (this.emit('composer:rendered', c)));
 
     // Observe transport events directly from audio driver
     [
@@ -354,8 +354,6 @@ export class Controller {
     this.composer = composer;
     this.renderer = renderer;
     this.renderedSource = this.file.source;
-
-    //debugger;
 
     this.audio.observePosition((position) => {
       this.emit('transport:position', position);

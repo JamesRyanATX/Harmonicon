@@ -16,7 +16,6 @@ export function ViewDropdown() {
 
   return (
     <div>
-      <MenuDropdownHeader label="Layout" />
       <MenuDropdownItem
         label="Library"
         onClick={controller.toggleLibraryPanel.bind(controller)}
@@ -28,7 +27,7 @@ export function ViewDropdown() {
         icon={workspace.panels.routes.enabled ? IoCheckmarkSharp : undefined}
       />
       <MenuDropdownItem
-        label="Chord Finder"
+        label="Chord Browser"
         onClick={controller.toggleChordsPanel.bind(controller)}
         icon={workspace.panels.chords.enabled ? IoCheckmarkSharp : undefined}
       />
@@ -36,17 +35,6 @@ export function ViewDropdown() {
         label="Keyboard"
         onClick={controller.toggleKeyboardPanel.bind(controller)}
         icon={workspace.panels.keyboard.enabled ? IoCheckmarkSharp : undefined}
-      />
-      <MenuDropdownHeader label="Editor" />
-      <MenuDropdownItem
-        label="Minimap"
-        icon={IoCheckmarkSharp}
-        disabled
-      />
-      <MenuDropdownItem
-        label="Line Numbers"
-        icon={IoCheckmarkSharp}
-        disabled
       />
     </div>
   )

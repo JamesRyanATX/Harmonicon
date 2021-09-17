@@ -9,6 +9,10 @@ import {
 } from './keyboard';
 
 import {
+  Patches
+} from './patches';
+
+import {
   Panels,
   Panel,
   PanelFilter,
@@ -31,6 +35,7 @@ import {
 } from './tree';
 
 module.exports = {
+  Patches,
   Keyboard,
   Select,
   PanelFilter,

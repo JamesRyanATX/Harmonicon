@@ -45,14 +45,18 @@ export function Interface ({
     <div className={styles.daw}>
       <Menu controller={controller} logo={logo} />
       <Panels horizontal flex>
-        {library ? (<LibraryPanel controller={controller} />) : ''}
+        {library || chords ? (
+          <Panels vertical width="200px">
+            {library ? (<LibraryPanel controller={controller} />) : ''}
+            {chords ? (<ChordsPanel controller={controller} />) : ''}
+          </Panels>
+        ) : ''}
 
         <EditorPanel controller={controller} logo={logo} />
 
-        {routes || chords || keyboard ? (
-          <Panels id="sidebar" vertical width="200px">
+        {routes || keyboard ? (
+          <Panels vertical width="200px">
             {routes ? (<RoutesPanel controller={controller} />) : ''}
-            {chords ? (<ChordsPanel controller={controller} />) : ''}
             {keyboard ? (<KeyboardPanel controller={controller} />) : ''}
           </Panels>
         ) : ''}
