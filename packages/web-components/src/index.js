@@ -5,6 +5,10 @@ import {
 } from './controls';
 
 import {
+  Keyboard
+} from './keyboard';
+
+import {
   Panels,
   Panel,
   PanelFilter,
@@ -27,6 +31,7 @@ import {
 } from './tree';
 
 module.exports = {
+  Keyboard,
   Select,
   PanelFilter,
   Panels,

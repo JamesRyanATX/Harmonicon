@@ -2,7 +2,7 @@
   "name": "@composer/web-components",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
   "directories": {
     "src": "src",
     "test": "__tests__"
@@ -11,7 +11,9 @@
     "src"
   ],
   "scripts": {
-    "dev": "microbundle watch --css-modules true --jsx React.createElement src/*.js"
+    "clean": "rm -rf dist",
+    "build": "yarn run clean && microbundle build --css-modules true --jsx React.createElement src/index.js",
+    "dev": "microbundle watch --css-modules true --jsx React.createElement src/index.js"
   },
   "keywords": [],
   "author": "",

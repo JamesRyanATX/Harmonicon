@@ -1,0 +1,127 @@
+.keyboard {
+  --half-key-height: 10px;
+  --key-height: 20px;
+  --octave-height: 140px;
+
+  --key-white-background-color: var(--theme-neutral-color-10);
+  --key-white-border-color: var(--theme-neutral-color-7);
+  --key-white-color: var(--theme-neutral-color-0);
+  --key-white-pressed-background-color: var(--theme-neutral-color-10);
+
+  --key-black-background-color: var(--theme-neutral-color-2);
+  --key-black-border-color: var(--theme-neutral-color-6);
+  --key-black-color: var(--theme-neutral-color-9);
+  --key-black-pressed-background-color: var(--theme-neutral-color-0);
+
+  --key-tonic-background-color: var(--theme-secondary-color-light);
+  --key-tonic-border-color: var(--theme-secondary-color-dark);
+  --key-highlight-border-color: var(--theme-primary-color);
+}
+
+.keyboard {
+  user-select: none;
+}
+
+.octave {
+  position: relative;
+  height: var(--octave-height);
+}
+
+.keys {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+  .keysAreWhite {
+    width: 100%;
+  }
+
+  .keysAreBlack {
+    width: 50%;
+    padding-top: var(--half-key-height);
+  }
+
+  .keysAreBlack .key:nth-child(3){
+    margin-bottom: var(--key-height);
+  }
+
+.key {
+  cursor: pointer;
+  pointer-events: all;
+  padding: 1px 0;;
+  height: var(--key-height);
+  display: flex;
+  flex-direction: row;
+}
+
+  .key > div {
+    box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 4px;
+    border-top: 1px solid rgb(30, 30, 30);
+    border-bottom: 1px solid rgb(30, 30, 30);
+    border-right: 5px solid rgba(0, 0, 0, 0.5);
+    border-radius: 0 var(--theme-border-radius) var(--theme-border-radius) 0;
+    position: relative;
+    height: 100%;
+    flex: 1;
+    transition: border-right-width 0.1s,
+  }
+
+  .key label {
+    font-size: 10px;
+    width: 35px;
+    text-align: center;
+    padding-top: 2px;
+  }
+
+    .key:hover label {
+      display: block;
+    }
+
+  .keyIsBlack > div {
+    background-color: var(--key-black-background-color);
+    border-right-color: var(--key-black-border-color);
+  }
+
+  .keyIsBlack > label {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: var(--theme-border-radius);
+    margin-left: 5px;
+    margin-right: -40px;
+    color: var(--key-black-color);
+    display: none;
+  }
+
+  .keyIsWhite > div {
+    background-color: var(--key-white-background-color);
+    border-right-color: var(--key-white-border-color);
+    color: var(--key-white-color);
+  }
+
+  .keyIsPressed {
+  }
+
+    .keyIsPressed > div {
+      border-right-width: 2px;
+    }
+
+  .keyIsHighlighted > div {
+    border-right-color: var(--key-highlight-border-color);
+  }
+
+  .keyIsHighlighted > label {
+    color: var(--key-highlight-background-color);
+  }
+
+  .keyIsBlack.keyIsHighlighted > div {
+  }
+
+  .keyIsTonic > div {
+    background-color: var(--key-tonic-background-color);
+    border-color: var(--key-tonic-border-color);
+  }
+
+  .keyIsTonic > label {
+    color: var(--key-tonic-background-color);
+  }
