@@ -2,6 +2,8 @@
   "name": "root",
   "private": true,
   "scripts": {
+    "clean": "npx lerna clean",
+    "bootstrap": "npx lerna bootstrap",
     "dev": "npx lerna run dev --parallel",
     "test": "npx lerna run test",
     "play": "cd packages/cli && bin/composer play",
