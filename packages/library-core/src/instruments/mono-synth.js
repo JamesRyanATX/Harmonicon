@@ -1,6 +1,8 @@
-export const monoSynth = async ({ library }) => {
+import * as Tone from 'tone';
 
-  library.instrument('mono-synth', async ({ instrument }) => {
+export const monoSynth = ({ library }) => {
+
+  return library.instrument('mono-synth', () => {
     return new Tone.MonoSynth({
       volume: -8,
       detune: 0,

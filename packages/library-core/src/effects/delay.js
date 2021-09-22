@@ -1,8 +1,6 @@
-export const delay = async ({ library }) => {
+import { toneEffect } from '../helper';
 
-  library.effect('delay', async ({ effect }) => {
-    return new Tone.PingPongDelay({
-    });
-  });
-
-};
+export const delayEffect = toneEffect({
+  name: 'delay',
+  toneEffect: 'PingPongDelay'
+});

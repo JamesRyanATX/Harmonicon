@@ -1,8 +1,6 @@
-export const chorus = async ({ library }) => {
+import { toneEffect } from '../helper';
 
-  library.effect('chorus', async ({ effect }) => {
-    return new Tone.Chorus({
-    });
-  });
-
-};
+export const chorusEffect = toneEffect({
+  name: 'chorus',
+  toneEffect: 'Chorus'
+});

@@ -1,8 +1,6 @@
-export const pitchShift = async ({ library }) => {
+import { toneEffect } from '../helper';
 
-  library.effect('pitch-shift', async ({ effect }) => {
-    return new Tone.PitchShift({
-    });
-  });
-
-};
+export const pitchShiftEffect = toneEffect({
+  name: 'pitch-shift',
+  toneEffect: 'PitchShift'
+});

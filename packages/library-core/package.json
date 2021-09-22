@@ -15,7 +15,8 @@
     "transform": {}
   },
   "peerDependencies": {
-    "@composer/compose": "1.0.0"
+    "@composer/compose": "1.0.0",
+    "tone": "^14.7.77"
   },
   "devDependencies": {
     "jest": "^27.0.6"

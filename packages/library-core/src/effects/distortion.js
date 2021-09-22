@@ -1,8 +1,6 @@
-export const distortion = async ({ library }) => {
+import { toneEffect } from '../helper';
 
-  library.effect('distortion', async ({ effect }) => {
-    return new Tone.Distortion({
-    });
-  });
-
-};
+export const distortionEffect = toneEffect({
+  name: 'distortion',
+  toneEffect: 'Distortion'
+});

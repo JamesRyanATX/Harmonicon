@@ -1,8 +1,6 @@
-export const phaser = async ({ library }) => {
+import { toneEffect } from '../helper';
 
-  library.effect('phaser', async ({ effect }) => {
-    return new Tone.Phaser({
-    });
-  });
-
-};
+export const phaserEffect = toneEffect({
+  name: 'phaser',
+  toneEffect: 'Phaser'
+});

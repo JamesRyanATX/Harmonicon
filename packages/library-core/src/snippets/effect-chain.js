@@ -1,6 +1,6 @@
-export const effectChainSnippet = async ({ library }) => {
+export const effectChainSnippet = ({ library }) => {
 
-  await library.snippet('effect-chain', ({ snippet }) => {
+  library.snippet('effect-chain', ({ snippet }) => {
     snippet.source('// effect-chain');
   });
 

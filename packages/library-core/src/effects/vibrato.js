@@ -1,8 +1,6 @@
-export const vibrato = async ({ library }) => {
+import { toneEffect } from '../helper';
 
-  library.effect('vibrato', async ({ effect }) => {
-    return new Tone.Vibrato({
-    });
-  });
-
-};
+export const vibratoEffect = toneEffect({
+  name: 'vibrato',
+  toneEffect: 'Vibrato'
+});

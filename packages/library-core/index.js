@@ -23,14 +23,14 @@ import { tuba } from './src/instruments/tuba';
 import { violin } from './src/instruments/violin';
 import { xylophone } from './src/instruments/xylophone';
 
-import { chorus } from './src/effects/chorus';
-import { delay } from './src/effects/delay';
-import { distortion } from './src/effects/distortion';
-import { phaser } from './src/effects/phaser';
-import { pitchShift } from './src/effects/pitch-shift';
-import { reverb } from './src/effects/reverb';
-import { tremolo } from './src/effects/tremolo';
-import { vibrato } from './src/effects/vibrato';
+import { chorusEffect } from './src/effects/chorus';
+import { delayEffect } from './src/effects/delay';
+import { distortionEffect } from './src/effects/distortion';
+import { phaserEffect } from './src/effects/phaser';
+import { pitchShiftEffect } from './src/effects/pitch-shift';
+import { reverbEffect } from './src/effects/reverb';
+import { tremoloEffect } from './src/effects/tremolo';
+import { vibratoEffect } from './src/effects/vibrato';
 
 import { kitchenSyncDemo } from './src/demos/kitchen-sync';
 
@@ -44,51 +44,53 @@ export const name = 'core';
 
 // Build library
 export const build = async () => {
-  return library('core', async function ({ library }) {
+  return library('core', function ({ library }) {
+    [
 
-    // Instruments
-    acousticGuitar({ library });
-    bassoon({ library });
-    cello({ library });
-    clarinet({ library });
-    contrabass({ library });
-    drums({ library });
-    electricBass({ library });
-    electricGuitar({ library });
-    flute({ library });
-    frenchHorn({ library });
-    harmonium({ library });
-    harp({ library });
-    monoSynth({ library });
-    nylonGuitar({ library });
-    organ({ library });
-    piano({ library });
-    saxophone({ library });
-    trombone({ library });
-    trumpet({ library });
-    tuba({ library });
-    violin({ library });
-    xylophone({ library });
+      // Instruments
+      acousticGuitar,
+      electricBass,
+      bassoon,
+      cello,
+      clarinet,
+      contrabass,
+      drums,
+      electricGuitar,
+      flute,
+      frenchHorn,
+      harmonium,
+      harp,
+      monoSynth,
+      nylonGuitar,
+      organ,
+      piano,
+      saxophone,
+      trombone,
+      trumpet,
+      tuba,
+      violin,
+      xylophone,
 
-    // Effects
-    chorus({ library });
-    delay({ library });
-    distortion({ library });
-    phaser({ library });
-    pitchShift({ library });
-    reverb({ library });
-    tremolo({ library });
-    vibrato({ library });
+      // Effects
+      chorusEffect,
+      delayEffect,
+      distortionEffect,
+      phaserEffect,
+      pitchShiftEffect,
+      reverbEffect,
+      tremoloEffect,
+      vibratoEffect,
 
-    // Snippets
-    await effectChainSnippet({ library });
+      // Snippets
+      effectChainSnippet,
 
-    // Templates
-    await blankTemplate({ library });
-    await pianoTemplate({ library });
+      // Templates
+      blankTemplate,
+      pianoTemplate,
 
-    // Demos
-    await kitchenSyncDemo({ library });
+      // Demos
+      kitchenSyncDemo,
 
+    ].forEach((c) => (c({ library })));
   });
 };

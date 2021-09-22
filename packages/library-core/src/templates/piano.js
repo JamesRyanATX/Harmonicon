@@ -1,9 +1,9 @@
-export const pianoTemplate = async ({ library }) => {
+export const pianoTemplate = ({ library }) => {
 
-  await library.template('Piano', async ({ template }) => {
+  library.template('Piano', ({ template }) => {
     template.source(`
 
-session('my-song', async ({ session }) => {
+session('my-song', ({ session }) => {
   session.at(0, 0, 0)
     .meter([ 4, 4 ])
     .tempo(120)
@@ -13,9 +13,9 @@ session('my-song', async ({ session }) => {
 
   session.use.instrument('piano').from.library();
 
-  session.track('piano', async function({ track }) {
+  session.track('piano', function({ track }) {
     track.at(0).play.phrase([
-      whole.note('c3maj')
+      whole.note('cmaj7', { octave: 3 })
     ]);
   });
 

@@ -1,9 +1,11 @@
-export const reverb = async ({ library }) => {
+import { toneEffect } from '../helper';
 
-  library.effect('reverb', async ({ effect }) => {
-    return new Tone.Reverb({
-      wet: 0.5
-    });
-  });
-
-};
+export const reverbEffect = toneEffect({
+  name: 'reverb',
+  toneEffect: 'Reverb',
+  defaultOptions: {
+    decay: 0.5,
+    preDelay: 0,
+    wet: 0.5
+  }
+});

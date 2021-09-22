@@ -1,9 +1,9 @@
-export const blankTemplate = async ({ library }) => {
+export const blankTemplate = ({ library }) => {
 
-  await library.template('Blank', async ({ template }) => {
+  library.template('Blank', ({ template }) => {
     template.source(`
 
-session('my-song', async ({ session }) => {
+session('my-song', ({ session }) => {
   session.at(0, 0, 0)
     .meter([ 4, 4 ])
     .tempo(120)

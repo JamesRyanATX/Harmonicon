@@ -1,8 +1,6 @@
-export const tremolo = async ({ library }) => {
+import { toneEffect } from '../helper';
 
-  library.effect('tremolo', async ({ effect }) => {
-    return new Tone.Tremolo({
-    });
-  });
-
-};
+export const tremoloEffect = toneEffect({
+  name: 'tremolo',
+  toneEffect: 'Tremolo'
+});
