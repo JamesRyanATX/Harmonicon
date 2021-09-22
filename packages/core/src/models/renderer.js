@@ -1,8 +1,9 @@
+import { mapSeries } from '@composer/util';
 import { BaseModel } from './base.js';
 import { PositionModel } from './position.js';
 import { SequencedEventModel } from './sequenced_event.js';
 import { SequencedEventLogModel } from './sequenced_event_log.js';
-import { mapSeries } from '@composer/util';
+import { RendererError } from '../errors';
 
 export class RendererModel extends BaseModel {
   static drivers = {};
@@ -80,7 +81,7 @@ export class RendererModel extends BaseModel {
     const node = this.createNode({
       type: 'instrument',
       name: instrument.name, 
-      node: await instrument.fn({})
+      node: await instrument.render()
     });
 
     this.logger.info(`render.instrument: [+] name = ${instrument.name}`);
@@ -113,7 +114,7 @@ export class RendererModel extends BaseModel {
     const node = this.createNode({
       type: 'effect',
       name: effect.name,
-      node: await effect.fn()
+      node: await effect.render()
     });
 
     this.logger.info(`render.effect: [+] name = ${effect.name}`);
@@ -195,7 +196,13 @@ export class RendererModel extends BaseModel {
     this.logger[outputNode ? 'debug' : 'error'](`render.session.patch:     output node = ${outputNode}`);
 
     if (inputNode && outputNode) {
-      inputNode.connect(outputNode);
+      try {
+        inputNode.connect(outputNode);
+      }
+      catch (e) {
+        console.error(e);
+        throw new RendererError(`Unable to patch ${inputNode} to ${outputNode}`);
+      }
     }
   }
 

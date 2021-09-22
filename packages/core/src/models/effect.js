@@ -11,7 +11,34 @@ export class EffectModel extends BaseNodeModel {
     },
     fn: {
       type: Function
-    }
+    },
+    group: {
+      type: String
+    },
+    description: {
+      type: String
+    },
+    author: {
+      type: String
+    },
+    url: {
+      type: String
+    },
+    documentationUrl: {
+      type: String
+    },
+    defaultOptions: {
+      type: Object,
+      defaultValue: () => ({})
+    },
+    options: {
+      type: Object,
+      defaultValue: () => ({})
+    },
+  }
+
+  render () {
+    return this.fn(this.options);
   }
 
 }

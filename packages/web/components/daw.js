@@ -3,7 +3,8 @@ import { useState } from 'react';
 import { ToneAudioDriver, Tone } from '@composer/driver-audio-tone';
 import { LocalStorageDriver } from '@composer/driver-storage-localstorage';
 import { SessionComposer } from '@composer/compose';
-import { WorkspaceModel } from '@composer/core';
+import { Harmonicon, WorkspaceModel } from '@composer/core';
+import * as CoreLibrary from '@composer/library-core';
 
 import { Controller } from '../lib/daw/controller';
 import { ControllerContext } from './daw/providers/controller';
@@ -44,6 +45,8 @@ export function DAW ({
         audio: audioDriver,
         storage: storageDriver,
       }
+
+      await Harmonicon.install(CoreLibrary);
 
       setController(new Controller({
         templates:{
