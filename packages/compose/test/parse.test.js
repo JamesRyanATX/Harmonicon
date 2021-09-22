@@ -4,7 +4,7 @@ describe('parse', function () {
   it('parses code', async function () {
     const result = await parse({
       code: `
-        await session('my-song', async ({ session }) => {
+        session('my-song', ({ session }) => {
           session.at(0, 0, 0).meter([ 4, 4 ]);
           session.at(0, 0, 0).tempo(100);
           session.at(0, 0, 0).swing(0.4);

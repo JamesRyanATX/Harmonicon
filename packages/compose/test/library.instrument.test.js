@@ -1,10 +1,15 @@
-import { library, session, SessionComposer } from '../';
+import { Harmonicon } from '@composer/core';
+import { library, session } from '../';
 
 describe('library.instrument', function () {
 
-  it('creates an instrument', async function () {
-    const composer = await library('test', async function ({ library }) {
-      library.instrument('bass', async function () {
+  afterEach(() => {
+    Harmonicon.uninstall('test');
+  })
+
+  it('creates an instrument', function () {
+    const composer = library('test', function ({ library }) {
+      library.instrument('bass', function () {
         return 'i am instrument';
       });
     });
@@ -18,20 +23,16 @@ describe('library.instrument', function () {
     async function sessionWithLibraryInstrument(fn) {
       
       // Create a library
-      const libraryComposer = await library('test', async function ({ library }) {
-        library.instrument('bass', async function () {
+      const libraryComposer = library('test', function ({ library }) {
+        library.instrument('bass', function () {
           return 'i am instrument';
         });
       });
 
-      // Expose library to session composer
-      await SessionComposer.use({
-        name: 'test',
-        build: () => (libraryComposer)
-      });
+      await Harmonicon.install(libraryComposer);
 
       // Create a session that uses something from the library
-      const sessionComposer = await session('test', fn);
+      const sessionComposer = session('test', fn);
 
       return {
         session: sessionComposer,
@@ -42,7 +43,7 @@ describe('library.instrument', function () {
 
     describe('explicit use', function() {
       it('loads', async function () {
-        const { instruments } = await sessionWithLibraryInstrument(async ({ session }) => {
+        const { instruments } = await sessionWithLibraryInstrument(({ session }) => {
           session.use.instrument('bass').from.library('test');
         });
 
@@ -53,7 +54,7 @@ describe('library.instrument', function () {
 
     describe('implicit use', function() {
       it('loads', async function () {
-        const { instruments } = await sessionWithLibraryInstrument(async ({ session }) => {
+        const { instruments } = await sessionWithLibraryInstrument(({ session }) => {
           session.use.instrument('bass').from.library();
         });
 
@@ -64,7 +65,7 @@ describe('library.instrument', function () {
 
     describe('low level use', function() {
       it('loads', async function () {
-        const { instruments } = await sessionWithLibraryInstrument(async ({ session }) => {
+        const { instruments } = await sessionWithLibraryInstrument(({ session }) => {
           session.use({
             collection: 'instruments',
             libraryName: 'test',

@@ -1,11 +1,11 @@
 import { PositionModel, QuarterUnit } from '@composer/core';
 import { quarter, session } from '../';
 
-async function testTrack(fn) {
+function testTrack(fn) {
   const results = {};
 
-  await session('my-song', async function ({ session }) {
-    session.instrument('bass', async function () {
+  session('my-song', function ({ session }) {
+    session.instrument('bass', function () {
       return 'i am instrument';
     });
 
@@ -18,7 +18,7 @@ async function testTrack(fn) {
       );
     })
 
-    session.track('bass', async ({ track }) => {
+    session.track('bass', ({ track }) => {
       results.track = track;
       results.session = session;
 
@@ -32,8 +32,8 @@ async function testTrack(fn) {
 describe('session.track.play', function () {
 
   describe('.note()', function () {
-    it('sequences single notes', async function () {
-      const { track } = await testTrack(({ track }) => {
+    it('sequences single notes', function () {
+      const { track } = testTrack(({ track }) => {
         track.at(0, 0, 0).play(quarter.note(0));
       });
 
@@ -43,8 +43,8 @@ describe('session.track.play', function () {
 
   describe('.phrase()', function () {
 
-    it('sequences phrases by name', async function () {
-      const { track } = await testTrack(({ track }) => {
+    it('sequences phrases by name', function () {
+      const { track } = testTrack(({ track }) => {
         track.at(0, 0, 0).play.phrase('a-phrase');
       });
 
@@ -60,8 +60,8 @@ describe('session.track.play', function () {
       expect(event.value).toEqual('a-phrase');
     });
 
-    it('sequences anonymous phrases', async function () {
-      const { track } = await testTrack(({ track }) => {
+    it('sequences anonymous phrases', function () {
+      const { track } = testTrack(({ track }) => {
         track.at(0, 0, 0).play.phrase([
           quarter.note(0),
           quarter.note(1),
@@ -82,8 +82,8 @@ describe('session.track.play', function () {
       expect(event.value).toMatch(/^bass-[A-Z_a-z0-9\-]{8}/);
     });
 
-    it('sequences multiple pitches in one phrase step', async () => {
-      const results = await testTrack(({ track }) => {
+    it('sequences multiple pitches in one phrase step', () => {
+      const results = testTrack(({ track }) => {
         track.at(0, 0, 0).play.phrase([
           quarter.note([ 0, 2, 3 ]),
           quarter.note(1),
@@ -126,8 +126,8 @@ describe('session.track.play', function () {
       expect(steps[3].pitch).toEqual(3);
     });
 
-    it('sequences rests in a phrase step', async () => {
-      const results = await testTrack(({ track }) => {
+    it('sequences rests in a phrase step', () => {
+      const results = testTrack(({ track }) => {
         track.at(0, 0, 0).play.phrase([
           quarter.rest()
         ]);

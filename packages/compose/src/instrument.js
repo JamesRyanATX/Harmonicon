@@ -1,4 +1,5 @@
-import { BaseComposer } from './base';
+import { BaseSequencedComposer } from './base/sequenced';
+import { InstrumentModel } from '@composer/core';
 
 /**
  * Create new instruments with {@link SessionComposer#instrument|session.instrument()}:
@@ -89,9 +90,46 @@ import { BaseComposer } from './base';
  * @label Instruments
  * @category Composers
  */
-export class InstrumentComposer extends BaseComposer {
-  static modelContextName = 'instrument';
-  static model = null;
+ export class InstrumentComposer extends BaseSequencedComposer {
+  static composerContextName = 'instrument';
+  static model = InstrumentModel;
+
+  group(group) {
+    this.model.setProperties({ group });
+  }
+
+  description(description) {
+    this.model.setProperties({ description });
+  }
+
+  author(author) {
+    this.model.setProperties({ author });
+  }
+
+  url(url) {
+    this.model.setProperties({ url });
+  }
+
+  documentationUrl(documentationUrl) {
+    this.model.setProperties({ documentationUrl });
+  }
+
+  options(options) {
+    this.model.setProperties({ options });
+  }
+
+  defaultOptions(defaultOptions) {
+    this.model.setProperties({ defaultOptions });
+  }
+
+  fn(fn) {
+    this.model.setProperties({ fn });
+  }
+
+  pitchAliases(pitchAliases) {
+    this.model.setProperties({ pitchAliases });
+  }
+
 }
 
 export const instrument = InstrumentComposer.composer();

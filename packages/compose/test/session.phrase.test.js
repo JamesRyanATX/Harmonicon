@@ -8,12 +8,11 @@ import {
   thirtySecond,
   sixtyFourth,
 } from '../';
-import { phrase } from '../src/phrase';
 
-async function testPhrase(steps) {
+function testPhrase(steps) {
   const results = {};
 
-  await session('my-song', async function ({ session }) {
+  session('my-song', function ({ session }) {
     session.phrase('a-phrase', ({ phrase }) => {
       if (steps) {
         phrase.steps(steps);
@@ -39,16 +38,16 @@ async function testPhrase(steps) {
 }
 
 describe('session.phrase', function () {
-  it('parses phrases', async function () {
-    const { session, phrase } = await testPhrase();
+  it('parses phrases', function () {
+    const { session, phrase } = testPhrase();
     
     expect(session.model.phrases.length).toEqual(1);
     expect(phrase.model.name).toEqual('a-phrase');
     expect(phrase.model.steps.length).toEqual(7);
   });
 
-  it('parses phrases as arrays', async function () {
-    const { session, phrase } = await testPhrase([
+  it('parses phrases as arrays', function () {
+    const { session, phrase } = testPhrase([
       whole.note(0),
       half.note(1),
       quarter.note(2),
@@ -63,8 +62,8 @@ describe('session.phrase', function () {
     expect(phrase.model.steps.length).toEqual(7);
   });
 
-  it('parses phrases without a function', async function () {
-    const composer = await session('my-song', async function ({ session }) {
+  it('parses phrases without a function', function () {
+    const composer = session('my-song', function ({ session }) {
       session.phrase('a-phrase', [
         whole.note(0),
         half.note(1),

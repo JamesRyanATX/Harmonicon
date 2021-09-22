@@ -2,8 +2,8 @@ import { SessionModel } from '@composer/core';
 import { session, SessionComposer, ComposerError } from '../';
 
 describe('session', function () {
-  it('creates a session', async function () {
-    const result = await session('my-song', async ({ session }) => {
+  it('creates a session', function () {
+    const result = session('my-song', ({ session }) => {
       session.at(0).meter([ 4, 4 ]);
       session.at(0).tempo(100);
       session.at(0).swing(0.4);
@@ -64,8 +64,8 @@ describe('session', function () {
           output: '1:4.255:0.456'
         },
       ].forEach((scenario) => {
-        it(`accepts "${scenario.input}"`, async () => {
-          const results = await session('test', async ({ session }) => {
+        it(`accepts "${scenario.input}"`, () => {
+          const results = session('test', ({ session }) => {
             session.at.apply(session, scenario.input).key('a');
           });
 
@@ -81,12 +81,12 @@ describe('session', function () {
         [ 0, 4, "x" ],
         [ "1:2:3", 4, 5 ],
       ].forEach((args) => {
-        it(`rejects "bob"`, async () => {
-          await expect(session('test', async ({ session }) => {
-            session.at.apply(session, args).key('a');
-          }))
-            .rejects
-            .toThrow(ComposerError);
+        it(`rejects "bob"`, () => {
+          expect(() => {
+            session('test', ({ session }) => {
+              session.at.apply(session, args).key('a');
+            })
+          }).toThrow(ComposerError);
         });  
       });
     });
@@ -110,8 +110,8 @@ describe('session', function () {
             output: 'E'
           },
         ].forEach((scenario) => {
-          it(`accepts "${scenario.input}"`, async () => {
-            const results = await session('test', async ({ session }) => {
+          it.only(`accepts "${scenario.input}"`, () => {
+            const results = session('test', ({ session }) => {
               session.at(0).key(scenario.input);
             });
   
@@ -125,12 +125,12 @@ describe('session', function () {
           [ "0:x:4" ],
           [ 12345 ]
         ].forEach((scenario) => {
-          it.only(`rejects "${scenario}"`, async () => {
-            await expect(session('test', async ({ session }) => {
-              session.at(0).key(scenario);
-            }))
-              .rejects
-              .toThrow(ComposerError);
+          it(`rejects "${scenario}"`, () => {
+            expect(() => {
+              session('test', ({ session }) => {
+                session.at(0).key(scenario);
+              })
+            }).toThrow(ComposerError);
           });  
         });
       });

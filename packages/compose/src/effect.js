@@ -19,8 +19,41 @@ import { EffectModel } from '@composer/core';
  * @hideconstructor
  */
 export class EffectComposer extends BaseSequencedComposer {
-  static modelContextName = 'effect';
+  static composerContextName = 'effect';
   static model = EffectModel;
+
+  group(group) {
+    this.model.setProperties({ group });
+  }
+
+  description(description) {
+    this.model.setProperties({ description });
+  }
+
+  author(author) {
+    this.model.setProperties({ author });
+  }
+
+  url(url) {
+    this.model.setProperties({ url });
+  }
+
+  documentationUrl(documentationUrl) {
+    this.model.setProperties({ documentationUrl });
+  }
+
+  options(options) {
+    this.model.setProperties({ options });
+  }
+
+  defaultOptions(defaultOptions) {
+    this.model.setProperties({ defaultOptions });
+  }
+
+  fn(fn) {
+    this.model.setProperties({ fn });
+  }
+
 }
 
-export const instrument = InstrumentComposer.composer();
+export const instrument = EffectComposer.composer();

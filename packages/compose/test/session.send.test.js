@@ -1,31 +1,31 @@
 import { session } from '../';
 
 function createInstrumentFunction() {
-  return async () => {
+  return () => {
     return 'ok'; // audio context
   }
 }
 
 function withSession(fn) {
-  return session('test session', async ({ session }) => {
+  return session('test session', ({ session }) => {
 
     session.instrument('bass-instrument', createInstrumentFunction());
     session.instrument('drums-instrument', createInstrumentFunction());
     session.instrument('guitar-instrument', createInstrumentFunction());
 
-    session.effect('reverb-effect', async () => {});
+    session.effect('reverb-effect', () => {});
 
-    session.track('bass-track', async () => {});
-    session.track('drums-track', async () => {});
-    session.track('guitar-track', async () => {});
+    session.track('bass-track', () => {});
+    session.track('drums-track', () => {});
+    session.track('guitar-track', () => {});
 
     fn({ session });
   });
 }
 
 describe('#send()', function () {
-  it('creates a patch', async function () {
-    const result = await withSession(({ session }) => {
+  it('creates a patch', function () {
+    const result = withSession(({ session }) => {
       session.send({
         inputType: 'instrument',
         input: 'bass-instrument',
@@ -46,8 +46,8 @@ describe('#send()', function () {
 });
 
 describe('#send.instrument().to.track()', function () {
-  it('creates a patch', async function () {
-    const result = await withSession(({ session }) => {
+  it('creates a patch', function () {
+    const result = withSession(({ session }) => {
       session.send.instrument('bass-instrument').to.track('bass-track');
     });
 
@@ -63,8 +63,8 @@ describe('#send.instrument().to.track()', function () {
 });
 
 describe('#send.track().to.track()', function () {
-  it('creates a patch', async function () {
-    const result = await withSession(({ session }) => {
+  it('creates a patch', function () {
+    const result = withSession(({ session }) => {
       session.send.track('bass-track').to.track('main');
     });
 
@@ -80,8 +80,8 @@ describe('#send.track().to.track()', function () {
 });
 
 describe('#send.track().to.main()', function () {
-  it('creates a patch', async function () {
-    const result = await withSession(({ session }) => {
+  it('creates a patch', function () {
+    const result = withSession(({ session }) => {
       session.send.track('bass-track').to.main();
     });
 
@@ -97,18 +97,18 @@ describe('#send.track().to.main()', function () {
 });
 
 describe('#send.instrument().to.track("main")', function () {
-  it('throws an error', async function () {
-    await expect(withSession(({ session }) => {
-      session.send.instrument('bass-instrument').to.track('main');
-    }))
-      .rejects
-      .toThrow('Instruments cannot be sent directly to the main output.');
+  it('throws an error', function () {
+    expect(() => {
+      withSession(({ session }) => {
+        session.send.instrument('bass-instrument').to.track('main');
+      })
+    }).toThrow('Instruments cannot be sent directly to the main output.');
   });
 });
 
 describe('#send.track().to.effect()', function () {
-  it('creates a patch', async function () {
-    const result = await withSession(({ session }) => {
+  it('creates a patch', function () {
+    const result = withSession(({ session }) => {
       session.send.track('bass-track').to.effect('reverb-effect');
     });
 
@@ -124,8 +124,8 @@ describe('#send.track().to.effect()', function () {
 });
 
 describe('#send.effect().to.track()', function () {
-  it('creates a patch', async function () {
-    const result = await withSession(({ session }) => {
+  it('creates a patch', function () {
+    const result = withSession(({ session }) => {
       session.send.effect('reverb-effect').to.track('main');
     });
 
@@ -141,8 +141,8 @@ describe('#send.effect().to.track()', function () {
 });
 
 describe('#send.effect().to.main()', function () {
-  it('creates a patch', async function () {
-    const result = await withSession(({ session }) => {
+  it('creates a patch', function () {
+    const result = withSession(({ session }) => {
       session.send.effect('reverb-effect').to.main();
     });
 

@@ -1,8 +1,8 @@
 import { session } from '../';
 
 describe('effect', function () {
-  it('creates an effect', async function () {
-    const result = await session('my-song', async function ({ session }) {
+  it('creates an effect', function () {
+    const result = session('my-song', function ({ session }) {
       session.effect('reverb', () => (true));
     });
 

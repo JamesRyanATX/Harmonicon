@@ -6,6 +6,8 @@ import { BaseComposer } from './base';
 import { ComposerError } from './errors';
 import { SnippetComposer } from './snippet';
 import { TemplateComposer } from './template';
+import { InstrumentComposer } from './instrument';
+import { EffectComposer } from './effect';
 import { DemoComposer } from './demo';
 
 /**
@@ -47,9 +49,18 @@ export class LibraryComposer extends BaseComposer {
    * @param {Function} fn - Function to build instrument
    */
   instrument(name, fn) {
-    this.model.instruments.add({
-      name, fn
-    });
+    if (fn.length === 0) {
+      return this.model.instruments.add({
+        name, fn
+      });  
+    }
+    else {
+      return this.collectionRecordComposer({
+        composer: InstrumentComposer,
+        collection: 'instruments',
+        name, fn,
+      });
+    }
   }
 
   /**
@@ -59,9 +70,18 @@ export class LibraryComposer extends BaseComposer {
    * @param {Function} fn - Function to build effect
    */
   effect(name, fn) {
-    this.model.effects.add({
-      name, fn
-    });
+    if (fn.length === 0) {
+      return this.model.effects.add({
+        name, fn
+      });  
+    }
+    else {
+      return this.collectionRecordComposer({
+        composer: EffectComposer,
+        collection: 'effects',
+        name, fn,
+      });
+    }
   }
 
   /**
@@ -90,7 +110,7 @@ export class LibraryComposer extends BaseComposer {
    * @param {String} name - Unique name of snippet
    * @param {Function} fn - Function to build snippet
    */
-  async snippet(name, fn) {
+  snippet(name, fn) {
     return this.collectionRecordComposer({
       composer: SnippetComposer,
       collection: 'snippets',
@@ -105,7 +125,7 @@ export class LibraryComposer extends BaseComposer {
    * @param {String} name - Unique name of template
    * @param {Function} fn - Function to build template
    */
-   async template(name, fn) {
+  template(name, fn) {
     return this.collectionRecordComposer({
       composer: TemplateComposer,
       collection: 'templates',
@@ -120,7 +140,7 @@ export class LibraryComposer extends BaseComposer {
    * @param {String} name - Unique name of demo
    * @param {Function} fn - Function to build demo
    */
-   async demo(name, fn) {
+  demo(name, fn) {
     return this.collectionRecordComposer({
       composer: DemoComposer,
       collection: 'demos',
@@ -134,13 +154,13 @@ export class LibraryComposer extends BaseComposer {
    * 
    * @ignore
    */
-  async collectionRecordComposer({
+  collectionRecordComposer({
     composer = null,
     collection = null,
-    fn = async () => {},
+    fn = () => {},
     name = null,
   }) {
-    const modelComposer = await composer.compose(name, fn);
+    const modelComposer = composer.compose(name, fn);
     this.model[collection].add(modelComposer.model);
     return modelComposer;
   }

@@ -9,7 +9,6 @@ import {
   Harmonicon,
 } from '@composer/core';
 
-import * as CoreLibrary from '@composer/library-core';
 import { Logger, mapSeries } from '@composer/util';
 
 import { SequencedEventProxy } from './util/sequenced_event_proxy';
@@ -53,36 +52,6 @@ export class SessionComposer extends BaseSequencedComposer {
   static model = SessionModel;
   static proxies = SessionComposerProxies;
   static logger = new Logger('SessionComposer');
-  static libraries = {};
-
-  // Install library-core by default
-  static defaultLibraries = [
-    CoreLibrary
-  ];
-
-  static async initialize() {
-    await this.initializeLibraries();
-  }
-
-  static reset() {
-    delete this.current;
-  }
-
-  static async initializeLibraries() {
-    await mapSeries(this.defaultLibraries, this.use.bind(this));
-  }
-
-  static async use(library) {
-    if (typeof library.build !== 'function') {
-      throw new TypeError("Provided library cannot be installed.")
-    }
-
-    this.libraries[library.name] = (await library.build()).model;
-  }
-
-  static async initializeLibraries() {
-    await mapSeries(this.defaultLibraries, this.use.bind(this));
-  }
 
   /**
    * Import an object from an external library.
@@ -137,7 +106,7 @@ export class SessionComposer extends BaseSequencedComposer {
 
       // If libraryName not provided, try and infer it
       if (!libraryName) {
-        libraryName = Object.entries(this.constructor.libraries).reduce((memo, [ libName, lib ]) => {
+        libraryName = Object.entries(Harmonicon.libraries).reduce((memo, [ libName, lib ]) => {
           return (lib[collection].getByName(name)) ? libName : memo;
         }, libraryName);
       }
@@ -146,7 +115,7 @@ export class SessionComposer extends BaseSequencedComposer {
         throw new ComposerError(`${composer}.${name} not found.`);
       }
 
-      const library = this.constructor.libraries[libraryName];
+      const library = Harmonicon.libraries[libraryName];
       const item = library[collection].filterByProperty('name', name)[0];
 
       if (!item) {
@@ -552,7 +521,7 @@ export class SessionComposer extends BaseSequencedComposer {
    * @ignore
    * @emits Harmonicon#composer:parsing
    */
-  async begin () {
+  begin () {
     Harmonicon.emit('composer:parsing', this);
   }
 
@@ -563,7 +532,7 @@ export class SessionComposer extends BaseSequencedComposer {
    * @ignore
    * @emits Harmonicon#composer:parsed
    */
-  async finish () {
+  finish () {
     Harmonicon.emit('composer:parsed', this);
   }
 

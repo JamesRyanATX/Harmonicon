@@ -1,21 +1,17 @@
 import { Logger } from '@composer/util';
+import { ComposerError } from './errors';
 
 export class BaseComposer {
   static composerContextName = 'base';
   static model = null;
-  static initialized = false;
 
-  static async compose(name, fn, context) {
-    if (!this.initialized) {
-      await this.initialize();
-    }
+  static compose(name, builder, context) {
+    const composer = new this(name, builder, context);
 
-    const composer = new this(name, fn, context);
-
-    await composer.begin();
-    await composer.load();
-    await composer.evaluate();
-    await composer.finish();
+    composer.begin();
+    composer.load();
+    composer.evaluate();
+    composer.finish();
 
     return composer;
   }
@@ -24,21 +20,15 @@ export class BaseComposer {
    * Return an composer function bound to composer class
    */
   static composer() {
-    return (async function () {
-      return this.compose.apply(this, arguments);
-    }).bind(this);
-  }
-
-  static async initialize () {
-    this.initialized = true;
+    return this.compose.bind(this);
   }
 
   /**
    * @ignore
    */
-  constructor(name, fn, context) {
+  constructor(name, builder, context) {
     this.name = name;
-    this.fn = fn;
+    this.builder = builder;
     this.context = Object.assign({
       [this.constructor.composerContextName]: this
     }, context);
@@ -67,26 +57,32 @@ export class BaseComposer {
     }.bind(this)
   }
 
-  async load() {
+  load() {
     this.model = this.context.model || new this.constructor.model({
       name: this.name
     });
   }
 
-  async evaluate () {
+  evaluate () {
+    let result;
+
     try {
-      return await this.fn.call(this, this.context);
+      result = this.builder.call(this, this.context);
     }
     catch (e) {
       this.logger.error(`${this.constructor.name}: ${e.message}`);
-      throw e;
+      throw e;  
+    }
+    
+    if (result instanceof Promise) {
+      throw new ComposerError(`Builder functions must be syncronous and not return promises.`)
     }
   }
 
-  async begin () {
+  begin () {
   }
 
-  async finish () {
+  finish () {
   }
 
 }

@@ -1,9 +1,9 @@
 import { session, SessionComposer, TrackComposer } from '../';
 
 describe('track', function () {
-  it('creates a track', async function () {
-    const result = await session('my-song', async function ({ session }) {
-      session.track('bass', async function ({ track, session }) {
+  it('creates a track', function () {
+    const result = session('my-song', function ({ session }) {
+      session.track('bass', function ({ track, session }) {
         expect(track).toBeInstanceOf(TrackComposer)
         expect(session).toBeInstanceOf(SessionComposer)
       });
