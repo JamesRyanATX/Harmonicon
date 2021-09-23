@@ -2,6 +2,8 @@ import { toneSamplerInstrument } from '../helper';
 
 export const trombone = toneSamplerInstrument({
   name: 'trombone',
+  group: 'Brass',
+  suggestedOctave: 2,
   urls: {
     'A#2': 'As2.ogg',
     'C2': 'C2.ogg',

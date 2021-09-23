@@ -2,6 +2,7 @@ import { toneSamplerInstrument } from '../helper';
 
 export const piano = toneSamplerInstrument({
   name: 'piano',
+  group: 'Keyboards',
   urls: {
     'A0': 'A0.ogg',
     'A1': 'A1.ogg',

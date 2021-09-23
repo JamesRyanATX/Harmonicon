@@ -2,6 +2,7 @@ import { toneSamplerInstrument } from '../helper';
 
 export const violin = toneSamplerInstrument({
   name: 'violin',
+  group: 'Strings',
   urls: {
     'A3': 'A3.ogg',
     'A4': 'A4.ogg',

@@ -2,6 +2,7 @@ import { toneSamplerInstrument } from '../helper';
 
 export const clarinet = toneSamplerInstrument({
   name: 'clarinet',
+  group: 'Woodwinds',
   urls: {
     'D3': 'D3.ogg',
     'D4': 'D4.ogg',

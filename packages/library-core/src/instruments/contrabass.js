@@ -2,6 +2,7 @@ import { toneSamplerInstrument } from '../helper';
 
 export const contrabass = toneSamplerInstrument({
   name: 'contrabass',
+  group: 'Strings',
   urls: {
     'C1': 'C1.ogg',
     'C#2': 'Cs2.ogg',

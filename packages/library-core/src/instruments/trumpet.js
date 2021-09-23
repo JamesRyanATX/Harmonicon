@@ -2,6 +2,7 @@ import { toneSamplerInstrument } from '../helper';
 
 export const trumpet = toneSamplerInstrument({
   name: 'trumpet',
+  group: 'Brass',
   urls: {
     'C5': 'C5.ogg',
     'D4': 'D4.ogg',

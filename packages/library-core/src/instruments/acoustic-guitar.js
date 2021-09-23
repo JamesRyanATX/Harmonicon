@@ -2,6 +2,7 @@ import { toneSamplerInstrument } from '../helper';
 
 export const acousticGuitar = toneSamplerInstrument({
   name: 'acoustic-guitar',
+  group: 'Guitars',
   urls: {
     'F3': 'F3.ogg',
     'F#1': 'Fs1.ogg',

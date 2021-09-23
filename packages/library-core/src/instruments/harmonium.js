@@ -2,6 +2,7 @@ import { toneSamplerInstrument } from '../helper';
 
 export const harmonium = toneSamplerInstrument({
   name: 'harmonium',
+  group: 'Keyboards',
   urls: {
     'C2': 'C2.ogg',
     'C3': 'C3.ogg',

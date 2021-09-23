@@ -2,6 +2,7 @@ import { toneSamplerInstrument } from '../helper';
 
 export const flute = toneSamplerInstrument({
   name: 'flute',
+  group: 'Woodwinds',
   urls: {
     'A5': 'A5.ogg',
     'C3': 'C3.ogg',

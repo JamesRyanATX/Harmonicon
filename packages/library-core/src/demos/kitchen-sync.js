@@ -29,7 +29,7 @@ export const kitchenSyncDemo = ({ library }) => {
  * 
  */
 
-session('demo', async ({ session }) => {
+session('demo', ({ session }) => {
   session.at(0)        // At measure zero...
     .meter([ 4, 4 ])   //   ...set the time signature to 4/4
     .tempo(160)        //   ...set the tempo to 160
@@ -49,7 +49,7 @@ session('demo', async ({ session }) => {
   session.use.instrument('piano').from.library();
 
   // Make a custom instrument with Tone.MonoSynth()
-  session.instrument('bass', async () => {
+  session.instrument('bass', () => {
     return new Tone.MonoSynth({
       volume: -8,
       detune: 0,
@@ -75,7 +75,7 @@ session('demo', async ({ session }) => {
   });
 
   // Make a custom instrument with Tone.PluckSynth()
-  session.instrument('lead', async () => {
+  session.instrument('lead', () => {
     return new Tone.PluckSynth();
   });
 
@@ -198,35 +198,35 @@ session('demo', async ({ session }) => {
   // Tracks
   // ------
 
-  session.track('drums', async ({ track }) => {
+  session.track('drums', ({ track }) => {
     track.at(1, 0, 0).play.phrase('beat-a');
     track.at(9, 0, 0).play.phrase('beat-a');
     track.at(17, 0, 0).play.phrase('beat-a');
     track.at(25, 0, 0).play.phrase('beat-a');
   });
 
-  session.track('bass', async ({ track }) => {
+  session.track('bass', ({ track }) => {
     track.at(1, 0, 0).play.phrase('bass-a');
     track.at(9, 0, 0).play.phrase('bass-a');
     track.at(17, 0, 0).play.phrase('bass-a');
     track.at(25, 0, 0).play.phrase('bass-a');
   });
 
-  session.track('lead', async ({ track }) => {
+  session.track('lead', ({ track }) => {
     track.at(1, 0, 0).play.phrase('bass-a');
     track.at(9, 0, 0).play.phrase('bass-a');
     track.at(17, 0, 0).play.phrase('bass-a');
     track.at(25, 0, 0).play.phrase('bass-a');
   });
 
-  session.track('xylophone', async ({ track }) => {
+  session.track('xylophone', ({ track }) => {
     track.at(1, 0, 0).play.phrase('bass-a');
     track.at(9, 0, 0).play.phrase('bass-a');
     track.at(17, 0, 0).play.phrase('bass-a');
     track.at(25, 0, 0).play.phrase('bass-a');
   });
 
-  session.track('piano', async ({ track }) => {
+  session.track('piano', ({ track }) => {
     track.at(9, 0, 0).play.phrase('piano-a');
     track.at(25, 0, 0).play.phrase('piano-a');
   });
@@ -255,7 +255,7 @@ session('demo', async ({ session }) => {
   // -------
 
   // Create a master effect track
-  session.track('fx', async () => { })
+  session.track('fx', () => { })
 
   // Send instruments to their respective tracks
   session.send.instrument('drums').to.track('drums');

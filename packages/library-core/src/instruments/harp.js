@@ -2,6 +2,7 @@ import { toneSamplerInstrument } from '../helper';
 
 export const harp = toneSamplerInstrument({
   name: 'harp',
+  group: 'Strings',
   urls: {
     'C5': 'C5.ogg',
     'D2': 'D2.ogg',

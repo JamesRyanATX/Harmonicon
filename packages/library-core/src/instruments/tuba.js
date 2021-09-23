@@ -2,6 +2,7 @@ import { toneSamplerInstrument } from '../helper';
 
 export const tuba = toneSamplerInstrument({
   name: 'tuba',
+  group: 'Brass',
   urls: {
     'A#1': 'As1.ogg',
     'A#2': 'As2.ogg',

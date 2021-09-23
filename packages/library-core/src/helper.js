@@ -2,12 +2,37 @@ function toneDocumentationUrl(toneObject) {
   return `https://tonejs.github.io/docs/14.7.7/${toneObject}`;
 }
 
+export const toneSynthesizerInstrument = ({
+  name = null,
+  group = 'Synthesizers',
+  toneInstrument = null,
+  toneOptions = {},
+  defaultOptions = {},
+  suggestedOctave = 4,
+}) => {
+  return ({ library }) => {
+    library.instrument(name, ({ instrument }) => {
+      instrument.url('https://tonejs.github.io/');
+      instrument.documentationUrl(toneDocumentationUrl(toneInstrument));
+      instrument.author('Harmonicon');
+      instrument.group(group);
+      instrument.defaultOptions(defaultOptions);
+      instrument.suggestedOctave(suggestedOctave);
+      instrument.fn((options) => {
+        return new Tone[toneInstrument](Object.assign({},
+          toneOptions, defaultOptions, options));
+      });
+    });
+  };
+};
+
 export const toneSamplerInstrument = ({
   name = null,
   group = 'Sampled',
   pitchAliases = {},
   urls = {},
-  volume = -10,
+  volume = 0,
+  suggestedOctave = 4,
 }) => {
   return ({ library }) => {
     library.instrument(name, ({ instrument }) => {
@@ -17,6 +42,7 @@ export const toneSamplerInstrument = ({
       instrument.group(group);
       instrument.pitchAliases(pitchAliases);
       instrument.defaultOptions({ volume });
+      instrument.suggestedOctave(suggestedOctave);
       instrument.fn((options) => {
         return new Tone.Sampler(Object.assign({
           urls,

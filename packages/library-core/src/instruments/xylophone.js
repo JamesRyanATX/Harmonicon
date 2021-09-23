@@ -2,6 +2,7 @@ import { toneSamplerInstrument } from '../helper';
 
 export const xylophone = toneSamplerInstrument({
   name: 'xylophone',
+  group: 'Percussion',
   urls: {
     'C7': 'C7.ogg',
     'G3': 'G3.ogg',

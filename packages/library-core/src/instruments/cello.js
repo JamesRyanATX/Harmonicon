@@ -2,6 +2,7 @@ import { toneSamplerInstrument } from '../helper';
 
 export const cello = toneSamplerInstrument({
   name: 'cello',
+  group: 'Strings',
   urls: {
     'E3': 'E3.ogg',
     'E4': 'E4.ogg',

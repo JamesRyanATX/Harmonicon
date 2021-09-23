@@ -2,6 +2,8 @@ import { toneSamplerInstrument } from '../helper';
 
 export const frenchHorn = toneSamplerInstrument({
   name: 'french-horn',
+  group: 'Brass',
+  suggestedOctave: 3,
   urls: {
     'D2': 'D2.ogg',
     'D4': 'D4.ogg',

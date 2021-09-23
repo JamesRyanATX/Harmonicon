@@ -2,6 +2,7 @@ import { toneSamplerInstrument } from '../helper';
 
 export const organ = toneSamplerInstrument({
   name: 'organ',
+  group: 'Keyboards',
   urls: {
     'C3': 'C3.ogg',
     'C4': 'C4.ogg',

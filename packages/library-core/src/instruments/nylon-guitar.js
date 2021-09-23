@@ -2,6 +2,7 @@ import { toneSamplerInstrument } from '../helper';
 
 export const nylonGuitar = toneSamplerInstrument({
   name: 'nylon-guitar',
+  group: 'Guitars',
   urls: {
     'F#2': 'Fs2.ogg',
     'F#3': 'Fs3.ogg',

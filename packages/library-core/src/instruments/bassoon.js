@@ -2,6 +2,7 @@ import { toneSamplerInstrument } from '../helper';
 
 export const bassoon = toneSamplerInstrument({
   name: 'bassoon',
+  group: 'Woodwinds',
   urls: {
     'A3': 'A3.ogg',
     'C2': 'C2.ogg',

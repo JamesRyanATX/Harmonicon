@@ -2,6 +2,7 @@ import { toneSamplerInstrument } from '../helper';
 
 export const saxophone = toneSamplerInstrument({
   name: 'saxophone',
+  group: 'Woodwinds',
   urls: {
     'D#4': 'Ds4.ogg',
     'E2': 'E2.ogg',
