@@ -190,8 +190,13 @@ export class ToneAudioDriver extends BaseAudioDriver {
       // this.logger.debug(`render.session.event.note:     key signature = ${keySignature}`);
       // this.logger.debug(`render.session.event.note:     instrument = ${instrument}`);
 
-      return await Tone.Transport.schedule((time) => {
-        instrument.triggerAttackRelease(pitch, duration, time);
+      return Tone.Transport.schedule((time) => {
+        if (instrument.triggerAttackRelease.length === 2) {
+          instrument.triggerAttackRelease(duration, time);
+        }
+        else {
+          instrument.triggerAttackRelease(pitch, duration, time);
+        }
 
         Tone.Draw.schedule(() => {
           Harmonicon.emit(`play:${pitch.toLowerCase()}`);
