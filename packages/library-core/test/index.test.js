@@ -17,6 +17,10 @@ describe('@composer/library-core', function () {
     return library.model.effects.filterByProperty('name', name)[0];
   }
 
+  function getInstrument(name) {
+    return library.model.instruments.filterByProperty('name', name)[0];
+  }
+
   describe('build', function () {
     it('contains all instruments', async function () {
       const library = await build();
@@ -56,6 +60,52 @@ describe('@composer/library-core', function () {
         });
       })
     })
-  })
+  });
 
+  describe('instruments', function () {
+    describe('drums', function () {
+      it('is defined', function () {
+        const name = 'drums';
+        const instrument = getInstrument(name);
+
+        expect(instrument.url).toEqual('https://tonejs.github.io/');
+        expect(instrument.documentationUrl).toEqual(expect.any(String));
+        expect(instrument.author).toEqual('Harmonicon');
+        expect(instrument.group).toEqual('Drums');
+        expect(instrument.defaultOptions).toEqual({
+          volume: 0,
+        });
+        expect(instrument.pitchAliases).toEqual({
+          hihat: "c5",
+          hihat2: "c#5",
+          hihat3: "d5",
+          hihatopen: "d#5",
+          hihatopen2: "e5",
+          hihatopen3: "f5",
+          kick: "c2",
+          kicklight: "g2",
+          perc1: "c6",
+          perc3: "d6",
+          perc4: "d#6",
+          perc5: "e6",
+          ride: "f#5",
+          ridebell: "g5",
+          ridebellloud: "g#5",
+          sidestick: "a4",
+          sidestick2: "a#4",
+          snare: "c4",
+          snare2: "c#4",
+          snareoff: "d4",
+          snarerim: "d#4",
+          snarerimshot: "e4",
+          snarerimshot2: "f4",
+          snareroll: "f#4",
+          snarerollshort: "g4",
+          snarerollshort2: "g#4",
+          tom: "c3",
+          tomlight: "g3",
+        });
+      });
+    });
+  });
 });

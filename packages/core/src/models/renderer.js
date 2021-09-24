@@ -81,13 +81,14 @@ export class RendererModel extends BaseModel {
     const node = this.createNode({
       type: 'instrument',
       name: instrument.name, 
-      node: await instrument.render()
+      node: await instrument.render(),
+      pitchAliases: instrument.pitchAliases,
     });
 
-    this.logger.info(`render.instrument: [+] name = ${instrument.name}`);
-    this.logger.debug(`render.instrument:     fn = ${typeof instrument.fn}`);
-    this.logger.debug(`render.instrument:     rendered = ${node.node}`);
-    this.logger.debug(`render.instrument:     loaded = ${node.loaded}`);
+    // this.logger.info(`render.instrument: [+] name = ${instrument.name}`);
+    // this.logger.debug(`render.instrument:     fn = ${typeof instrument.fn}`);
+    // this.logger.debug(`render.instrument:     rendered = ${node.node}`);
+    // this.logger.debug(`render.instrument:     loaded = ${node.loaded}`);
 
     if (node.loaded) {
       return;
@@ -164,12 +165,12 @@ export class RendererModel extends BaseModel {
     }
 
     return mapSeries(inputs, async (input, i) => {
-      const node = this.getNode(input.inputType, input.input).node;
+      const instrument = this.getNode(input.inputType, input.input);
 
-      this.logger.debug(`render.session.track:     input ${i} source = ${input.inputType}:${input.input} (${node})`);
+      this.logger.debug(`render.session.track:     input ${i} source = ${input.inputType}:${input.input} (${instrument.node})`);
 
       return await track.events.mapSeries(async (event) => {
-        return this.renderTrackEvent({ event, track, instrument: node });
+        return this.renderTrackEvent({ event, track, instrument });
       });  
     });
   }
@@ -178,7 +179,7 @@ export class RendererModel extends BaseModel {
     this.logger.info(`render.session.track.event: [+] at = ${event.at}`);
     this.logger.debug(`render.session.track.event:     type = ${event.type}`);
     this.logger.debug(`render.session.track.event:     value = ${event.value}`);
-    this.logger.debug(`render.session.track.event:     instrument = ${instrument}`);
+    this.logger.debug(`render.session.track.event:     instrument = ${instrument.node}`);
 
     return this.scheduleEvent({ event, track, instrument })
   }
@@ -259,12 +260,18 @@ export class RendererModel extends BaseModel {
   // Audio nodes
   // -----------
 
-  createNode({ type, name, node, root }) {
+  createNode({
+    type,
+    name,
+    node,
+    root,
+    pitchAliases
+  }) {
     this.cache.nodes = this.cache.nodes || {};
     this.cache.nodes[type] = this.cache.nodes[type] || {};
 
     return this.cache.nodes[type][name] = this.driver.createNode({
-      root, node, name: `${type}:${name}`,
+      root, node, pitchAliases, name: `${type}:${name}`,
     });
   }
 

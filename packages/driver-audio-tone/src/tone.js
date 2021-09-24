@@ -13,6 +13,10 @@ export class ToneAudioDriverNode {
     return !!this.properties.root;
   }
 
+  get pitchAliases() {
+    return this.properties.pitchAliases || {};
+  }
+
   get loaded() {
     return this.node.loaded !== false;
   }
@@ -181,7 +185,7 @@ export class ToneAudioDriver extends BaseAudioDriver {
       const note = event.value;
       const keySignature = track.keySignatureAt(event.at);
       const meter = track.meterAt(event.at);
-      const pitch = note.computedPitch(keySignature);
+      const pitch = instrument.pitchAliases[note.pitch] || note.computedPitch(keySignature);
       const duration = note.duration.toMBS(meter);
 
       // this.logger.info(`render.session.event.note: [+] position = ${event.at}`);
@@ -191,11 +195,11 @@ export class ToneAudioDriver extends BaseAudioDriver {
       // this.logger.debug(`render.session.event.note:     instrument = ${instrument}`);
 
       return Tone.Transport.schedule((time) => {
-        if (instrument.triggerAttackRelease.length === 2) {
-          instrument.triggerAttackRelease(duration, time);
+        if (instrument.node.triggerAttackRelease.length === 2) {
+          instrument.node.triggerAttackRelease(duration, time);
         }
         else {
-          instrument.triggerAttackRelease(pitch, duration, time);
+          instrument.node.triggerAttackRelease(pitch, duration, time);
         }
 
         Tone.Draw.schedule(() => {

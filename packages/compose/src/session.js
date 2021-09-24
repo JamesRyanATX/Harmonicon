@@ -148,7 +148,13 @@ export class SessionComposer extends BaseSequencedComposer {
         throw new ComposerError(`${libraryName}.${composer}.${name} not found.`);
       }
 
-      return this[composer](name, item.fn, options);
+      const itemComposer = this[composer](name, item.fn, options);
+
+      if (itemComposer.pitchAliases) {
+        itemComposer.pitchAliases(item.pitchAliases);
+      }
+
+      return itemComposer;
     }
     else {
       throw new ComposerError(`Unsupported import source "${source}"`);

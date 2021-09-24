@@ -34,7 +34,15 @@ export class NoteModel extends BaseModel {
   static parseAbsolutePitch({ pitch, octave }) {
     const inlineOctave = TonalNote.octave(pitch);
 
-    if ([ 'a', 'a#', 'bb', 'b', 'cb' ].indexOf(pitch.toLowerCase()) > -1) {
+    // Note aliases
+    if (!pitch.match(/^[abcdefg][b#]{0,1}[0-9]{0,1}$/i)) {
+      return {
+        pitch, octave
+      }
+    }
+
+    // Octave autoshift
+    else if ([ 'a', 'a#', 'bb', 'b', 'cb' ].indexOf(pitch.toLowerCase()) > -1) {
       return (typeof octave === 'number') ?
         {
           pitch: TonalNote.name(`${pitch}${octave}`),
@@ -44,6 +52,7 @@ export class NoteModel extends BaseModel {
           octave: 3
         }
     }
+
     else if (inlineOctave === undefined) {
       return (typeof octave === 'number') ?
         {

@@ -249,7 +249,7 @@ export class NoteComposer {
    * @param {Integer} options.octave - octave (0 to 7)
    * @returns {(NoteModel|NoteModel[])}
    */
-  static note(input, options = {}) {
+  static note(input, options = {}, deferFailure = true) {
     const duration = this.unit;
     const parsers = {};
 
@@ -285,7 +285,12 @@ export class NoteComposer {
     }
     catch (e) {
       if (e instanceof ApplicationError) {
-        throw new ComposerError(e.message);
+        if (deferFailure) {
+          return parsers.note(input);
+        }
+        else {
+          throw new ComposerError(e.message);
+        }
       }
       else {
         throw e;

@@ -14,9 +14,9 @@ The UI is served on port 3000.
 
 ## TODO
 
-* Instrument and effect name aliases
+* ~~Instrument and effect name aliases~~
+* ~~Instrument note aliases~~
 * Annotations
-* Instrument note aliases
 * Track volume
 * Track panning
 * Instrument selector for Keyboard panel
