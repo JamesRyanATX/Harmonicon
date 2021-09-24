@@ -13,6 +13,8 @@ import { Logger, mapSeries } from '@composer/util';
 
 import { SequencedEventProxy } from './util/sequenced_event_proxy';
 import { BaseSequencedComposer } from './base/sequenced';
+import { InstrumentComposer } from './instrument';
+import { EffectComposer } from './effect';
 import { TrackComposer } from './track';
 import { PhraseComposer } from './phrase';
 import { SessionComposerProxies } from './session/proxies';
@@ -54,32 +56,33 @@ export class SessionComposer extends BaseSequencedComposer {
   static logger = new Logger('SessionComposer');
 
   /**
-   * Import an object from an external library.
-   * 
-   * - **Effects** - via `session.use.effect()`
-   * - **Instruments** -- via `session.use.instrument()`
-   * - **Phrases** -- via `session.use.phrase()`
-   * - **Tracks** -- via `session.use.track()`
+   * Import an instrument or effect from an external library.
    * 
    * ##### Examples
    *
-   * Load an instrument from the core library:
+   * Basic syntax:
    * 
    * ``` javascript
-   * session.use.instrument('bass').from.library('core');
+   * session.use('core.instrument.piano');
+   * ```
+   * 
+   * Proxied syntax:
+   * 
+   * ``` javascript
+   * session.use.instrument('piano').from.library('core');
    * ```
    * 
    * Same as above, but library name autodetection:
    * 
    * ``` javascript
-   * session.use.instrument('bass').from.library();
+   * session.use.instrument('piano').from.library();
    * ```
    * 
    * Same as above, but using the low-level API:
    * 
    * ``` javascript
    * session.use({
-   *   name: 'electric-bass',
+   *   name: 'piano',
    *   collection: 'instruments',
    *   source: 'library',
    *   libraryName: 'core',
@@ -94,6 +97,7 @@ export class SessionComposer extends BaseSequencedComposer {
    * @param {string} [params.composer=instrument] - Composer type (effect, instrument, phrase, or track)
    * @param {string} [params.libraryName=core] - name of library
    * @param {string} [params.name] - name of object
+   * @returns {InstrumentComposer|EffectComposer}
    */
   use({
     source = 'library',
@@ -103,6 +107,23 @@ export class SessionComposer extends BaseSequencedComposer {
     name = null,
     options = {},
   }) {
+
+    // Detect string form (core.instrument.piano or instrument.piano)
+    if (typeof arguments[0] === 'string') {
+      const parts = arguments[0].split('.');
+
+      if (parts.length === 2) {
+        [ composer, name ] = parts;
+      }
+      else {
+        [ libraryName, composer, name ] = parts;
+      }
+
+      source = 'library';
+      collection = `${composer}s`;
+      options = arguments[1];
+    }
+
     if (source === 'library') {
 
       // If libraryName not provided, try and infer it
@@ -113,7 +134,11 @@ export class SessionComposer extends BaseSequencedComposer {
       }
 
       if (!libraryName) {
-        throw new ComposerError(`${composer}.${name} not found.`);
+        throw new ComposerError(`Device "${composer}.${name}" not found.`);
+      }
+
+      if (!Harmonicon.libraries[libraryName]) {
+        throw new ComposerError(`Library "${libraryName}" not installed.`);
       }
 
       const library = Harmonicon.libraries[libraryName];
@@ -123,7 +148,7 @@ export class SessionComposer extends BaseSequencedComposer {
         throw new ComposerError(`${libraryName}.${composer}.${name} not found.`);
       }
 
-      this[composer](name, item.fn, options);
+      return this[composer](name, item.fn, options);
     }
     else {
       throw new ComposerError(`Unsupported import source "${source}"`);
@@ -151,9 +176,14 @@ export class SessionComposer extends BaseSequencedComposer {
    * @returns {InstrumentComposer}
    */
   instrument(name, fn, options = {}) {
-    this.model.instruments.add(InstrumentModel.parse({
-      name, fn, options, session: this.model
-    }));
+    const composer = InstrumentComposer.compose(name, ({ instrument }) => {
+      instrument.options(options);
+      instrument.fn(fn);
+    });
+
+    this.model.instruments.add(composer.model);
+
+    return composer;
   }
 
   
@@ -173,7 +203,7 @@ export class SessionComposer extends BaseSequencedComposer {
    * @param {sessionComposerTrackCallback} fn - builder function
    * @returns {TrackComposer}
    */
-   track(name, fn) {
+   track(name, fn = () => {}) {
     const track = TrackModel.parse({
       session: this.model,
       name: name,
@@ -244,9 +274,14 @@ export class SessionComposer extends BaseSequencedComposer {
    * @returns {EffectComposer}
    */
   effect(name, fn, options = {}) {
-    this.model.effects.add(EffectModel.parse({
-      name, fn, options, session
-    }));
+    const composer = EffectComposer.compose(name, ({ effect }) => {
+      effect.options(options);
+      effect.fn(fn);
+    });
+
+    this.model.effects.add(composer.model);
+
+    return composer;
   }
 
 

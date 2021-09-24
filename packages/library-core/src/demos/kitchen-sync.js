@@ -42,43 +42,40 @@ export const kitchenSyncDemo = ({ library }) => {
   // Instruments
   // -----------
 
-  session.use.instrument('drums', {
+  session.use('core.instrument.drums', {
     volume: 0,
-  }).from.library();
-
-  session.use.instrument('xylophone',  {
-    volume: -10
-  }).from.library();
-
-  session.use.instrument('piano', {
-    volume: -15
-  }).from.library();
-
-  // Make a custom instrument with Tone.MonoSynth()
-  session.instrument('bass', () => {
-    return new Tone.MonoSynth({
-      volume: -8,
-      detune: 0,
-      portamento: 0,
-      envelope: {
-        attack: 0,
-        attackCurve: "exponential",
-        decay: 0,
-        decayCurve: "exponential",
-        release: 0.1,
-        releaseCurve: "exponential",
-        sustain: 0.1
-      },
-      oscillator: {
-        partialCount: 0,
-        partials: [],
-        phase: 0,
-        type: "sine",
-        harmonicity: 0,
-        modulationType: "sine"
-      }
-    });
   });
+
+  session.use('core.instrument.xylophone', {
+    volume: -10
+  });
+
+  session.use('core.instrument.piano', {
+    volume: -15
+  });
+
+  session.use('core.instrument.mono-synth', {
+    volume: -8,
+    detune: 0,
+    portamento: 0,
+    envelope: {
+      attack: 0,
+      attackCurve: "exponential",
+      decay: 0,
+      decayCurve: "exponential",
+      release: 0.1,
+      releaseCurve: "exponential",
+      sustain: 0.1
+    },
+    oscillator: {
+      partialCount: 0,
+      partials: [],
+      phase: 0,
+      type: "sine",
+      harmonicity: 0,
+      modulationType: "sine"
+    }
+  }).as('bass');
 
   // Make a custom instrument with Tone.PluckSynth()
   session.instrument('lead', () => {
@@ -243,22 +240,22 @@ export const kitchenSyncDemo = ({ library }) => {
   // Effects
   // -------
 
-  session.use.effect('delay', {
+  session.use('effect.delay', {
     delayTime: "8n",
     feedback: 0.2,
     wet: 0.2
-  }).from.library();
+  }).as('fx-delay');
 
-  session.use.effect('reverb', {
+  session.use('effect.reverb', {
     wet: 0.2
-  }).from.library();
+  }).as('fx-reverb');
 
 
   // Routing
   // -------
 
   // Create a master effect track
-  session.track('fx', () => { })
+  session.track('fx');
 
   // Send instruments to their respective tracks
   session.send.instrument('drums').to.track('drums');
@@ -275,9 +272,9 @@ export const kitchenSyncDemo = ({ library }) => {
   session.send.track('piano').to.track('fx');
 
   // Create effect chain and send it to main()
-  session.send.track('fx').to.effect('delay');
-  session.send.effect('delay').to.effect('reverb');
-  session.send.effect('reverb').to.main();
+  session.send.track('fx').to.effect('fx-delay');
+  session.send.effect('fx-delay').to.effect('fx-reverb');
+  session.send.effect('fx-reverb').to.main();
 
 });
 

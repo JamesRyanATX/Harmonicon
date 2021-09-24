@@ -85,4 +85,15 @@ export class BaseComposer {
   finish () {
   }
 
+  /**
+   * Rename the composed object.
+   * 
+   * @param {string} name - new name
+   * @returns {this}
+   */
+  as(name) {
+    this.model.setProperties({ name });
+    return this;
+  }
+
 }

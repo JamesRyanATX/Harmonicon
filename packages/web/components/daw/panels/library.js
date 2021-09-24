@@ -30,7 +30,7 @@ const OptionsTemplate = (record) => {
 }
 
 const InstrumentTemplate = (record) => (`${MetaTemplate(record)}
-  session.use.instrument('${record.name}', ${OptionsTemplate(record)}).from.library();
+  session.use('instrument.${record.name}', ${OptionsTemplate(record)});
 
   session.track('${record.name}', ({ track }) => {
     track.at(0).play(quarter.note('c${record.suggestedOctave}'));

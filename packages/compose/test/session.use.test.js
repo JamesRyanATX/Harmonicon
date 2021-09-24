@@ -40,6 +40,49 @@ describe('session#use', function () {
         expect(await instrument.render()).toEqual('bananarama');
       });
     });
+
+    describe('imported as string', function () {
+      useTestLibrary({
+        instrument: () => ('bananarama')
+      });
+
+      it('matches complete references', async function () {
+        const composer = session('my-song', function ({ session }) {
+          session.use('test.instrument.test');
+        });
+  
+        const instrument = composer.model.instruments.first();
+
+        expect(instrument.name).toEqual('test');
+      });
+
+      it('autodetects library name', async function () {
+        const composer = session('my-song', function ({ session }) {
+          session.use('instrument.test');
+        });
+  
+        const instrument = composer.model.instruments.first();
+
+        expect(instrument.name).toEqual('test');
+      });
+    });
+
+    describe('aliasing', function () {
+      useTestLibrary({
+        instrument: () => ('bananarama')
+      });
+
+      it('aliases the instrument', async function () {
+        const composer = session('my-song', function ({ session }) {
+          session.use.instrument('test').from.library('test')
+            .as('bananarama');
+        });
+  
+        const instrument = composer.model.instruments.first();
+
+        expect(instrument.name).toEqual('bananarama');
+      });
+    });
   });
 
   describe('effects', function () {
@@ -77,6 +120,23 @@ describe('session#use', function () {
         const effect = composeTestEffect({ banana: 'rama' });
 
         expect(effect.render()).toEqual('bananarama');
+      });
+    });
+
+    describe('aliasing', function () {
+      useTestLibrary({
+        effect: () => ('bananarama')
+      });
+
+      it('aliases the effect', async function () {
+        const composer = session('my-song', function ({ session }) {
+          session.use.effect('test').from.library('test')
+            .as('bananarama');
+        });
+  
+        const effect = composer.model.effects.first();
+
+        expect(effect.name).toEqual('bananarama');
       });
     });
 
