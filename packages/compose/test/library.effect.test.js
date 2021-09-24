@@ -1,5 +1,5 @@
+import { library, session } from '../';
 import { Harmonicon } from '@composer/core';
-import { library, session, SessionComposer } from '../';
 
 describe('library.effect', function () {
 

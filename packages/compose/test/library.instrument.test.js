@@ -7,15 +7,43 @@ describe('library.instrument', function () {
     Harmonicon.uninstall('test');
   })
 
-  it('creates an instrument', function () {
-    const composer = library('test', function ({ library }) {
-      library.instrument('bass', function () {
-        return 'i am instrument';
-      });
-    });
+  describe('long form', function () {
+    it('creates an instrument', async function () {
+      const fn = ({ options }) => {
+        return `my name is ${options.foo}`;
+      };
 
-    expect(composer.model.instruments.length).toEqual(1);
-    expect(composer.model.instruments.first().name).toEqual('bass');
+      const composer = library('test', function ({ library }) {
+        return library.instrument('bass', function ({ instrument }) {
+          instrument.description('a bass');
+          instrument.author('fretlessjazz');
+          instrument.options({ foo: 'bar' });
+          instrument.fn(fn);
+        });
+      });
+
+      expect(composer.model.instruments.length).toEqual(1);
+
+      const instrument = composer.model.instruments.first();
+  
+      expect(instrument.description).toEqual('a bass');
+      expect(instrument.name).toEqual('bass');
+      expect(instrument.author).toEqual('fretlessjazz');
+      expect(instrument.fn).toEqual(fn);
+    });  
+  });
+
+  describe('short form', function () {
+    it('creates an instrument', async function () {
+      const composer = library('test', function ({ library }) {
+        return library.instrument('bass', function () {
+          return 'i am instrument';
+        });
+      });
+  
+      expect(composer.model.instruments.length).toEqual(1);
+      expect(composer.model.instruments.first().name).toEqual('bass');
+    });  
   });
 
   describe('in sessions', function () {
