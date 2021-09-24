@@ -22,7 +22,7 @@ export function ViewDropdown() {
         icon={workspace.panels.library.enabled ? IoCheckmarkSharp : undefined}
       />
       <MenuDropdownItem
-        label="Route Map"
+        label="Route Graph"
         onClick={controller.toggleRoutesPanel.bind(controller)}
         icon={workspace.panels.routes.enabled ? IoCheckmarkSharp : undefined}
       />

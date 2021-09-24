@@ -39,6 +39,19 @@ export class Collection {
     return this.at(this.length - 1);
   }
 
+  bucketizeByProperty(property, {
+    emptyBucket = null
+  } = {}) {
+    return this.records.reduce((buckets, record) => {
+      const bucket = record[property] === undefined && emptyBucket ? emptyBucket : record[property];
+
+      buckets[bucket] = buckets[bucket] || [];
+      buckets[bucket].push(record);
+
+      return buckets;
+    }, {});
+  }
+
   async create(properties = {}) {
     const record = this.add(
       await this.type.create(Object.assign({

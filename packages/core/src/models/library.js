@@ -56,6 +56,18 @@ export class LibraryModel extends sequenceable(BaseModel) {
 
   }
 
+  effectsByGroup() {
+    return this.effects.bucketizeByProperty('group', {
+      emptyBucket: 'Other'
+    });
+  }
+
+  instrumentsByGroup() {
+    return this.instruments.bucketizeByProperty('group', {
+      emptyBucket: 'Other'
+    });
+  }
+
 }
 
 LibraryModel.init();

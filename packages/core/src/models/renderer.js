@@ -1,4 +1,4 @@
-import { mapSeries } from '@composer/util';
+import { mapSeries, mapParallel } from '@composer/util';
 import { BaseModel } from './base.js';
 import { PositionModel } from './position.js';
 import { SequencedEventModel } from './sequenced_event.js';
@@ -62,7 +62,7 @@ export class RendererModel extends BaseModel {
   }
 
   async renderSessionEvents () {
-    return this.session.events.mapSeries(this.renderSessionEvent.bind(this));
+    return this.session.events.mapParallel(this.renderSessionEvent.bind(this));
   }
 
   async renderSessionEvent (event) {
@@ -74,7 +74,7 @@ export class RendererModel extends BaseModel {
   }
 
   async renderInstruments () {
-    return this.session.instruments.mapSeries(this.renderInstrument.bind(this));
+    return this.session.instruments.mapParallel(this.renderInstrument.bind(this));
   }
 
   async renderInstrument (instrument) {
@@ -107,7 +107,7 @@ export class RendererModel extends BaseModel {
   }
 
   async renderEffects () {
-    return this.session.effects.mapSeries(this.renderEffect.bind(this));
+    return this.session.effects.mapParallel(this.renderEffect.bind(this));
   }
 
   async renderEffect (effect) {    

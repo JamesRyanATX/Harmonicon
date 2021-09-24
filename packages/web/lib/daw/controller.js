@@ -24,9 +24,8 @@ export class Controller {
     return this.file.source !== this.renderedSource;
   }
 
-  constructor({ workspace, templates }) {
+  constructor({ workspace }) {
     this.workspace = workspace;
-    this.templates = templates;
     this.renderedSource = null;
     this.listeners = {};
 
@@ -172,7 +171,7 @@ export class Controller {
     try {
       const file = await this.workspace.files.create({
         name: name || this.newFileName(),
-        source: source || this.templates.blank,
+        source: source || Harmonicon.libraries.core.templates.filterByProperty('name', 'Blank')[0].source,
         workspace: this.workspace,
       });
 

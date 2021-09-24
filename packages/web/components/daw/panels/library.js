@@ -14,13 +14,35 @@ import {
 import { useController } from '../providers/controller';
 
 
-const InstrumentTemplate = (record) => (`
-session.use.instrument('${record.name}').from.library();
-`.trim());
+const MetaTemplate = (record) => {
+  const lines = [];
 
-const EffectTemplate = (record) => (`
-session.use.effect('${record.name}').from.library();
-`.trim());
+  if (record.documentationUrl) {
+    lines.push(`  // Additional documentation at ${record.documentationUrl}`);
+  }
+
+  return lines.join("\n");
+}
+
+const OptionsTemplate = (record) => {
+  return JSON.stringify(record.defaultOptions || {}, null, 2)
+    .replace(/\n/g, `\n  `)
+}
+
+const InstrumentTemplate = (record) => (`${MetaTemplate(record)}
+  session.use.instrument('${record.name}', ${OptionsTemplate(record)}).from.library();
+
+  session.track('${record.name}', ({ track }) => {
+    track.at(0).play(quarter.note('c${record.suggestedOctave}'));
+  })
+
+  session.send.instrument('${record.name}').to.track('${record.name}');
+  session.send.track('${record.name}').to.main();`
+);
+
+const EffectTemplate = (record) => (`${MetaTemplate(record)}
+  session.use.effect('${record.name}').from.library();`
+);
 
 
 function Collection({
@@ -64,10 +86,24 @@ function Collection({
   );
 }
 
+function GroupedCollection(props) {
+  return (
+    <TreeGroup label={props.label}>
+      {Object.keys(props.collection).sort().map((group) => (
+        <Collection {...props} 
+          key={group}
+          label={group}
+          collection={props.collection[group]}
+        />
+      ))}
+    </TreeGroup>
+  )
+}
+
 function Instruments({ library }) {
   return (
-    <Collection
-      collection={library.instruments}
+    <GroupedCollection
+      collection={library.instrumentsByGroup()}
       icon={CgPiano}
       label="Instruments"
       template={InstrumentTemplate}
@@ -78,8 +114,8 @@ function Instruments({ library }) {
 
 function Effects({ library }) {
   return (
-    <Collection
-      collection={library.effects}
+    <GroupedCollection
+      collection={library.effectsByGroup()}
       icon={RiSoundModuleFill}
       label="Effects"
       template={EffectTemplate}
@@ -136,13 +172,7 @@ function Demos({ library }) {
 
 
 export function LibraryPanel({ controller }) {
-  const [ library, setLibrary ] = useState();
-
-  if (!library) {
-    (async () => {
-      setLibrary((await build()).model);
-    })();
-  }
+  const library = Harmonicon.libraries.core;
 
   return (
     <Panel 

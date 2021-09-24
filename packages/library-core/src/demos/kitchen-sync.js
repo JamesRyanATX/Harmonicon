@@ -7,7 +7,7 @@ export const kitchenSyncDemo = ({ library }) => {
  *    __ _____   ___  __  _______  _  _______________  _  __
  *   / // / _ | / _  /  |/  / __  / |/ /  _/ ___/ __  / |/ /
  *  / _  / __ |/ , _/ /|_/ / /_/ /    // // /__/ /_/ /    / 
- * /_//_/_/ |_/_/|_/_/  /_/\____/_/|_/___/\___/\____/_/|_/  
+ * /_//_/_/ |_/_/|_/_/  /_/\\____/_/|_/___/\\___/\\____/_/|_/  
  *
  * ===========================================================
  * 
@@ -29,24 +29,30 @@ export const kitchenSyncDemo = ({ library }) => {
  * 
  */
 
-session('demo', ({ session }) => {
+ session('demo', ({ session }) => {
   session.at(0)        // At measure zero...
     .meter([ 4, 4 ])   //   ...set the time signature to 4/4
     .tempo(160)        //   ...set the tempo to 160
     .swing(0)          //   ...set the swing factor to zero
     .key('d')          //   ...set tonic to "D"
     .scale('minor');   //   ...set scale to "minor", resulting in 
-                        //      a key signature of "D minor"
+                       //      a key signature of "D minor"
 
 
   // Instruments
   // -----------
 
-  // Import standard instruments from core library
-  session.use.instrument('drums').from.library();
-  session.use.instrument('electric-bass').from.library();
-  session.use.instrument('xylophone').from.library();
-  session.use.instrument('piano').from.library();
+  session.use.instrument('drums', {
+    volume: 0,
+  }).from.library();
+
+  session.use.instrument('xylophone',  {
+    volume: -10
+  }).from.library();
+
+  session.use.instrument('piano', {
+    volume: -15
+  }).from.library();
 
   // Make a custom instrument with Tone.MonoSynth()
   session.instrument('bass', () => {
@@ -76,7 +82,9 @@ session('demo', ({ session }) => {
 
   // Make a custom instrument with Tone.PluckSynth()
   session.instrument('lead', () => {
-    return new Tone.PluckSynth();
+    return new Tone.PluckSynth({
+      volume: -10
+    });
   });
 
 
@@ -235,20 +243,15 @@ session('demo', ({ session }) => {
   // Effects
   // -------
 
-  session.effect('fx-delay', () => {
-    return new Tone.PingPongDelay({
-      delayTime: "8n",
-      feedback: 0.2,
-      wet: 0.2
-    });
-  });
+  session.use.effect('delay', {
+    delayTime: "8n",
+    feedback: 0.2,
+    wet: 0.2
+  }).from.library();
 
-  session.effect('fx-reverb', () => {
-    return new Tone.Reverb({
-      wet: 0.5
-    });
-  });
-
+  session.use.effect('reverb', {
+    wet: 0.2
+  }).from.library();
 
 
   // Routing
@@ -272,9 +275,9 @@ session('demo', ({ session }) => {
   session.send.track('piano').to.track('fx');
 
   // Create effect chain and send it to main()
-  session.send.track('fx').to.effect('fx-delay');
-  session.send.effect('fx-delay').to.effect('fx-reverb');
-  session.send.effect('fx-reverb').to.main();
+  session.send.track('fx').to.effect('delay');
+  session.send.effect('delay').to.effect('reverb');
+  session.send.effect('reverb').to.main();
 
 });
 

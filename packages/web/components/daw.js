@@ -49,10 +49,6 @@ export function DAW ({
       await Harmonicon.install(CoreLibrary);
 
       setController(new Controller({
-        templates:{
-          blank: blankSource,
-          demo: demoSource,
-        },
         workspace: (await WorkspaceModel.loadOrCreate('default', properties, storageDriver))
           .setProperties(properties)
       }));
@@ -67,7 +63,7 @@ export function DAW ({
       if (workspace.files.length === 0) {
         await workspace.files.create({
           name: 'Demo',
-          source: demoSource,
+          source: Harmonicon.libraries.core.demos.filterByProperty('name', 'Kitchen Sync')[0].source,
         });
       }
 

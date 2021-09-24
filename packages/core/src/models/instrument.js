@@ -35,6 +35,10 @@ export class InstrumentModel extends BaseNodeModel {
       type: Object,
       defaultValue: () => ({})
     },
+    suggestedOctave: {
+      type: Number,
+      defaultValue: 4
+    },
     pitchAliases: {
       type: Object,
       defaultValue: () => ({})

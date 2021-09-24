@@ -3,6 +3,7 @@ import { toneSamplerInstrument } from '../helper';
 export const drums = toneSamplerInstrument({
   name: 'drums',
   group: 'Drums',
+  volume: 0,
   urls: {
     
     'c2': 'kick.wav',
