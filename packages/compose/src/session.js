@@ -100,7 +100,8 @@ export class SessionComposer extends BaseSequencedComposer {
     collection = 'instruments',
     composer = 'instrument',
     libraryName = null,
-    name = null
+    name = null,
+    options = {},
   }) {
     if (source === 'library') {
 
@@ -122,7 +123,7 @@ export class SessionComposer extends BaseSequencedComposer {
         throw new ComposerError(`${libraryName}.${composer}.${name} not found.`);
       }
 
-      this[composer](name, item.fn);
+      this[composer](name, item.fn, options);
     }
     else {
       throw new ComposerError(`Unsupported import source "${source}"`);
@@ -146,11 +147,12 @@ export class SessionComposer extends BaseSequencedComposer {
    * @sort 10
    * @param {string} name - name of new instrument
    * @param {sessionComposerInstrumentCallback} fn - builder function that returns an AudioNode 
+   * @param {object} options - options to pass to builder function at render time
    * @returns {InstrumentComposer}
    */
-  instrument(name, fn) {
+  instrument(name, fn, options = {}) {
     this.model.instruments.add(InstrumentModel.parse({
-      name, fn, session: this.model
+      name, fn, options, session: this.model
     }));
   }
 
@@ -238,11 +240,12 @@ export class SessionComposer extends BaseSequencedComposer {
    * @sort 40
    * @param {string} name - name of new effect
    * @param {sessionComposerEffectCallback} fn - builder function that returns an AudioNode 
+   * @param {object} options - options to pass to builder function at render time
    * @returns {EffectComposer}
    */
-  effect(name, fn) {
+  effect(name, fn, options = {}) {
     this.model.effects.add(EffectModel.parse({
-      name, fn, session
+      name, fn, options, session
     }));
   }
 

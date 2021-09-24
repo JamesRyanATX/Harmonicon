@@ -10,11 +10,18 @@ function createSendFunction(input, inputType, outputType) {
 }
 
 function createImportProxy({ collection, composer }) {
-  return function (name) {
+  return function (name, options) {
     return {
       from: {
         library: function (libraryName) {
-          return this.use({ source: 'library', libraryName, name, collection, composer });
+          return this.use({
+            collection, 
+            composer,
+            libraryName,
+            name,
+            options,
+            source: 'library',
+          });
         }.bind(this)
       }
     }

@@ -122,6 +122,10 @@ import { InstrumentModel } from '@composer/core';
     this.model.setProperties({ defaultOptions });
   }
 
+  suggestedOctave(suggestedOctave) {
+    this.model.setProperties({ suggestedOctave });
+  }
+
   fn(fn) {
     this.model.setProperties({ fn });
   }
