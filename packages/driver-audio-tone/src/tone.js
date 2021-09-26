@@ -1,42 +1,31 @@
-import { Harmonicon } from '@composer/core';
+import { Harmonicon, AudioNodeModel } from '@composer/core';
 import { BaseAudioDriver } from '@composer/driver';
 import { mapSeries } from '@composer/util';
 import * as Tone from 'tone';
 
-export class ToneAudioDriverNode {
-
-  get name() {
-    return this.properties.name;
-  }
-
-  get root() {
-    return !!this.properties.root;
-  }
-
-  get pitchAliases() {
-    return this.properties.pitchAliases || {};
-  }
+export class ToneAudioDriverNode extends AudioNodeModel {
 
   get loaded() {
     return this.node.loaded !== false;
   }
 
-  constructor(properties) {
-    this.properties = properties;
-    this.node = properties.node || new Tone.Channel();
+  static parse(properties) {
+
+    // Create a Channel if a node was not provided
+    if (!properties.node) {
+      properties.node = new Tone.Channel({ channelCount: 2, solo: false, mute: false });
+    }
 
     // Connect root node to direct output
-    if (this.root) {
-      this.node.toDestination();
+    if (properties.root) {
+      properties.node.toDestination();
     }
+
+    return new this(properties);
   }
 
   connect(to) {
     this.node.connect(to.node);
-  }
-
-  toString() {
-    return `${this.name}${this.root ? ' (root)' : ''}`;
   }
 };
 
@@ -111,31 +100,45 @@ export class ToneAudioDriver extends BaseAudioDriver {
     },
 
     // Set volume (0 to 1)
-    volume: async ({ event, track }) => {
-      this.logger.todo(`render.session.event.volume: [+] at = ${event.at}`);
-      this.logger.todo(`render.session.event.volume:     meter = ${event.value}`);
+    volume: async ({ event, audioNode, instrumentNode }) => {
+      return await Tone.Transport.schedule(() => {
+        audioNode.node.set({ volume: event.value });
+      }, event.at.toString());
     },
 
     // Set pan (-1 to 1)
-    pan: async ({ event, track }) => {
-      this.logger.todo(`render.session.event.pan: [+] at = ${event.at}`);
-      this.logger.todo(`render.session.event.pan:     pan = ${event.value}`);
+    pan: async ({ event, audioNode }) => {
+      return await Tone.Transport.schedule(() => {
+        audioNode.node.set({ pan: event.value });
+      }, event.at.toString());
     },
 
-    // Set mute flag (true or false)
-    mute: async ({ event, track }) => {
-      this.logger.todo(`render.session.event.mute: [+] at = ${event.at}`);
-      this.logger.todo(`render.session.event.mute:     mute = ${event.value}`);
+    // Mute an audio node
+    mute: async ({ event, audioNode }) => {
+      return await Tone.Transport.schedule(() => {
+        audioNode.node.set({ mute: event.value });
+      }, event.at.toString());
     },
 
-    // Set solo flag (true or false)
-    solo: async ({ event, track }) => {
-      this.logger.todo(`render.session.event.solo: [+] at = ${event.at}`);
-      this.logger.todo(`render.session.event.solo:     solo = ${event.value}`);
-    },
+    // // Solo an audio node
+    // solo: async ({ event, audioNode, instrumentNode }) => {
+    //   this.logger.debug(`render.session.event.solo: [+] at = ${event.at}`);
+    //   this.logger.debug(`render.session.event.solo:     solo = ${event.value}`);
+
+    //   return await Tone.Transport.schedule(() => {
+    //     console.log(`solo = ${event.value}`)
+    //     audioNode.node.solo = true;//set({ solo: event.value });
+    //     audioNode.node.toDestination();
+    //   }, event.at.toString());
+    // },
     
     // Play a sequence of notes (phrase)
-    phrase: async ({ event, track, instrument }) => {
+    phrase: async ({
+      event,
+      trackNode,
+      instrumentNode
+    }) => {
+      const track = trackNode.model;
       const phraseName = event.value;
       const phrase = this.renderer.cache.phrases[phraseName];
       const steps = phrase.steps;
@@ -168,8 +171,8 @@ export class ToneAudioDriver extends BaseAudioDriver {
               type: 'note',
               at: event.at.constructor.parse(Tone.Transport.position.toString())
             }),
-            track: track,
-            instrument: instrument,
+            trackNode,
+            instrumentNode,
           });
 
         });
@@ -181,7 +184,10 @@ export class ToneAudioDriver extends BaseAudioDriver {
     },
 
     // Play a single note
-    note: async ({ event, track, instrument }) => {
+    note: async ({ event, trackNode, instrumentNode }) => {
+      const track = trackNode.model;
+      const instrument = instrumentNode.model;
+
       const note = event.value;
       const keySignature = track.keySignatureAt(event.at);
       const meter = track.meterAt(event.at);
@@ -195,11 +201,11 @@ export class ToneAudioDriver extends BaseAudioDriver {
       // this.logger.debug(`render.session.event.note:     instrument = ${instrument}`);
 
       return Tone.Transport.schedule((time) => {
-        if (instrument.node.triggerAttackRelease.length === 2) {
-          instrument.node.triggerAttackRelease(duration, time);
+        if (instrumentNode.node.triggerAttackRelease.length === 2) {
+          instrumentNode.node.triggerAttackRelease(duration, time);
         }
         else {
-          instrument.node.triggerAttackRelease(pitch, duration, time);
+          instrumentNode.node.triggerAttackRelease(pitch, duration, time);
         }
 
         Tone.Draw.schedule(() => {
@@ -290,7 +296,7 @@ export class ToneAudioDriver extends BaseAudioDriver {
   }
 
   createNode(properties = {}) {
-    return new ToneAudioDriverNode(properties);
+    return ToneAudioDriverNode.parse(properties);
   }
 
   async setTransportPosition (position) {

@@ -16,9 +16,9 @@ The UI is served on port 3000.
 
 * ~~Instrument and effect name aliases~~
 * ~~Instrument note aliases~~
+* ~~Track volume~~
+* ~~Track panning~~
 * Annotations
-* Track volume
-* Track panning
 * Instrument selector for Keyboard panel
 * MIDI device input
 * Output panel

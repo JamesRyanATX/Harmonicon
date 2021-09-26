@@ -90,51 +90,52 @@ export const kitchenSyncDemo = ({ library }) => {
 
   session.phrase('beat-a', [
 
-    dotted.quarter.note('c2'),
-    eighth.note('c2'),
+    dotted.quarter.note('kick'),
+    eighth.note('kick'),
     quarter.rest(),
-    quarter.note('c4'),
+    quarter.note('snare'),
 
-    dotted.quarter.note('c2'),
-    eighth.note('c2'),
+    dotted.quarter.note('kick'),
+    eighth.note('kick'),
     quarter.rest(),
-    eighth.note('c4'),
-    eighth.note('g2'),
+    eighth.note('snare'),
+    eighth.note('kicklight'),
 
-    dotted.quarter.note('c2'),
-    eighth.note('c2'),
+    dotted.quarter.note('kick'),
+    eighth.note('kick'),
     quarter.rest(),
-    quarter.note('c4'),
+    quarter.note('snare'),
 
-    dotted.quarter.note('c2'),
-    eighth.note('c2'),
+    dotted.quarter.note('kick'),
+    eighth.note('kick'),
     quarter.rest(),
-    eighth.note('e4'),
-    eighth.note('c2'),
+    eighth.note('snarerimshot'),
+    eighth.note('kick'),
 
-    dotted.quarter.note('c2'),
-    eighth.note('c2'),
+    dotted.quarter.note('kick'),
+    eighth.note('kick'),
     quarter.rest(),
-    quarter.note('c4'),
+    quarter.note('snare'),
 
-    dotted.quarter.note('c2'),
-    eighth.note('c2'),
+    dotted.quarter.note('kick'),
+    eighth.note('kick'),
     quarter.rest(),
-    eighth.note('c4'),
-    eighth.note('g2'),
+    eighth.note('snare'),
+    eighth.note('kicklight'),
 
-    dotted.quarter.note('c2'),
-    eighth.note('c2'),
+    dotted.quarter.note('kick'),
+    eighth.note('kick'),
     quarter.rest(),
-    quarter.note('c4'),
+    quarter.note('snare'),
 
-    dotted.quarter.note('c2'),
-    eighth.note('c2'),
+    dotted.quarter.note('kick'),
+    eighth.note('kick'),
     quarter.rest(),
-    eighth.note('e4'),
-    eighth.note([ 'c2', 'e4' ]),
+    eighth.note('snarerimshot'),
+    eighth.note([ 'kick', 'snarerimshot' ]),
 
   ]);
+
 
   session.phrase('bass-a', [
     eighth.note(-7),

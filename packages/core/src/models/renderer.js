@@ -66,9 +66,9 @@ export class RendererModel extends BaseModel {
   }
 
   async renderSessionEvent (event) {
-    this.logger.debug(`render.session.event: [+] at = ${event.at}`);
-    this.logger.debug(`render.session.event:     type = ${event.type}`);
-    this.logger.debug(`render.session.event:     value = ${event.value}`);
+    // this.logger.debug(`render.session.event: [+] at = ${event.at}`);
+    // this.logger.debug(`render.session.event:     type = ${event.type}`);
+    // this.logger.debug(`render.session.event:     value = ${event.value}`);
 
     return this.scheduleEvent({ event });
   }
@@ -82,7 +82,7 @@ export class RendererModel extends BaseModel {
       type: 'instrument',
       name: instrument.name, 
       node: await instrument.render(),
-      pitchAliases: instrument.pitchAliases,
+      model: instrument,
     });
 
     // this.logger.info(`render.instrument: [+] name = ${instrument.name}`);
@@ -115,12 +115,13 @@ export class RendererModel extends BaseModel {
     const node = this.createNode({
       type: 'effect',
       name: effect.name,
-      node: await effect.render()
+      node: await effect.render(),
+      model: effect,
     });
 
-    this.logger.info(`render.effect: [+] name = ${effect.name}`);
-    this.logger.debug(`render.effect:     fn = ${typeof effect.fn}`);
-    this.logger.debug(`render.effect:     rendered = ${node.node}`);
+    // this.logger.info(`render.effect: [+] name = ${effect.name}`);
+    // this.logger.debug(`render.effect:     fn = ${typeof effect.fn}`);
+    // this.logger.debug(`render.effect:     rendered = ${node.node}`);
   }
 
   async renderPhrases() {
@@ -128,8 +129,8 @@ export class RendererModel extends BaseModel {
   }
 
   async renderPhrase (phrase) {
-    this.logger.info(`render.session.phrase: [+] name = ${phrase.name}`);
-    this.logger.debug(`render.session.phrase:     number of steps = ${phrase.steps.length}`);
+    // this.logger.info(`render.session.phrase: [+] name = ${phrase.name}`);
+    // this.logger.debug(`render.session.phrase:     number of steps = ${phrase.steps.length}`);
 
     this.cache.phrases[phrase.name] = phrase;
   }
@@ -150,14 +151,15 @@ export class RendererModel extends BaseModel {
     const inputs = track.getSequenceableInputs();
 
     // Create an audio node for this track
-    await this.createNode({
+    const trackNode = await this.createNode({
       type: 'track',
-      name: track.name
+      name: track.name,
+      model: track,
     });
 
-    this.logger.info(`render.session.track: [+] name = ${track.name}`);
-    this.logger.debug(`render.session.track:     number of events = ${track.events.length}`);
-    this.logger.debug(`render.session.track:     number of inputs = ${track.inputs.length}`);
+    // this.logger.info(`render.session.track: [+] name = ${track.name}`);
+    // this.logger.debug(`render.session.track:     number of events = ${track.events.length}`);
+    // this.logger.debug(`render.session.track:     number of inputs = ${track.inputs.length}`);
 
     if (inputs.length === 0) {
       this.logger.error(`render.session.track:     no input nodes; is a patch missing?`);
@@ -165,23 +167,36 @@ export class RendererModel extends BaseModel {
     }
 
     return mapSeries(inputs, async (input, i) => {
-      const instrument = this.getNode(input.inputType, input.input);
+      const instrumentNode = this.getNode(input.inputType, input.input);
 
-      this.logger.debug(`render.session.track:     input ${i} source = ${input.inputType}:${input.input} (${instrument.node})`);
+      // this.logger.debug(`render.session.track:     input ${i} source = ${input.inputType}:${input.input} (${instrumentNode.node})`);
 
       return await track.events.mapSeries(async (event) => {
-        return this.renderTrackEvent({ event, track, instrument });
+        return this.renderTrackEvent({
+          event,
+          trackNode,
+          instrumentNode
+        });
       });  
     });
   }
 
-  async renderTrackEvent ({ event, track, instrument }) {
-    this.logger.info(`render.session.track.event: [+] at = ${event.at}`);
-    this.logger.debug(`render.session.track.event:     type = ${event.type}`);
-    this.logger.debug(`render.session.track.event:     value = ${event.value}`);
-    this.logger.debug(`render.session.track.event:     instrument = ${instrument.node}`);
+  async renderTrackEvent ({
+    event,
+    trackNode,
+    instrumentNode
+  }) {
+    // this.logger.info(`render.session.track.event: [+] at = ${event.at}`);
+    // this.logger.debug(`render.session.track.event:     type = ${event.type}`);
+    // this.logger.debug(`render.session.track.event:     value = ${event.value}`);
+    // this.logger.debug(`render.session.track.event:     instrumentNode = ${instrumentNode.node}`);
 
-    return this.scheduleEvent({ event, track, instrument })
+    return this.scheduleEvent({
+      audioNode: trackNode,
+      event,
+      trackNode,
+      instrumentNode
+    });
   }
 
   async renderPatches () {
@@ -192,9 +207,9 @@ export class RendererModel extends BaseModel {
     const inputNode = this.getNode(patch.inputType, patch.input);
     const outputNode = this.getNode(patch.outputType, patch.output);
 
-    this.logger.info(`render.session.patch: [+] path = ${patch.inputType}:${patch.input} -> ${patch.outputType}:${patch.output}`);
-    this.logger[inputNode ? 'debug' : 'error'](`render.session.patch:     input node = ${inputNode}`);
-    this.logger[outputNode ? 'debug' : 'error'](`render.session.patch:     output node = ${outputNode}`);
+    // this.logger.info(`render.session.patch: [+] path = ${patch.inputType}:${patch.input} -> ${patch.outputType}:${patch.output}`);
+    // this.logger[inputNode ? 'debug' : 'error'](`render.session.patch:     input node = ${inputNode}`);
+    // this.logger[outputNode ? 'debug' : 'error'](`render.session.patch:     output node = ${outputNode}`);
 
     if (inputNode && outputNode) {
       try {
@@ -216,9 +231,9 @@ export class RendererModel extends BaseModel {
       subdivision: 0
     });
 
-    this.logger.info(`render.session.end: [+] at = ${stopAt.toMBS()}`);
-    this.logger.debug(`render.session.end:     last event = ${lastEvent ? lastEvent.at : 'unknown'}`)
-    this.logger.debug(`render.session.end:     sustain for = ${sustainFor} measures`);
+    // this.logger.info(`render.session.end: [+] at = ${stopAt.toMBS()}`);
+    // this.logger.debug(`render.session.end:     last event = ${lastEvent ? lastEvent.at : 'unknown'}`)
+    // this.logger.debug(`render.session.end:     sustain for = ${sustainFor} measures`);
 
     return this.scheduleEvent({
       log: false,
@@ -260,19 +275,15 @@ export class RendererModel extends BaseModel {
   // Audio nodes
   // -----------
 
-  createNode({
-    type,
-    name,
-    node,
-    root,
-    pitchAliases
-  }) {
+  createNode(properties = {}) {
+    const { name, type } = properties;
+
     this.cache.nodes = this.cache.nodes || {};
     this.cache.nodes[type] = this.cache.nodes[type] || {};
 
-    return this.cache.nodes[type][name] = this.driver.createNode({
-      root, node, pitchAliases, name: `${type}:${name}`,
-    });
+    return this.cache.nodes[type][name] = this.driver.createNode(Object.assign(properties, {
+      name: `${type}:${name}`,
+    }));
   }
 
   getNode(type, name) {

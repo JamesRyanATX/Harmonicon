@@ -139,7 +139,11 @@ export class TrackComposer extends BaseSequencedComposer {
    * @param {*} mute 
    * @param {*} proxy 
    */
-  mute(mute, proxy) {
+  mute() {
+    const args = [ ...arguments ];
+    const proxy = args.pop();
+    const mute = args.length === 1 ? args[0] : true;
+
     this.sequence({
       type: 'mute',
       at: proxy.data.at,
@@ -156,13 +160,18 @@ export class TrackComposer extends BaseSequencedComposer {
    * @param {*} solo 
    * @param {*} proxy 
    */
-  solo(solo, proxy) {
+  solo() {
+    const args = [ ...arguments ];
+    const proxy = args.pop();
+    const solo = args.length === 1 ? args[0] : true;
+
     this.sequence({
       type: 'solo',
       at: proxy.data.at,
       value: solo,
     });
   }
+
 }
 
 export const TrackComposerProxy = SequencedEventProxy.create(TrackComposer, {
