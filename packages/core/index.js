@@ -24,6 +24,7 @@ export { SequencedEventLogModel } from './src/models/sequenced_event_log';
 export { WorkspaceModel } from './src/models/workspace';
 export { ScriptModel } from './src/models/script';
 export { ScaleModel } from './src/models/scale';
+export { AnnotationModel } from './src/models/annotation';
 
 export {
   LargeUnit,

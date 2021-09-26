@@ -1,6 +1,5 @@
 import {
-  InstrumentModel,
-  EffectModel,
+  AnnotationModel,
   SessionModel,
   TrackModel,
   PhraseModel,
@@ -395,6 +394,36 @@ export class SessionComposer extends BaseSequencedComposer {
     return patch;
   }
 
+  /**
+   * Name a specific place on the timeline.
+   * 
+   * ``` javascript
+   * session('example', ({ session }) => {
+   *   session.at(0).annotate('intro');
+   * 
+   *   session.track('drums', ({ track }) => {
+   *     track.at('intro').play.phrase('jam-beat');
+   *   });
+   * });
+   * ```
+   * 
+   * @sort 101
+   * @proxiedBy at
+   * @param {string} name - unique name for timeline position
+   * @returns {SessionComposer}
+   */
+  annotate(name, proxy) {
+    if (this.model.annotations.filterByProperty('name', name).length !== 0) {
+      throw new ComposerError(`Annotation names must be unique; "${name}" has already been assigned."`)
+    }
+
+    this.model.annotations.add(AnnotationModel.parse({
+      position: proxy.data.at,
+      name,
+      session: this.model
+    }));
+  }
+
 
   /**
    * Set meter (time signature).
@@ -412,7 +441,7 @@ export class SessionComposer extends BaseSequencedComposer {
    * ```
 
    * 
-   * @sort 101
+   * @sort 102
    * @proxiedBy at
    * @param {Array} meter - time signature as fraction ([4, 4], [6, 8], etc.)
    * @returns {SessionComposer}
@@ -440,7 +469,7 @@ export class SessionComposer extends BaseSequencedComposer {
    * session.at(0).swing(0.25);
    * ```
    * 
-   * @sort 102
+   * @sort 103
    * @proxiedBy at
    * @param {decimal} swing - swing amount between zero and 1
    * @returns {SessionComposer}
@@ -460,7 +489,7 @@ export class SessionComposer extends BaseSequencedComposer {
    * session.at(0).tempo(160);
    * ```
    * 
-   * @sort 103
+   * @sort 104
    * @proxiedBy at
    * @param {integer} tempo - beats per minute
    * @returns {SessionComposer}
@@ -495,7 +524,7 @@ export class SessionComposer extends BaseSequencedComposer {
    * session.at(30).key('G').scale('minor');
    * ```
    * 
-   * @sort 104
+   * @sort 105
    * @proxiedBy at
    * @param {string} key - root note of key signature (A..G)
    * @returns {SessionComposer}
@@ -543,7 +572,7 @@ export class SessionComposer extends BaseSequencedComposer {
    * session.at(20).key('Eb').scale('minor');
    * session.at(30).key('G').scale('minor');
    * ```
-   * @sort 105
+   * @sort 106
    * @proxiedBy at
    * @param {string} scale - name of scale/mode (see supported values above)
    * @returns {SessionComposer}
@@ -650,11 +679,12 @@ export class SessionComposer extends BaseSequencedComposer {
  */
 export const SessionComposerProxy = SequencedEventProxy.create(SessionComposer, {
   methods: [ 
-    'meter',
-    'tempo',
+    'annotate',
     'key',
+    'meter',
+    'scale',
     'swing',
-    'scale'
+    'tempo',
   ]
 });
 

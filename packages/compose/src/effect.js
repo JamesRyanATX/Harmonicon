@@ -77,6 +77,15 @@ export class EffectComposer extends BaseSequencedComposer {
   }
 
   /**
+   * Default options passed to builder function at runtime; overridden by `#options`.
+   * 
+   * @param {object} defaultOptions 
+   */
+   defaultOptions(defaultOptions) {
+    this.model.setProperties({ defaultOptions });
+  }
+
+  /**
    * Set runtime builder function that returns an Web Audio Node.
    * 
    * @param {object} defaultOptions 

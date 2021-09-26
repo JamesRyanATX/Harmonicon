@@ -21,22 +21,6 @@ export class TrackModel extends sequenceable(BaseNodeModel) {
     return 'track';
   }
 
-  // // Return a (sequenceable) source for this track, like an instrument
-  // get source () {
-  //   console.log(JSON.stringify(this.inputs));
-  //   return null;
-  //   // const patch = this.inputs.filter((patch) => {
-  //   //   return patch.inputType === 'instrument';
-  //   // })[0]);
-
-  //   // if (patch) {
-  //   //   return this.session.instruments.filter((i) => (i.name === patch.input))[0];
-  //   // }
-  //   // else {
-  //   //   return null;
-  //   // }
-  // }
-
   getSequenceableInputs() {
     return this.inputs.reduce((sequenceables, input) => {
       if (input.sequenceable) {

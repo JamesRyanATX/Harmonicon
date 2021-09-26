@@ -5,13 +5,20 @@ import { TrackModel } from './track.js';
 import { EffectModel } from './effect.js';
 import { RendererModel } from './renderer.js';
 import { PhraseModel } from './phrase.js';
+import { AnnotationModel } from './annotation.js';
 import { KeySignatureModel } from './key_signature.js';
 import { PatchModel } from './patch.js';
+import { PositionModel } from './position';
 import { sequenceable } from './mixins/sequenceable.js';
 
 export class SessionModel extends sequenceable(BaseModel) {
 
   static properties = {
+
+    annotations: {
+      type: AnnotationModel,
+      collection: true,
+    },
 
     effects: {
       type: EffectModel,
@@ -55,6 +62,19 @@ export class SessionModel extends sequenceable(BaseModel) {
       collection: true,
     },
 
+  }
+
+  parsePosition(annotationOrPosition) {
+    const annotation = typeof annotationOrPosition === 'string'
+      ? this.annotations.filterByProperty('name', annotationOrPosition)[0]
+      : null;
+
+    if (annotation) {
+      return annotation.position;
+    }
+    else {
+      return PositionModel.parse.apply(PositionModel, arguments);
+    }
   }
 
   keySignatureAt(position) {

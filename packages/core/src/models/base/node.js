@@ -26,4 +26,8 @@ export class BaseNodeModel extends BaseModel {
     return this.patches.outputs;
   }
 
+  parsePosition() {
+    return this.session.parsePosition.apply(this.session, arguments);
+  }
+
 }

@@ -5,6 +5,9 @@ function testTrack(fn) {
   const results = {};
 
   session('my-song', function ({ session }) {
+    session.at(0).annotate('verse');
+    session.at(10).annotate('chorus');
+
     session.instrument('bass', function () {
       return 'i am instrument';
     });
@@ -32,6 +35,19 @@ function testTrack(fn) {
 describe('session.track.play', function () {
 
   describe('.note()', function () {
+    it('can be called via annotation', function () {
+      const { track } = testTrack(({ track }) => {
+        track.at('chorus').play(quarter.note(0));
+      });
+
+      const events = track.model.events;
+      const event = events.first();
+
+      expect(event.at.measure).toEqual(10);
+      expect(event.at.beat).toEqual(0);
+      expect(event.at.subdivision).toEqual(0);
+    });
+
     it('sequences single notes', function () {
       const { track } = testTrack(({ track }) => {
         track.at(0, 0, 0).play(quarter.note(0));

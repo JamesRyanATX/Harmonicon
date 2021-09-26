@@ -94,6 +94,49 @@ describe('session', function () {
 
   describe("proxied functions", function () {
 
+    describe('#annotate()', function () {
+      it('adds an annotation record', function () {
+        const results = session('test', ({ session }) => {
+          session.at(10).annotate('verse-1');
+        });
+
+        const annotations = results.model.annotations;
+        const annotation = annotations.first();
+
+        expect(annotations.length).toEqual(1);
+
+        expect(annotation.position.measure).toEqual(10);
+        expect(annotation.position.beat).toEqual(0);
+        expect(annotation.position.subdivision).toEqual(0);
+        expect(annotation.name).toEqual('verse-1');
+      });
+
+      it('ensures annotations are unique', function () {
+        expect(() => {
+          session('test', ({ session }) => {
+            session.at(10).annotate('verse-1');
+            session.at(20).annotate('verse-1');
+          });
+        }).toThrow(ComposerError);
+      });
+
+      it('can be used by at()', function () {
+        const results = session('test', ({ session }) => {
+          session.at(10).annotate('verse-1');
+          session.at('verse-1').tempo(120);
+        });
+
+        const events = results.model.events;
+        const event = events.first();
+
+        expect(event.at.measure).toEqual(10);
+        expect(event.at.beat).toEqual(0);
+        expect(event.at.subdivision).toEqual(0);
+        expect(event.value).toEqual(120);
+        expect(event.type).toEqual('tempo');
+      });
+    });
+
     describe("#meter()", function () {
       describe("valid arguments", function () {
         [
@@ -110,7 +153,7 @@ describe('session', function () {
             output: 'E'
           },
         ].forEach((scenario) => {
-          it.only(`accepts "${scenario.input}"`, () => {
+          it(`accepts "${scenario.input}"`, () => {
             const results = session('test', ({ session }) => {
               session.at(0).key(scenario.input);
             });

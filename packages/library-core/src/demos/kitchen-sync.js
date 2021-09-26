@@ -29,7 +29,7 @@ export const kitchenSyncDemo = ({ library }) => {
  * 
  */
 
- session('demo', ({ session }) => {
+session('demo', ({ session }) => {
   session.at(0)        // At measure zero...
     .meter([ 4, 4 ])   //   ...set the time signature to 4/4
     .tempo(160)        //   ...set the tempo to 160
@@ -38,6 +38,12 @@ export const kitchenSyncDemo = ({ library }) => {
     .scale('minor');   //   ...set scale to "minor", resulting in 
                        //      a key signature of "D minor"
 
+
+  // Annotate specific positions on the timeline
+  session.at(1).annotate('intro');              // intro measure 1
+  session.at(9).annotate('verse-1a');           // verse 1a at measure 9
+  session.at(17).annotate('verse-1a-midpoint'); // ...
+  session.at(25).annotate('verse-1b');
 
   // Instruments
   // -----------
@@ -136,7 +142,6 @@ export const kitchenSyncDemo = ({ library }) => {
 
   ]);
 
-
   session.phrase('bass-a', [
     eighth.note(-7),
     eighth.note(-6),
@@ -205,37 +210,39 @@ export const kitchenSyncDemo = ({ library }) => {
   // ------
 
   session.track('drums', ({ track }) => {
-    track.at(1, 0, 0).play.phrase('beat-a');
-    track.at(9, 0, 0).play.phrase('beat-a');
-    track.at(17, 0, 0).play.phrase('beat-a');
-    track.at(25, 0, 0).play.phrase('beat-a');
+    track.at('intro').play.phrase('beat-a');
+    track.at('verse-1a').play.phrase('beat-a');
+    track.at('verse-1a-midpoint').play.phrase('beat-a');
+    track.at('verse-1b').play.phrase('beat-a');
   });
 
   session.track('bass', ({ track }) => {
-    track.at(1, 0, 0).play.phrase('bass-a');
-    track.at(9, 0, 0).play.phrase('bass-a');
-    track.at(17, 0, 0).play.phrase('bass-a');
-    track.at(25, 0, 0).play.phrase('bass-a');
+    track.at('intro').play.phrase('bass-a');
+    track.at('verse-1a').play.phrase('bass-a');
+    track.at('verse-1a-midpoint').play.phrase('bass-a');
+    track.at('verse-1b').play.phrase('bass-a');
   });
 
   session.track('lead', ({ track }) => {
-    track.at(1, 0, 0).play.phrase('bass-a');
-    track.at(9, 0, 0).play.phrase('bass-a');
-    track.at(17, 0, 0).play.phrase('bass-a');
-    track.at(25, 0, 0).play.phrase('bass-a');
+    track.at('intro').play.phrase('bass-a');
+    track.at('verse-1a').play.phrase('bass-a');
+    track.at('verse-1a-midpoint').play.phrase('bass-a');
+    track.at('verse-1b').play.phrase('bass-a');
   });
 
   session.track('xylophone', ({ track }) => {
-    track.at(1, 0, 0).play.phrase('bass-a');
-    track.at(9, 0, 0).play.phrase('bass-a');
-    track.at(17, 0, 0).play.phrase('bass-a');
-    track.at(25, 0, 0).play.phrase('bass-a');
+    track.at('intro').play.phrase('bass-a');
+    track.at('verse-1a').play.phrase('bass-a');
+    track.at('verse-1a-midpoint').play.phrase('bass-a');
+    track.at('verse-1b').play.phrase('bass-a');
   });
 
   session.track('piano', ({ track }) => {
-    track.at(9, 0, 0).play.phrase('piano-a');
-    track.at(25, 0, 0).play.phrase('piano-a');
+    track.at('verse-1a').play.phrase('piano-a');
+    track.at('verse-1b').play.phrase('piano-a');
   });
+
+
 
 
   // Effects
@@ -244,11 +251,11 @@ export const kitchenSyncDemo = ({ library }) => {
   session.use('effect.delay', {
     delayTime: "8n",
     feedback: 0.2,
-    wet: 0.2
+    wet: 0.2,
   }).as('fx-delay');
 
   session.use('effect.reverb', {
-    wet: 0.2
+    wet: 0.2,
   }).as('fx-reverb');
 
 
@@ -256,7 +263,7 @@ export const kitchenSyncDemo = ({ library }) => {
   // -------
 
   // Create a master effect track
-  session.track('fx');
+  session.track('fx')
 
   // Send instruments to their respective tracks
   session.send.instrument('drums').to.track('drums');
@@ -264,6 +271,7 @@ export const kitchenSyncDemo = ({ library }) => {
   session.send.instrument('lead').to.track('lead');
   session.send.instrument('xylophone').to.track('xylophone');
   session.send.instrument('piano').to.track('piano');
+  session.send.instrument('arpeggiator').to.track('arpeggiator');
 
   // Send all tracks to the master effect track
   session.send.track('drums').to.track('fx');
@@ -271,6 +279,7 @@ export const kitchenSyncDemo = ({ library }) => {
   session.send.track('xylophone').to.track('fx');
   session.send.track('lead').to.track('fx');
   session.send.track('piano').to.track('fx');
+  session.send.track('arpeggiator').to.track('fx');
 
   // Create effect chain and send it to main()
   session.send.track('fx').to.effect('fx-delay');

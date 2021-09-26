@@ -58,7 +58,7 @@ export class BaseSequencedComposer extends BaseComposer {
   at() {
     try {
       return new this.constructor.sequencerProxy(this, {
-        at: PositionModel.parse.apply(PositionModel, arguments)
+        at: this.parsePosition.apply(this, arguments)
       });  
     }
     catch (e) {
@@ -68,6 +68,15 @@ export class BaseSequencedComposer extends BaseComposer {
       else {
         throw e;
       }
+    }
+  }
+
+  parsePosition () {
+    if (this.model.parsePosition) {
+      return this.model.parsePosition.apply(this.model, arguments);
+    }
+    else {
+      return PositionModel.parse.apply(PositionModel, arguments);
     }
   }
 
