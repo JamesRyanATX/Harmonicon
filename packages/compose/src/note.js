@@ -117,7 +117,7 @@ function isNote (pitch) {
  * Consider the following:
  * 
  * ```
- * session('my-song', async ({ session }) => {
+ * session('my-song', ({ session }) => {
  *   session.at(0)
  *     .key('C')
  *     .scale('major');
@@ -129,7 +129,7 @@ function isNote (pitch) {
  *     quarter.note(3),
  *   ])
  * 
- *   track('my-track', async ({ track }) => {
+ *   session.track('my-track', ({ track }) => {
  *     track.at(0).play.phrase('melody'); // ==> C4, D4, E4, F4
  *     track.at(2).play.phrase('melody'); // ==> C4, D4, E4, F4
  *   });
@@ -139,7 +139,7 @@ function isNote (pitch) {
  * If we change the key signature at measure 2, the resulting notes are:
  * 
  * ```
- * session('my-song', async ({ session }) => {
+ * session('my-song', ({ session }) => {
  *   session.at(0)
  *     .key('C')
  *     .scale('major');
@@ -155,7 +155,7 @@ function isNote (pitch) {
  *     quarter.note(3),
  *    ])
  * 
- *   track('my-track', async ({ track }) => {
+ *   track('my-track', ({ track }) => {
  *     track.at(0).play.phrase('melody'); // ==> C4, D4, E4, F4
  *     track.at(2).play.phrase('melody'); // ==> E4, F#, G#, A4
  *   });
@@ -169,7 +169,7 @@ function isNote (pitch) {
  * Harmonicon supports a large number of chords that can be referenced by name:
  * 
  * ``` javascript
- * session.track('my-track', async () => {
+ * session.track('my-track', () => {
  *  track.at(0).play(quarter.note('cmaj7'))
  * })
  * ```
@@ -179,7 +179,7 @@ function isNote (pitch) {
  * To specify chord notes manually, provide an array of notes:
  * 
  * ``` javascript
- * session.track('my-track', async () => {
+ * session.track('my-track', () => {
  *  track.at(0).play(quarter.note([ 'C4', 'E4', 'F4' ]));
  * })
  * ```
@@ -187,7 +187,7 @@ function isNote (pitch) {
  * Alternatively, a space-delimited string also works:
  * 
  * ``` javascript
- * session.track('my-track', async () => {
+ * session.track('my-track', () => {
  *  track.at(0).play(quarter.note('C4 E4 F4');
  * })
  * ```

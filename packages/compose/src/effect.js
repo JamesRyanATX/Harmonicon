@@ -22,34 +22,65 @@ export class EffectComposer extends BaseSequencedComposer {
   static composerContextName = 'effect';
   static model = EffectModel;
 
-  group(group) {
+  /**
+   * Assign effect to a library group.
+   * 
+   * @param {string} group 
+   */
+   group(group) {
     this.model.setProperties({ group });
   }
 
+  /**
+   * Give the effect a description.
+   * 
+   * @param {string} description 
+   */
   description(description) {
     this.model.setProperties({ description });
   }
 
+  /**
+   * Denote the author of the effect, if applicable.
+   * 
+   * @param {string} author 
+   */
   author(author) {
     this.model.setProperties({ author });
   }
 
+  /**
+   * Set website of the effect, if applicable.
+   * 
+   * @param {string} url 
+   */
   url(url) {
     this.model.setProperties({ url });
   }
 
+  /**
+   * Set documentation URL.
+   * 
+   * @param {string} documentationUrl 
+   */
   documentationUrl(documentationUrl) {
     this.model.setProperties({ documentationUrl });
   }
 
+  /**
+   * Options that should be passed to the builder function at runtime.
+   * 
+   * @param {object} options 
+   */
   options(options) {
     this.model.setProperties({ options });
   }
 
-  defaultOptions(defaultOptions) {
-    this.model.setProperties({ defaultOptions });
-  }
-
+  /**
+   * Set runtime builder function that returns an Web Audio Node.
+   * 
+   * @param {object} defaultOptions 
+   */
   fn(fn) {
     this.model.setProperties({ fn });
   }

@@ -28,12 +28,10 @@ import { ComposerError } from './errors';
  * ##### Example
  * 
  * ``` javascript
- * session('my-masterpiece', async ({ library }) => {
- *   session.instrument('synth', async () => {
- *     return new Tone.MonoSynth();
- *   });
+ * session('my-masterpiece', ({ library }) => {
+ *   session.use('core.instrument.mono-synth').as('synth');
  * 
- *   session.track('synth', async ({ track }) => {
+ *   session.track('synth', ({ track }) => {
  *      track.at(0).play(quarter.note('C4'));
  *   });
  * 
@@ -60,25 +58,26 @@ export class SessionComposer extends BaseSequencedComposer {
    * 
    * ##### Examples
    *
-   * Basic syntax:
+   * Use piano from core library:
    * 
    * ``` javascript
    * session.use('core.instrument.piano');
+   * ```
+   * 
+   * Use piano from core library and name it "piano-1":
+   * 
+   * ``` javascript
+   * session.use('core.instrument.piano').as('piano-1');
    * ```
    * 
    * Proxied syntax:
    * 
    * ``` javascript
    * session.use.instrument('piano').from.library('core');
+   * session.use.instrument('piano').from.library('core').as('piano-1');
    * ```
    * 
-   * Same as above, but library name autodetection:
-   * 
-   * ``` javascript
-   * session.use.instrument('piano').from.library();
-   * ```
-   * 
-   * Same as above, but using the low-level API:
+   * Low-level syntax:
    * 
    * ``` javascript
    * session.use({
@@ -173,7 +172,7 @@ export class SessionComposer extends BaseSequencedComposer {
    */
 
   /**
-   * Create an {@link InstrumentComposer|instrument}. 
+   * Compose an {@link InstrumentComposer|instrument}. 
    * 
    * @sort 10
    * @param {string} name - name of new instrument
@@ -202,7 +201,7 @@ export class SessionComposer extends BaseSequencedComposer {
    */
 
   /**
-   * Create a {@link TrackComposer|track}.
+   * Compose a {@link TrackComposer|track}.
    * 
    * @sort 20
    * @param {string} name - name of new track
@@ -233,7 +232,7 @@ export class SessionComposer extends BaseSequencedComposer {
    */
 
   /**
-   * Create a {@link PhraseComposer|phrase}.
+   * Compose a musical {@link PhraseComposer|phrase}.
    * 
    * @sort 30
    * @param {String} name - name of new phrase
@@ -271,7 +270,7 @@ export class SessionComposer extends BaseSequencedComposer {
    */
 
   /**
-   * Create an {@link EffectComposer|effect}.
+   * Compose an {@link EffectComposer|effect}.
    * 
    * @sort 40
    * @param {string} name - name of new effect
@@ -337,18 +336,18 @@ export class SessionComposer extends BaseSequencedComposer {
    * Create a master effect chain by adding an intermediary track before main:
    *
    * ``` javascript
-   * session('master-effect-chain', async ({session}) => {
+   * session('master-effect-chain', ({session}) => {
    * 
    *   // ...instruments
    *   // ...tracks
    * 
    *   // Main effects
-   *   session.effect('main-reverb', async () { // ... });
-   *   session.effect('main-phaser', async () { // ... });
-   *   session.effect('main-delay', async () { // ... });
+   *   session.effect('main-reverb', () { // ... });
+   *   session.effect('main-phaser', () { // ... });
+   *   session.effect('main-delay', () { // ... });
    * 
    *   // This track contains no notes; it's for routing only
-   *   session.track('main-fx', async () => {});
+   *   session.track('main-fx', () => {});
    * 
    *   session.send.track('lead-guitar').to.track('main-fx');
    *   session.send.track('bass').to.track('main-fx');

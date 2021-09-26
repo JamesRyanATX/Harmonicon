@@ -25,7 +25,7 @@ export class BaseSequencedComposer extends BaseComposer {
    * Set tempo to 120 at the beginning of song:
    * 
    * ``` javascript
-   * session('my-song', async ({ session }) => {
+   * session('my-song', ({ session }) => {
    *   session.at(0).tempo(120);
    * })
    * ```
@@ -33,7 +33,7 @@ export class BaseSequencedComposer extends BaseComposer {
    * Play a C# on beat 2 of measure 1:
    * 
    * ``` javascript
-   * track('my-song', async ({ session }) => {
+   * track('my-song', ({ session }) => {
    *   track.at(1, 2).play(quarter.note('C#'));
    * })
    * ```
@@ -41,7 +41,7 @@ export class BaseSequencedComposer extends BaseComposer {
    * Trigger multiple actions at the same position:
    * 
    * ``` javascript
-   * track('my-song', async ({ session }) => {
+   * track('my-song', ({ session }) => {
    *   session.at(0)
    *     .meter([ 4, 4 ])
    *     .tempo(120)

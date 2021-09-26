@@ -24,15 +24,13 @@ This is Hello World! in Harmonicon.  Copy and paste the following snippet into t
 
 ``` javascript
 // Herein lies a musical greeting
-session('hello-world', async ({ library }) => {
+session('hello-world', ({ library }) => {
 
   // Create an instrument (in this case, a synthesizer from ToneJS)
-  session.instrument('synth', async () => {
-    return new Tone.MonoSynth();
-  });
+  session.use('core.instrument.mono-synth').as('synth');
 
   // Create a track
-  session.track('synth', async ({ track }) => {
+  session.track('synth', ({ track }) => {
      track.at(0).play(quarter.note('C4'));
   });
 

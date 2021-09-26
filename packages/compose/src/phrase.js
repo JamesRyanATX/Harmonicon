@@ -5,8 +5,8 @@ import { BaseComposer } from './base';
 /**
  * Create reusable phrases with {@link SessionComposer#phrase|session.phrase()}:
  * 
- * ```
- * session.phrase('progression', async ({ phrase }) => {
+ * ``` javascript
+ * session.phrase('progression', ({ phrase }) => {
  *   phrase.steps([
  *     whole.note('cmaj'),
  *     whole.note('fmaj'),
@@ -16,12 +16,12 @@ import { BaseComposer } from './base';
  * });
  * 
  * // Play progression on piano:
- * session.track('piano', async ({ track }) => {
+ * session.track('piano', ({ track }) => {
  *   track.at(0).play.phrase('progression');
  * });
  * 
  * // Play progression on acoustic guitar:
- * session.track('acoustic-guitar', async ({ track }) => {
+ * session.track('acoustic-guitar', ({ track }) => {
  *   track.at(0).play.phrase('progression');
  * });
  * ``` 
@@ -48,7 +48,7 @@ import { BaseComposer } from './base';
  * Phrases can also be sequenced without being declared previously:
  * 
  * ``` javascript
- * session.track('piano', async ({ track }) => {
+ * session.track('piano', ({ track }) => {
  *   track.at(0).play.phrase([
  *     whole.note('cmaj'),
  *     whole.note('fmaj'),

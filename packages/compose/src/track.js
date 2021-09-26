@@ -6,8 +6,27 @@ import { generateIdentifier } from '@composer/util';
 /**
  * Create new tracks with {@link SessionComposer#track|session.track()}:
  * 
+ * ##### Examples
+ *
+ * Play a single note:
+ * 
  * ```
- * tbd
+ * session.track('drums', ({ track } => {
+ *   track.at(0).play(quarter.note('kick'));
+ * });
+ * ```
+ * 
+ * Play a simple beat:
+ * 
+ * ```
+ * session.track('drums', ({ track } => {
+ *   track.at(0).play.phrase([
+ *     quarter.note('kick'),
+ *     quarter.note('snare'),
+ *     quarter.note('kick'),
+ *     quarter.note('snare'),
+ *   ]);
+ * });
  * ```
  * 
  * @sort 3
@@ -21,7 +40,46 @@ export class TrackComposer extends BaseSequencedComposer {
   static model = TrackModel;
 
   /**
-   * Play a single note.
+   * Sequence one or more {@link NoteComposer|notes}.
+   * 
+   * ##### Examples
+   *
+   * Play a single {@link NoteComposer|note}:
+   * 
+   * ```
+   * session.track('drums', ({ track } => {
+   *   track.at(0).play(quarter.note('kick'));
+   * });
+   * ```
+   * 
+   * Play multiple {@link NoteComposer|notes} at once:
+   * 
+   * ```
+   * session.track('drums', ({ track } => {
+   *   track.at(0).play(quarter.note('kick snare ride'));
+   * });
+   * ```
+   * 
+   * Play a {@link PhraseComposer|phrase} by name:
+   * 
+   * ```
+   * session.track('drums', ({ track } => {
+   *   track.at(0).play.phrase('beat');
+   * });
+   * ```
+   * 
+   * Define and play a {@link PhraseComposer|phrase}:
+   *
+   * ```
+   * session.track('drums', ({ track } => {
+   *   track.at(0).play.phrase([
+   *     quarter.note('kick'),
+   *     quarter.note('snare'),
+   *     quarter.note('kick'),
+   *     quarter.note('snare'),
+   *   ]);
+   * });
+   * ```
    * 
    * @sort 101
    * @proxiedBy at
@@ -97,12 +155,16 @@ export class TrackComposer extends BaseSequencedComposer {
   }
 
   /**
-   * Set track volume.
+   * Set track volume in dB.
    * 
-   * @ignore
-   * @todo not implemented
+   * ``` javascript
+   * session.track('drums', ({ track }) => {
+   *   track.at(0).volume(-10);
+   * });
+   * 
+   * @sort 102
    * @proxiedBy at
-   * @param {*} volume 
+   * @param {number} volume - volume in decibels 
    * @param {*} proxy 
    */
   volume(volume, proxy) {
@@ -116,10 +178,14 @@ export class TrackComposer extends BaseSequencedComposer {
   /**
    * Set track panning (-1 to 1).
    * 
-   * @ignore
-   * @todo not implemented
+   * ``` javascript
+   * session.track('drums', ({ track }) => {
+   *   track.at(0).pan(-0.75);
+   * });
+   * 
+   * @sort 103
    * @proxiedBy at
-   * @param {*} pan 
+   * @param {number} pan - pan from -1 (L) to 1 (R)
    * @param {*} proxy 
    */
   pan(pan, proxy) {
@@ -133,10 +199,36 @@ export class TrackComposer extends BaseSequencedComposer {
   /**
    * Mute the track.
    * 
-   * @ignore
-   * @todo not implemented
+   * ##### Examples
+   * 
+   * Mute track at measure 5:
+   * 
+   * ``` javascript
+   * session.track('drums', ({ track }) => {
+   *   track.at(5).mute();
+   * });
+   * ```
+   * 
+   * Mute entire track:
+   * 
+   * ``` javascript
+   * session.track('drums', ({ track }) => {
+   *   track.mute();
+   * });
+   * ```
+   * 
+   *  Mute for first 10 measures only:
+   * 
+   * ``` javascript
+   * session.track('drums', ({ track }) => {
+   *   track.at(0).mute();
+   *   track.at(9).mute(false);
+   * });
+   * ```
+   * 
+   * @sort 104
    * @proxiedBy at
-   * @param {*} mute 
+   * @param {boolean} mute - mute value (default true)
    * @param {*} proxy 
    */
   mute() {
@@ -155,6 +247,7 @@ export class TrackComposer extends BaseSequencedComposer {
    * Solo the track (mute everything else).
    * 
    * @ignore
+   * @sort 105
    * @todo not implemented
    * @proxiedBy at
    * @param {*} solo 
