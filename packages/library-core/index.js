@@ -42,6 +42,7 @@ import { tremoloEffect } from './src/effects/tremolo';
 import { vibratoEffect } from './src/effects/vibrato';
 
 import { kitchenSyncDemo } from './src/demos/kitchen-sync';
+import { relativesDemo } from './src/demos/relatives';
 
 import { effectChainSnippet } from './src/snippets/effect-chain';
 
@@ -108,6 +109,7 @@ export const build = async () => {
 
       // Demos
       kitchenSyncDemo,
+      relativesDemo,
 
     ].forEach((c) => (c({ library })));
   });

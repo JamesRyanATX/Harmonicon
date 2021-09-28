@@ -16,6 +16,7 @@ import {
   Panels,
   Panel,
   PanelFilter,
+  PanelFilterRow,
  } from "./panels";
 
 import {
@@ -39,6 +40,7 @@ module.exports = {
   Keyboard,
   Select,
   PanelFilter,
+  PanelFilterRow,
   Panels,
   Panel,
   Menu,

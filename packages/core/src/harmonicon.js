@@ -65,6 +65,17 @@ export class Harmonicon {
     }
   }
 
+  static getDeviceById(id) {
+    const [ libraryName, deviceType, deviceName ] = id.split('.');
+
+    if (!libraryName || !deviceType || !deviceName) {
+      return null;
+    }
+    else {
+      return this.libraries[libraryName][`${deviceType}s`].filterByProperty('name', deviceName)[0];
+    }
+  }
+
 }
 
 eventify(Harmonicon).bootstrap();

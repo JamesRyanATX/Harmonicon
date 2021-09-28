@@ -81,14 +81,19 @@
   }
 
 .panelFilter {
-  display: flex;
-  flex-direction: row;
-  padding: 3px 0 3px 3px;
+  padding: 3px 0 0 3px;
   border-bottom: 1px solid rgb(60, 60, 60);
   background-color: rgb(45, 45, 45);
 }
 
-  .panelFilter > * {
+.panelFilterRow {
+  display: flex;
+  flex-direction: row;
+  flex: none;
+  padding-bottom: 3px;
+}
+
+  .panelFilterRow > * {
     flex: 1;
     margin: 0 3px 0 0;
   }

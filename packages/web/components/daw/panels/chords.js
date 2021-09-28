@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import {
   Panel,
+  PanelFilterRow,
   Tree,
   TreeGroup,
   TreeItem,
@@ -74,7 +75,7 @@ export function ChordsPanel({ controller }) {
       label="Chord Browser"
       flex={1}
       filter={() => (
-        <>
+        <PanelFilterRow>
           <Select label="Root" value={root} onChange={setRoot} span={1}>
             {notes.map((note) => (
               <option key={note}>{note}</option>
@@ -90,7 +91,7 @@ export function ChordsPanel({ controller }) {
               <option key={octave}>{octave}</option>
             ))}
           </Select>
-        </>
+        </PanelFilterRow>
       )}
     >
       <Tree>
@@ -105,7 +106,8 @@ export function ChordsPanel({ controller }) {
           }}
           onPlay={({ symbol, root, tonic, octave }) => {
             controller.playNote({
-              note: whole.note(`*${symbol}`, { octave })
+              note: whole.note(`*${symbol}`, { octave }),
+              instrument: 'core.instrument.piano'
             });
           }}
         />

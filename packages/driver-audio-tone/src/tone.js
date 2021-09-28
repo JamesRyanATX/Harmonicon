@@ -1,4 +1,4 @@
-import { Harmonicon, AudioNodeModel } from '@composer/core';
+import { Harmonicon, AudioNodeModel, RendererError } from '@composer/core';
 import { BaseAudioDriver } from '@composer/driver';
 import { mapSeries } from '@composer/util';
 import * as Tone from 'tone';
@@ -215,6 +215,10 @@ export class ToneAudioDriver extends BaseAudioDriver {
     }
   }
 
+  get liveInstruments () {
+    return this._liveInstruments = this._liveInstruments || {};
+  }
+
   get state () {
     return Tone.Transport.state; // started|stopped
   }
@@ -272,15 +276,38 @@ export class ToneAudioDriver extends BaseAudioDriver {
     return Tone.Transport.start();
   }
 
-  async playNote({ note }) {
+  async playNote({
+    note,
+    instrument,
+    volume = -10
+  }) {
+    this.liveInstruments[instrument] = (this.liveInstruments[instrument] || await (async () => {
+      const device = Harmonicon.getDeviceById(instrument);
+
+      if (device) {
+        return device.render();
+      }
+      else if (this.renderer) {
+        return this.renderer.getNode('instrument', instrument).node;
+      }
+      else {
+        throw new RendererError(`Unable to locate instrument "${instrument}""`);
+      }
+    })()).toDestination();
+
     const notes = Array.isArray(note) ? note : [ note ];
+    const instrumentNode = this.liveInstruments[instrument];
+  
+    if (instrumentNode.releaseAll) {
+      instrumentNode.releaseAll();
+    }
 
-    this.previewer = this.previewer || new Tone.PolySynth().toDestination();
-    this.previewer.releaseAll();
-
-    this.previewer.triggerAttackRelease(notes.map((note) => {
-      return note.computedPitch();
-    }), 1);
+    instrumentNode.set({ volume });
+    instrumentNode.triggerAttackRelease((
+      notes.length > 1
+        ? notes.map((n) => (n.computedPitch()))
+        : notes[0].computedPitch()  
+    ), 1);
   }
 
   on (eventName, fn) {

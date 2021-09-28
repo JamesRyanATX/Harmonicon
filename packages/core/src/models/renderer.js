@@ -78,32 +78,11 @@ export class RendererModel extends BaseModel {
   }
 
   async renderInstrument (instrument) {
-    const node = this.createNode({
+    this.createNode({
       type: 'instrument',
       name: instrument.name, 
       node: await instrument.render(),
       model: instrument,
-    });
-
-    // this.logger.info(`render.instrument: [+] name = ${instrument.name}`);
-    // this.logger.debug(`render.instrument:     fn = ${typeof instrument.fn}`);
-    // this.logger.debug(`render.instrument:     rendered = ${node.node}`);
-    // this.logger.debug(`render.instrument:     loaded = ${node.loaded}`);
-
-    if (node.loaded) {
-      return;
-    }
-
-    // Audio node may need time to load samples and external objects
-    return new Promise((accept, reject) => {
-      const interval = setInterval(() => {
-        this.logger.debug(`render.instrument:     loaded = ${node.loaded}`);
-
-        if (node.loaded) {
-          clearInterval(interval);
-          accept();
-        }
-      }, 500);
     });
   }
 
@@ -112,16 +91,12 @@ export class RendererModel extends BaseModel {
   }
 
   async renderEffect (effect) {    
-    const node = this.createNode({
+    this.createNode({
       type: 'effect',
       name: effect.name,
       node: await effect.render(),
       model: effect,
     });
-
-    // this.logger.info(`render.effect: [+] name = ${effect.name}`);
-    // this.logger.debug(`render.effect:     fn = ${typeof effect.fn}`);
-    // this.logger.debug(`render.effect:     rendered = ${node.node}`);
   }
 
   async renderPhrases() {

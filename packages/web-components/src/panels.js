@@ -40,6 +40,16 @@ export function PanelFilter({
   );
 }
 
+export function PanelFilterRow({
+  children = null,
+}) {
+  return (
+    <div className={styles.panelFilterRow}>
+      {children}
+    </div>
+  );
+}
+
 export function Panel ({
   label = 'Panel',
   children = null,
