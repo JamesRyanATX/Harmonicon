@@ -53,7 +53,7 @@ export {
   sixtyFourth
 }
 
-export const parseCode = async (code) => {
+export const parseCode = (code) => {
   const ns = {
     SessionComposer,
     session,
@@ -85,7 +85,7 @@ export const parseCode = async (code) => {
       return `const ${name} = ns.${name};\n`;
     }).join('')}
 
-    return (async () => { ${code} })();
+    ${code}
   `;
 
   return Function('ns', source)(ns);
@@ -101,12 +101,12 @@ export const parse = async (options = {}) => {
     silent: false,
   }, options);
 
-  return new Promise(async (accept) => {
+  return new Promise(async (accept, reject) => {
     try {
       Harmonicon.once('composer:parsed', accept);
 
       if (options.code) {
-        await parseCode(options.code, options);
+        parseCode(options.code, options);
       }
       else if (options.url) {
         await parseUrl(options.url, options);
@@ -124,7 +124,7 @@ export const parse = async (options = {}) => {
         console.warning(e);
       }
       else {
-        throw (e);
+        reject(e);
       }
     }
   });

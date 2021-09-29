@@ -36,6 +36,11 @@ export function ViewDropdown() {
         onClick={controller.toggleKeyboardPanel.bind(controller)}
         icon={workspace.panels.keyboard.enabled ? IoCheckmarkSharp : undefined}
       />
+      <MenuDropdownItem
+        label="Console"
+        onClick={controller.toggleConsolePanel.bind(controller)}
+        icon={workspace.panels.console.enabled ? IoCheckmarkSharp : undefined}
+      />
     </div>
   )
 }

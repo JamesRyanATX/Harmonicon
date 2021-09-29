@@ -90,3 +90,21 @@ body {
   height: 100%;
   width: 100%;
 }
+
+nextjs-portal {
+  display: none;
+}
+
+.mosaic {
+  background-color: transparent;
+}
+
+.mosaic-tile {
+  display: flex;
+  margin: 0;
+}
+
+.mosaic-split.-column:hover,
+.mosaic-split.-row:hover {
+    background-color: var(--theme-primary-color-dark);
+}

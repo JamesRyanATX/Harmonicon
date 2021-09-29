@@ -31,8 +31,11 @@
     "microbundle": "^0.13.3"
   },
   "dependencies": {
+    "console-feed": "^3.2.2",
     "d3": "^7.0.1",
     "react-d3-graph": "^2.6.0",
-    "react-graph-vis": "^1.0.7"
+    "react-graph-vis": "^1.0.7",
+    "react-mosaic-component": "^5.0.0",
+    "react-scroll-to-bottom": "^4.1.2"
   }
 }

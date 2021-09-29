@@ -59,7 +59,7 @@ function Chords({
   );
 }
 
-export function ChordsPanel({ controller }) {
+export function ChordsPanel() {
   const [ root, setRoot ] = useState('C');
   const [ tonic, setTonic ] = useState('C');
   const [ octave, setOctave ] = useState(4);

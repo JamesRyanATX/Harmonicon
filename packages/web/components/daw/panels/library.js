@@ -171,8 +171,9 @@ function Demos({ library }) {
 }
 
 
-export function LibraryPanel({ controller }) {
+export function LibraryPanel() {
   const library = Harmonicon.libraries.core;
+  const controller = useController();
 
   return (
     <Panel 

@@ -1,8 +1,13 @@
 "use strict";
 
 import {
+  IconButton,
   Select
 } from './controls';
+
+import {
+  Console
+} from './console';
 
 import {
   Keyboard
@@ -36,19 +41,21 @@ import {
 } from './tree';
 
 module.exports = {
-  Patches,
+  Console,
+  IconButton,
   Keyboard,
-  Select,
+  Menu,
+  MenuDropdownDivider,
+  MenuDropdownHeader,
+  MenuDropdownItem,
+  MenuDropdownMask,
+  MenuItem,
+  Panel,
   PanelFilter,
   PanelFilterRow,
   Panels,
-  Panel,
-  Menu,
-  MenuItem,
-  MenuDropdownHeader,
-  MenuDropdownDivider,
-  MenuDropdownItem,
-  MenuDropdownMask,
+  Patches,
+  Select,
   Tree,
   TreeGroup,
   TreeGroupItems,

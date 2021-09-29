@@ -38,3 +38,14 @@ export function Select({
     </Control>
   )
 }
+
+export function IconButton({
+  icon = null,
+  onClick = () => {},
+}) {
+  return (
+    <Control type="button" flex="none">
+      <button onClick={onClick}>{icon()}</button>
+    </Control>
+  )
+}

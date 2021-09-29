@@ -1,20 +1,34 @@
 import chalk from 'chalk';
 
 export class Logger {
+  static console = console;
+
+  get console () {
+    return this.constructor.console;
+  }
+
   constructor(name) {
     this.name = name;
   }
 
   error(message) {
-    console.error(chalk.red(this.format(message)));
+    this.console.error(chalk.red(this.format(message)));
   }
 
   info(message) {
-    console.info(chalk.white.bold(this.format(message)));
+    this.console.info(chalk.white.bold(this.format(message)));
   }
 
   todo(message) {
-    console.info(chalk.white.bold(`${this.format(message)} (todo)`));
+    this.console.info(chalk.white.bold(`${this.format(message)} (todo)`));
+  }
+
+  debug(message) {
+    this.console.debug(this.format(message));
+  }
+
+  log(message) {
+    this.console.log(this.format(message));
   }
 
   hr(length = 80, color = 'white') {
@@ -25,14 +39,6 @@ export class Logger {
     this.info(chalk.yellow.bold(`+${''.padEnd(78, '-')}+`));
     this.info(chalk.yellow.bold(`| ${message.padEnd(76)} |`));
     this.info(chalk.yellow.bold(`+${''.padEnd(78, '-')}+`));
-  }
-
-  debug(message) {
-    console.log(this.format(message));
-  }
-
-  log(message) {
-    console.log(this.format(message));
   }
 
   format(message) {

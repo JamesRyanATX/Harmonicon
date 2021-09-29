@@ -55,6 +55,8 @@ export function Actions ({
     controller.on('composer:parsed', () => (setStatusText('')));
     controller.on('composer:rendering', () => (setStatusText('Rendering...')));
     controller.on('composer:rendered', () => (setStatusText('')));
+    
+    controller.on('error', ({ message }) => (setStatusText(message)));
 
     controller.on('transport:start', setTransportState);
     controller.on('transport:stop', setTransportState);

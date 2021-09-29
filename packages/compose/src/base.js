@@ -70,7 +70,7 @@ export class BaseComposer {
       result = this.builder.call(this, this.context);
     }
     catch (e) {
-      this.logger.error(`${this.constructor.name}: ${e.message}`);
+      this.logger.error(e.message);
       throw e;  
     }
     

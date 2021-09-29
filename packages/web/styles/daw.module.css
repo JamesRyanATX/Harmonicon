@@ -1,9 +1,14 @@
-.daw {
+.dawInterface {
   display: flex;
   flex-direction: column;
   flex: 1;
   position: relative;
   overflow: hidden;
+}
+
+.dawInterfaceTile {
+  display: flex;
+  margin: 0;
 }
 
 .logo {

@@ -59,6 +59,8 @@ export class Controller {
     this.allow('workspace:panels:chords:hide');
     this.allow('workspace:panels:keyboard:show');
     this.allow('workspace:panels:keyboard:hide');
+    this.allow('workspace:panels:console:show');
+    this.allow('workspace:panels:console:hide');
 
     // Observe global Harmonicon events
     Harmonicon.on('composer:error', () => {
@@ -144,6 +146,10 @@ export class Controller {
 
   async toggleKeyboardPanel() {
     return this.togglePanel('keyboard');
+  }
+
+  async toggleConsolePanel() {
+    return this.togglePanel('console');
   }
 
 
@@ -249,8 +255,6 @@ export class Controller {
       });
     }
     catch (e) {
-      console.error(e);
-
       this.emit('error', {
         message: 'Unable to play this file :-(',
         error: e
@@ -283,8 +287,6 @@ export class Controller {
       await this.audio.pause();
     }
     catch (e) {
-      console.error(e);
-
       this.emit('error', {
         message: 'Unable to pause audio, oh noes!',
         error: e
@@ -348,7 +350,7 @@ export class Controller {
 
     const { composer, renderer } = await render({
       code: this.file.source
-    }, this.audio);
+    }, this.audio)
 
     this.composer = composer;
     this.renderer = renderer;

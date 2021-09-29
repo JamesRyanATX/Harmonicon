@@ -295,7 +295,7 @@ export class ToneAudioDriver extends BaseAudioDriver {
       }
     })()).toDestination();
 
-    const notes = Array.isArray(note) ? note : [ note ];
+    const notes = (Array.isArray(note) ? note : [ note ]).map((n) => (n.computedPitch()));
     const instrumentNode = this.liveInstruments[instrument];
   
     if (instrumentNode.releaseAll) {
@@ -304,10 +304,10 @@ export class ToneAudioDriver extends BaseAudioDriver {
 
     instrumentNode.set({ volume });
     instrumentNode.triggerAttackRelease((
-      notes.length > 1
-        ? notes.map((n) => (n.computedPitch()))
-        : notes[0].computedPitch()  
+      notes.length > 1 ? notes : notes[0] 
     ), 1);
+
+    this.logger.debug(`#playNote: notes = ${notes.join(', ')}`);
   }
 
   on (eventName, fn) {

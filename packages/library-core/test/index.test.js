@@ -29,7 +29,7 @@ describe('@composer/library-core', function () {
       expect(library.model.effects.length).toEqual(8);
       expect(library.model.templates.length).toEqual(2);
       expect(library.model.snippets.length).toEqual(1);
-      expect(library.model.demos.length).toEqual(1);
+      expect(library.model.demos.length).toEqual(2);
     });  
   });
 

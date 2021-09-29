@@ -10,9 +10,6 @@ import { Controller } from '../lib/daw/controller';
 import { ControllerContext } from './daw/providers/controller';
 import { Interface } from './daw/interface';
 
-import { source as demoSource } from '../templates/demo';
-import { source as blankSource } from '../templates/blank';
-
 
 export function DAW ({
   audioDriverOptions = {},

@@ -1,9 +1,14 @@
-import { eventify } from '@composer/util';
+import { Console, Logger, eventify } from '@composer/util';
 
 export class Harmonicon {
   static libraries = {};
+  static console = null;
 
   static bootstrap() {
+    this.console = new Console();
+    this.logger = new Logger();
+
+    Logger.console = this.console;
 
     // Composer events
     this.allow('composer:error');

@@ -38,6 +38,9 @@ export class WorkspaceModel extends storable(BaseModel) {
         keyboard: {
           enabled: true,
         },
+        console: {
+          enabled: true,
+        },
       })
     },
 
