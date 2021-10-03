@@ -1,6 +1,15 @@
 import { BaseModelMixin } from './base.js';
+import { config } from '../../config';
 
 export const storable = Base => class extends BaseModelMixin(Base) {
+
+  static get storage () {
+    return config.drivers.storage;
+  }
+
+  get storage () {
+    return this.constructor.storage;
+  }
 
   static async create(properties) {
     const record = this.parse(properties)
@@ -12,8 +21,8 @@ export const storable = Base => class extends BaseModelMixin(Base) {
     return [ this.name.toLowerCase(), id ];
   }
 
-  static async find(id, storage) {
-    const properties = await storage.get(this.storageKey(id));
+  static async find(id) {
+    const properties = await this.storage.get(this.storageKey(id));
 
     if (!properties) {
       return null;
@@ -23,13 +32,9 @@ export const storable = Base => class extends BaseModelMixin(Base) {
     }
   }
 
-  static async findOrCreate(id, properties, storage) {
-    return (await this.find(id, storage))
-        || (this.create(Object.assign({ id }, properties), storage));
-  }
-
-  get storage () {
-    throw new Error('Persisted models must have a #storage getter.');
+  static async findOrCreate(id, properties) {
+    return (await this.find(id))
+        || (this.create(Object.assign({ id }, properties)));
   }
 
   get storageKey () {
@@ -46,3 +51,4 @@ export const storable = Base => class extends BaseModelMixin(Base) {
   }
 
 }
+

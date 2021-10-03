@@ -1,8 +1,65 @@
-import { Console, Logger, eventify } from '@composer/util';
+import { Console, Logger, eventify, mapSeries } from '@composer/util';
+import { WorkspaceModel } from './models/workspace';
+import { InitializationError } from './errors';
+import { config } from './config';
 
 export class Harmonicon {
-  static libraries = {};
+
+  // Console to use for logging
   static console = null;
+
+  // The active workspace containing open sessions, UI settings etc.
+  static workspace = null;
+
+  // Active audio and storage drivers (external modules)
+  static get drivers() {
+    return config.drivers;
+  };
+
+  // Libraries available to sessions
+  static get libraries() {
+    return config.libraries;
+  };
+
+  /**
+   * Remove all libraries and drivers
+   */
+  static teardown() {
+    config.libraries = {};
+    config.drivers = {};
+  }
+
+  static async initialize({
+    workspace = true,
+    libraries = [],
+    drivers = { audio: null, storage: null },
+  }) {
+
+    // set drivers
+    config.drivers = drivers;
+
+    // install libraries
+    await mapSeries(libraries, async (library) => this.install(library));
+
+    // Check for audio driver
+    if (!config.drivers.audio) {
+      throw new InitializationError('No audio driver present.');
+    }
+
+    // Early return unless we're requesting a workspace
+    if (!workspace) {
+      return;
+    }
+
+    // Check for audio driver
+    if (!config.drivers.storage) {
+      throw new InitializationError('No storage driver present.');
+    }
+
+    this.workspace = await WorkspaceModel.loadOrCreate('default');
+
+    return this.workspace;
+  }
 
   static bootstrap() {
     this.console = new Console();

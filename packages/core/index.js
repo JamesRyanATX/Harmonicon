@@ -11,7 +11,7 @@ export { SequencedEventModel } from './src/models/sequenced_event';
 export { TrackModel } from './src/models/track';
 export { NoteModel } from './src/models/note';
 export { RestModel } from './src/models/rest';
-export { RendererModel } from './src/models/renderer';
+export { OnlineRendererModel, OfflineRendererModel } from './src/models/renderer';
 export { PhraseModel } from './src/models/phrase';
 export { KeySignatureModel } from './src/models/key_signature';
 export { FileModel } from './src/models/file';
