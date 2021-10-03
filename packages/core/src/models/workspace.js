@@ -1,6 +1,7 @@
 import { BaseModel } from './base.js';
 import { FileModel } from './file.js';
 import { storable } from './mixins.js';
+import { config } from '../config.js';
 
 export class WorkspaceModel extends storable(BaseModel) {
 
@@ -42,26 +43,24 @@ export class WorkspaceModel extends storable(BaseModel) {
           enabled: true,
         },
       })
-    },
-
-    // Audio driver (tone, mock, etc.)
-    audio: {
-      json: false,
-    },
-
-    // Storage driver (localstorage, mock, etc.)
-    storage: {
-      json: false,
     }
 
   }
 
-  static async loadOrCreate (id, properties, storage) {
-    const workspace = await this.findOrCreate(id, properties, storage);
+  static get audio () {
+    return config.drivers.audio;
+  }
+
+  get audio () {
+    return this.constructor.audio;
+  }
+
+  static async loadOrCreate (id, properties) {
+    const workspace = await this.findOrCreate(id, properties);
     const files = workspace.properties.files.records;
 
     for (let i = 0; i < files.length; i += 1) {
-      files[i] = await FileModel.find(files[i], storage);
+      files[i] = await FileModel.find(files[i]);
       files[i].setProperties({ workspace });
     }
 

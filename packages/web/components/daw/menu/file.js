@@ -41,8 +41,12 @@ export function FileDropdown() {
       />
       <MenuDropdownDivider />
       <MenuDropdownItem
-        label="Export..."
-        disabled
+        label="Export to WAV..."
+        onClick={controller.exportToWav.bind(controller)}
+      />
+      <MenuDropdownItem
+        label="Export to MP3..."
+        onClick={controller.exportToMp3.bind(controller)}
       />
       <MenuDropdownDivider />
       <MenuDropdownItem

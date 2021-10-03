@@ -18,7 +18,8 @@ export const sequenceable = Base => class extends BaseModelMixin(Base) {
           a.beat < b.beat &&
           a.subdivision < b.subdivision
         ) ? -1 : 1
-      })[0];
+      })
+      .reverse()[0];
   }
 
 }

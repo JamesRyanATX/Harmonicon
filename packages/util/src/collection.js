@@ -1,4 +1,4 @@
-import { mapParallel, mapSeries } from '@composer/util';
+import { mapParallel, mapSeries } from './async';
 
 export class Collection {
 

@@ -1,36 +1,10 @@
-import { Harmonicon, AudioNodeModel, RendererError } from '@composer/core';
-import { BaseAudioDriver } from '@composer/driver';
+import { Harmonicon, RendererError, AudioDriver } from '@composer/core';
 import { mapSeries } from '@composer/util';
 import * as Tone from 'tone';
+import { AudioNode } from '../audio_node';
 
 
-export class ToneAudioDriverNode extends AudioNodeModel {
-
-  get loaded() {
-    return this.node.loaded !== false;
-  }
-
-  static parse(properties) {
-
-    // Create a Channel if a node was not provided
-    if (!properties.node) {
-      properties.node = new Tone.Channel({ channelCount: 2, solo: false, mute: false });
-    }
-
-    // Connect root node to direct output
-    if (properties.root) {
-      properties.node.toDestination();
-    }
-
-    return new this(properties);
-  }
-
-  connect(to) {
-    this.node.connect(to.node);
-  }
-};
-
-class ToneAudioBaseDriver extends BaseAudioDriver {
+export class BaseRenderer extends AudioDriver.Renderer {
 
   schedulers = {
 
@@ -209,15 +183,13 @@ class ToneAudioBaseDriver extends BaseAudioDriver {
           instrumentNode.node.triggerAttackRelease(pitch, duration, time);
         }
 
-        Tone.Draw.schedule(() => {
-          Harmonicon.emit(`play:${pitch.toLowerCase()}`);
-        }, time);
+        if (this.interactive) {
+          Tone.Draw.schedule(() => {
+            Harmonicon.emit(`play:${pitch.toLowerCase()}`);
+          }, time);
+        }
       }, event.at.toString());
     }
-  }
-
-  get liveInstruments () {
-    return this._liveInstruments = this._liveInstruments || {};
   }
 
   get state () {
@@ -287,43 +259,9 @@ class ToneAudioBaseDriver extends BaseAudioDriver {
     }, 2);
   }
 
-  async playNote({
-    note,
-    instrument,
-    volume = -10
-  }) {
-    this.liveInstruments[instrument] = (this.liveInstruments[instrument] || await (async () => {
-      const device = Harmonicon.getDeviceById(instrument);
-
-      if (device) {
-        return device.render();
-      }
-      else if (this.renderer) {
-        return this.renderer.getNode('instrument', instrument).node;
-      }
-      else {
-        throw new RendererError(`Unable to locate instrument "${instrument}""`);
-      }
-    })()).toDestination();
-
-    const notes = (Array.isArray(note) ? note : [ note ]).map((n) => (n.computedPitch()));
-    const instrumentNode = this.liveInstruments[instrument];
-  
-    if (instrumentNode.releaseAll) {
-      instrumentNode.releaseAll();
-    }
-
-    instrumentNode.set({ volume });
-    instrumentNode.triggerAttackRelease((
-      notes.length > 1 ? notes : notes[0] 
-    ), 1);
-
-    this.logger.debug(`#playNote: notes = ${notes.join(', ')}`);
-  }
-
-  on (eventName, fn) {
-    this.transport.on(eventName, fn);
-  }
+  // on (eventName, fn) {
+  //   this.transport.on(eventName, fn);
+  // }
 
   observePosition(fn) {
     this.transport.scheduleRepeat((time) => {
@@ -334,32 +272,11 @@ class ToneAudioBaseDriver extends BaseAudioDriver {
   }
 
   createNode(properties = {}) {
-    return ToneAudioDriverNode.parse(properties);
+    return AudioNode.parse(properties);
   }
 
   async setTransportPosition (position) {
     return this.transport.set({ position })
   }
 
-  async startAudioBuffer() {
-    return Tone.start();
-  }
 }
-
-export class ToneAudioOfflineDriver extends ToneAudioBaseDriver {
-
-  get transport() {
-    return this.options.transport;
-  }
-
-}
-
-
-export class ToneAudioDriver extends ToneAudioBaseDriver {
-
-  get transport() {
-    return Tone.Transport;
-  }
-
-}
-

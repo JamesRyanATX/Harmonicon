@@ -1,6 +1,7 @@
 export {
   ApplicationError,
-  InvalidPositionError
+  InvalidPositionError,
+  RendererError,
 } from './src/errors';
 
 export { BaseModel } from './src/models/base';
@@ -11,7 +12,7 @@ export { SequencedEventModel } from './src/models/sequenced_event';
 export { TrackModel } from './src/models/track';
 export { NoteModel } from './src/models/note';
 export { RestModel } from './src/models/rest';
-export { OnlineRendererModel, OfflineRendererModel } from './src/models/renderer';
+export { InteractiveRendererModel, BackgroundRendererModel } from './src/models/renderer';
 export { PhraseModel } from './src/models/phrase';
 export { KeySignatureModel } from './src/models/key_signature';
 export { FileModel } from './src/models/file';
@@ -95,6 +96,10 @@ export {
   DoubleDottedSixtyFourthUnit
 } from './src/units/sixtyfourth';
 
-export { Logger } from './src/util/logger';
+export { BaseDriver } from './src/driver/base';
+export * as AudioDriver from './src/driver/audio';
+export * as StorageDriver from './src/driver/storage';
+export * as MockStorageDriver from './test/mocks/drivers/storage';
+export * as MockAudioDriver from './test/mocks/drivers/audio';
 
 export { Harmonicon } from './src/harmonicon';

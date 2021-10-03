@@ -22,8 +22,6 @@
     "@tonaljs/tonal": "^4.6.2"
   },
   "devDependencies": {
-    "@composer/driver-audio-mock": "1.0.0",
-    "@composer/driver-storage-mock": "1.0.0",
     "jest": "^27.0.6",
     "jsdoc": "^3.6.7",
     "livereload": "^0.9.3",

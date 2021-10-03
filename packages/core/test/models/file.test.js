@@ -1,15 +1,12 @@
-import { FileModel } from '../../';
-import { WorkspaceModel } from '../../src/models/workspace';
-import { MockStorageDriver } from '@composer/driver-storage-mock';
+import { FileModel, Harmonicon } from '../../';
+import '../helper';
 
 describe('FileModel', function () {
   let workspace;
 
   beforeEach(() => {
-    workspace = new WorkspaceModel({
-      storage: new MockStorageDriver()
-    })
-  })
+    workspace = Harmonicon.workspace;
+  });
 
   describe('#constructor', function () {
     it('generates an id', async function () {
@@ -26,12 +23,11 @@ describe('FileModel', function () {
 
   describe('.create', function () {
     it('creates and saves a record', async function () {
+
       const file = await FileModel.create({
         name: 'bobby',
         source: 'hill',
-        workspace: new WorkspaceModel({
-          storage: new MockStorageDriver
-        })
+        workspace
       });
 
       expect(file).toBeInstanceOf(FileModel);
@@ -43,9 +39,7 @@ describe('FileModel', function () {
       const newFile = await FileModel.create({
         name: 'bobby',
         source: 'hill',
-        workspace: new WorkspaceModel({
-          storage: new MockStorageDriver
-        })
+        workspace
       });
 
       const file = await FileModel.find(newFile.id, workspace.storage);
@@ -63,9 +57,7 @@ describe('FileModel', function () {
       const file = await FileModel.parse({
         name: 'bobby',
         source: 'hill',
-        workspace: new WorkspaceModel({
-          storage: new MockStorageDriver
-        })
+        workspace
       });
 
       expect(await file.save()).toEqual(true);

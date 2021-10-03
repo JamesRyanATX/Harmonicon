@@ -1,9 +1,10 @@
 import { useState } from 'react';
 
-import { ToneAudioDriver, Tone } from '@composer/driver-audio-tone';
-import { LocalStorageDriver } from '@composer/driver-storage-localstorage';
 import { SessionComposer } from '@composer/compose';
-import { Harmonicon, WorkspaceModel } from '@composer/core';
+import { Harmonicon } from '@composer/core';
+
+import * as ToneAudioDriver from '@composer/driver-audio-tone';
+import * as LocalStorageDriver from '@composer/driver-storage-localstorage';
 import * as CoreLibrary from '@composer/library-core';
 
 import { Controller } from '../lib/daw/controller';
@@ -18,37 +19,21 @@ export function DAW ({
 }) {
 
   const [ loaded, setLoaded ] = useState(false);
-  const [ audioDriver, setAudioDriver ] = useState();
-  const [ storageDriver, setStorageDriver ] = useState();
   const [ controller, setController ] = useState();
   const [ file, setFile ] = useState();
 
-  // console.log(`controller: ${!!controller}; audioDriver: ${!!audioDriver}; storageDriver: ${!!storageDriver}; loaded: ${!!loaded}`)
-
-  // Initialize audio driver
-  if (!audioDriver) {
-    setAudioDriver(new ToneAudioDriver(audioDriverOptions));
-  }
-
-  // Initialize storage driver
-  if (!storageDriver) {
-    setStorageDriver(new LocalStorageDriver(storageDriverOptions));
-  }
-
   // Initialize controller
-  if (!controller && audioDriver && storageDriver) {
+  if (!controller) {
     (async () => {
-      const properties = {
-        audio: audioDriver,
-        storage: storageDriver,
-      }
+      const workspace = await Harmonicon.initialize({
+        libraries: [ CoreLibrary ],
+        drivers: {
+          storage: new LocalStorageDriver.Driver(storageDriverOptions),
+          audio: new ToneAudioDriver.Driver(audioDriverOptions)
+        }
+      });
 
-      await Harmonicon.install(CoreLibrary);
-
-      setController(new Controller({
-        workspace: (await WorkspaceModel.loadOrCreate('default', properties, storageDriver))
-          .setProperties(properties)
-      }));
+      setController(new Controller({ workspace }));
     })();
   }
 
@@ -88,7 +73,7 @@ export function DAW ({
   window.controller = controller;
   window.SessionComposer = SessionComposer;
   window.ToneAudioDriver = ToneAudioDriver;
-  window.Tone = Tone; 
+  window.Tone = ToneAudioDriver.Tone; 
 
   if (loaded) {
     return (

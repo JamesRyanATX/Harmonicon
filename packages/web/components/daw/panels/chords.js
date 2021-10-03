@@ -74,6 +74,7 @@ export function ChordsPanel() {
       id="chords"
       label="Chord Browser"
       flex={1}
+      onClose={controller.toggleChordsPanel.bind(controller)}
       filter={() => (
         <PanelFilterRow>
           <Select label="Root" value={root} onChange={setRoot} span={1}>

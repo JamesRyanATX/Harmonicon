@@ -16,7 +16,12 @@ export function RoutesPanel() {
   }
 
   return (
-    <Panel id="routes" label="Route Graph" flex={1}>
+    <Panel 
+      id="routes"
+      label="Route Graph"
+      flex={1}
+      onClose={controller.toggleRoutesPanel.bind(controller)}
+    >
       {session ? <Patches
         instruments={session.instruments}
         tracks={session.tracks}

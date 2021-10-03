@@ -1,8 +1,8 @@
 import { Harmonicon } from '../src/harmonicon';
-import { MockAudioDriver } from '@composer/driver-audio-mock';
-import { MockStorageDriver } from '@composer/driver-storage-mock';
 import { WorkspaceModel } from '../src/models/workspace';
 import { LibraryModel } from '../src/models/library';
+import * as MockStorageDriver from './mocks/drivers/storage';
+import * as MockAudioDriver from './mocks/drivers/audio';
 
 describe('Harmonicon', function () {
 
@@ -17,8 +17,8 @@ describe('Harmonicon', function () {
       });
       const libraries = [ { name: library.name, model: library } ];
       const drivers = {
-        audio: new MockAudioDriver(),
-        storage: new MockStorageDriver(),
+        audio: new MockAudioDriver.Driver(),
+        storage: new MockStorageDriver.Driver(),
       };
 
       const workspace = await Harmonicon.initialize({ drivers, libraries });

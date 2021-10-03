@@ -2,6 +2,7 @@
 export class Console {
 
   error() {
+    console.error.apply(console, arguments);
   }
 
   debug() {

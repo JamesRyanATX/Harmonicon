@@ -3,3 +3,4 @@ node_modules
 packages/web/public/libraries/core/instruments
 packages/web-components/dist
 lerna-debug.log
+yarn-error.log

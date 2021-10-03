@@ -3,7 +3,7 @@ import { SequencedEventModel } from './sequenced_event.js';
 import { InstrumentModel } from './instrument.js';
 import { TrackModel } from './track.js';
 import { EffectModel } from './effect.js';
-import { RendererModel } from './renderer.js';
+import { InteractiveRendererModel, BackgroundRendererModel } from './renderer.js';
 import { PhraseModel } from './phrase.js';
 import { AnnotationModel } from './annotation.js';
 import { KeySignatureModel } from './key_signature.js';
@@ -64,6 +64,25 @@ export class SessionModel extends sequenceable(BaseModel) {
 
   }
 
+  /**
+   * Get an background renderer (non-interactive)
+   */
+  get backgroundRenderer () {
+    return this._backgroundRenderer = (this._backgroundRenderer || BackgroundRendererModel.parse({
+      session: this
+    }))
+  }
+
+  /**
+   * Get an interactive renderer (plays output, can be controlled)
+   */
+  get interactiveRenderer () {
+    return this._interactiveRenderer = (this._interactiveRenderer || InteractiveRendererModel.parse({
+      session: this
+    }))
+  }
+
+
   parsePosition(annotationOrPosition) {
     const annotation = typeof annotationOrPosition === 'string'
       ? this.annotations.filterByProperty('name', annotationOrPosition)[0]
@@ -94,77 +113,61 @@ export class SessionModel extends sequenceable(BaseModel) {
     return meter;
   }
 
-  infer({
-    instrumentSends = true,
-    trackSends = true,
-    mainTrack = true,
+  tempoAt(position) {
+    const event = this.getLastEventByTypeAndPosition('tempo', position);
+    const meter = event ? event.value : 120;
+
+    return meter;
+  }
+
+  /**
+   * Compute the elapsed time from 0 to a given position on the timeline
+   * 
+   * @todo support beats and subdivision
+   * @param {PositionModel} position - position on timeline
+   * @returns {number}
+   */
+  elapsedTimeAtPosition(position) {
+    const lastMeasure = position.measure;
+
+    let tempo = null;
+    let meter = null;
+    let measureLength = null;
+    let currentMeasure = 0;
+    let currentPosition = PositionModel.parse(0);
+    let totalLength = 0;
+
+    while (currentMeasure < lastMeasure) {
+      meter = this.meterAt(currentPosition);
+      tempo = this.tempoAt(currentPosition);
+      measureLength = (60 / tempo) * meter[1];
+
+      // console.log(`currentMeasure = ${currentMeasure} meter = ${meter}; tempo = ${tempo}; measureLength = ${measureLength}s; totalLength = ${totalLength}`);
+
+      totalLength += measureLength;
+
+      currentMeasure += 1;
+      currentPosition = PositionModel.parse(currentMeasure);
+    }
+
+    return Math.round(totalLength * 1000) / 1000;
+  }
+
+  /**
+   * Render session to audio nodes.
+   * 
+   * @param {object} options - rendering options
+   * @param {object} options.interactive - whether or not the renderer should be interactive (start/stop/play/pause)
+   * @param {object} options.duration - amount of time to render (non-interactive only)
+   * @returns 
+   */
+  async render ({
+    interactive = true,
+    duration = null
   } = {}) {
-    mainTrack ? this.inferMainTrack() : 1;
-    instrumentSends ? this.inferInstrumentSends() : 1;
-    trackSends ? this.inferTrackSends() : 1;
-  }
-
-  inferMainTrack() {
-    // [ 'main', 'main-fx' ].forEach((name) => {
-    //   const track = this.tracks.filterByProperty('name', name)[0];
-
-    //   if (!track) {
-    //     this.tracks.add(TrackModel.parse({ name, session: this }));
-    //   }
-    // });
-
-    // this.patches.add(PatchModel.parse({
-    //   inputType: 'track',
-    //   input: 'main-fx',
-    //   outputType: 'track',
-    //   output: 'main',
-    //   session: this
-    // }));
-
-    // this.logger.debug('inferMainTrack')
-  }
-
-  inferInstrumentSends() {
-    // this.instruments.forEach((instrument) => {
-    //   const track = this.tracks.filterByProperty('name', instrument.name)[0];
-    //   if (instrument.outputs.length === 0 && track) {
-
-    //     this.patches.add(PatchModel.parse({
-    //       inputType: 'instrument',
-    //       input: instrument.name,
-    //       outputType: 'track',
-    //       output: track.name,
-    //       session: this
-    //     }));
-    //   }
-    // });
-  }
-
-  inferTrackSends() {
-    // this.logger.debug('inferTrackSends')
-
-    // this.tracks.forEach((track) => {
-    //   if (track.outputs.length === 0) {
-    //     this.patches.add(PatchModel.parse({
-    //       inputType: 'track',
-    //       input: track.name,
-    //       outputType: 'track',
-    //       output: 'main-fx',
-    //       session: this
-    //     }));
-    //   }
-    // });
-  }
-
-  async render (driver) {
-    this.renderer = this.renderer || RendererModel.parse({
-      session: this,
-      driver: driver
-    })
-
-    await this.renderer.render();
-
-    return this.renderer;
+    return (interactive ? this.interactiveRenderer : this.backgroundRenderer).render({
+      duration
+    });
   }
 
 }

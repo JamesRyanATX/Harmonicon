@@ -63,6 +63,7 @@ export function KeyboardPanel() {
       id="keyboard"
       label="Keyboard"
       flex={2}
+      onClose={controller.toggleKeyboardPanel.bind(controller)}
       filter={() => (
         <>
           <PanelFilterRow>

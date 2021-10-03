@@ -1,1 +1,1 @@
-export { LocalStorageDriver } from './src/localstorage';
+export { Driver } from './src/driver';

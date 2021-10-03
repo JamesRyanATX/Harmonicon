@@ -13,6 +13,7 @@ export function ConsolePanel() {
       label="Console"
       flex={1}
       streaming
+      onClose={controller.toggleConsolePanel.bind(controller)}
       filter={() => (
         <PanelFilterRow>
           <Select label="Filter" value={level} onChange={setLevel} span={1}>

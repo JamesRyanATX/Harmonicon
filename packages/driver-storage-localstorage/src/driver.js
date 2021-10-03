@@ -1,6 +1,6 @@
-import { BaseStorageDriver } from '@composer/driver';
+import { StorageDriver } from '@composer/core';
 
-export class LocalStorageDriver extends BaseStorageDriver {
+export class Driver extends StorageDriver.Driver {
 
   get prefix () {
     return this.options.prefix || 'composer';

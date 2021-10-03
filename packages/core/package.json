@@ -15,17 +15,14 @@
     "transform": {}
   },
   "peerDependencies": {
-    "@composer/driver-audio-tone": "1.0.0",
-    "@composer/driver-storage-localstorage": "1.0.0"
   },
   "dependencies": {
     "@composer/util": "1.0.0",
     "@tonaljs/tonal": "^4.6.2",
+    "audio-encoder": "^1.0.2",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@composer/driver-audio-mock": "1.0.0",
-    "@composer/driver-storage-mock": "1.0.0",
     "jest": "^27.0.6"
   }
 }

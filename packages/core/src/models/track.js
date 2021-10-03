@@ -42,6 +42,22 @@ export class TrackModel extends sequenceable(BaseNodeModel) {
     return this.session.meterAt(position);
   }
 
+  /**
+   * Return the last measure that contains sequenced events.
+   * 
+   * @returns {integer}
+   */
+  lastMeasure() {
+    return this.events.reduce((lastMeasure, event) => {
+      if (event.at.measure > lastMeasure) {
+        return event.at.measure;
+      }
+      else {
+        return lastMeasure;
+      }
+    }, 0);
+  }
+
 }
 
 TrackModel.init();

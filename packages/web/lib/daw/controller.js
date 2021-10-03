@@ -1,6 +1,7 @@
 import { Logger } from '@composer/util';
 import { ComposerError, render } from '@composer/compose';
 import { Harmonicon } from '@composer/core';
+import { saveAs } from 'file-saver';
 
 export class Controller {
 
@@ -89,6 +90,13 @@ export class Controller {
       this.emit(`workspace:panels:${panel}:${action}`, {});
     });
 
+    this.on('error', ({ message, error }) => {
+      if (error) {
+        Harmonicon.console.error(error);
+      }
+      Harmonicon.console.error(message);
+    })
+
     document.title = 'Harmonicon';
     
     // // Should not need this!
@@ -158,7 +166,7 @@ export class Controller {
 
   async playNote({ note, instrument }) {
     try {
-      this.audio.playNote({ note, instrument });
+      this.audio.playNote({ note, instrument, renderer: this.renderer });
     }
     catch (e) {
       console.error(e);
@@ -250,8 +258,8 @@ export class Controller {
 
   async play() {
     try {
-      await this.withRendered(async () => {
-        return this.audio.play();
+      await this.withInteractiveRendering(async () => {
+        return this.renderer.play();
       });
     }
     catch (e) {
@@ -264,7 +272,7 @@ export class Controller {
 
   async stop() {
     try {
-      await this.audio.stop();
+      await this.renderer.stop();
 
       this.emit('transport:position', {
         measure: 0,
@@ -284,11 +292,39 @@ export class Controller {
 
   async pause() {
     try {
-      await this.audio.pause();
+      await this.renderer.pause();
     }
     catch (e) {
       this.emit('error', {
         message: 'Unable to pause audio, oh noes!',
+        error: e
+      });
+    }
+  }
+
+  async exportToWav() {
+    try {
+      await this.withExportableRendering(async ({ renderer, duration }) => {
+        saveAs(await renderer.toWav({ duration }), `${this.file.name}.wav`);
+      });
+    }
+    catch (e) {
+      this.emit('error', {
+        message: 'Unable to export to WAV; see console for details.',
+        error: e
+      });
+    }
+  }
+
+  async exportToMp3() {
+    try {
+      await this.withExportableRendering(async ({ renderer, duration }) => {
+        saveAs(await renderer.toMp3({ duration }), `${this.file.name}.mp3`);
+      });
+    }
+    catch (e) {
+      this.emit('error', {
+        message: 'Unable to export to MP3; see console for details.',
         error: e
       });
     }
@@ -337,28 +373,61 @@ export class Controller {
   // Rendering
   // ---------
 
-  async withRendered(fn) {
+  async withExportableRendering(fn) {
+    return this.withInteractiveRendering(async () => {
+
+      // Temporary hack until this can be computed more reliably
+      const duration = this.renderer.cache.events.last
+        ? this.renderer.session.elapsedTimeAtPosition(this.renderer.cache.events.last.at)
+        : 0;
+
+      await this.withBackgroundRendering({ duration }, async ({ renderer, composer }) => {
+        return fn({ renderer, composer, duration });
+      });
+    });
+  }
+
+  async withBackgroundRendering({ duration }, fn) {
+    return fn(await this.createBackgroundRendering({ duration }));
+  }
+
+  async createBackgroundRendering({ duration }) {
+    await this.audio.startAudioBuffer();
+
+    return this.createRendering({
+      interactive: false,
+      duration
+    });
+  }
+
+  async withInteractiveRendering(fn) {
     if (this.changed) {
-      await this.render();
+      await this.createInteractiveRendering();
     }
 
     return fn();
   }
 
-  async render () {
+  async createInteractiveRendering () {
     await this.audio.startAudioBuffer();
 
-    const { composer, renderer } = await render({
-      code: this.file.source
-    }, this.audio)
+    const { composer, renderer } = await this.createRendering({
+      interactive: true,
+    })
 
     this.composer = composer;
     this.renderer = renderer;
     this.renderedSource = this.file.source;
 
-    this.audio.observePosition((position) => {
+    this.renderer.observePosition((position) => {
       this.emit('transport:position', position);
     });
+  }
+
+  async createRendering({ interactive, duration }) {
+    await this.audio.startAudioBuffer();
+
+    return render({ code: this.file.source, interactive, duration });
   }
 
   // Misc

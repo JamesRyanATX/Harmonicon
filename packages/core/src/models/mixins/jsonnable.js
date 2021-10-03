@@ -1,6 +1,6 @@
 import { BaseModelMixin } from './base.js';
 import { BaseModel } from '../base.js';
-import { Collection } from "../../util/collection.js";
+import { Collection } from "@composer/util";
 
 export const jsonnable = Base => class extends BaseModelMixin(Base) {
 

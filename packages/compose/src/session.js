@@ -661,9 +661,9 @@ export class SessionComposer extends BaseSequencedComposer {
    * @param {AudioDriver} driver 
    * @returns {RendererModel}
    */
-  async render (driver) {
+  async render (options) {
     Harmonicon.emit('composer:rendering', this);
-    this.renderer = await this.model.render(driver);
+    this.renderer = await this.model.render(options);
     Harmonicon.emit('composer:rendered', this);
 
     return this.renderer;
