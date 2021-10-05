@@ -12,8 +12,8 @@
   ],
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "yarn run clean && microbundle build --css-modules true --jsx React.createElement src/index.js",
-    "dev": "microbundle watch --css-modules true --jsx React.createElement src/index.js"
+    "build": "yarn run clean && microbundle build --css-modules true --jsx React.createElement index.js",
+    "dev": "microbundle watch --css-modules true --jsx React.createElement index.js"
   },
   "keywords": [],
   "author": "",

@@ -3,26 +3,26 @@
 import {
   IconButton,
   Select
-} from './controls';
+} from './src/controls';
 
 import {
   Console
-} from './console';
+} from './src/console';
 
 import {
   Keyboard
-} from './keyboard';
+} from './src/keyboard';
 
 import {
   Patches
-} from './patches';
+} from './src/patches';
 
 import {
   Panels,
   Panel,
   PanelFilter,
   PanelFilterRow,
- } from "./panels";
+ } from "./src/panels";
 
 import {
   Menu,
@@ -31,24 +31,24 @@ import {
   MenuDropdownDivider,
   MenuDropdownItem,
   MenuDropdownMask,
-} from './menu';
+} from './src/menu';
 
 import {
   Tree,
   TreeGroup,
   TreeGroupItems,
   TreeItem,
-} from './tree';
+} from './src/tree';
 
 import {
   Modal,
   ConfirmModal,
   DialogModal,
-} from './modal';
+} from './src/modal';
 
 import {
   LoadingBar,
-} from './loading';
+} from './src/loading';
 
 module.exports = {
   ConfirmModal,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import styles from '../styles/loading.module.css';
 
 export function LoadingBar({
