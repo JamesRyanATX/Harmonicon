@@ -9,6 +9,9 @@ import {
   IoTrashSharp,
 } from "react-icons/io5";
 
+import { ExportToWavModal } from '../modals/menu/file/export_to_wav';
+import { ExportToMp3Modal } from '../modals/menu/file/export_to_mp3';
+
 import { useController } from '../providers/controller';
 
 export function FileDropdown() {
@@ -42,11 +45,15 @@ export function FileDropdown() {
       <MenuDropdownDivider />
       <MenuDropdownItem
         label="Export to WAV..."
-        onClick={controller.exportToWav.bind(controller)}
+        onClick={() => {
+          controller.emit('modal:open', { component: ExportToWavModal, props: {} })
+        }}
       />
       <MenuDropdownItem
         label="Export to MP3..."
-        onClick={controller.exportToMp3.bind(controller)}
+        onClick={() => {
+          controller.emit('modal:open', { component: ExportToMp3Modal, props: {} })
+        }}
       />
       <MenuDropdownDivider />
       <MenuDropdownItem

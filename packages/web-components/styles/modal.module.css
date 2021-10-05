@@ -1,0 +1,80 @@
+.modal {
+  --modal-background-color: rgb(25, 25, 25);
+  --modal-gutter: 10px;
+  --modal-gutter-2x: 20px;
+}
+
+.modal {
+  position: absolute;
+  inset: 100px 150px auto 150px;
+  background: var(--modal-background-color);
+  overflow: auto;
+  border-radius: var(--theme-border-radius);
+  outline: none;
+  box-shadow: rgb(0 0 0) 0px 0px 50px;
+  height: auto;
+  width: auto;
+}
+
+  .modalTitleBar {
+    border-top: 1px solid var(--theme-neutral-color-6);
+    border-bottom: 1px solid var(--theme-neutral-color-6);
+    background-color: var(--theme-neutral-color-5);
+    text-transform: uppercase;
+    padding: 4px 6px;
+    font-size: 9px;
+    font-family: var(--theme-fixed-font-family);
+    color: var(--theme-neutral-color-8);
+  }
+
+    .modalTitleBar a {
+      float: right;
+      font-size: 14px;
+      margin: -2px -2px 0 0;
+    }
+
+  .modalContent {
+    padding: var(--modal-gutter-2x);
+    position: relative;
+  }
+
+  .modalIndicator {
+  }
+
+
+.dialog {
+}
+
+  .dialogTitle {
+    font-size: 18px;
+    margin-bottom: var(--modal-gutter);
+  }
+
+  .dialogText {
+    margin-bottom: var(--modal-gutter-2x);    
+  }
+
+  .dialogActions {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+  }
+
+    .dialogActions > * {
+      margin-right: var(--modal-gutter);
+    }
+
+    .dialogActionsMask {
+      background-color: var(--modal-background-color);
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      opacity: 0.75;
+    }
+
+  .dialogError {
+    margin-top: var(--modal-gutter-2x);    
+    color: var(--theme-error-color);
+  }

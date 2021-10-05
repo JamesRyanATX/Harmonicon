@@ -1,4 +1,4 @@
-import { Logger } from '@composer/util';
+import { Logger, Task } from '@composer/util';
 import { ComposerError, render } from '@composer/compose';
 import { Harmonicon } from '@composer/core';
 import { saveAs } from 'file-saver';
@@ -34,6 +34,9 @@ export class Controller {
 
     this.allow('error');
     this.allow('changed');
+
+    this.allow('modal:open');
+    this.allow('modal:close');
 
     this.allow('transport:start');
     this.allow('transport:stop');
@@ -302,32 +305,31 @@ export class Controller {
     }
   }
 
-  async exportToWav() {
-    try {
-      await this.withExportableRendering(async ({ renderer, duration }) => {
-        saveAs(await renderer.toWav({ duration }), `${this.file.name}.wav`);
-      });
-    }
-    catch (e) {
-      this.emit('error', {
-        message: 'Unable to export to WAV; see console for details.',
-        error: e
-      });
-    }
+  // Tasks
+  // -----
+
+  createExportToWavTask() {
+    return createExportTask(async (options) => {
+      saveAs(await renderer.toWav(options), `${this.file.name}.wav`);
+    });
   }
 
-  async exportToMp3() {
-    try {
-      await this.withExportableRendering(async ({ renderer, duration }) => {
-        saveAs(await renderer.toMp3({ duration }), `${this.file.name}.mp3`);
+  createExportToMp3Task() {
+    return createExportTask(async (options) => {
+      saveAs(await renderer.toMp3(options), `${this.file.name}.mp3`);
+    });
+  }
+
+  createExportTask(fn) {
+    return new Task(async (task) => {
+      return this.withExportableRendering(({ renderer, duration }) => {
+        return fn({
+          renderer,
+          duration,
+          onProgress: task.progress.bind(task),
+        });
       });
-    }
-    catch (e) {
-      this.emit('error', {
-        message: 'Unable to export to MP3; see console for details.',
-        error: e
-      });
-    }
+    });
   }
 
 

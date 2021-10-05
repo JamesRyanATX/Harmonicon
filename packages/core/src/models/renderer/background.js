@@ -57,7 +57,6 @@ export class BackgroundRendererModel extends RendererBaseModel {
     return new Promise((accept, reject) => {
       const onEncodeProgress = (pct) => {
         onProgress(pct);
-        this.logger.info(`#encode() progress = ${Math.round(pct * 100)}%`);
       };
 
       const onEncodeComplete = (blob) => {

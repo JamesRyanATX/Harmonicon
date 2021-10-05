@@ -40,16 +40,30 @@ import {
   TreeItem,
 } from './tree';
 
+import {
+  Modal,
+  ConfirmModal,
+  DialogModal,
+} from './modal';
+
+import {
+  LoadingBar,
+} from './loading';
+
 module.exports = {
+  ConfirmModal,
   Console,
+  DialogModal,
   IconButton,
   Keyboard,
+  LoadingBar,
   Menu,
   MenuDropdownDivider,
   MenuDropdownHeader,
   MenuDropdownItem,
   MenuDropdownMask,
   MenuItem,
+  Modal,
   Panel,
   PanelFilter,
   PanelFilterRow,

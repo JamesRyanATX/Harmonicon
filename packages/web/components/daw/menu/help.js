@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import {
   MenuDropdownItem,
 } from '@composer/web-components';
@@ -6,7 +8,12 @@ import {
   IoBookSharp,
 } from "react-icons/io5";
 
+import { AboutModal } from '../modals/menu/help/about';
+import { useController } from '../providers/controller';
+
 export function HelpDropdown() {
+  const controller = useController();
+
   return (
     <div>
       <MenuDropdownItem
@@ -16,7 +23,9 @@ export function HelpDropdown() {
       />
       <MenuDropdownItem
         label="About"
-        disabled
+        onClick={() => {
+          controller.emit('modal:open', { component: AboutModal, props: {} });
+        }}
       />
     </div>
   )

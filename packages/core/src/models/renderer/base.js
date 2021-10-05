@@ -245,7 +245,7 @@ export class RendererBaseModel extends BaseModel {
   }
 
   async unscheduleAll() {
-    return this.driverRenderer.unscheduleAll();
+    return this.driverRenderer ? this.driverRenderer.unscheduleAll() : this;
   }
 
 
@@ -294,8 +294,7 @@ export class RendererBaseModel extends BaseModel {
 
   async reset () {
     this.resetCache();
-
-    return this.transport ? this.unscheduleAll() : this;
+    return this.unscheduleAll();
   }
 
   markTime({ interval }) {

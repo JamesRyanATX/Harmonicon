@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Panels } from '@composer/web-components';
 import { Transport } from './transport';
 import { Menu } from './menu';
+import { Modals } from './modals';
 import { LibraryPanel } from './panels/library';
 import { EditorPanel } from './panels/editor';
 import { RoutesPanel } from './panels/routes';
@@ -93,6 +94,7 @@ export function Interface ({
       <Menu controller={controller} logo={logo} />
       <Panels columns={columns} />
       <Transport controller={controller} />
+      <Modals />
     </div>
   )
 }

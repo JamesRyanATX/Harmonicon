@@ -5,6 +5,7 @@ import styles from '../styles/controls.module.css';
 function Control({
   children = null,
   type = '',
+  className = '',
   flex = 1,
 }) {
   return (
@@ -12,7 +13,8 @@ function Control({
       style={{ flex }}
       className={[
         styles.control,
-        styles[type]
+        styles[type],
+        className
       ].join(' ')}
     >
       {children}
@@ -39,13 +41,27 @@ export function Select({
   )
 }
 
+export function Button({
+  children = null,
+  onClick = () => {},
+  narrow = false,
+  primary = false,
+}) {
+  return (
+    <Control type="button" flex="none" className={[
+      primary ? styles.buttonIsPrimary : '',
+      narrow ? styles.buttonIsNarrow : ''
+    ].join(' ')}>
+      <button onClick={onClick}>{children}</button>
+    </Control>
+  )
+}
+
 export function IconButton({
   icon = null,
   onClick = () => {},
 }) {
   return (
-    <Control type="button" flex="none">
-      <button onClick={onClick}>{icon()}</button>
-    </Control>
+    <Button onClick={onClick} narrow>{icon()}</Button>
   )
 }
