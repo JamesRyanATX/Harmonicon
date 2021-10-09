@@ -1,4 +1,3 @@
-import { eventify } from './eventify';
 import { Model } from './model';
 
 /**
@@ -58,7 +57,5 @@ export class Task extends Model {
   }
 
 }
-
-eventify(Task.prototype)
 
 Task.init();

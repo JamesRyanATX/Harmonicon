@@ -1,21 +1,25 @@
 import { useState } from 'react';
-import { Items, Item, ItemPrimary, ItemLabel } from './item';
+import { Items, Item, ItemPrimary, ItemLabel, ItemGrid, ItemGridRow } from './item';
+import { useController } from '../providers/controller';
 
 import {
   IoStopSharp,
   IoPlaySharp,
   IoReloadSharp,
   IoPauseSharp,
-  IoSaveSharp,
+  IoPlaySkipBackSharp,
+  IoPlayForwardSharp,
+  IoPlayBackSharp,
 } from "react-icons/io5";
 
 function Action ({
-  label,
-  icon,
-  selected,
-  indicator,
-  disabled,
-  onClick
+  label = null,
+  icon = null,
+  selected = false,
+  indicator = false,
+  disabled = false,
+  onClick = () => {},
+  mini = false,
 }) {
   const Icon = icon;
 
@@ -25,6 +29,7 @@ function Action ({
       selected={selected}
       disabled={disabled}
       indicator={indicator}
+      mini={mini}
     >
       <ItemPrimary>
         <Icon />
@@ -37,81 +42,83 @@ function Action ({
 }
 
 export function Actions ({
-  controller = null,
-  play = true,
-  pause = false,
-  stop = true,
-  save = false,
-  wipe = false,
-  status = true,
 }) {
+  const controller = useController();
+  const transport = controller.transport;
+
   const [ loaded, setLoaded ] = useState(false);
-  const [ transportState, setTransportState ] = useState(controller.state);
-  const [ changed, setChanged ] = useState(controller.changed);
-  const [ statusText, setStatusText ] = useState('');
+  const [ state, setState ] = useState('stopped');
+  
+  const [ position, setPosition ] = useState(transport.position);
+  const [ loop, setLoop ] = useState(transport.loop);
+  const [ loopFrom, setLoopFrom ] = useState(transport.loopFrom);
+  const [ loopTo, setLoopTo ] = useState(transport.loopTo);
 
   if (!loaded) {
-    controller.on('composer:parsing', () => (setStatusText('Parsing...')));
-    controller.on('composer:parsed', () => (setStatusText('')));
-    controller.on('composer:rendering', () => (setStatusText('Rendering...')));
-    controller.on('composer:rendered', () => (setStatusText('')));
-    
-    controller.on('error', ({ message }) => (setStatusText(message)));
-
-    controller.on('transport:start', setTransportState);
-    controller.on('transport:stop', setTransportState);
-    controller.on('transport:pause', setTransportState);
-    controller.on('transport:loop', setTransportState);
-    controller.on('changed', setChanged);
+    transport.on('changed:position', ({ newValue }) => (setPosition(newValue)));
+    transport.on('changed:loop', ({ newValue }) => (setLoop(newValue)));
+    transport.on('changed:loopFrom', ({ newValue }) => (setLoopFrom(newValue)));
+    transport.on('changed:loopTo', ({ newValue }) => (setLoopTo(newValue)));
+    transport.on('changed:state', ({ newValue }) => (setState(newValue)));
 
     setLoaded(true);
   }
 
   return (
-    <Items>
-      {play ? (
+    <>
+      <Items>
         <Action 
           icon={IoPlaySharp}
           label="Play"
           onClick={controller.play.bind(controller)}
-          selected={transportState === 'started'}
-          indicator={transportState === 'started'}
+          indicator={state === 'started'}
+          disabled={!transport.canPlay}
         />
-      ) : ''}
-      {pause ? (
-        <Action 
-          icon={IoPauseSharp}
-          label="Pause"
-          onClick={controller.pause.bind(controller)}
-          indicator={transportState === 'paused'}
-        />
-      ) : ''}
-      {stop ? (
-        <Action 
-          icon={IoStopSharp}
-          label="Stop"
-          onClick={controller.stop.bind(controller)}
-        />
-      ) : ''}
-      {save ? (
-        <Action 
-          icon={IoSaveSharp}
-          label="Save"
-          onClick={controller.save.bind(controller)}
-        />
-      ) : ''}
-      {wipe ? (
-        <Action 
-          icon={IoReloadSharp}
-          label="Wipe"
-          onClick={controller.wipe.bind(controller)}
-        />
-      ) : ''}
-      {status && statusText ? (
-        <Item flat text>
-          {statusText}
-        </Item>
-      ) : ''}
-    </Items>
+      </Items>
+      <ItemGrid>
+        <ItemGridRow>
+          <Action 
+            icon={IoPlaySkipBackSharp}
+            onClick={() => { transport.restart(); }}
+            disabled={!transport.canRestart}
+            mini
+          />
+          <Action 
+            icon={IoPlayBackSharp}
+            onClick={transport.backwards.bind(transport)}
+            disabled={!transport.canBackwards}
+            mini
+          />
+          <Action 
+            icon={IoPlayForwardSharp}
+            onClick={transport.forwards.bind(transport)}
+            disabled={!transport.canForwards}
+            mini
+          />
+        </ItemGridRow>
+        <ItemGridRow>
+          <Action 
+            icon={IoStopSharp}
+            onClick={transport.stop.bind(transport)}
+            disabled={!transport.canStop}
+            mini
+          />
+          <Action 
+            icon={IoPauseSharp}
+            onClick={transport.pause.bind(transport)}
+            indicator={state === 'paused'}
+            disabled={!transport.canPause}
+            mini
+          />
+          <Action 
+            icon={IoReloadSharp}
+            onClick={() => { transport.loop = !transport.loop; }}
+            disabled={!loopFrom || !loopTo}
+            indicator={loop}
+            mini
+          />
+        </ItemGridRow>
+      </ItemGrid>
+    </>
   )
 }

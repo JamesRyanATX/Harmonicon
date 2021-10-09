@@ -1,4 +1,4 @@
-import { Harmonicon, RendererError, AudioDriver } from '@composer/core';
+import { Harmonicon, PositionModel, AudioDriver } from '@composer/core';
 import { mapSeries } from '@composer/util';
 import * as Tone from 'tone';
 import { AudioNode } from '../audio_node';
@@ -206,7 +206,7 @@ export class BaseRenderer extends AudioDriver.Renderer {
     const tempo = this.transport.bpm.value;
     const swing = this.transport.swing.value;
     const timeSignature = this.transport.timeSignature;
-    const meter = timeSignature;
+    const meter = [ timeSignature, 4 ]; // [todo]
 
     const key = this.transport._key;
     const scale = this.transport._scale;
@@ -241,27 +241,36 @@ export class BaseRenderer extends AudioDriver.Renderer {
   }
 
   // Play transport from current position
-  async play() {
+  async play({
+    position = null,
+  } = {}) {
     if (Tone.context.state === 'suspended') {
       await Tone.start();
+    }
+
+    if (this.state === 'paused') {
+      this.logger.debug('#play() resuming paused session')
+    }
+    else {
+      this.transport.set({
+        position: position.toMBS(),
+      });
     }
 
     return this.transport.start();
   }
 
-  async export() {
-    return Tone.Offline(({ transport }) => {
-      const driver = new ToneAudioOfflineDriver(Object.assign({
-        transport
-      }, this.options));
-
-      debugger;
-    }, 2);
+  setLoop(loop) {
+    this.transport.set({ loop });
   }
 
-  // on (eventName, fn) {
-  //   this.transport.on(eventName, fn);
-  // }
+  setLoopFrom(loopFrom) {
+    this.transport.set({ loopStart: loopFrom.toMBS() });
+  }
+
+  setLoopTo(loopTo) {
+    this.transport.set({ loopEnd: loopTo.toMBS() });
+  }
 
   observePosition(fn) {
     this.transport.scheduleRepeat((time) => {
@@ -275,8 +284,13 @@ export class BaseRenderer extends AudioDriver.Renderer {
     return AudioNode.parse(properties);
   }
 
-  async setTransportPosition (position) {
-    return this.transport.set({ position })
+  async setPosition (position) {
+    if (position instanceof PositionModel) {
+      position = position.toMBS();
+    }
+
+    this.logger.debug(`setPosition position = ${position}`);
+    return this.transport.position = position.toString();
   }
 
 }

@@ -1,19 +1,25 @@
 import { useState } from 'react'
 import NumberFormat from 'react-number-format';
+import { useTransport } from '../providers/transport';
 import { Items, Item, ItemPrimary, ItemLabel } from './item';
 
-export function Display ({ controller }) {
+export function Display () {
+  const transport = useTransport();
+
   const [ loaded, setLoaded ] = useState(false);
-  const [ position, setPosition ] = useState({
-    measure: 0,
-    beat: 0,
-    subdivision: 0,
-    tempo: null,
-    meter: null
-  });
+  const [ position, setPosition ] = useState(transport.position);
+  const [ key, setKey ] = useState(transport.key);
+  const [ scale, setScale ] = useState(transport.scale);
+  const [ tempo, setTempo ] = useState(transport.tempo);
+  const [ meter, setMeter ] = useState(transport.meter);
 
   if (!loaded) {
-    controller.on('transport:position', setPosition);
+    transport.on('changed:position', ({ newValue }) => (setPosition(newValue)));
+    transport.on('changed:key', ({ newValue }) => (setKey(newValue)));
+    transport.on('changed:scale', ({ newValue }) => (setScale(newValue)));
+    transport.on('changed:tempo', ({ newValue }) => (setTempo(newValue)));
+    transport.on('changed:meter', ({ newValue }) => (setMeter(newValue)));
+
     setLoaded(true);
   }
 
@@ -21,57 +27,37 @@ export function Display ({ controller }) {
     <Items>
       <Item flat>
         <ItemPrimary>
-          <input type="text" disabled value={position.key || '-'} />
+          {key || '-'}
         </ItemPrimary>
         <ItemLabel>
-        {position.scale || 'key'}
+          {scale || 'key'}
         </ItemLabel>
       </Item>
       <Item flat>
         <ItemPrimary>
-          <input type="text" disabled value={position.tempo || '-'} />
+          {tempo || '-'}
         </ItemPrimary>
         <ItemLabel>
-        tempo
+          tempo
         </ItemLabel>
       </Item>
       <Item flat>
         <ItemPrimary>
-          <input type="text" disabled value={position.meter || '-'} />
+          <sup>{meter[0] || '-'}</sup>
+          /
+          <sub>{meter[1] || '-'}</sub>
         </ItemPrimary>
         <ItemLabel>
           meter
         </ItemLabel>
       </Item>
-      <Item flat>
-        <ItemPrimary>
-          <input type="text" disabled value={String(position.measure).padStart(2, '0')} />
-        </ItemPrimary>
-        <ItemLabel>
-          measure
-        </ItemLabel>
-      </Item>
-      <Item flat>
-        <ItemPrimary>
-          <input type="text" disabled value={String(position.beat).padStart(2, '0')} />
-        </ItemPrimary>
-        <ItemLabel>
-          beat
-        </ItemLabel>
-      </Item>
       <Item flat wide>
         <ItemPrimary>
-          <NumberFormat
-            value={position.subdivision}
-            displayType={'input'}
-            thousandSeparator={true}
-            allowLeadingZeros={true}
-            decimalScale={3}
-            fixedDecimalScale={true}
-          />
+          {String(position.measure).padStart(2, '0')}:
+          {String(position.beat + 1).padStart(1, '0')}
         </ItemPrimary>
         <ItemLabel>
-          subdivision
+          position
         </ItemLabel>
       </Item>
     </Items>

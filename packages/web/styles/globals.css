@@ -19,9 +19,20 @@
   --theme-primary-color-dark: rgb(6, 127, 155);
 
   /* secondary color */
-  --theme-secondary-color: rgb(243, 114, 44);
+  --theme-secondary-color-rgb: 243, 114, 44;
+  --theme-secondary-color: rgb(var(--theme-secondary-color-rgb));
   --theme-secondary-color-light: rgb(255, 134, 66);
+  --theme-secondary-color-light-rgb: 255, 134, 66;
   --theme-secondary-color-dark: rgb(203, 74, 4);
+  --theme-secondary-color-dark-rgb: 203, 74, 4;
+
+  /* tertiary color */
+  --theme-tertiary-color-rgb: 144, 190, 109;
+  --theme-tertiary-color: rgb(var(--theme-tertiary-color-rgb));
+  --theme-tertiary-color-light-rgb: 164, 210, 129;
+  --theme-tertiary-color-light: rgb(var(--theme-tertiary-color-light-rgb));
+  --theme-tertiary-color-dark-rgb: 104, 150, 69;
+  --theme-tertiary-color-dark: rgb(var(--theme-tertiary-color-dark-rgb));
 
   /* color palette */
   --theme-palette-red: #D60427;

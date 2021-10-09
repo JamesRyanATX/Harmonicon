@@ -13,6 +13,7 @@ export function RoutesPanel() {
 
   if (!loaded) {
     controller.on('composer:parsed', parsed);
+    setLoaded(true);
   }
 
   return (

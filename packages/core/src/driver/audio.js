@@ -53,28 +53,27 @@ export class Renderer extends Device {
     this.logger.error('observePosition() not implemented');
   }
 
-  async unscheduleAll () {
+  setPosition() {
+    this.logger.error('setPosition() not implemented');
+  }
+
+  unscheduleAll () {
     this.logger.error('unscheduleAll() not implemented');
   }
 
-  async setTransportPosition() {
-    this.logger.error('setTransportPosition() not implemented');
-  }
+  
+  /* player controls */
 
-  async play() {
+  play() {
     this.logger.error('play() not implemented');
   }
 
-  async pause() {
+  pause() {
     this.logger.error('pause() not implemented');
   }
 
-  async stop() {
+  stop() {
     this.logger.error('stop() not implemented');
-  }
-
-  async export() {
-    this.logger.error('export() not implemented');
   }
 
 }

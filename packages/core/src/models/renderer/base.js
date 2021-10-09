@@ -6,12 +6,14 @@ import { SequencedEventLogModel } from '../sequenced_event_log.js';
 import { RendererError } from '../../errors';
 import { config } from '../../config';
 
+
 export class RendererBaseModel extends BaseModel {
 
   static properties = {
     session: {},
   }
 
+  // Realtime position of transport
   get position () {
     return this.driverRenderer.position;
   }
@@ -39,7 +41,7 @@ export class RendererBaseModel extends BaseModel {
 
     await this.reset();
     await this.renderSession()
-    await this.goToBeginning();
+    await this.driverRenderer.setPosition(PositionModel.parse(0));
 
     return this;
   }
@@ -202,7 +204,7 @@ export class RendererBaseModel extends BaseModel {
   async renderEnd() {
     const lastEvent = this.cache.events.last;
     const sustainFor = 2;
-    const stopAt = PositionModel.parse({
+    const stopAt = this.stopAt = PositionModel.parse({
       measure: lastEvent ? Number(lastEvent.at.measure) + sustainFor : sustainFor,
       beat: 0,
       subdivision: 0
@@ -281,14 +283,6 @@ export class RendererBaseModel extends BaseModel {
   }
 
 
-  // Transport
-  // ---------
-
-  goToBeginning () {
-    return this.driverRenderer.setTransportPosition('0:0:0');
-  }
-
-
   // Misc
   // ----
 
@@ -297,18 +291,11 @@ export class RendererBaseModel extends BaseModel {
     return this.unscheduleAll();
   }
 
-  markTime({ interval }) {
-    setInterval(() => {
-      const {
-        ticks,
-        measure,
-        beat,
-        subdivision,
-        realtime
-      } = this.position;
+  delegate(method, ...args) {
+    this.logger.debug(`#delegate() => ${method}()`);
 
-      this.logger.info(`markTime: transport = ${measure}:${beat}:${subdivision} (${realtime}s, ${ticks}t)`);
-    }, interval * 1000);
+    if (this.driverRenderer) {
+      return this.driverRenderer[method].apply(this.driverRenderer, args);
+    }
   }
-
 }

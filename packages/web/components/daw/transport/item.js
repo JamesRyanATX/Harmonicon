@@ -11,21 +11,22 @@ export function Items({ children }) {
 }
 
 export function Item({
-  selected,
-  disabled,
-  indicator,
-  wide,
-  xWide,
+  selected = false,
+  disabled = false,
+  indicator = false,
+  wide = false,
+  xWide = false,
+  onClick = () => {},
   text = false,
-  flat,
-  onClick,
+  flat = false,
+  mini = false,
   children
 }) {
   const [ active, setActive ] = useState(false);
 
   return (
     <div
-      onClick={onClick}
+      onClick={(e) => (!disabled && onClick(e))}
       onMouseDown={() => (!flat && setActive(true))}
       onMouseUp={() => (!flat && setActive(false))}
       className={[ 
@@ -34,6 +35,7 @@ export function Item({
         disabled ? styles.itemIsDisabled : null,
         wide ? styles.itemIsWide : null,
         xWide ? styles.itemIsXWide : null,
+        mini ? styles.itemIsMini : null,
         flat ? styles.itemIsFlat : null,
         text ? styles.itemIsText : null,
         active ? styles.itemIsActive : null 
@@ -56,6 +58,22 @@ export function ItemPrimary({ children }) {
 export function ItemLabel({ children }) {
   return (
     <div className={styles.itemLabel}>
+      {children}
+    </div>
+  )
+}
+
+export function ItemGrid({ children }) {
+  return (
+    <div className={styles.itemGrid}>
+      {children}
+    </div>
+  )
+}
+
+export function ItemGridRow({ children }) {
+  return (
+    <div className={styles.itemGridRow}>
       {children}
     </div>
   )

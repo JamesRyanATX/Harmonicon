@@ -1,5 +1,6 @@
 import { Logger } from "./logger";
 import { Collection } from "./collection";
+import { eventify } from './eventify';
 
 export class Model {
 
@@ -29,8 +30,17 @@ export class Model {
     Object.defineProperty(this.prototype, property, {
       get: function () {
         return this.properties[property];
+      },
+      set: function (value) {
+        return this.setProperties({ [property]: value });
       }
     });
+  }
+
+  static events = {
+    allow: [
+      'changed'
+    ]
   }
 
   constructor (properties) {
@@ -46,8 +56,11 @@ export class Model {
       const currentValue = this[property];
       const defaultValue = definition.defaultValue;
 
+      // Register associated events
+      this.allow(`changed:${property}`);
+
       // Apply default value
-      if (typeof currentValue === 'undefined' && defaultValue) {
+      if (currentValue === undefined && defaultValue !== undefined) {
         this.properties[property] = (typeof defaultValue === 'function')
           ? defaultValue.call(this, this.properties)
           : defaultValue;
@@ -64,10 +77,34 @@ export class Model {
         });
       }
     });
+
+    // Allow generic events
+    this.constructor.events.allow.map(this.allow.bind(this));
+
   }
 
-  setProperties(properties = {}) {
-    Object.assign(this.properties, properties);
+  setProperties(properties = {}, {
+    emit = true
+  } = {}) {
+    const changes = [];
+
+    Object.entries(properties).forEach(([ property, newValue ]) => {
+      const oldValue = this[property];
+
+      if (oldValue !== newValue) {
+        this.properties[property] = newValue;
+        
+        if (emit) {
+          changes.push({ property, oldValue, newValue });
+          this.emit(`changed:${property}`, { property, oldValue, newValue });
+        }
+      }
+    });
+
+    if (changes.length > 0) {
+      this.emit('changed', { changes });
+    }
+
     return this;
   }
 
@@ -80,3 +117,5 @@ export class Model {
   }
 
 }
+
+eventify(Model.prototype);

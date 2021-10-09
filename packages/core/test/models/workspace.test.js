@@ -49,7 +49,8 @@ describe('WorkspaceModel', function () {
             routes: {
               enabled: true
             },
-          }
+          },
+          selectedFile: null,
         },
         [`composer:filemodel:${file1.id}`]: {
           id: file1.id,
@@ -90,7 +91,8 @@ describe('WorkspaceModel', function () {
             routes: {
               enabled: true
             },
-          }
+          },
+          selectedFile: null,
         },
         [`composer:filemodel:${file1.id}`]: {
           id: file1.id,
@@ -136,7 +138,8 @@ describe('WorkspaceModel', function () {
             routes: {
               enabled: true
             },
-          }
+          },
+          selectedFile: null,
         },
         [`composer:filemodel:${file1.id}`]: {
           id: file1.id,
@@ -182,7 +185,8 @@ describe('WorkspaceModel', function () {
             routes: {
               enabled: true
             },
-          }
+          },
+          selectedFile: null,
         },
         [`composer:filemodel:${file2.id}`]: {
           id: file2.id,
@@ -226,7 +230,8 @@ describe('WorkspaceModel', function () {
           routes: {
             enabled: true
           },
-        }
+        },
+        selectedFile: null,
       });
     });
   });

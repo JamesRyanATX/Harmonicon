@@ -2,6 +2,7 @@ import { Logger, Task } from '@composer/util';
 import { ComposerError, render } from '@composer/compose';
 import { Harmonicon } from '@composer/core';
 import { saveAs } from 'file-saver';
+import { TransportModel, InteractiveRendererModel } from '@composer/core';
 
 export class Controller {
 
@@ -17,10 +18,6 @@ export class Controller {
     return this.audio.state;
   }
 
-  get position () {
-    return this.audio.position;
-  }
-
   get changed () {
     return this.file.source !== this.renderedSource;
   }
@@ -31,6 +28,8 @@ export class Controller {
     this.listeners = {};
 
     this.logger = new Logger('Controller');
+    this.transport = new TransportModel();
+    this.renderer = new InteractiveRendererModel();
 
     this.allow('error');
     this.allow('changed');
@@ -74,7 +73,6 @@ export class Controller {
     Harmonicon.on('composer:parsing', (c) => (this.emit('composer:parsing', c)));
     Harmonicon.on('composer:parsed', (c) => (this.emit('composer:parsed', c)));
     Harmonicon.on('composer:rendering', (c) => (this.emit('composer:rendering', c)));
-    Harmonicon.on('composer:rendered', (c) => (this.emit('composer:rendered', c)));
 
     // Observe transport events directly from audio driver
     [
@@ -101,16 +99,6 @@ export class Controller {
     })
 
     document.title = 'Harmonicon';
-    
-    // // Should not need this!
-    // window.addEventListener('unhandledrejection', function (e) {
-    //   if (e.reason instanceof ComposerError) {
-    //     this.emit('error', { message: e.reason.message, error: e.reason });
-    //     e.cancelBubble = true;
-    //     e.stopPropagation();
-    //     e.stopImmediatePropagation();
-    //   }
-    // }.bind(this));
   }
 
 
@@ -259,50 +247,11 @@ export class Controller {
     }
   }
 
+  // TODO-- remove dependency between this and transport and actions
   async play() {
-    try {
-      await this.withInteractiveRendering(async () => {
-        return this.renderer.play();
-      });
-    }
-    catch (e) {
-      this.emit('error', {
-        message: 'Unable to play this file :-(',
-        error: e
-      });
-    }
-  }
-
-  async stop() {
-    try {
-      await this.renderer.stop();
-
-      this.emit('transport:position', {
-        measure: 0,
-        beat: 0,
-        subdivision: 0,
-      });
-    }
-    catch (e) {
-      console.error(e);
-
-      this.emit('error', {
-        message: 'Unable to stop audio, oh noes!',
-        error: e,
-      });
-    }
-  }
-
-  async pause() {
-    try {
-      await this.renderer.pause();
-    }
-    catch (e) {
-      this.emit('error', {
-        message: 'Unable to pause audio, oh noes!',
-        error: e
-      });
-    }
+    await this.withInteractiveRendering(async () => {
+      return this.transport.play({ position: this.position });
+    });
   }
 
   // Tasks
@@ -372,6 +321,38 @@ export class Controller {
   }
 
 
+  // Timeline
+  // --------
+
+  setPosition(position) {
+    this.position = position;
+
+    if (this.renderer) {
+      this.renderer.setPosition(position);
+    }
+
+    this.emit('transport:position', this.position);
+  }
+
+  setPlayFrom(playFrom) {
+    if (this.renderer) {
+      this.renderer.setProperties({ playFrom });
+    }
+
+    this.setPosition(playFrom);
+  }
+
+  setLoop(from, to) {
+    this.loop = { from, to };
+
+    if (this.renderer) {
+      this.renderer.setLoop(from, to);
+    }
+
+    this.emit('transport:loop', this.loop);
+  }
+
+
   // Rendering
   // ---------
 
@@ -418,12 +399,14 @@ export class Controller {
     })
 
     this.composer = composer;
-    this.renderer = renderer;
+    this.renderer = this.transport.renderer = renderer;
     this.renderedSource = this.file.source;
 
-    this.renderer.observePosition((position) => {
-      this.emit('transport:position', position);
-    });
+    this.emit('composer:rendered', renderer);
+
+    // this.renderer.observePosition((position) => {
+    //   this.emit('transport:position', position);
+    // });
   }
 
   async createRendering({ interactive, duration }) {

@@ -77,8 +77,34 @@ export class PositionModel extends BaseModel {
     }
   }
 
-  add (units) {
-    return this.clone();
+  get zero() {
+    return this.measure === 0 && this.beat === 0 && this.subdivision === 0;
+  }
+
+  add (amount, unit = 'measure') {
+    if (unit === 'measure') {
+      return new this.constructor({
+        measure: this.measure + amount,
+        beat: this.beat,
+        subdivision: this.subdivision
+      })
+    }
+    else {
+      throw new TypeError('only measure addition is supported');
+    }
+  }
+
+  subtract (amount, unit = 'measure') {
+    if (unit === 'measure') {
+      return new this.constructor({
+        measure: (this.measure - amount) >= 0 ? this.measure - amount : 0,
+        beat: this.beat,
+        subdivision: this.subdivision
+      })
+    }
+    else {
+      throw new TypeError('only measure subtraction is supported');
+    }
   }
 
   toMBS () {
