@@ -57,7 +57,7 @@ export function Display () {
           {String(position.beat + 1).padStart(1, '0')}
         </ItemPrimary>
         <ItemLabel>
-          position
+          measure
         </ItemLabel>
       </Item>
     </Items>

@@ -1,6 +1,7 @@
 import { Actions } from './transport/actions';
 import { Timeline } from './transport/timeline';
 import { Display } from './transport/display';
+import { Meter } from './transport/meter';
 
 import styles from '../../styles/daw.transport.module.css';
 
@@ -25,6 +26,9 @@ export function Transport ({ controller }) {
     <div className={styles.transport}>
       <TransportGroup>
         <Actions controller={controller} />
+      </TransportGroup>
+      <TransportGroup>
+        <Meter />
       </TransportGroup>
       <TransportGroup flex transparent>
         <Timeline controller={controller} />

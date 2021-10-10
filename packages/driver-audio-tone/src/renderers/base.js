@@ -265,11 +265,11 @@ export class BaseRenderer extends AudioDriver.Renderer {
   }
 
   setLoopFrom(loopFrom) {
-    this.transport.set({ loopStart: loopFrom.toMBS() });
+    this.transport.set({ loopStart: loopFrom ? loopFrom.toMBS() : null });
   }
 
   setLoopTo(loopTo) {
-    this.transport.set({ loopEnd: loopTo.toMBS() });
+    this.transport.set({ loopEnd: loopTo ? loopTo.toMBS() : null });
   }
 
   observePosition(fn) {

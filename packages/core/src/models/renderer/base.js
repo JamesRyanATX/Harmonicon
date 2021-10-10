@@ -117,11 +117,19 @@ export class RendererBaseModel extends BaseModel {
   async renderTracks () {
 
     // Create a root main output track
-    this.createNode({
+    const mainNode = this.createNode({
       type: 'track',
       name: 'main',
       root: true,
     });
+
+    // Create a root main output track
+    const mainMeterNode = this.createNode({
+      type: 'meter',
+      name: 'main',
+    });
+
+    mainNode.connect(mainMeterNode);
 
     return this.session.tracks.mapSeries(this.renderTrack.bind(this));
   }

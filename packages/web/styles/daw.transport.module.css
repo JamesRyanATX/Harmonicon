@@ -46,6 +46,51 @@
   }
 
 
+/* meter */
+
+.meter {
+  margin: 3px;
+}
+
+.meterChannels {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+.meterChannel {
+  background-color: var(--theme-neutral-color-1);
+  margin-right: 3px;
+  width: 10px;
+  position: relative;
+  border-radius: 2px;
+  overflow: hidden;
+  cursor: pointer;
+  height: 100%;
+}
+
+  .meterChannel:last-child {
+    margin-right: 0;
+  }
+
+  .meterChannelPeak,
+  .meterChannelLevel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .meterChannelPeak {
+    background: linear-gradient(0deg, rgba(0,0,0,0) 0%, var(--theme-palette-red) 200%);
+
+  }
+
+  .meterChannelLevel {
+    background-color: var(--theme-primary-color);
+  }
+
+
 /* timeline */
 
 .timeline {
