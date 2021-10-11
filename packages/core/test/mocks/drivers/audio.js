@@ -13,8 +13,8 @@ class Renderer extends AudioDriver.Renderer {
     return AudioNode.parse(properties);
   }
 
-  setTransportPosition() {
-  }
+  setPosition() {}
+  unscheduleAll() {}
 }
 
 class InteractiveRenderer extends Renderer {

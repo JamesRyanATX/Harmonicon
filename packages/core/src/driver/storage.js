@@ -1,29 +1,30 @@
 import { BaseDriver } from './base';
+import { DriverError } from '../errors';
 
 export class Driver extends BaseDriver {
 
-  async test () {
-    this.logger.error('test() not implemented');
+  test () {
+    throw new DriverError('#test() not implemented');
   }
 
-  async list () {
-    this.logger.error('list() not implemented');
+  list () {
+    throw new DriverError('#list() not implemented');
   }
 
-  async get (key, fn) {
-    this.logger.error('get() not implemented');
+  get (key, fn) {
+    throw new DriverError('#get() not implemented');
   }
 
-  async set (key, value) {
-    this.logger.error('set() not implemented');
+  set (key, value) {
+    throw new DriverError('#set() not implemented');
   }
 
-  async unset (key) {
-    this.logger.error('unset() not implemented');
+  unset (key) {
+    throw new DriverError('#unset() not implemented');
   }
 
-  async exists (key) {
-    this.logger.error('exists() not implemented');
+  exists (key) {
+    throw new DriverError('#exists() not implemented');
   }
 
 }

@@ -32,7 +32,7 @@ export class Harmonicon {
   static async initialize({
     workspace = true,
     libraries = [],
-    drivers = { audio: null, storage: null },
+    drivers = { audio: null, storage: null, midi: null },
   }) {
 
     // set drivers

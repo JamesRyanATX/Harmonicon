@@ -100,6 +100,7 @@ export {
 export { BaseDriver } from './src/driver/base';
 export * as AudioDriver from './src/driver/audio';
 export * as StorageDriver from './src/driver/storage';
+export * as MidiDriver from './src/driver/midi';
 export * as MockStorageDriver from './test/mocks/drivers/storage';
 export * as MockAudioDriver from './test/mocks/drivers/audio';
 

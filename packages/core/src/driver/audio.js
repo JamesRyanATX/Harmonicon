@@ -1,5 +1,6 @@
 import { AudioNodeModel } from '../models/audio_node';
 import { BaseDriver } from './base';
+import { DriverError } from '../errors';
 
 export class AudioNode extends AudioNodeModel {
 }
@@ -32,11 +33,11 @@ export class Renderer extends Device {
   }
 
   get state () {
-    this.logger.error(`${this.name}.state not implemented`);
+    throw new DriverError('#state not implemented');
   }
 
   get position () {
-    this.logger.error(`${this.name}.position not implemented`);
+    throw new DriverError('#activate() not implemented');
   }
 
   constructor({ driver, session, renderer }) {
@@ -46,34 +47,34 @@ export class Renderer extends Device {
   }
 
   createNode() {
-    this.logger.error('createNode() not implemented');
+    throw new DriverError('#createNode() not implemented');
   }
 
   observePosition() {
-    this.logger.error('observePosition() not implemented');
+    throw new DriverError('#observePosition() not implemented');
   }
 
   setPosition() {
-    this.logger.error('setPosition() not implemented');
+    throw new DriverError('#setPosition() not implemented');
   }
 
   unscheduleAll () {
-    this.logger.error('unscheduleAll() not implemented');
+    throw new DriverError('#unscheduleAll() not implemented');
   }
 
   
   /* player controls */
 
   play() {
-    this.logger.error('play() not implemented');
+    throw new DriverError('#play() not implemented');
   }
 
   pause() {
-    this.logger.error('pause() not implemented');
+    throw new DriverError('#pause() not implemented');
   }
 
   stop() {
-    this.logger.error('stop() not implemented');
+    throw new DriverError('#stop() not implemented');
   }
 
 }
@@ -94,15 +95,15 @@ export class Driver extends BaseDriver {
   }
 
   async on() {
-    this.logger.error('on() not implemented');
+    throw new DriverError('#on() not implemented');
   }
 
   async startAudioBuffer() {
-    this.logger.error('startAudioBuffer() not implemented');
+    throw new DriverError('#startAudioBuffer() not implemented');
   }
 
   async playNote() {
-    this.logger.error('playNote() not implemented');
+    throw new DriverError('#playNote() not implemented');
   }
 
 }
