@@ -46,7 +46,11 @@ export class Model {
   constructor (properties) {
 
     // Logger specific to this record
-    this.logger = new Logger(this.constructor.name);
+    this.logger = new Logger(
+      this.constructor.loggerName ||
+      this.loggerName ||
+      this.constructor.name
+    );
 
     // Make a copy of original properties object
     this.properties = Object.assign({}, properties);
