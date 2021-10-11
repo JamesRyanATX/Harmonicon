@@ -4,9 +4,17 @@ import { useTransport } from '../providers/transport';
 
 function Channels({
   children = null,
+  label = 'Track',
 }) {
   return (
-    <div className={styles.meterChannels}>{children}</div>
+    <div className={styles.meterChannels}>
+      <h3>
+        {label}
+      </h3>
+      <div>
+        {children}
+      </div>
+    </div>
   )
 }
 

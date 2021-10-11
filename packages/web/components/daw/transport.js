@@ -27,7 +27,7 @@ export function Transport ({ controller }) {
       <TransportGroup>
         <Actions controller={controller} />
       </TransportGroup>
-      <TransportGroup>
+      <TransportGroup transparent>
         <Meter />
       </TransportGroup>
       <TransportGroup flex transparent>

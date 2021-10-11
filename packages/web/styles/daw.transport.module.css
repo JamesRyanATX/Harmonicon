@@ -49,24 +49,38 @@
 /* meter */
 
 .meter {
-  margin: 3px;
 }
 
 .meterChannels {
-  display: flex;
-  flex-direction: row;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
+  .meterChannels > h3 {
+    padding: 0 0 4px 0;
+    margin: 0;
+    text-transform: uppercase;
+    font-size: 8px;
+    text-align: center;
+    color: var(--theme-neutral-color-8);
+  }
+
+  .meterChannels > div {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+  }
+
 .meterChannel {
-  background-color: var(--theme-neutral-color-1);
+  background-color: var(--theme-neutral-color-3);
+  border: 1px solid var(--theme-neutral-color-5); 
   margin-right: 3px;
   width: 10px;
   position: relative;
   border-radius: 2px;
   overflow: hidden;
   cursor: pointer;
-  height: 100%;
 }
 
   .meterChannel:last-child {
@@ -82,12 +96,12 @@
   }
 
   .meterChannelPeak {
-    background: linear-gradient(0deg, rgba(0,0,0,0) 0%, var(--theme-palette-red) 200%);
-
+    border-top: 1px solid var(--theme-palette-red);
+    background: linear-gradient(0deg, rgba(0,0,0,0) 0%, var(--theme-palette-red) 500%);
   }
 
   .meterChannelLevel {
-    background-color: var(--theme-primary-color);
+    background-color: var(--theme-palette-yellow);
   }
 
 

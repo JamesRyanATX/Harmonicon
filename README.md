@@ -23,6 +23,6 @@ The UI is served on port 3000.
 * ~~Output panel~~
 * ~~Render mp3, wav~~
 * ~~Loop and timeline~~
-* Meter
-* Waveform rendering
+* ~~Meter~~
 * MIDI device input
+* Waveform rendering
