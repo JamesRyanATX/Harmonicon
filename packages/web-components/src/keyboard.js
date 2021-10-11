@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import styles from '../styles/keyboard.module.css';
 
@@ -20,7 +20,7 @@ function Key({
   );
 
   function press() {
-    onPlayNote(`${note}${octave}`);
+    onPlayNote({ note: `${note}${octave}` });
     setPressed(true)
   }
 
@@ -137,7 +137,9 @@ function Octave(props) {
 export function Keyboard({
   scale = null,
   emitter = null,
-  onPlayNote = (note) => { console.log(note); }
+  device = null,
+  instrument = null,
+  onPlayNote = ({ note }) => { console.log(note); }
 }) {
   const [ pressed, setPressed ] = useState(false);
 
@@ -148,6 +150,22 @@ export function Keyboard({
   function release() {
     setPressed(false);
   }
+
+  function receiveMidiMessage({ note, type, velocity } = message = {}) {
+    if (type === 'noteon') {
+      onPlayNote({ note })
+    }
+  }
+
+  useEffect(() => {
+    if (device) {
+      device.on('message', receiveMidiMessage);
+
+      return () => {
+        device.off('message', receiveMidiMessage);
+      }
+    }
+  }, [ device, instrument ]);
 
   return (
     <div

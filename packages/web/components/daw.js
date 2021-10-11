@@ -5,6 +5,7 @@ import { Harmonicon } from '@composer/core';
 
 import * as ToneAudioDriver from '@composer/driver-audio-tone';
 import * as LocalStorageDriver from '@composer/driver-storage-localstorage';
+import * as WebMidiDriver from '@composer/driver-midi-web';
 import * as CoreLibrary from '@composer/library-core';
 
 import { Controller } from '../lib/daw/controller';
@@ -15,6 +16,7 @@ import { Interface } from './daw/interface';
 export function DAW ({
   audioDriverOptions = {},
   storageDriverOptions = {},
+  midiDriverOptions = {},
   logo = null,
 }) {
 
@@ -29,7 +31,8 @@ export function DAW ({
         libraries: [ CoreLibrary ],
         drivers: {
           storage: new LocalStorageDriver.Driver(storageDriverOptions),
-          audio: new ToneAudioDriver.Driver(audioDriverOptions)
+          audio: new ToneAudioDriver.Driver(audioDriverOptions),
+          midi: new WebMidiDriver.Driver(midiDriverOptions)
         }
       });
 

@@ -1,4 +1,4 @@
-import { Logger, Task } from '@composer/util';
+import { Logger, Task, eventify } from '@composer/util';
 import { ComposerError, render } from '@composer/compose';
 import { Harmonicon } from '@composer/core';
 import { saveAs } from 'file-saver';
@@ -26,8 +26,9 @@ export class Controller {
     this.workspace = workspace;
     this.renderedSource = null;
     this.listeners = {};
+    this.midi = { assignments: {} };
 
-    this.logger = new Logger('Controller');
+    this.logger = new Logger('DAW');
     this.transport = new TransportModel();
     this.renderer = new InteractiveRendererModel();
 
@@ -64,6 +65,10 @@ export class Controller {
     this.allow('workspace:panels:keyboard:hide');
     this.allow('workspace:panels:console:show');
     this.allow('workspace:panels:console:hide');
+
+    // MIDI device assignments
+    this.allow('midi:keyboard:assign');
+    this.allow('midi:keyboard:release');
 
     // Observe global Harmonicon events
     Harmonicon.on('composer:error', () => {
@@ -149,6 +154,36 @@ export class Controller {
 
   async toggleConsolePanel() {
     return this.togglePanel('console');
+  }
+
+
+  // MIDI Actions
+  // ------------
+
+  assignMidiDevice(assignment, device) {
+    const currentDevice = this.midi.assignments[assignment];
+
+    if (currentDevice === device || !device) {
+      return;
+    }
+    else if (currentDevice) {
+      this.releaseAssignedMidiDevice(assignment);
+    }
+
+    device.activate();
+
+    this.midi.assignments[assignment] = device;
+    this.emit(`midi:${assignment}:assign`, device);
+
+    this.logger.info(`assigned MIDI device ${device.name} to ${assignment}`)
+  }
+
+  releaseAssignedMidiDevice(assignment) {
+    const device = this.midi.assignments[assignment];
+    device.deactivate();
+    this.logger.info(`released MIDI device ${device.name} from ${assignment}`)
+    this.emit(`midi:${assignment}:release`, device);
+    this.midi.assignments[assignment] = null;
   }
 
 
@@ -289,35 +324,6 @@ export class Controller {
     this.file.setProperties({ source });
     this.file.save();
     this.emit('changed', this.changed);
-  }
-
-
-
-  // Events
-  // ------
-
-  allow(eventName) {
-    this.listeners[eventName] = [];
-  }
-
-  on(eventName, fn) {
-    if (typeof this.listeners[eventName] === 'undefined') {
-      throw new Error(`Unregistered event name "${eventName}"`);
-    }
-
-    this.listeners[eventName].push(fn);
-  }
-
-  emit(eventName, payload) {
-    if (typeof this.listeners[eventName] === 'undefined') {
-      throw new Error(`Unregistered event name "${eventName}"`);
-    }
-
-    console.log(`emit ${eventName} to ${this.listeners[eventName].length} listener(s)`);
-
-    (this.listeners[eventName] || []).forEach((fn) => {
-      fn(payload);
-    });
   }
 
 
@@ -466,3 +472,5 @@ export class Controller {
   }
 
 }
+
+eventify(Controller.prototype);

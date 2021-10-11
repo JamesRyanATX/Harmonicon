@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Panel,
   PanelFilterRow,
@@ -12,8 +12,6 @@ import { Harmonicon, ScaleModel } from '@composer/core';
 
 
 function InstrumentOptions({ session }) {
-  const controller = useController();
-
   return (
     <>
       {Object.keys(Harmonicon.libraries).sort().map((libraryName) => {
@@ -41,27 +39,57 @@ function InstrumentOptions({ session }) {
 }
 
 export function KeyboardPanel() {
-  const [ loaded, setLoaded ] = useState(false);
+  const [ device, setDevice ] = useState(null);
   const [ tonic, setTonic ] = useState('C');
   const [ type, setType ] = useState('chromatic');
   const [ session, setSession ] = useState(null);
   const [ instrument, setInstrument ] = useState('core.instrument.piano');
   const controller = useController();
 
+  function dumpSession (label) {
+    console.log(`=== ${label} ===`);
+    console.log(`device = ${device}`);
+    console.log(`tonic = ${tonic}`);
+    console.log(`type = ${type}`);
+    console.log(`session = ${session}`);
+    console.log(`instrument = ${instrument}`);
+  }
+
+  function assignDevice(newDevice) {
+    setDevice(newDevice);
+  }
+
+  function releaseDevice() {
+    setDevice(null);
+  }
+
+  function selectInstrument(instrument) {
+    setInstrument(instrument);
+  }
+
   function parsed(composer) {
     setSession(composer.model);
   }
 
-  if (!loaded) {
+  useEffect(() => {
+    controller.on('midi:keyboard:assign', assignDevice);
+    controller.on('midi:keyboard:release', releaseDevice);
     controller.on('composer:parsed', parsed);
-  }
+
+    return () => {
+      controller.off('midi:keyboard:assign', assignDevice);
+      controller.off('midi:keyboard:release', releaseDevice);
+      controller.off('composer:parsed', parsed);  
+    }
+  });
 
   const scale = ScaleModel.parse({ tonic, type });
+  const label = `Keyboard ${device ? `(${device.name})` : ''}`;
 
   return (
     <Panel
       id="keyboard"
-      label="Keyboard"
+      label={label}
       flex={2}
       onClose={controller.toggleKeyboardPanel.bind(controller)}
       filter={() => (
@@ -97,7 +125,7 @@ export function KeyboardPanel() {
             </Select>
           </PanelFilterRow>
           <PanelFilterRow>
-            <Select label="Instrument" value={instrument} onChange={setInstrument}>
+            <Select label="Instrument" value={instrument} onChange={selectInstrument}>
               <InstrumentOptions session={session} />
             </Select>
           </PanelFilterRow>
@@ -106,12 +134,17 @@ export function KeyboardPanel() {
     >
       <Keyboard 
         emitter={Harmonicon}
-        scale={scale} onPlayNote={(note) => {
-        controller.playNote({
-          note: whole.note(note),
-          instrument
-        });
-      }} />
+        scale={scale}
+        device={device}
+        instrument={instrument}
+        onPlayNote={({ note }) => {
+          console.log(`instrument = ${instrument}`);
+          controller.playNote({
+            note: whole.note(note),
+            instrument
+          });
+        }}
+      />
     </Panel>
   )
 }

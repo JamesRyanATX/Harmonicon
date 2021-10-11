@@ -8,6 +8,7 @@ import { EditDropdown } from './menu/edit';
 import { ViewDropdown } from './menu/view';
 import { AudioDropdown } from './menu/audio';
 import { HelpDropdown } from './menu/help';
+import { MidiDropdown } from './menu/midi';
 
 import styles from '../../styles/daw.module.css';
 
@@ -31,11 +32,16 @@ export function Menu({
       dropdown: ViewDropdown,
     },
     {
+      label: 'MIDI',
+      dropdown: MidiDropdown,
+    },
+    {
       label: 'Help',
       dropdown: HelpDropdown,
     },
   ]
 }) {
+  // console.log('menu')
   return (
     <MenuBar items={items}>
       <MenuItem>
