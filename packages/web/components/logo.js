@@ -55,7 +55,7 @@ export function Logo ({
     return () => {
       clearTimeout(timer);
     }
-  }, []);
+  }, [ speed, animate ]);
 
   return (
     <div className={[
