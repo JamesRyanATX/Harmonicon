@@ -2,7 +2,7 @@ pages:
   image: node:14-alpine
   stage: deploy
   script:
-    - yarn bootstrap
+    - yarn install
     - yarn build
     - yarn export
     - mv packages/web-components/out ../../public
