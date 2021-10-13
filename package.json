@@ -1,39 +1,32 @@
 {
-  "name": "root",
+  "name": "harmonicon",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/compose",
+    "packages/core",
+    "packages/driver-audio-tone",
+    "packages/driver-midi-web",
+    "packages/driver-storage-localstorage",
+    "packages/jsdoc-template",
+    "packages/library-core",
+    "packages/util",
+    "packages/web",
+    "packages/web-components"
   ],
   "scripts": {
-    "clean": "npx lerna clean",
-    "bootstrap": "npx lerna bootstrap",
-    "build": "npx lerna run build:pre && npx lerna run build && npx lerna run build:post",
-    "export": "npx lerna run export",
+    "build": "yarn build:components && yarn build:web",
+    "build:components": "yarn workspace @composer/web-components run build",
+    "build:web": "yarn workspace @composer/web run build",
+    "export": "yarn workspace @composer/web run export",
     "dev": "npx lerna run dev --parallel",
-    "test": "npx lerna run test",
-    "play": "cd packages/cli && bin/composer play",
-    "play:example": "npm run play -- --directory=../examples/src/",
-    "play:example:000": "npm run play:example -- --file=000-single-note.js",
-    "play:example:001": "npm run play:example -- --file=001-c-major-scale.js",
-    "play:example:002": "npm run play:example -- --file=002-relative-pitch.js",
-    "play:example:003": "npm run play:example -- --file=003-multitrack.js",
-    "play:example:004": "npm run play:example -- --file=004-durations.js",
-    "play:example:005": "npm run play:example -- --file=005-clean-bass.js",
-    "play:example:006": "npm run play:example -- --file=006-multitrack.js",
-    "play:example:007": "npm run play:example -- --file=007-drums.js",
-    "play:example:008": "npm run play:example -- --file=008-effects.js",
-    "play:example:009": "npm run play:example -- --file=009-library.js",
-    "play:example:010": "npm run play:example -- --file=010-beat.js",
-    "play:example:011": "npm run play:example -- --file=011-chords.js",
-    "play:example:012": "npm run play:example -- --file=012-arpeggiator.js",
-    "play:example:013": "npm run play:example -- --file=013-end-detection.js",
-    "play:example:014": "npm run play:example -- --file=014-errors.js",
-    "play:example:015": "npm run play:example -- --file=015-autosend.js"
+    "test": "npx lerna run test --parallel"
   },
   "devDependencies": {
     "lerna": "^4.0.0"
   },
   "dependencies": {
-    "react-icons": "^4.3.1"
+    "react-icons": "^4.3.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
   }
 }

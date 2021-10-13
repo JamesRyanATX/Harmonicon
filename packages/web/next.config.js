@@ -11,7 +11,7 @@ module.exports = {
     // https://github.com/facebook/react/issues/15315
     config.resolve = config.resolve || {};
     config.resolve.alias = config.resolve.alias || {};
-    config.resolve.alias.react = path.resolve('./node_modules/react')
+    config.resolve.alias.react = path.resolve('../../node_modules/react')
 
     return config;
   },
