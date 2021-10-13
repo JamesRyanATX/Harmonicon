@@ -4,6 +4,7 @@
   "scripts": {
     "clean": "npx lerna clean",
     "bootstrap": "npx lerna bootstrap",
+    "build": "npx lerna run build",
     "dev": "npx lerna run dev --parallel",
     "test": "npx lerna run test",
     "play": "cd packages/cli && bin/composer play",

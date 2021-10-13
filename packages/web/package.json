@@ -6,7 +6,7 @@
     "dev": "npx livereload ./public/doc/ & next dev",
     "build": "next build",
     "start": "next start",
-    "export": "next build && next export",
+    "export": "next export",
     "lint": "next lint",
     "test": "node --experimental-vm-modules node_modules/.bin/jest",
     "test:watch": "node --experimental-vm-modules node_modules/.bin/jest --watch"

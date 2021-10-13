@@ -4,10 +4,13 @@ pages:
   script:
     - npm ci --ignore-scripts --production --no-optional
     - yarn bootstrap
-    - cd packages/web
+    - yarn build
+    - cd packages/web-components
     - yarn export
+    # Pull in instrument library
     - mkdir -p out/libraries/core/instruments
     - mv ../library-core/samples/* out/libraries/core/instruments
+    # Pull in documentation
     - mv out ../../public
   artifacts:
     paths:
