@@ -3,7 +3,7 @@ pages:
   stage: deploy
   script:
     - npm ci --ignore-scripts --production --no-optional
-    - npx lerna bootstrap --ignore-scripts -- --production --no-optional
+    - yarn bootstrap
     - cd packages/web
     - yarn export
     - mkdir -p out/libraries/core/instruments
