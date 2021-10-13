@@ -13,6 +13,7 @@
   "scripts": {
     "clean": "rm -rf dist",
     "build": "yarn run clean && microbundle build --css-modules true --jsx React.createElement index.js",
+    "build:pre": "yarn build",
     "dev": "microbundle watch --css-modules true --jsx React.createElement index.js"
   },
   "keywords": [],

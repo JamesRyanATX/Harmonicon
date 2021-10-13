@@ -6,7 +6,10 @@
     "dev": "npx livereload ./public/doc/ & next dev",
     "build": "next build",
     "start": "next start",
-    "export": "next export",
+    "export": "yarn export:web && yarn export:include-library-core && yarn export:include-docs",
+    "export:web": "next export",
+    "export:include-library-core": "mkdir -p out/libraries/core/instruments && cp -r ../library-core/samples/* out/libraries/core/instruments",
+    "export:include-docs": "echo ok",
     "lint": "next lint",
     "test": "node --experimental-vm-modules node_modules/.bin/jest",
     "test:watch": "node --experimental-vm-modules node_modules/.bin/jest --watch"
