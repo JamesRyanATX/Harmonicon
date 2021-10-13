@@ -1,6 +1,9 @@
 {
   "name": "root",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "clean": "npx lerna clean",
     "bootstrap": "npx lerna bootstrap",
@@ -29,5 +32,8 @@
   },
   "devDependencies": {
     "lerna": "^4.0.0"
+  },
+  "dependencies": {
+    "react-icons": "^4.3.1"
   }
 }
