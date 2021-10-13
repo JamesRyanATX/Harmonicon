@@ -138,6 +138,7 @@
   background: rgb(2,0,36);
   background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(var(--brand-color-2),0.2) 100%);
   border: 1px solid rgba(var(--brand-color-2), 0.3);
+  border-width: 1px;
   border-bottom: var(--item-elevation) solid rgba(var(--brand-color-2), 1);
   border-radius: var(--item-border-radius);
   color: rgba(var(--brand-color-2), 1);
