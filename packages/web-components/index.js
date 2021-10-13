@@ -50,6 +50,15 @@ import {
   LoadingBar,
 } from './src/loading';
 
+import {
+  Timeline,
+  TimelineCursorLayer,
+  TimelineCursorPointerLayer,
+  TimelineCursorSelectionLayer,
+  TimelineMeasuresLayer,
+  TimelineWaveformLayer,
+} from './src/timeline';
+
 module.exports = {
   ConfirmModal,
   Console,
@@ -70,6 +79,12 @@ module.exports = {
   Panels,
   Patches,
   Select,
+  Timeline,
+  TimelineCursorLayer,
+  TimelineCursorPointerLayer,
+  TimelineCursorSelectionLayer,
+  TimelineMeasuresLayer,
+  TimelineWaveformLayer,
   Tree,
   TreeGroup,
   TreeGroupItems,

@@ -1,6 +1,8 @@
 import { Logger } from '@composer/util';
 
 export class BaseDriver {
+  get loggerGroup() { return 'Core' };
+  get loggerName() { return 'Driver' };
 
   get name () {
     return this.constructor.name;
@@ -8,11 +10,7 @@ export class BaseDriver {
 
   constructor(options = {}) {
     this.options = options;
-    this.logger = new Logger(
-      this.loggerName ||
-      this.constructor.loggerName ||
-      this.constructor.name
-    );
+    this.logger = new Logger(`${this.loggerGroup}.${this.loggerName}`);
   }
 
 }

@@ -40,13 +40,14 @@ export class Message extends Model {
 Message.init();
 
 export class Device extends Model {
+  get loggerGroup() { return 'MidiDriver'; }
+  get loggerName() { return 'Device'; }
+
   static properties = {
     device: {},
     name: {},
     id: {}
   }
-
-  get loggerName() { return 'MidiDevice'; }
 
   constructor(properties) {
     super(properties);
@@ -67,10 +68,8 @@ Device.init();
 
 
 export class Driver extends BaseDriver {
-
-  get loggerName() {
-    return 'MidiDriver';
-  }
+  get loggerGroup() { return 'MidiDriver'; }
+  get loggerName() { return 'Driver'; }
 
   get authorized() {
     throw new DriverError('#authorized not implemented');

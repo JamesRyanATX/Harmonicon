@@ -24,5 +24,9 @@ The UI is served on port 3000.
 * ~~Render mp3, wav~~
 * ~~Loop and timeline~~
 * ~~Meter~~
-* MIDI device input
-* Waveform rendering
+* ~~MIDI device input~~
+* ~~Waveform rendering~~
+* CI: fix pipeline and deploy
+* Timeline: update waveform when rendering changes
+* Timeline: set position not working
+* Controller: move export rendering into tasks

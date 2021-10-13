@@ -16,7 +16,22 @@ export class FileModel extends storable(BaseModel) {
     source: {},
     type: {
       defaultValue: 'text/javascript'
-    }
+    },
+
+    // Cached raw waveform of session (not stored)
+    waveform: {
+      type: Array,
+      defaultValue: null,
+      json: false,
+    },
+
+    // Cached length of session (not stored)
+    duration: {
+      type: Number,
+      defaultValue: 0,
+      json: false,
+    },
+
   }
 
   get storage () {

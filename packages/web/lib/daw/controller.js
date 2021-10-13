@@ -38,6 +38,7 @@ export class Controller {
     this.allow('modal:open');
     this.allow('modal:close');
 
+    // TODO: remove these
     this.allow('transport:start');
     this.allow('transport:stop');
     this.allow('transport:pause');
@@ -292,6 +293,12 @@ export class Controller {
   // Tasks
   // -----
 
+  createExportToWaveformTask() {
+    return createExportTask(async ({ renderer, duration }) => {
+      return { duration, waveform: await renderer.toWaveform() };
+    });
+  }
+
   createExportToWavTask() {
     return createExportTask(async (options) => {
       saveAs(await renderer.toWav(options), `${this.file.name}.wav`);
@@ -363,14 +370,14 @@ export class Controller {
   // ---------
 
   async withExportableRendering(fn) {
-    return this.withInteractiveRendering(async () => {
+    return this.withInteractiveRendering(async ({ renderer }) => {
 
       // Temporary hack until this can be computed more reliably
       const duration = this.renderer.cache.events.last
-        ? this.renderer.session.elapsedTimeAtPosition(this.renderer.cache.events.last.at)
+        ? renderer.session.elapsedTimeAtPosition(renderer.cache.events.last.at) + 5
         : 0;
 
-      await this.withBackgroundRendering({ duration }, async ({ renderer, composer }) => {
+      return await this.withBackgroundRendering({ duration }, async ({ renderer, composer }) => {
         return fn({ renderer, composer, duration });
       });
     });
@@ -391,10 +398,11 @@ export class Controller {
 
   async withInteractiveRendering(fn) {
     if (this.changed) {
-      await this.createInteractiveRendering();
+      return fn({ renderer: await this.createInteractiveRendering() });
     }
-
-    return fn();
+    else {
+      return fn({ renderer: this.renderer });
+    }
   }
 
   async createInteractiveRendering () {
@@ -410,9 +418,7 @@ export class Controller {
 
     this.emit('composer:rendered', renderer);
 
-    // this.renderer.observePosition((position) => {
-    //   this.emit('transport:position', position);
-    // });
+    return renderer;
   }
 
   async createRendering({ interactive, duration }) {

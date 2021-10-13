@@ -3,6 +3,7 @@ import { Collection } from "./collection";
 import { eventify } from './eventify';
 
 export class Model {
+  get loggerGroup () { return 'Util'; }
 
   static parse (properties) {
     return new this(properties);
@@ -46,11 +47,11 @@ export class Model {
   constructor (properties) {
 
     // Logger specific to this record
-    this.logger = new Logger(
+    this.logger = new Logger(`${this.loggerGroup}.${
       this.constructor.loggerName ||
       this.loggerName ||
       this.constructor.name
-    );
+    }`);
 
     // Make a copy of original properties object
     this.properties = Object.assign({}, properties);

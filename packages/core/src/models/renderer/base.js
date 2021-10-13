@@ -1,4 +1,4 @@
-import { mapSeries } from '@composer/util';
+import { mapSeries, measure } from '@composer/util';
 import { BaseModel } from '../base.js';
 import { PositionModel } from '../position.js';
 import { SequencedEventModel } from '../sequenced_event.js';
@@ -47,12 +47,12 @@ export class RendererBaseModel extends BaseModel {
   }
 
   async renderSession () {
-    this.logger.debug(`render.session: [+] name = ${this.session.name}`);
-    this.logger.debug(`render.session:     number of events = ${this.session.events.length}`);
-    this.logger.debug(`render.session:     number of phrases = ${this.session.phrases.length}`);
-    this.logger.debug(`render.session:     number of instruments = ${this.session.instruments.length}`);
-    this.logger.debug(`render.session:     number of tracks = ${this.session.tracks.length}`);
-    this.logger.debug(`render.session:     number of patches = ${this.session.patches.length}`);
+    // this.logger.debug(`#renderSession() name = ${this.session.name}`);
+    // this.logger.debug(`#renderSession() number of events = ${this.session.events.length}`);
+    // this.logger.debug(`#renderSession() number of phrases = ${this.session.phrases.length}`);
+    // this.logger.debug(`#renderSession() number of instruments = ${this.session.instruments.length}`);
+    // this.logger.debug(`#renderSession() number of tracks = ${this.session.tracks.length}`);
+    // this.logger.debug(`#renderSession() number of patches = ${this.session.patches.length}`);
 
     await this.renderSessionEvents();
     await this.renderEffects();
@@ -149,7 +149,7 @@ export class RendererBaseModel extends BaseModel {
     // this.logger.debug(`render.session.track:     number of inputs = ${track.inputs.length}`);
 
     if (inputs.length === 0) {
-      this.logger.error(`render.session.track:     no input nodes; is a patch missing?`);
+      this.logger.error(`#renderTrack(): no input nodes for ${track.name}; is a patch missing?`);
       return;
     }
 
@@ -307,3 +307,5 @@ export class RendererBaseModel extends BaseModel {
     }
   }
 }
+
+measure(RendererBaseModel.prototype, 'render', '#render()');

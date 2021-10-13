@@ -2,6 +2,8 @@ import { BaseDriver } from './base';
 import { DriverError } from '../errors';
 
 export class Driver extends BaseDriver {
+  get loggerGroup() { return 'StorageDriver'; }
+  get loggerName() { return 'Driver'; }
 
   test () {
     throw new DriverError('#test() not implemented');

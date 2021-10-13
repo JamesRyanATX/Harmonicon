@@ -1,0 +1,137 @@
+.timeline {
+  border-top: 1px solid var(--theme-neutral-color-5);
+  cursor: col-resize;
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
+  position: relative;
+}
+
+  .timeline::-webkit-scrollbar {
+    height: 5px;
+  }
+
+  .timeline::-webkit-scrollbar-track {
+    background: var(--theme-neutral-color-3);
+    border-top: 1px solid var(--theme-neutral-color-5);
+  }
+  
+  .timeline::-webkit-scrollbar-thumb {
+    background: var(--theme-neutral-color-6); 
+  }
+
+
+.timelineLayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+
+/* layer: measures */
+
+.timelineMeasuresLayer {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  width: auto;
+}
+
+  .timelineMeasure {
+    position: relative;
+    border-left: 1px solid var(--theme-neutral-color-4);
+  }
+
+    .timelineMeasure span {
+      bottom: 1px;
+      color: var(--theme-neutral-color-7);
+      display: none;
+      font-size: 8px;
+      left: -15px;
+      position: absolute;
+      right: 0;
+      text-align: center;
+      text-align: center;
+      width: 30px;
+    }
+
+    .timelineMeasureIsVerbose span {
+      display: block;
+    }
+
+    .timelineMeasureIsPlayStart {
+      border-left: 1px solid var(--theme-secondary-color-light);
+    }
+
+    .timelineMeasureIsWithinPlayLoop {
+      background-color: rgba(var(--theme-secondary-color-dark-rgb), 0.25);
+      border-left-color: rgba(var(--theme-secondary-color-dark-rgb), 0.25);
+    }
+
+
+/* layer: cursor */
+
+.timelineCursorLayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+  .timelineCursorPosition {
+    position: absolute;
+    width: 1px;
+    top: 0;
+    left: 100px;
+    bottom: 0;
+  }
+
+    .timelineCursorPosition span {
+      position: absolute;
+      top: 10px;
+      left: 5px;
+      text-align: center;
+      border-radius: var(--theme-border-radius);
+      font-size: 8px;
+      /* background-color: var(--theme-neutral-color-7); */
+      padding: 1px 3px;
+    }
+
+  .timelineCursorMask {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: transparent;
+  }
+
+  .timelineCursorSelection {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: 3px 0 14px 0;
+    border-radius: var(--theme-border-radius);
+  }
+
+
+/* layer: waveform */
+
+.timelineWaveformLayer {
+}
+
+  .timelineWaveformLayer canvas {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+  }

@@ -10,8 +10,8 @@ export class BaseRenderer extends AudioDriver.Renderer {
 
     // End the composition (trigger transport stop)
     end: async ({ event }) => {
-      this.logger.info(`render.session.event.end: [+] at = ${event.at}`);
-      this.logger.debug(`render.session.event.end:     value = ${event.value}`);
+      // this.logger.info(`render.session.event.end: [+] at = ${event.at}`);
+      // this.logger.debug(`render.session.event.end:     value = ${event.value}`);
 
       return await this.transport.schedule(() => {
         this.transport.stop();
@@ -20,8 +20,8 @@ export class BaseRenderer extends AudioDriver.Renderer {
 
     // Set meter (time signature formatted as [ a, b ])
     meter: async ({ event }) => {
-      this.logger.info(`render.session.event.meter: [+] at = ${event.at}`);
-      this.logger.debug(`render.session.event.meter:     meter = ${event.value}`);
+      // this.logger.info(`render.session.event.meter: [+] at = ${event.at}`);
+      // this.logger.debug(`render.session.event.meter:     meter = ${event.value}`);
 
       return await this.transport.schedule(() => {
         this.transport.set({
@@ -32,8 +32,8 @@ export class BaseRenderer extends AudioDriver.Renderer {
 
     // Set tempo (in bpm)
     tempo: async ({ event }) => {
-      this.logger.info(`render.session.event.tempo: [+] at = ${event.at}`);
-      this.logger.debug(`render.session.event.tempo:     tempo = ${event.value}`);
+      // this.logger.info(`render.session.event.tempo: [+] at = ${event.at}`);
+      // this.logger.debug(`render.session.event.tempo:     tempo = ${event.value}`);
 
       return await this.transport.schedule(() => {
         this.transport.set({
@@ -44,8 +44,8 @@ export class BaseRenderer extends AudioDriver.Renderer {
 
     // Set swing constant (0 to 1)
     swing: async ({ event }) => {
-      this.logger.info(`render.session.event.swing: [+] at = ${event.at}`);
-      this.logger.debug(`render.session.event.swing:     swing = ${event.value}`);
+      // this.logger.info(`render.session.event.swing: [+] at = ${event.at}`);
+      // this.logger.debug(`render.session.event.swing:     swing = ${event.value}`);
     
       return await this.transport.schedule(() => {
         this.transport.set({
@@ -56,8 +56,8 @@ export class BaseRenderer extends AudioDriver.Renderer {
 
     // Set key (root note)
     key: async ({ event }) => {
-      this.logger.debug(`render.session.event.key: [+] at = ${event.at}`);
-      this.logger.debug(`render.session.event.key:     key = ${event.value}`);
+      // this.logger.debug(`render.session.event.key: [+] at = ${event.at}`);
+      // this.logger.debug(`render.session.event.key:     key = ${event.value}`);
 
       return await this.transport.schedule(() => {
         this.transport._key = event.value;
@@ -66,8 +66,8 @@ export class BaseRenderer extends AudioDriver.Renderer {
 
     // Set scale/mode (?)
     scale: async ({ event }) => {
-      this.logger.debug(`render.session.event.scale: [+] at = ${event.at}`);
-      this.logger.debug(`render.session.event.scale:     scale = ${event.value}`);
+      // this.logger.debug(`render.session.event.scale: [+] at = ${event.at}`);
+      // this.logger.debug(`render.session.event.scale:     scale = ${event.value}`);
 
       return await this.transport.schedule(() => {
         this.transport._scale = event.value;
@@ -248,14 +248,14 @@ export class BaseRenderer extends AudioDriver.Renderer {
       await Tone.start();
     }
 
-    if (this.state === 'paused') {
-      this.logger.debug('#play() resuming paused session')
-    }
-    else {
-      this.transport.set({
-        position: position.toMBS(),
-      });
-    }
+    // if (this.state === 'paused') {
+    //   this.logger.debug('#play() resuming paused session')
+    // }
+    // else {
+    //   this.transport.set({
+    //     position: position.toMBS(),
+    //   });
+    // }
 
     return this.transport.start();
   }
@@ -289,7 +289,7 @@ export class BaseRenderer extends AudioDriver.Renderer {
       position = position.toMBS();
     }
 
-    this.logger.debug(`setPosition position = ${position}`);
+    this.logger.debug(`#setPosition() position = ${position}`);
     return this.transport.position = position.toString();
   }
 

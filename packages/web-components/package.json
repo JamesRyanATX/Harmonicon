@@ -24,6 +24,7 @@
     "react-icons": "^4.2.0"
   },
   "devDependencies": {
+    "@composer/util": "1.0.0",
     "@babel/core": "^7.15.5",
     "babel-loader": "^8.2.2",
     "eslint": "7.32.0",

@@ -136,11 +136,11 @@ export function Panels({
         splitPercentage: 20,
         first: column(columns.left, { splitPercentage: 33 }),
         second: columns.right.length === 0
-          ? column(columns.center, { splitPercentage: 80 })
+          ? column(columns.center, { splitPercentage: 50 })
           : {
             direction: 'row',
             splitPercentage: 75,
-            first: column(columns.center, { splitPercentage: 80 }),
+            first: column(columns.center, { splitPercentage: 50 }),
             second: column(columns.right, { splitPercentage: 25 })
           }
       }

@@ -1,9 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useController } from '../providers/controller';
-import { times } from '@composer/util';
+import { renderWaveformTask } from '../tasks/render_waveform';
 import { PositionModel } from '@composer/core';
-
-import styles from '../../../styles/daw.transport.module.css';
+import {
+  Timeline as WebComponentsTimeline,
+  TimelineCursorLayer,
+  TimelineCursorPointerLayer,
+  TimelineCursorSelectionLayer,
+  TimelineMeasuresLayer,
+  TimelineWaveformLayer,
+} from '@composer/web-components';
 
 
 function positionToX(position, measureWidth, snapTo = 'beat') {
@@ -23,214 +29,71 @@ function positionToX(position, measureWidth, snapTo = 'beat') {
   return x;
 }
 
-
-function Measure({
-  renderer = null,
-  measure = null,
-  width = null,
-  verbose = true,
-  playStart = false,
-  withinPlayLoop = false,
-}) {
-  return (
-    <div
-      className={[
-        styles.timelineMeasure,
-        verbose ? styles.timelineMeasureIsVerbose : '',
-        playStart ? styles.timelineMeasureIsPlayStart : '',
-        withinPlayLoop ? styles.timelineMeasureIsWithinPlayLoop : '',
-      ].join(' ')}
-      style={{ width: `${width}px` }}
-    >
-      <span>
-        {verbose ? measure : ''}
-      </span>
-    </div>
-  );
-}
-
-function Measures({
-  renderer,
+function TransportWaveform({
   measureWidth = null,
-  labelInterval = 10,
-  length = 50
+  unitsPerSecond = null,
+  pollFrequency = 10,
+  poll = false,
 }) {
-  return (
-    <div className={styles.timelineMeasures}>
-      {times(length, (i) => (
-        <Measure
-          key={i}
-          measure={i}
-          renderer={renderer}
-          width={measureWidth}
-          verbose={i % labelInterval === 0}
-        />
-      ))}
-    </div>
-  )
+  const controller = useController();
+
+  const [ task, setTask ] = useState();
+  const [ waveform, setWaveform ] = useState([]);
+  const [ duration, setDuration ] = useState(0);
+
+  let timer;
+
+  function onTaskSuccess({ duration, waveform }) {
+    setWaveform(waveform);
+    setDuration(duration);  
 }
 
-function CursorSelection({
-  from = null,
-  to = null,
-  backgroundColor = 'rgba(255, 255, 255, 0.15)',
-  borderColor = 'rgba(255, 255, 255, 0.5)',
-  borderWidth = 1,
-}) {
-  let left = 0;
-  let width = 0;
-
-  if (from < to) {
-    left = from;
-    width = to - from;
-  }
-  else if (from > to) {
-    left = to;
-    width = from - to;
+  function onTaskError(error) {
+    console.info(error);
   }
 
-  return (
-    <div
-      className={styles.timelineCursorSelection}
-      style={{
-        left: `${left}px`,
-        width: `${width}px`,
-        display: width === 0 ? 'none' : 'block',
-        backgroundColor: `${backgroundColor}`,
-        borderLeft: `${borderWidth}px solid ${borderColor}`,
-        borderRight: `${borderWidth}px solid ${borderColor}`,
-        borderTop: `${borderWidth}px solid ${borderColor}`,
-        borderBottom: `${borderWidth}px solid ${borderColor}`,
-      }} 
-    />
-  )
-}
+  function onTaskDone() {
+    if (poll) {
+      timer = setTimeout(() => { setTask(null); }, pollFrequency * 1000);
+    }
+  }
 
-function CursorPointer({
-  x = 0,
-  active = false,
-  color = '#ffffff',
-  label = null,
-  width = 2,
-}) {
-  return (
-    <div
-      className={styles.timelineCursorPosition}
-      style={{
-        left: `${x}px`,
-        backgroundColor: color,
-        width: `${width}px`,
-        color: color,
-        display: active ? 'block' : 'none'
-      }} 
-    >
-      <span>
-        {label}
-      </span>
-    </div>
-  )
-}
+  if (!task) {
+    const task = renderWaveformTask({ controller });
 
-function Cursor({
-  color = '#ffffff',
-  initialX = 0,
-  snap = false,
-  snapTo = 15,
-  interactive = false,
-  onSelect = () => {},
-} = props = {}) {
-  const [ x, setX ] = useState(initialX);
-  const [ active, setActive ] = useState(!interactive);
-  const [ selectionFrom, setSelectionFrom ] = useState(null);
-  const [ selectionTo, setSelectionTo ] = useState(null);
+    task.on('success', onTaskSuccess);
+    task.on('error', onTaskError);
+    task.on('done', onTaskDone);
 
-  function cumulativeOffset(target) {
-    const offsetParent = (target.offsetParent)
-      ? cumulativeOffset(target.offsetParent)
-      : { left: 0, top: 0 };
+    setTask(task);
 
-    return {
-      left: target.offsetLeft + offsetParent.left,
-      top: target.offsetTop + offsetParent.top
+    task.run();
+  }
+
+  useEffect(() => {
+    const reset = () => {
+      setDuration(0);
+      setWaveform([]);
+      setTask(null)
     };
-  }
 
-  function snapped(value) {
-    if (snap) {
-      return Math.floor(value / snapTo) * snapTo;
+    controller.on('file:selected', reset);
+
+    return () => {
+      controller.off('file:selected', reset);
     }
-    else {
-      return value;
-    }
-  }
+  }, [ controller ]);
 
-  function format(value) {
-    const measure = Math.floor(value / snapTo);
-    const beat = 0;
-
-    return `${measure}:${beat}`;
-  }
-
-  function beginSelection() {
-    setSelectionFrom(x);
-    setSelectionTo(x);
-  }
-
-  function endSelection() {
-    if (selectionFrom < selectionTo) {
-      onSelect(selectionFrom, selectionTo);
-    }
-    else {
-      onSelect(selectionTo, selectionFrom);
-    }
-
-    setSelectionFrom(null);
-    setSelectionTo(null);
-  }
-
-  function onMouseMove(e) {
-    const offset = cumulativeOffset(e.target);
-    const x = snapped(e.clientX - offset.left);
-
-    setX(x);
-
-    if (selectionFrom) {
-      setSelectionTo(x);
-    }
-  }
-
-  function onMouseDown(e) {
-    beginSelection();
-  }
-
-  function onMouseUp(e) {
-    endSelection();
-  }
-
-  function onMouseEnter(e) {   
-    setActive(true);
-  }
-
-  function onMouseLeave(e) { 
-    setActive(false);
-  }
-
-  return (
-    <div className={styles.timelineCursor}>
-      <CursorSelection active={active} from={selectionFrom} to={selectionTo} />
-      <CursorPointer active={active} x={x} label={format(x)} color={color} />
-      {interactive ? (
-        <div
-          className={styles.timelineCursorMask}
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-          onMouseMove={onMouseMove}
-          onMouseDown={onMouseDown}
-          onMouseUp={onMouseUp}      
-        />
-      ) : ''}
-    </div>
-  )
+  return (waveform.length > 0) ? (
+    <TimelineWaveformLayer
+      waveform={waveform}
+      // color="rgb(46, 207, 235)"
+      color="rgb(255, 255, 255)"
+      duration={duration}
+      measureWidth={measureWidth}
+      unitsPerSecond={unitsPerSecond}
+    />
+  ) : '';
 }
 
 function TransportPositionCursor({
@@ -240,7 +103,7 @@ function TransportPositionCursor({
   color = 'var(--theme-primary-color)',
 }) {
   return (
-    <CursorPointer
+    <TimelineCursorPointerLayer
       active={active}
       x={position ? positionToX(position, measureWidth) : 0}
       color={color}
@@ -256,7 +119,7 @@ function TransportPlayCursor({
   color = 'var(--theme-secondary-color)',
 }) {
   return active ? (
-    <CursorPointer
+    <TimelineCursorPointerLayer
       active={true}
       x={(from.measure * measureWidth)}
       color={color}
@@ -271,7 +134,7 @@ function TransportInteractionCursor({
   color = '#cccccc',
 }) {
   return (
-    <Cursor
+    <TimelineCursorLayer
       color={color}
       snapTo={measureWidth}
       onSelect={onSelect}
@@ -288,7 +151,7 @@ function TransportLoopCursorSelection({
   measureWidth,
 }) {
   return active ? (
-    <CursorSelection
+    <TimelineCursorSelectionLayer
       active={active}
       from={from.measure * measureWidth}
       to={to.measure * measureWidth}
@@ -359,14 +222,18 @@ export function Timeline ({
   const showPlayFrom = true;
   const showInteraction = true;
 
-  const common = { measureWidth }
+  const measuresPerSecond = (transport.tempo / transport.meter[0]) / 60
+  const unitsPerSecond = measuresPerSecond * measureWidth;
+
+  const common = { measureWidth, unitsPerSecond }
 
   return (
-    <div className={styles.timeline}>
-      <Measures {...common}
+    <WebComponentsTimeline>
+      <TimelineMeasuresLayer {...common}
         labelInterval={labelInterval}
         length={length}
       />
+      <TransportWaveform {...common} />
       <TransportLoopCursorSelection {...common}
         active={showLoop}
         from={loopFrom}
@@ -385,6 +252,6 @@ export function Timeline ({
         active={showInteraction}
         onSelect={onSelect}
       />
-    </div>
+    </WebComponentsTimeline>
   )
 }

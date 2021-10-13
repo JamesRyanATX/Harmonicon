@@ -1,21 +1,23 @@
 import { AudioNodeModel } from '../models/audio_node';
 import { BaseDriver } from './base';
 import { DriverError } from '../errors';
+import { Logger } from '@composer/util';
 
 export class AudioNode extends AudioNodeModel {
 }
 
 export class Device {
+  get loggerGroup() { return 'AudioDriver' };
+  get loggerName() { return 'Device' };
+
   constructor({ driver }) {
     this.driver = driver;
-  }
-
-  get logger() {
-    return this.driver.logger;
+    this.logger = new Logger(`${this.loggerGroup}.${this.loggerName}`);
   }
 }
 
 export class Renderer extends Device {
+  get loggerName() { return 'Renderer' };
 
   schedulers = {
     end: null,
