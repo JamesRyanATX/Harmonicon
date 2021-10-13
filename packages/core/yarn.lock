@@ -2080,11 +2080,6 @@ micromatch@^4.0.4:
     braces "^3.0.1"
     picomatch "^2.2.3"
 
-midi-message-parser@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/midi-message-parser/-/midi-message-parser-2.0.1.tgz#3bf6545ad92d20cf76b5bcfe3eb30885ee346fd7"
-  integrity sha512-g8UooCS1Ic1f9YL4vdvm/Q5NZlvVg2haoGyitca+zLRrPL46/qrD9xzRJBHawZpW7IW0dSpwVHRE2UaTTITVQA==
-
 mime-db@1.49.0:
   version "1.49.0"
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.49.0.tgz#f3dfde60c99e9cf3bc9701d687778f537001cbed"

@@ -5,6 +5,7 @@
     "clean": "npx lerna clean",
     "bootstrap": "npx lerna bootstrap",
     "build": "npx lerna run build:pre && npx lerna run build && npx lerna run build:post",
+    "export": "npx lerna run export",
     "dev": "npx lerna run dev --parallel",
     "test": "npx lerna run test",
     "play": "cd packages/cli && bin/composer play",

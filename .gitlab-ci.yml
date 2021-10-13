@@ -2,7 +2,6 @@ pages:
   image: node:14-alpine
   stage: deploy
   script:
-    - npm ci --ignore-scripts --production --no-optional
     - yarn bootstrap
     - yarn build
     - yarn export
