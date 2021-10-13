@@ -5,7 +5,7 @@ pages:
     - yarn install
     - yarn build
     - yarn export
-    - mv packages/web-components/out ../../public
+    - mv packages/web-components/out ./public
   artifacts:
     paths:
       - public
