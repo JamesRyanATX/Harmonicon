@@ -103,7 +103,8 @@ export function MenuItem({
 
 export function Menu({
   children = null,
-  logo = null,
+  before = () => (''),
+  after = () => (''),
   items = [],
 }) {
   const [ active, setActive ] = useState(null);
@@ -112,14 +113,12 @@ export function Menu({
     <div className={[
       styles.menu,
     ].join(' ')}>
-      {logo ? logo() : ''}
+      {before ? before() : ''}
       {items.map((item) => (
         <MenuItem
           key={item.label}
           label={item.label}
-          dropdown={() => {
-            return item.dropdown({ controller });
-          }}
+          dropdown={item.dropdown}
           active={active === item.label}
           onClick={() => {
             setActive(active === item.label ? null : item.label)
@@ -131,6 +130,7 @@ export function Menu({
         style={{ flex: 1 }} 
       />
       {children}
+      {after ? after() : ''}
       <MenuDropdownMask 
         onClick={() => (setActive(null)) }
         active={!!active} 

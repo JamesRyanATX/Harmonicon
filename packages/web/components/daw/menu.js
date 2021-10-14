@@ -13,8 +13,9 @@ import { MidiDropdown } from './menu/midi';
 import styles from '../../styles/daw.menu.module.css';
 import { useState } from 'react';
 
+import { GiSoundWaves } from 'react-icons/gi';
 
-function Logo() {
+function Bars() {
   const [ offstage, setOffstage ] = useState(true);
 
   if (offstage) {
@@ -23,26 +24,20 @@ function Logo() {
 
   return (
     <div onClick={() => (setOffstage(true))} className={[
-      styles.logo,
-      offstage ? styles.logoIsOffstage : ''
+      styles.bars,
+      offstage ? styles.barsIsOffstage : ''
     ].join(' ')}>
-      <div className={styles.logoBars}>
-        <div />
-        <div />
-        <div />
-        <div />
-        <div />
-        <div />
-        <div />
-        <div />
-        <div />
-        <div />
-      </div>
-      {/* <div className={styles.logoLetter}>
-        <div />
-        <div />
-        <div />
-      </div> */}
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <h3><GiSoundWaves /> harmonicon</h3>
     </div>
   );
 }
@@ -75,8 +70,10 @@ export function Menu({
     },
   ]
 }) {
-  // console.log('menu')
   return (
-    <MenuBar items={items} logo={() => (<Logo />)} />
+    <MenuBar
+      items={items}
+      after={() => (<Bars />)} 
+    />
   )
 }
