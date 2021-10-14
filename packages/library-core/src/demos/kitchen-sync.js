@@ -1,9 +1,7 @@
 export const kitchenSyncDemo = ({ library }) => {
 
   library.demo('Kitchen Sync', ({ demo }) => {
-    demo.source(`
-
-/**
+    demo.source(`/**
  *    __ _____   ___  __  _______  _  _______________  _  __
  *   / // / _ | / _  /  |/  / __  / |/ /  _/ ___/ __  / |/ /
  *  / _  / __ |/ , _/ /|_/ / /_/ /    // // /__/ /_/ /    / 

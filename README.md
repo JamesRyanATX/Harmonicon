@@ -28,7 +28,9 @@ The UI is served on port 3000.
 * ~~Waveform rendering~~
 * ~~CI: fix pipeline and deploy~~
 * ~~Timeline: set position not working~~
+* ~~Controller: move export rendering into tasks~~
 * Timeline: update waveform when rendering changes
 * Timeline: add "updating" overlay
-* Controller: move export rendering into tasks
 * Google analytics
+* Clean up about modal
+* Add GitHub project

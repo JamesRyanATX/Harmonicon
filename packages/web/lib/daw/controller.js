@@ -1,7 +1,6 @@
 import { Logger, Task, eventify } from '@composer/util';
 import { ComposerError, render } from '@composer/compose';
 import { Harmonicon } from '@composer/core';
-import { saveAs } from 'file-saver';
 import { TransportModel, InteractiveRendererModel } from '@composer/core';
 
 export class Controller {
@@ -287,39 +286,6 @@ export class Controller {
   async play() {
     await this.withInteractiveRendering(async () => {
       return this.transport.play({ position: this.position });
-    });
-  }
-
-  // Tasks
-  // -----
-
-  createExportToWaveformTask() {
-    return createExportTask(async ({ renderer, duration }) => {
-      return { duration, waveform: await renderer.toWaveform() };
-    });
-  }
-
-  createExportToWavTask() {
-    return createExportTask(async (options) => {
-      saveAs(await renderer.toWav(options), `${this.file.name}.wav`);
-    });
-  }
-
-  createExportToMp3Task() {
-    return createExportTask(async (options) => {
-      saveAs(await renderer.toMp3(options), `${this.file.name}.mp3`);
-    });
-  }
-
-  createExportTask(fn) {
-    return new Task(async (task) => {
-      return this.withExportableRendering(({ renderer, duration }) => {
-        return fn({
-          renderer,
-          duration,
-          onProgress: task.progress.bind(task),
-        });
-      });
     });
   }
 
