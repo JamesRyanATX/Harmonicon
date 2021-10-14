@@ -10,10 +10,44 @@ import { AudioDropdown } from './menu/audio';
 import { HelpDropdown } from './menu/help';
 import { MidiDropdown } from './menu/midi';
 
-import styles from '../../styles/daw.module.css';
+import styles from '../../styles/daw.menu.module.css';
+import { useState } from 'react';
+
+
+function Logo() {
+  const [ offstage, setOffstage ] = useState(true);
+
+  if (offstage) {
+    setTimeout(() => (setOffstage(false)), 2000);
+  }
+
+  return (
+    <div onClick={() => (setOffstage(true))} className={[
+      styles.logo,
+      offstage ? styles.logoIsOffstage : ''
+    ].join(' ')}>
+      <div className={styles.logoBars}>
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+      </div>
+      {/* <div className={styles.logoLetter}>
+        <div />
+        <div />
+        <div />
+      </div> */}
+    </div>
+  );
+}
 
 export function Menu({
-  logo = null,
   items = [
     {
       label: 'File',
@@ -43,12 +77,6 @@ export function Menu({
 }) {
   // console.log('menu')
   return (
-    <MenuBar items={items}>
-      <MenuItem>
-        <div className={styles.logo}>
-          {logo({ size: "small" })}
-        </div>
-      </MenuItem>
-    </MenuBar>
+    <MenuBar items={items} logo={() => (<Logo />)} />
   )
 }

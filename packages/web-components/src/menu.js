@@ -103,6 +103,7 @@ export function MenuItem({
 
 export function Menu({
   children = null,
+  logo = null,
   items = [],
 }) {
   const [ active, setActive ] = useState(null);
@@ -111,6 +112,7 @@ export function Menu({
     <div className={[
       styles.menu,
     ].join(' ')}>
+      {logo ? logo() : ''}
       {items.map((item) => (
         <MenuItem
           key={item.label}
