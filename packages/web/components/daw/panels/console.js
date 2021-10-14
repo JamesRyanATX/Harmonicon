@@ -1,10 +1,13 @@
 import { useState } from 'react';
+import { useWorkspace } from '../providers/workspace';
 import { Panel, PanelFilterRow, Select, Console, IconButton } from '@composer/web-components';
 import { Harmonicon } from '@composer/core';
 import { IoTrashSharp } from 'react-icons/io5';
 
 export function ConsolePanel() {
-  const [ level, setLevel ] = useState('debug');
+  const workspace = useWorkspace();
+
+  const [ level, setLevel ] = useState(workspace.panels.console.level);
   const [ logs, setLogs ] = useState([]);
 
   return (

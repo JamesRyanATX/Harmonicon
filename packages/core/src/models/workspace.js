@@ -41,6 +41,7 @@ export class WorkspaceModel extends storable(BaseModel) {
         },
         console: {
           enabled: true,
+          level: 'info',
         },
       })
     }
