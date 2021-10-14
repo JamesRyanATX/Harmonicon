@@ -1,4 +1,5 @@
 import { Model } from './model';
+import { Logger } from './logger';
 
 /**
  * Wrap an async function with an evented task model with a
@@ -7,6 +8,8 @@ import { Model } from './model';
  * @param {function} fn - 
  */
 export class Task extends Model {
+  get loggerGroup() { return 'Util'; }
+  get loggerName() { return 'Task'; }
 
   static properties = {
     fn: {}
@@ -14,6 +17,8 @@ export class Task extends Model {
 
   constructor(fn) {
     super({ fn });
+
+    this.logger = new Logger(`${this.loggerGroup}.${this.loggerName}`);
 
     this.allow('run');
     this.allow('progress');

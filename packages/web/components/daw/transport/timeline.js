@@ -123,7 +123,7 @@ function TransportPlayCursor({
       active={true}
       x={(from.measure * measureWidth)}
       color={color}
-      width={1}
+      width={2}
     />
   ) : '';
 }
@@ -210,7 +210,7 @@ export function Timeline ({
     }
 
     // Adjust start position on existing loop
-    else if (loop) {
+    else if (!transport.started) {
       transport.setProperties({
         playFrom: fromPosition,
       });

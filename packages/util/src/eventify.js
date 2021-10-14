@@ -1,6 +1,7 @@
 const Events = {
 
   allow: function (eventName) {
+    this.listeners = this.listeners || {};
     this.listeners[eventName] = [];
   },
 
@@ -13,11 +14,23 @@ const Events = {
   },
 
   emit: function(eventName, payload) {
-    if (typeof this.listeners[eventName] === 'undefined') {
+    const listeners = (this.listeners || {})[eventName];
+
+    if (typeof listeners === 'undefined') {
       throw new Error(`Unregistered event name "${eventName}"`);
     }
 
-    // console.log(`emit ${eventName} to ${this.listeners[eventName].length} listener(s)`);
+    // Early return for no listeners
+    if (listeners.length === 0) {
+      return;
+    }
+
+    // if (this.logger) {
+    //   this.logger.debug(`emit ${eventName} to ${this.listeners[eventName].length} listener(s)`);
+    // }
+    // else {
+    //   console.log(`emit ${eventName} to ${this.listeners[eventName].length} listener(s)`);
+    // }
 
     (this.listeners[eventName] || []).forEach((fn) => {
       fn(payload);
@@ -42,8 +55,6 @@ const Events = {
 }
 
 export const eventify = (obj) => {
-  obj.listeners = {};
-
   [
     'on',
     'allow',
@@ -55,7 +66,7 @@ export const eventify = (obj) => {
       throw new TypeError(`Object already has a ${fnName} property.`);
     }
 
-    obj[fnName] = Events[fnName].bind(obj);
+    obj[fnName] = Events[fnName];//.bind(obj);
   });
 
   return obj;

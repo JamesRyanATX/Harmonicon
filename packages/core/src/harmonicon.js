@@ -63,7 +63,7 @@ export class Harmonicon {
 
   static bootstrap() {
     this.console = new Console();
-    this.logger = new Logger();
+    this.logger = new Logger('Core.Harmonicon');
 
     Logger.console = this.console;
 

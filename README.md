@@ -26,7 +26,9 @@ The UI is served on port 3000.
 * ~~Meter~~
 * ~~MIDI device input~~
 * ~~Waveform rendering~~
-* CI: fix pipeline and deploy
+* ~~CI: fix pipeline and deploy~~
+* ~~Timeline: set position not working~~
 * Timeline: update waveform when rendering changes
-* Timeline: set position not working
+* Timeline: add "updating" overlay
 * Controller: move export rendering into tasks
+* Google analytics

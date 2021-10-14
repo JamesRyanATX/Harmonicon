@@ -28,7 +28,7 @@ export class Controller {
     this.listeners = {};
     this.midi = { assignments: {} };
 
-    this.logger = new Logger('DAW');
+    this.logger = new Logger('Web.DAW');
     this.transport = new TransportModel();
     this.renderer = new InteractiveRendererModel();
 
