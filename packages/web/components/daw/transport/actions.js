@@ -47,7 +47,7 @@ export function Actions ({
   const transport = controller.transport;
 
   const [ loaded, setLoaded ] = useState(false);
-  const [ state, setState ] = useState('stopped');
+  const [ state, setState ] = useState(transport.state);
   
   const [ position, setPosition ] = useState(transport.position);
   const [ loop, setLoop ] = useState(transport.loop);
@@ -59,7 +59,7 @@ export function Actions ({
     transport.on('changed:loop', ({ newValue }) => (setLoop(newValue)));
     transport.on('changed:loopFrom', ({ newValue }) => (setLoopFrom(newValue)));
     transport.on('changed:loopTo', ({ newValue }) => (setLoopTo(newValue)));
-    transport.on('changed:state', ({ newValue }) => (setState(newValue)));
+    transport.on('changed:state', ({ newValue }) => { setState(newValue); });
 
     setLoaded(true);
   }

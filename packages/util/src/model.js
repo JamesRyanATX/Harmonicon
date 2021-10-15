@@ -2,6 +2,14 @@ import { Logger } from "./logger";
 import { Collection } from "./collection";
 import { eventify } from './eventify';
 
+import { oneOf } from './model/validators/one_of';
+
+const defaultPropertyDefinition = {
+  validate: false,
+  defaultValue: undefined,
+  type: String,
+}
+
 export class Model {
   get loggerGroup () { return 'Util'; }
 
@@ -28,6 +36,10 @@ export class Model {
    * Bootstrap a single property or collection
    */
   static defineModelProperty(property, definition) {
+
+    // Pull in default definition
+    this.properties[property] = definition = { ...defaultPropertyDefinition, ...definition };
+
     Object.defineProperty(this.prototype, property, {
       get: function () {
         return this.properties[property];
@@ -96,7 +108,7 @@ export class Model {
     Object.entries(properties).forEach(([ property, newValue ]) => {
       const oldValue = this[property];
 
-      if (oldValue !== newValue) {
+      if (oldValue !== newValue && this.validateProperty(property, newValue)) {
         this.properties[property] = newValue;
         
         if (emit) {
@@ -115,6 +127,22 @@ export class Model {
 
   clone () {
     return new this.constructor(Object.assign({}, this.properties));
+  }
+
+  validateProperty(property, value) {
+    const definition = this.constructor.properties[property];
+
+    // validate: () => { ...
+    if (typeof definition.validate === 'function') {
+      definition.validate(value);
+    }
+
+    // oneOf: [ ...
+    if (definition.oneOf) {
+      oneOf({ record: this, property, value, definition });
+    }
+
+    return true;
   }
 
   validate() {

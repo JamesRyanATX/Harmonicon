@@ -9,6 +9,7 @@ export class TransportModel extends BaseModel {
     state: {
       type: 'string',
       defaultValue: 'stopped',
+      oneOf: [ 'started', 'stopped', 'paused', 'busy' ]
     },
 
     loop: {
@@ -74,13 +75,15 @@ export class TransportModel extends BaseModel {
   get paused() { return this.state === 'paused'; }
   get stopped() { return this.state === 'stopped'; }
   get started() { return this.state === 'started'; }
+  get busy() { return this.state === 'busy'; }
 
   get canStop() { return this.paused || this.started; }
   get canPause() { return !this.stopped; }
-  get canPlay() { return true; }
+  get canPlay() { return !this.busy; }
   get canBackwards() { return !this.position.zero; }
   get canForwards() { return true; }
   get canRestart() { return !this.position.zero; }
+  get canBlock() { return this.stopped || this.paused; }
 
   constructor(properties) {
     super(properties);
@@ -225,6 +228,32 @@ export class TransportModel extends BaseModel {
     if (this.renderer) {
       return this.renderer.delegate.apply(this.renderer, arguments);
     }
+  }
+
+  blockWhile(task) {
+    if (!this.canBlock) {
+      throw new Error('Transport cannot enter blocking state.');
+    }
+
+    this.state = 'busy';
+
+    // task.on('run', (error) => {
+    //   debugger
+    // });
+
+    // task.on('success', (error) => {
+    //   debugger
+    // });
+
+    // task.on('error', (error) => {
+    //   debugger
+    // });
+
+    task.on('done', () => {
+      this.state = 'stopped';
+    });
+
+    return task.run();
   }
 
 }

@@ -10,8 +10,9 @@ import * as CoreLibrary from '@composer/library-core';
 
 import { Controller } from '../lib/daw/controller';
 import { ControllerContext } from './daw/providers/controller';
-import { Interface } from './daw/interface';
 
+import { Workspace } from './daw/workspace';
+import { Interface } from './daw/interface';
 
 export function DAW ({
   audioDriverOptions = {},
@@ -19,13 +20,12 @@ export function DAW ({
   midiDriverOptions = {},
   logo = null,
 }) {
-
   const [ loaded, setLoaded ] = useState(false);
   const [ controller, setController ] = useState();
-  const [ file, setFile ] = useState();
+  const [ workspace, setWorkspace ] = useState();
 
   // Initialize controller
-  if (!controller) {
+  if (!controller && !workspace) {
     (async () => {
       const workspace = await Harmonicon.initialize({
         libraries: [ CoreLibrary ],
@@ -36,40 +36,12 @@ export function DAW ({
         }
       });
 
-      setController(new Controller({ workspace }));
+      const controller = new Controller({ workspace });
+
+      setWorkspace(workspace);
+      setController(controller);
+      setLoaded(true);
     })();
-  }
-
-  // Select a file
-  if (!file && controller) {
-    (async () => {
-      const workspace = controller.workspace;
-
-      if (workspace.files.length === 0) {
-        await workspace.files.create({
-          name: 'Demo',
-          source: Harmonicon.libraries.core.demos.filterByProperty('name', 'Kitchen Sync')[0].source,
-        });
-      }
-
-      const selectedFile = (() => {
-        const selectedFileId = workspace.selectedFile;
-
-        if (selectedFileId) {
-          return workspace.files.filterByProperty('id', selectedFileId)[0];
-        }
-        else {
-          return workspace.files.records[0];
-        }
-      })();
-
-      setFile(await controller.selectFile(selectedFile));
-    })();
-  }
-
-  // ...and we're off to the races!
-  if (!loaded && file) {
-    setLoaded(true);
   }
 
   // [TODO] eventually, this should not be necessary
@@ -78,18 +50,11 @@ export function DAW ({
   window.ToneAudioDriver = ToneAudioDriver;
   window.Tone = ToneAudioDriver.Tone; 
 
-  if (loaded) {
-    return (
-      <ControllerContext.Provider value={controller}>
+  return loaded ? (
+    <ControllerContext.Provider value={controller}>
+      <Workspace workspace={controller.workspace}>
         <Interface logo={logo} />
-      </ControllerContext.Provider>
-    );
-  }
-  else {
-    const Logo = logo;
-
-    return (
-      <Logo size="large" />
-    )
-  }
+      </Workspace>
+    </ControllerContext.Provider>
+  ) : '';
 }

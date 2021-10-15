@@ -39,6 +39,7 @@ describe('WorkspaceModel', function () {
             },
             console: {
               enabled: true,
+              level: 'info',
             },
             keyboard: {
               enabled: true
@@ -81,6 +82,7 @@ describe('WorkspaceModel', function () {
             },
             console: {
               enabled: true,
+              level: 'info',
             },
             keyboard: {
               enabled: true
@@ -128,6 +130,7 @@ describe('WorkspaceModel', function () {
             },
             console: {
               enabled: true,
+              level: 'info',
             },
             keyboard: {
               enabled: true
@@ -175,6 +178,7 @@ describe('WorkspaceModel', function () {
             },
             console: {
               enabled: true,
+              level: 'info',
             },
             keyboard: {
               enabled: true
@@ -220,6 +224,7 @@ describe('WorkspaceModel', function () {
           },
           console: {
             enabled: true,
+            level: 'info',
           },
           keyboard: {
             enabled: true

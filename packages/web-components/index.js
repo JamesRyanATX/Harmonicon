@@ -51,6 +51,10 @@ import {
 } from './src/loading';
 
 import {
+  useEventListener,
+} from './src/hooks';
+
+import {
   Timeline,
   TimelineCursorLayer,
   TimelineCursorPointerLayer,
@@ -89,4 +93,5 @@ module.exports = {
   TreeGroup,
   TreeGroupItems,
   TreeItem,
+  useEventListener,
 };

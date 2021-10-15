@@ -56,6 +56,19 @@ describe('TransportModel', function () {
       expect(transport.swing).toEqual(0);
       expect(transport.ticks).toEqual(0);
     });
+
+    describe('#state', function () {
+      it('must be started, stopped, paused, or busy', function () {
+        transport.state = 'started';
+        transport.state = 'stopped';
+        transport.state = 'paused';
+        transport.state = 'busy';
+
+        expect(() => {
+          transport.state = 'nope';
+        }).toThrow(TypeError('state must be one of: started, stopped, paused, busy'));
+      });
+    })
   });
 
   describe('getters and setters', function () {

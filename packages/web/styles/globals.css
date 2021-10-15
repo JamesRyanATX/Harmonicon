@@ -13,18 +13,20 @@
 :root {
 
   /* primary color */
-  --theme-primary-color: rgb(46, 207, 235);
   --theme-primary-color-rgb: 46, 207, 235;
-  --theme-primary-color-light: rgb(66, 227, 255);
-  --theme-primary-color-dark: rgb(6, 127, 155);
+  --theme-primary-color-light-rgb: 66, 227, 255;
+  --theme-primary-color-dark-rgb: 6, 127, 155;
+  --theme-primary-color: rgb(var(--theme-primary-color-rgb));
+  --theme-primary-color-light: rgb(var(--theme-primary-color-light-rgb));
+  --theme-primary-color-dark: rgb(var(--theme-primary-color-dark-rgb));
 
   /* secondary color */
   --theme-secondary-color-rgb: 243, 114, 44;
-  --theme-secondary-color: rgb(var(--theme-secondary-color-rgb));
-  --theme-secondary-color-light: rgb(255, 134, 66);
   --theme-secondary-color-light-rgb: 255, 134, 66;
-  --theme-secondary-color-dark: rgb(203, 74, 4);
   --theme-secondary-color-dark-rgb: 203, 74, 4;
+  --theme-secondary-color: rgb(var(--theme-secondary-color-rgb));
+  --theme-secondary-color-light: rgb(var(--theme-secondary-color-light-rgb));
+  --theme-secondary-color-dark: rgb(var(--theme-secondary-color-dark-rgb));
 
   /* tertiary color */
   --theme-tertiary-color-rgb: 144, 190, 109;
@@ -35,16 +37,26 @@
   --theme-tertiary-color-dark: rgb(var(--theme-tertiary-color-dark-rgb));
 
   /* color palette */
-  --theme-palette-red: #D60427;
-  --theme-palette-red-lighter: #F94144;
-  --theme-palette-orange: #f3722c;
-  --theme-palette-orange-lighter: #f8961e;
-  --theme-palette-yellow: #f9c74f;
-  --theme-palette-green: #90be6d;
-  --theme-palette-aqua: #43aa8b;
-  --theme-palette-blue-lighter: #5191d6;
-  --theme-palette-blue: #0b0bfe;
-  --theme-palette-purple: #cc50b5;
+  --theme-palette-red-rgb: 214, 4, 39;
+  --theme-palette-red-lighter-rgb: 249, 65, 68;
+  --theme-palette-orange-rgb: 243, 114, 44;
+  --theme-palette-orange-lighter-rgb: 248, 150, 30;
+  --theme-palette-yellow-rgb: 249, 199, 79;
+  --theme-palette-green-rgb: 144, 190, 109;
+  --theme-palette-aqua-rgb: 67, 170, 139;
+  --theme-palette-blue-lighter-rgb: 81, 145, 214;
+  --theme-palette-blue-rgb: 11, 11, 254;
+  --theme-palette-purple-rgb: 204, 80, 181;
+  --theme-palette-red: rgb(var(--theme-palette-red-rgb));
+  --theme-palette-red-lighter: rgb(var(--theme-palette-red-lighter-rgb));
+  --theme-palette-orange: rgb(var(--theme-palette-orange-rgb));
+  --theme-palette-orange-lighter: rgb(var(--theme-palette-orange-lighter-rgb));
+  --theme-palette-yellow: rgb(var(--theme-palette-yellow-rgb));
+  --theme-palette-green: rgb(var(--theme-palette-green-rgb));
+  --theme-palette-aqua: rgb(var(--theme-palette-aqua-rgb));
+  --theme-palette-blue-lighter: rgb(var(--theme-palette-blue-lighter-rgb));
+  --theme-palette-blue: rgb(var(--theme-palette-blue-rgb));
+  --theme-palette-purple: rgb(var(--theme-palette-purple-rgb));
 
   /* neutral colors for UI detailing */
   --theme-neutral-color-0: rgb(0, 0, 0);

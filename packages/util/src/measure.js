@@ -2,6 +2,8 @@ export function measure(obj, fn, label = 'measure: ') {
   const orig = obj[fn];
 
   obj[fn] = async function () {
+    this.logger.info(`${label} started`);
+
     const startAt = (new Date()).getTime();
     const results = await orig.apply(this, arguments);
     const stopAt = (new Date()).getTime();

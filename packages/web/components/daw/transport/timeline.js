@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useController } from '../providers/controller';
-import { renderWaveformTask } from '../tasks/render_waveform';
+import { useFile } from '../providers/file';
 import { PositionModel } from '@composer/core';
 import {
   Timeline as WebComponentsTimeline,
@@ -32,57 +32,32 @@ function positionToX(position, measureWidth, snapTo = 'beat') {
 function TransportWaveform({
   measureWidth = null,
   unitsPerSecond = null,
-  pollFrequency = 10,
-  poll = false,
 }) {
-  const controller = useController();
+  const file = useFile();
 
-  const [ task, setTask ] = useState();
-  const [ waveform, setWaveform ] = useState([]);
-  const [ duration, setDuration ] = useState(0);
+  const [ waveform, setWaveform ] = useState(file.waveform || []);
+  const [ duration, setDuration ] = useState(file.duration || 0);
 
-  let timer;
-
-  function onTaskSuccess({ duration, waveform }) {
-    setWaveform(waveform);
-    setDuration(duration);  
-}
-
-  function onTaskError(error) {
-    console.info(error);
+  function updateWaveform({ newValue }) {
+    setWaveform(newValue);
   }
 
-  function onTaskDone() {
-    if (poll) {
-      timer = setTimeout(() => { setTask(null); }, pollFrequency * 1000);
-    }
-  }
-
-  if (!task) {
-    const task = renderWaveformTask({ controller });
-
-    task.on('success', onTaskSuccess);
-    task.on('error', onTaskError);
-    task.on('done', onTaskDone);
-
-    setTask(task);
-
-    task.run();
+  function updateDuration({ newValue }) {
+    setDuration(newValue);
   }
 
   useEffect(() => {
-    const reset = () => {
-      setDuration(0);
-      setWaveform([]);
-      setTask(null)
-    };
+    setWaveform(file.waveform || []);
+    setDuration(file.duration || 0);
 
-    controller.on('file:selected', reset);
+    file.on('changed:waveform', updateWaveform);
+    file.on('changed:duration', updateDuration);
 
     return () => {
-      controller.off('file:selected', reset);
+      file.off('changed:waveform', updateWaveform);
+      file.off('changed:duration', updateDuration);
     }
-  }, [ controller ]);
+  }, [ file ]);
 
   return (waveform.length > 0) ? (
     <TimelineWaveformLayer
