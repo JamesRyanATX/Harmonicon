@@ -5,8 +5,7 @@ Harmonicon is an experimental music-as-code DAW for browsers.
 ## Setup
 
 ```
-yarn
-yarn bootstrap
+yarn install
 yarn dev
 ```
 
