@@ -1,5 +1,6 @@
 import { BaseModel } from './base';
 import { PositionModel } from './position';
+import { measure } from '@composer/util';
 
 export class TransportModel extends BaseModel {
 
@@ -259,3 +260,12 @@ export class TransportModel extends BaseModel {
 }
 
 TransportModel.init();
+
+// Add metric observers
+[
+  'blockWhile',
+].forEach((fn) => {
+  measure(TransportModel.prototype, fn, {
+    label: `#${fn}()`
+  });
+});

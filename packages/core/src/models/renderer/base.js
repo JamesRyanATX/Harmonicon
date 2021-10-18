@@ -1,4 +1,4 @@
-import { mapSeries, measure } from '@composer/util';
+import { mapSeries } from '@composer/util';
 import { BaseModel } from '../base.js';
 import { PositionModel } from '../position.js';
 import { SequencedEventModel } from '../sequenced_event.js';
@@ -34,33 +34,34 @@ export class RendererBaseModel extends BaseModel {
   // Renderers
   // ---------
 
-  async render () {
+  async render (options = {}) {
     if (!this.driver || !this.driverRenderer) {
       throw new RendererError('No available audio driver.')
     }
 
     await this.reset();
-    await this.renderSession()
+    await this.renderSession(options)
     await this.driverRenderer.setPosition(PositionModel.parse(0));
 
     return this;
   }
 
-  async renderSession () {
-    // this.logger.debug(`#renderSession() name = ${this.session.name}`);
-    // this.logger.debug(`#renderSession() number of events = ${this.session.events.length}`);
-    // this.logger.debug(`#renderSession() number of phrases = ${this.session.phrases.length}`);
-    // this.logger.debug(`#renderSession() number of instruments = ${this.session.instruments.length}`);
-    // this.logger.debug(`#renderSession() number of tracks = ${this.session.tracks.length}`);
-    // this.logger.debug(`#renderSession() number of patches = ${this.session.patches.length}`);
-
-    await this.renderSessionEvents();
-    await this.renderEffects();
-    await this.renderInstruments();
-    await this.renderPhrases();
-    await this.renderTracks();
-    await this.renderPatches();
-    await this.renderEnd();
+  async renderSession ({
+    instruments = true,
+    tracks = true,
+    effects = true,
+    sessionEvents = true,
+    phrases = true,
+    patches = true,
+    end = true
+  } = {}) {
+    sessionEvents ? await this.renderSessionEvents() : true;
+    instruments ? await this.renderInstruments() : true;
+    effects ? await this.renderEffects() : true;
+    phrases ? await this.renderPhrases() : true;
+    tracks ? await this.renderTracks() : true;
+    patches ? await this.renderPatches() : true;
+    end ? await this.renderEnd() : true;
 
     return;
   }
@@ -274,6 +275,9 @@ export class RendererBaseModel extends BaseModel {
   }
 
   getNode(type, name) {
+    this.cache.nodes = this.cache.nodes || {};
+    this.cache.nodes[type] = this.cache.nodes[type] || {};
+
     return this.cache.nodes[type][name];
   }
 
@@ -307,5 +311,3 @@ export class RendererBaseModel extends BaseModel {
     }
   }
 }
-
-measure(RendererBaseModel.prototype, 'render', '#render()');

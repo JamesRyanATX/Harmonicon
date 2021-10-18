@@ -2,23 +2,21 @@ import { useState } from 'react';
 
 import { SessionComposer } from '@composer/compose';
 import { Harmonicon } from '@composer/core';
-
 import * as ToneAudioDriver from '@composer/driver-audio-tone';
 import * as LocalStorageDriver from '@composer/driver-storage-localstorage';
 import * as WebMidiDriver from '@composer/driver-midi-web';
 import * as CoreLibrary from '@composer/library-core';
 
 import { Controller } from '../lib/daw/controller';
-import { ControllerContext } from './daw/providers/controller';
-
-import { Workspace } from './daw/workspace';
+import { ControllerProvider } from './daw/providers/controller';
+import { WorkspaceProvider } from './daw/providers/workspace';
+import { LoggerProvider } from './daw/providers/logger';
 import { Interface } from './daw/interface';
 
 export function DAW ({
   audioDriverOptions = {},
   storageDriverOptions = {},
   midiDriverOptions = {},
-  logo = null,
 }) {
   const [ loaded, setLoaded ] = useState(false);
   const [ controller, setController ] = useState();
@@ -51,10 +49,12 @@ export function DAW ({
   window.Tone = ToneAudioDriver.Tone; 
 
   return loaded ? (
-    <ControllerContext.Provider value={controller}>
-      <Workspace workspace={controller.workspace}>
-        <Interface logo={logo} />
-      </Workspace>
-    </ControllerContext.Provider>
+    <LoggerProvider>
+      <ControllerProvider controller={controller}>
+        <WorkspaceProvider workspace={workspace}>
+          <Interface />
+        </WorkspaceProvider>
+      </ControllerProvider>
+    </LoggerProvider>
   ) : '';
 }

@@ -12,7 +12,18 @@ export class Logger {
   }
 
   error(message) {
-    this.console.error(chalk.red(this.format(message)));
+    if (message instanceof Error) {
+      const error = new Error();
+
+      error.message = message.message;
+      error.trace = message.trace;
+      error.name = `${this.name}.${message.name}`;
+
+      this.console.error(error);
+    }
+    else {
+      this.console.error(chalk.red(this.format(message)));
+    }
   }
 
   info(message) {
@@ -45,6 +56,9 @@ export class Logger {
     message = (() => {
       if (typeof message === 'string') {
         return message;
+      }
+      else if (message instanceof Error) {
+        return message.message;
       }
       else if (typeof message !== 'object') {
         return message;

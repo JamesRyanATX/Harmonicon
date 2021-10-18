@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import { useWorkspace } from '../providers/workspace';
 import { Panel, PanelFilterRow, Select, Console, IconButton } from '@composer/web-components';
-import { Harmonicon } from '@composer/core';
 import { IoTrashSharp } from 'react-icons/io5';
+import { useConsoleLogs } from '@composer/web-components';
 
 export function ConsolePanel() {
   const workspace = useWorkspace();
-
+  const { setLogs } = useConsoleLogs();
   const [ level, setLevel ] = useState(workspace.panels.console.level);
-  const [ logs, setLogs ] = useState([]);
 
   return (
     <Panel
@@ -35,7 +34,7 @@ export function ConsolePanel() {
         </PanelFilterRow>
       )}
     >
-      <Console target={Harmonicon.console} level={level} logs={logs} setLogs={setLogs} />
+      <Console level={level} />
     </Panel>
   )
 }

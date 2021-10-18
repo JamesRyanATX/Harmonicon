@@ -1,5 +1,5 @@
 import { RendererBaseModel } from './base';
-
+import { measure } from '@composer/util';
 
 export class InteractiveRendererModel extends RendererBaseModel {
 
@@ -12,4 +12,23 @@ export class InteractiveRendererModel extends RendererBaseModel {
 
 }
 
+// Initialize model properties
 InteractiveRendererModel.init();
+
+// Add metric observers
+[
+  'renderSessionEvents',
+  'renderEffects',
+  'renderInstruments',
+  'renderPhrases',
+  'renderTracks',
+  'renderPatches',
+  'renderEnd',
+  'render',
+  'reset',
+].forEach((fn) => {
+  measure(InteractiveRendererModel.prototype, fn, {
+    label: `#${fn}()`
+  });
+});
+

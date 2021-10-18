@@ -6,7 +6,9 @@ import {
 } from './src/controls';
 
 import {
-  Console
+  Console,
+  ConsoleProvider,
+  useConsoleLogs,
 } from './src/console';
 
 import {
@@ -66,6 +68,7 @@ import {
 module.exports = {
   ConfirmModal,
   Console,
+  ConsoleProvider,
   DialogModal,
   IconButton,
   Keyboard,
@@ -93,5 +96,6 @@ module.exports = {
   TreeGroup,
   TreeGroupItems,
   TreeItem,
+  useConsoleLogs,
   useEventListener,
 };

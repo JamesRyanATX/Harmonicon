@@ -9,4 +9,4 @@ export { mapParallel, mapSeries } from './src/async.js';
 export { generateIdentifier } from './src/string.js';
 export { eventify } from './src/eventify.js';
 export { times } from './src/times.js';
-export { measure } from './src/measure.js';
+export { measure, measureSync, measureAsync } from './src/measure.js';

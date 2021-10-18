@@ -1,7 +1,7 @@
 import audioEncoder from 'audio-encoder';
 import { RendererError } from '../../errors';
 import { RendererBaseModel } from './base';
-import { measure } from '@composer/util';
+import { mapParallel, measureAsync, measureSync } from '@composer/util';
 
 export class BackgroundRendererModel extends RendererBaseModel {
 
@@ -32,8 +32,7 @@ export class BackgroundRendererModel extends RendererBaseModel {
     await this.reset();
 
     // Render session to an audio buffer
-    this.buffer = await this.driverRenderer.renderToBuffer({ duration, channels, sampleRate },
-      this.renderSession.bind(this));
+    this.buffer = await this.toBuffer({ duration, channels, sampleRate });
 
     this.logger.debug(`#render() created buffer with channels = ${channels}; sampleRate = ${sampleRate} `);
 
@@ -75,6 +74,12 @@ export class BackgroundRendererModel extends RendererBaseModel {
     });
   }
 
+  async toBuffer({ duration, channels, sampleRate } = {}) {
+    return await this.driverRenderer.renderToBuffer(
+      { duration, channels, sampleRate }, this.renderSession.bind(this)
+    );
+  }
+
   toWav({ sampleRate, onProgress } = {}) {
     return this.encode({ format: 'wav', sampleRate, onProgress });
   }
@@ -93,10 +98,9 @@ export class BackgroundRendererModel extends RendererBaseModel {
    */
   toWaveform({
     channel = null,
-    buckets = null,
   } = {}) {
     const data = (() => {
-      if (channel) {
+      if (channel !== null) {
         return Array.from(this.buffer.getChannelData(channel));
       }
       else {
@@ -108,35 +112,42 @@ export class BackgroundRendererModel extends RendererBaseModel {
         });
       }
     })();
-    
-    const waveform = [];
-    const bucketSize = Math.ceil(data.length / buckets);
 
-    this.logger.debug(`#toWaveform() channel = ${channel}; size = ${data.length}; buckets = ${buckets}; bucketSize = ${bucketSize}`);
+    this.logger.debug(`#toWaveform() channel = ${channel}; size = ${data.length};`);
 
-    if (!buckets) {
-      return data;
-    }
-
-    let bucket = [];
-
-    while (data.length > 0 && waveform.length < buckets) {
-      while (data.length > 0 && bucket.length < bucketSize) {
-        bucket.push(data.shift());
-      }
-
-      waveform.push(bucket.reduce((sum, value) => {
-        return sum + value;
-      }, 0) / bucket.length);
-
-      bucket = [];
-    }
-
-    return waveform;
+    return data;
   }
 
 }
 
-measure(BackgroundRendererModel.prototype, 'render', '#render()');
-
+// Initialize model properties
 BackgroundRendererModel.init();
+
+// Add metric observers
+[
+  'renderSessionEvents',
+  'renderEffects',
+  'renderInstruments',
+  'renderPhrases',
+  'renderTracks',
+  'renderPatches',
+  'renderEnd',
+  'render',
+  'reset',
+  'encode',
+  'toBuffer',
+  'toWav',
+  'toMp3',
+].forEach((fn) => {
+  measureAsync(BackgroundRendererModel.prototype, fn, {
+    label: `#${fn}()`,
+  });
+});
+
+[
+  'toWaveform',
+].forEach((fn) => {
+  measureSync(BackgroundRendererModel.prototype, fn, {
+    label: `#${fn}()`,
+  });
+});
