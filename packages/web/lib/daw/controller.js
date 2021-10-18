@@ -3,9 +3,6 @@ import { ComposerError, render } from '@composer/compose';
 import { Harmonicon } from '@composer/core';
 import { TransportModel, InteractiveRendererModel } from '@composer/core';
 
-import { renderWaveformTask } from '../../components/daw/tasks/render_waveform';
-
-
 export class Controller {
 
   get audio () {
@@ -273,9 +270,6 @@ export class Controller {
       this.workspace.save();
 
       this.emit('file:selected', file);
-
-      // TODO-- move this elsewhere
-      this.transport.blockWhile(renderWaveformTask({ controller: this }));
 
       return file;
     }

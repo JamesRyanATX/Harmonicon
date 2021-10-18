@@ -1,13 +1,16 @@
+import { useState, useEffect } from 'react';
+import { useEventListener } from '@composer/web-components';
+
 import { Actions } from './transport/actions';
 import { Timeline } from './transport/timeline';
 import { Display } from './transport/display';
 import { Meter } from './transport/meter';
 import { Busy } from './transport/busy';
+import { renderWaveformTask } from './tasks/render_waveform';
+import { useTransport } from './providers/transport';
+import { useController } from './providers/controller';
 
 import styles from '../../styles/daw.transport.module.css';
-import { useState } from 'react';
-import { useEventListener } from '@composer/web-components';
-import { useTransport } from './providers/transport';
 
 function TransportGroup({
   flex = false,
@@ -25,15 +28,27 @@ function TransportGroup({
   )
 }
 
-export function Transport ({ controller }) {
+export function Transport () {
   const transport = useTransport();
+  const controller = useController();
+
   const [ busy, setBusy ] = useState(transport.busy);
 
   function onStateChange() {
     setBusy(transport.busy);
   }
 
+  function renderWaveform() {
+    transport.blockWhile(renderWaveformTask({ controller }));
+  }
+
   useEventListener(transport, 'changed:state', onStateChange);
+
+  // Re-render when tab/file is selected
+  useEventListener(controller, 'file:selected', renderWaveform);
+
+  // Initial render
+  useEffect(renderWaveform, []);
 
   return (
     <div className={styles.transport}>

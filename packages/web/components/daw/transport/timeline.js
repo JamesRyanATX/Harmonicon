@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useController } from '../providers/controller';
-import { useFile } from '../providers/file';
+
 import { PositionModel } from '@composer/core';
 import {
   Timeline as WebComponentsTimeline,
@@ -10,6 +9,9 @@ import {
   TimelineMeasuresLayer,
   TimelineWaveformLayer,
 } from '@composer/web-components';
+
+import { useController } from '../providers/controller';
+import { useFile } from '../providers/file';
 
 
 function positionToX(position, measureWidth, snapTo = 'beat') {
@@ -46,6 +48,7 @@ function TransportWaveform({
     setDuration(newValue);
   }
 
+  // Update waveform and duration when they are generated
   useEffect(() => {
     setWaveform(file.waveform || []);
     setDuration(file.duration || 0);

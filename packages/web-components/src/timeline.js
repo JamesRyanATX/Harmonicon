@@ -226,7 +226,7 @@ export function TimelineWaveformLayer({
   const canvasRef = useRef(null);
   const width = unitsPerSecond * duration;
 
-  // console.log(`width=${width} measureWidth=${measureWidth} duration=${duration} unitsPerSecond=${unitsPerSecond}`)
+  // console.log(`width=${width} measureWidth=${measureWidth} samples=${waveform.length} duration=${duration} unitsPerSecond=${unitsPerSecond}`)
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -234,6 +234,7 @@ export function TimelineWaveformLayer({
     const width = canvas.width;
     const height = canvas.height;
 
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = color;
   
     const step = Math.ceil(waveform.length / width);
@@ -255,7 +256,7 @@ export function TimelineWaveformLayer({
       }
       ctx.fillRect(i, (1 + min) * amp, 1, Math.max(1, (max - min) * amp));
     }
-  }, [ canvasRef, color, waveform ]);
+  }, [ canvasRef, color, waveform, duration ]);
 
   return (
     <TimelineLayer opacity={opacity} className={styles.timelineWaveformLayer}>
