@@ -52,7 +52,11 @@ export function ConsoleProvider({
 
   useEffect(() => {
     Hook(target, (log) => setLogs((currLogs) => [...currLogs, log]), false);
-    return () => Unhook(target)
+
+    return () => {
+      setLogs([]);
+      Unhook(target)
+    }
   }, [ target ]);
 
   const ctx = { logs, setLogs };
