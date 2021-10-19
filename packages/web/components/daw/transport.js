@@ -39,7 +39,7 @@ export function Transport () {
   }
 
   function renderWaveform() {
-    transport.blockWhile(renderWaveformTask({ controller }));
+    // transport.blockWhile(renderWaveformTask({ controller }));
   }
 
   useEventListener(transport, 'changed:state', onStateChange);
