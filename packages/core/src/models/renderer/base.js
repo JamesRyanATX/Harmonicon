@@ -55,13 +55,19 @@ export class RendererBaseModel extends BaseModel {
     patches = true,
     end = true
   } = {}) {
-    sessionEvents ? await this.renderSessionEvents() : true;
-    instruments ? await this.renderInstruments() : true;
-    effects ? await this.renderEffects() : true;
-    phrases ? await this.renderPhrases() : true;
+    await Promise.all([
+      sessionEvents ? this.renderSessionEvents() : true,
+      instruments ? this.renderInstruments() : true,
+      effects ? this.renderEffects() : true,
+      phrases ? this.renderPhrases() : true,        
+    ]);
+
     tracks ? await this.renderTracks() : true;
-    patches ? await this.renderPatches() : true;
-    end ? await this.renderEnd() : true;
+
+    await Promise.all([
+      patches ? this.renderPatches() : true,
+      end ? this.renderEnd() : true,
+    ]);
 
     return;
   }
