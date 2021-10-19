@@ -248,15 +248,6 @@ export class BaseRenderer extends AudioDriver.Renderer {
       await Tone.start();
     }
 
-    // if (this.state === 'paused') {
-    //   this.logger.debug('#play() resuming paused session')
-    // }
-    // else {
-    //   this.transport.set({
-    //     position: position.toMBS(),
-    //   });
-    // }
-
     return this.transport.start();
   }
 
