@@ -130,6 +130,7 @@
   background-color: var(--theme-neutral-color-3);
   border: 1px solid var(--theme-neutral-color-5); 
   margin-right: 3px;
+  margin-bottom: 1px;
   width: 10px;
   position: relative;
   border-radius: 2px;
