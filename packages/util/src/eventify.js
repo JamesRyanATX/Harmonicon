@@ -32,7 +32,7 @@ const Events = {
     //   console.log(`emit ${eventName} to ${this.listeners[eventName].length} listener(s)`);
     // }
 
-    (this.listeners[eventName] || []).forEach((fn) => {
+    (this.listeners[eventName] || []).forEach(async (fn) => {
       fn(payload);
     });
   },
