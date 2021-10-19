@@ -18,10 +18,13 @@ export class BackgroundRendererModel extends RendererBaseModel {
    * @returns {AudioBuffer}
    */
   async render ({
-    channels = 2,
-    sampleRate = 44100,
+    channels = null,
+    sampleRate = null,
     duration = null,
   } = {}) {
+    sampleRate = sampleRate || 44100;
+    channels = channels || 2;
+
     this.logger.debug(`#render() channels = ${channels}; sampleRate = ${sampleRate}; duration = ${duration}`)
 
     if (!duration) {

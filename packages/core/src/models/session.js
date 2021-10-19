@@ -163,10 +163,11 @@ export class SessionModel extends sequenceable(BaseModel) {
    */
   async render ({
     interactive = true,
-    duration = null
+    duration = null,
+    sampleRate = null,
   } = {}) {
     return (interactive ? this.interactiveRenderer : this.backgroundRenderer).render({
-      duration
+      duration, sampleRate
     });
   }
 

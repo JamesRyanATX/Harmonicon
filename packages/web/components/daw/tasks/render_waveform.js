@@ -1,6 +1,9 @@
 import { Task } from '@composer/util';
 
-export const renderWaveformTask = ({ controller }) => {
+export const renderWaveformTask = ({
+  controller,
+  sampleRate = 44100,
+}) => {
   return new Task(async (task) => {
     if (
       controller.file &&
@@ -21,6 +24,6 @@ export const renderWaveformTask = ({ controller }) => {
       });
 
       return { waveform, duration };
-    });
+    }, { sampleRate });
   });
 }

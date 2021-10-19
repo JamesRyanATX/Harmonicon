@@ -336,7 +336,7 @@ export class Controller {
   // Rendering
   // ---------
 
-  async withExportableRendering(fn) {
+  async withExportableRendering(fn, { sampleRate } = {}) {
     return this.withInteractiveRendering(async ({ renderer }) => {
 
       // Temporary hack until this can be computed more reliably
@@ -344,22 +344,22 @@ export class Controller {
         ? renderer.session.elapsedTimeAtPosition(renderer.cache.events.last.at) + 5
         : 0;
 
-      return await this.withBackgroundRendering({ duration }, async ({ renderer, composer }) => {
+      return await this.withBackgroundRendering(async ({ renderer, composer }) => {
         return fn({ renderer, composer, duration });
-      });
+      }, { duration, sampleRate });
     });
   }
 
-  async withBackgroundRendering({ duration }, fn) {
-    return fn(await this.createBackgroundRendering({ duration }));
+  async withBackgroundRendering(fn, { duration, sampleRate }) {
+    return fn(await this.createBackgroundRendering({ duration, sampleRate }));
   }
 
-  async createBackgroundRendering({ duration }) {
+  async createBackgroundRendering({ duration, sampleRate }) {
     await this.audio.startAudioBuffer();
 
     return this.createRendering({
       interactive: false,
-      duration
+      duration, sampleRate
     });
   }
 
@@ -388,10 +388,14 @@ export class Controller {
     return renderer;
   }
 
-  async createRendering({ interactive, duration }) {
+  async createRendering({
+    interactive,
+    duration,
+    sampleRate
+  }) {
     await this.audio.startAudioBuffer();
 
-    return render({ code: this.file.source, interactive, duration });
+    return render({ code: this.file.source, interactive, duration, sampleRate });
   }
 
   // Misc
