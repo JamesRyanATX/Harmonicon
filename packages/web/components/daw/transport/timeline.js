@@ -65,8 +65,6 @@ function TransportWaveform({
   return (waveform.length > 0) ? (
     <TimelineWaveformLayer
       waveform={waveform}
-      // color="rgb(46, 207, 235)"
-      color="rgb(255, 255, 255)"
       duration={duration}
       measureWidth={measureWidth}
       unitsPerSecond={unitsPerSecond}

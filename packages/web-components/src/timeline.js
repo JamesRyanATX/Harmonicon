@@ -217,8 +217,11 @@ export function TimelineCursorLayer({
 
 export function TimelineWaveformLayer({
   waveform = [],
-  color = '#ffffff',
-  opacity = 0.5,
+  color = 'rgb(60, 60, 60)',
+  clipColor = 'rgb(150, 60, 60)',
+  clipThreshold = 1,
+  showClipping = true,
+  opacity = 1,
   measureWidth = null,
   duration = null,
   unitsPerSecond = null,
@@ -226,26 +229,36 @@ export function TimelineWaveformLayer({
   const canvasRef = useRef(null);
   const width = unitsPerSecond * duration;
 
-  // console.log(`width=${width} measureWidth=${measureWidth} samples=${waveform.length} duration=${duration} unitsPerSecond=${unitsPerSecond}`)
+  console.log(`width=${width} measureWidth=${measureWidth} samples=${waveform.length} duration=${duration} unitsPerSecond=${unitsPerSecond}`)
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-    const width = canvas.width;
     const height = canvas.height;
 
+    // Overwrite existing render
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = color;
   
     const step = Math.ceil(waveform.length / width);
     const amp = height / 2;
+
+    // console.log(`width=${width} step=${step}`);
     
     for (let i = 0; i < width; i++) {
       let min = 1.0;
       let max = -1.0;
+      let clipped = false;
         
       for (let j = 0; j < step; j++) {
         const datum = waveform[(i * step) + j];
+
+        if (showClipping && (isNaN(datum) || Math.abs(datum) > clipThreshold)) {
+          clipped = true;
+        }
+
+        datum = (isNaN(datum)) ? 0 : datum;
+        datum = (datum > 1) ? 1 : datum;
+        datum = (datum < -1) ? -1 : datum;
 
         if (datum < min) {
           min = datum;
@@ -254,6 +267,10 @@ export function TimelineWaveformLayer({
           max = datum;
         }
       }
+
+      // console.log(`${i}: ${min}/${max} inRange=${inRange}`);
+
+      ctx.fillStyle = (clipped) ? clipColor : color;
       ctx.fillRect(i, (1 + min) * amp, 1, Math.max(1, (max - min) * amp));
     }
   }, [ canvasRef, color, waveform, duration ]);
