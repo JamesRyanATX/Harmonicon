@@ -42,6 +42,7 @@ export function Select({
 }
 
 export function Button({
+  color = null,
   children = null,
   onClick = () => {},
   narrow = false,
@@ -52,16 +53,19 @@ export function Button({
       primary ? styles.buttonIsPrimary : '',
       narrow ? styles.buttonIsNarrow : ''
     ].join(' ')}>
-      <button onClick={onClick}>{children}</button>
+      <button onClick={onClick} style={{
+        color: color || 'inherit'
+      }}>{children}</button>
     </Control>
   )
 }
 
 export function IconButton({
   icon = null,
+  color = null,
   onClick = () => {},
 }) {
   return (
-    <Button onClick={onClick} narrow>{icon()}</Button>
+    <Button onClick={onClick} color={color} narrow>{icon()}</Button>
   )
 }

@@ -13,7 +13,7 @@ export function WorkspaceProvider({
   children,
 }) {
   const controller = useController();
-  const logger = useLogger('WorkspacePovider')
+  const logger = useLogger('WorkspaceProvider')
 
   const [ file, setFile ] = useState();
 

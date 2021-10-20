@@ -1,5 +1,5 @@
 .control {
-  --control-border-color: rgb(100, 100, 100);
+  --control-border-color: var(--theme-neutral-color-7);
   --control-color: var(--theme-neutral-color-9);
   --control-padding: 4px;
   --control-label-color: rgb(150, 150, 150);
@@ -36,13 +36,20 @@
   .button button {
     background-color: transparent;
     border: 1px solid var(--control-border-color);
-    border-radius: var(--theme-border-radius);
+    /* border-radius: var(--theme-border-radius); */
     color: var(--control-color);
     cursor: pointer;
     margin: 0;
-    min-width: 20px;
+    min-width: 30px;
     padding: var(--control-padding) 15px;
     text-align: center;
+  }
+
+  .button button:hover {
+    border-color: var(--control-hover-border-color);
+  }
+
+  .button button:active {
   }
 
   /* flavors */
@@ -61,9 +68,12 @@
     background-color: rgba(var(--theme-primary-color-rgb), 0.1)
   }
 
-  .buttonIsNarrow button {
-    padding: 0;
+  .buttonIsNarrow {
   }
+
+    .buttonIsNarrow button {
+      padding: 2px 0 0 0;
+    }
 
 
 /* select */

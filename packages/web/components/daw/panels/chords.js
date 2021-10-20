@@ -3,18 +3,23 @@ import { whole } from '@composer/compose';
 import { useState } from 'react';
 
 import {
+  IconButton,
   Panel,
   PanelFilterRow,
   Tree,
-  TreeGroup,
   TreeItem,
   Select,
 } from '@composer/web-components';
 
-import { IoVolumeHighSharp, IoCodeSharp } from 'react-icons/io5';
+import {
+  IoVolumeHighSharp,
+  IoCodeSharp, 
+  IoLockClosedOutline,
+  IoLockClosedSharp,
+} from 'react-icons/io5';
 import { CgPiano } from 'react-icons/cg';
 
-const notes = [ 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G#' ];
+const notes = [ 'A', 'Ab', 'A#', 'B', 'Bb', 'C', 'C#', 'D', 'Db', 'D#', 'E', 'Eb', 'F', 'F#', 'G', 'Gb', 'G#' ];
 const octaves = [ 1, 2, 3, 4, 5, 6 ];
 
 const ChordTemplate = ({ symbol, octave }) => {
@@ -62,12 +67,29 @@ function Chords({
 export function ChordsPanel() {
   const [ root, setRoot ] = useState('C');
   const [ tonic, setTonic ] = useState('C');
+  const [ lock, setLock ] = useState(false);
   const [ octave, setOctave ] = useState(4);
 
   const chords = root ? ChordModel.chordsFor({ 
     root: `${root}${octave}`,
     tonic: tonic || root,
   }) : [];
+
+  function selectRoot(value) {
+    setRoot(value);
+
+    if (lock) {
+      setTonic(value);
+    }
+  }
+
+  function selectTonic(value) {
+    setTonic(value);
+
+    if (lock) {
+      setRoot(value);
+    }
+  }
 
   return (
     <Panel
@@ -76,23 +98,32 @@ export function ChordsPanel() {
       flex={1}
       onClose={controller.toggleChordsPanel.bind(controller)}
       filter={() => (
-        <PanelFilterRow>
-          <Select label="Root" value={root} onChange={setRoot} span={1}>
-            {notes.map((note) => (
-              <option key={note}>{note}</option>
-            ))}
-          </Select>
-          <Select label="Tonic" value={tonic} onChange={setTonic} span={1}>
-            {notes.map((note) => (
-              <option key={note}>{note}</option>
-            ))}
-          </Select>
-          <Select label="Oct" value={octave} onChange={setOctave} span={1}>
-            {octaves.map((octave) => (
-              <option key={octave}>{octave}</option>
-            ))}
-          </Select>
-        </PanelFilterRow>
+        <>
+          <PanelFilterRow>
+            <Select label="Root" value={root} onChange={selectRoot} span={1}>
+              {notes.map((note) => (
+                <option key={note}>{note}</option>
+              ))}
+            </Select>
+            <IconButton
+              icon={lock ? IoLockClosedSharp : IoLockClosedOutline}
+              color={lock ? 'var(--theme-palette-yellow)' : undefined}
+              onClick={() => (setLock(!lock))}
+            />
+            <Select label="Tonic" value={tonic} onChange={selectTonic} span={1}>
+              {notes.map((note) => (
+                <option key={note}>{note}</option>
+              ))}
+            </Select>
+          </PanelFilterRow>
+          <PanelFilterRow>
+            <Select label="Oct" value={octave} onChange={setOctave} span={1}>
+              {octaves.map((octave) => (
+                <option key={octave}>{octave}</option>
+              ))}
+            </Select>
+          </PanelFilterRow>
+        </>
       )}
     >
       <Tree>

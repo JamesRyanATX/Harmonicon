@@ -33,3 +33,4 @@ The UI is served on port 3000.
 * Google analytics
 * Clean up about modal
 * Add GitHub project
+* CI: build docs during deploy
