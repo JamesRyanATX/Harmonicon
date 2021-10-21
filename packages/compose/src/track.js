@@ -1,5 +1,6 @@
 import { TrackModel, PhraseModel } from '@composer/core';
 import { SequencedEventProxy } from './util/sequenced_event_proxy';
+import { ComposerError } from './errors';
 import { BaseSequencedComposer } from './base/sequenced';
 import { generateIdentifier } from '@composer/util';
 
@@ -112,6 +113,10 @@ export class TrackComposer extends BaseSequencedComposer {
         return this.model.session.phrases.filterByProperty('name', nameOrSteps)[0];
       }
     })();
+
+    if (!phrase) {
+      throw new ComposerError(`Phrase "${nameOrSteps}" is not defined.`)
+    }
 
     this.sequence({
       type: 'phrase',
