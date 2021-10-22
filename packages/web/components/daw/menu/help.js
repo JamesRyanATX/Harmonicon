@@ -5,7 +5,7 @@ import {
 } from '@composer/web-components';
 
 import {
-  IoBookSharp,
+  IoBookSharp, IoLogoGithub
 } from "react-icons/io5";
 
 import { AboutModal } from '../modals/menu/help/about';
@@ -20,6 +20,11 @@ export function HelpDropdown() {
         label="Documentation"
         href="/doc/compose/@composer/compose/1.0.0/index.html"
         icon={IoBookSharp}
+      />
+      <MenuDropdownItem
+        label="Source Code"
+        href="https://github.com/JamesRyanATX/harmonicon"
+        icon={IoLogoGithub}
       />
       <MenuDropdownItem
         label="About"

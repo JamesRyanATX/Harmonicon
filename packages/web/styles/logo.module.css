@@ -1,128 +1,29 @@
 .logo {
-  --color-1: #D60427;
-  --color-2: #F94144;
-  --color-3: #f3722c;
-  --color-4: #f8961e;
-  --color-5: #f9c74f;
-  --color-6: #90be6d;
-  --color-7: #43aa8b;
-  --color-8: #5151d6;
-  --color-9: #0b0bfe;
-  --color-10: #cc50b5;
-}
-
-.logo {
-  color: #fff;
   display: flex;
   flex-direction: row;
-  text-transform: uppercase;
+  justify-content: center;
+  background: repeating-linear-gradient(to right,
+    var(--theme-palette-red) 0%,
+    var(--theme-secondary-color) 33%,
+    var(--theme-primary-color) 66%,
+    var(--theme-palette-red) 100%
+  );
+  background-size: 200% auto;
+  background-position: 0 100%;
+  animation: logo 5s infinite;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
 }
 
-.letter {
-  display: flex;
-  flex-direction: column;
-  transition: color 5s;
-}
-
-.shape {
-  transition: background-color 0.1s;
-}
-
-.shapeO {
-  border: 1px solid transparent;
-  border-radius: 100px;
-  position: relative;
-}
-
-  .shapeO > div {
-    width: 2px;
-    position: absolute;
+  .logo > span:first-child {
   }
 
-  .shapeO > div:nth-child(1) {
-    right: 0;
+  .logo > span:last-child {
+    text-transform: uppercase;
+    font-family: 'Poiret One';
   }
 
-  .shapeO > div:nth-child(2) {
+  @keyframes logo { 
+    0%   { background-position: 0 0; }
+    100% { background-position: -200% 0; }
   }
-
-
-/* flavors */
-
-.logoIsLarge {
-  font-family: 'Poiret One';
-  font-size: 72px;
-  line-height: 72px;
-}
-
-.logoIsLarge .shapeO {
-  width: 55px;
-  height: 55px;
-  margin: 7px 7px 0 7px;
-}
-
-  .logoIsLarge .shapeO > div {
-    width: 2px;
-    height: 40px;
-  }
-
-  .logoIsLarge .shapeO > div:nth-child(1) {
-    top: -10px;
-  }
-
-  .logoIsLarge .shapeO > div:nth-child(2) {
-    bottom: -10px;
-  }
-
-.logoIsSmall {
-  font-size: 12px;
-  line-height: 12px;
-}
-
-  .logoIsSmall .letter {
-    margin-left: 1px;
-  }
-
-  .logoIsSmall .shapeO {
-    width: 11px;
-    height: 11px;
-    margin: 1px 2px 0 2px;
-  }
-
-  .logoIsSmall .shapeO > div {
-    width: 1px;
-    height: 10px;
-  }
-
-  .logoIsSmall .shapeO > div:nth-child(1) {
-    top: -5px;
-  }
-
-  .logoIsSmall .shapeO > div:nth-child(2) {
-    bottom: -5px;
-  }
-
-
-/* animation states */
-
-.letter[data-index="0"] { color: var(--color-1); }
-.letter[data-index="1"] { color: var(--color-2); }
-.letter[data-index="2"] { color: var(--color-3); }
-.letter[data-index="3"] { color: var(--color-4); }
-.letter[data-index="4"] { color: var(--color-5); }
-.letter[data-index="5"] { color: var(--color-6); }
-.letter[data-index="6"] { color: var(--color-7); }
-.letter[data-index="7"] { color: var(--color-8); }
-.letter[data-index="8"] { color: var(--color-9); }
-.letter[data-index="9"] { color: var(--color-10); }
-
-.letter[data-index="0"] .shape .border { border-color: var(--color-1); }
-.letter[data-index="1"] .shape .border { border-color: var(--color-2); }
-.letter[data-index="2"] .shape .border { border-color: var(--color-3); }
-.letter[data-index="3"] .shape .border { border-color: var(--color-4); }
-.letter[data-index="4"] .shape .border { border-color: var(--color-5); }
-.letter[data-index="5"] .shape .border { border-color: var(--color-6); }
-.letter[data-index="6"] .shape .border { border-color: var(--color-7); }
-.letter[data-index="7"] .shape .border { border-color: var(--color-8); }
-.letter[data-index="8"] .shape .border { border-color: var(--color-9); }
-.letter[data-index="9"] .shape .border { border-color: var(--color-10); }

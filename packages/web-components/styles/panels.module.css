@@ -48,6 +48,10 @@
       right: 4px;
     }
 
+      .panelHeader span a {
+        color: var(--theme-neutral-color-9);
+      }
+
       .panelHeader span a:hover {
         color: #fff;
         cursor: pointer;

@@ -32,14 +32,21 @@ The UI is served on port 3000.
 * ~~Feature: Expressions - cycle (loop), randomize, transpose, bounce~~
 * ~~Bug: mouseexit selection really buggy~~
 * ~~Bug: transport display not updating as song plays~~
-* Bug: live update controller issue
-* Bug: Clean up about modal
+* ~~Bug: live update controller issue~~
+* Bug: Clean up about modal, remove logo component
 * Bug: GitHub project
 * Bug: build docs during deploy
+* Feature: Disable editor while playing
+* Feature: expression: curve('pitch', { from, to })
+* Feature: expression: ascend(to)
+* Feature: expression: descend(to)
+* Feature: expression: fill(duration, unit)
 * Feature: note volume
 * Feature: note velocity
-* Feature: faster waveform rendering
-* Feature: Disable editor while playing
+* Feature: expression: curve('volume', { from, to })
+* Feature: expression: curve('velocity', { from, to })
 * Feature: Google analytics
 * Feature: Add "sidebars" toggle
 * Feature: save panel dimensions to session
+* Feature: record notes played on keyboard/midi
+* Feature: faster waveform rendering

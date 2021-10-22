@@ -14,9 +14,7 @@ import { useController } from './providers/controller';
 
 import styles from '../../styles/daw.module.css';
 
-export function Interface ({
-  logo = null,
-}) {
+export function Interface () {
   const controller = useController();
   const panels = controller.workspace.panels;
 
@@ -91,7 +89,7 @@ export function Interface ({
 
   return (
     <div className={styles.dawInterface}>
-      <Menu controller={controller} logo={logo} />
+      <Menu controller={controller} />
       <Panels columns={columns} />
       <Transport controller={controller} />
       <Modals />

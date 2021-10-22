@@ -109,6 +109,12 @@ body {
 }
 
 
+/* links */
+
+a, a:link, a:visited {
+  color: var(--theme-link-color);
+}
+
 /* typography */
 
 h1, h2, h3, h4, h5, h6 {
