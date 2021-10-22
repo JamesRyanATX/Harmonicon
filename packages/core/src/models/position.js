@@ -81,6 +81,13 @@ export class PositionModel extends BaseModel {
     return this.measure === 0 && this.beat === 0 && this.subdivision === 0;
   }
 
+  compare(to) {
+    const left = this.measure * 10000 + this.beat * 100 + this.subdivision;
+    const right = to.measure * 10000 + to.beat * 100 + to.subdivision;
+
+    return (left === right) ? 0 : (left < right) ? -1 : 1;
+  }
+
   add (amount, unit = 'measure') {
     if (unit === 'measure') {
       return new this.constructor({

@@ -126,7 +126,7 @@ export class ExpressionModel extends BaseModel {
   }
 
   toExpression(properties = {}) {
-    return new ExpressionModel({ source, ...properties });
+    return new ExpressionModel({ source: this, ...properties });
   }
 
   each(fn) {

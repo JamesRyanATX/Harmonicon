@@ -207,10 +207,6 @@ export class RendererBaseModel extends BaseModel {
       subdivision: 0
     });
 
-    // this.logger.info(`render.session.end: [+] at = ${stopAt.toMBS()}`);
-    // this.logger.debug(`render.session.end:     last event = ${lastEvent ? lastEvent.at : 'unknown'}`)
-    // this.logger.debug(`render.session.end:     sustain for = ${sustainFor} measures`);
-
     return this.scheduleEvent({
       log: false,
       event: new SequencedEventModel({

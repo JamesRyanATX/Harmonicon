@@ -31,14 +31,7 @@ export class SequencedEventLogModel {
       event.at.subdivision
     ).push(event);
 
-    if (
-      !this.last || 
-      (
-        event.at.measure >= this.last.at.measure &&
-        event.at.beat >= this.last.at.beat &&
-        event.at.subdivision >= this.last.at.subdivision
-      )
-    ) {
+    if (!this.last || event.at.compare(this.last.at) === 1) {
       this.last = event;
     }
 
