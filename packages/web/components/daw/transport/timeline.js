@@ -12,6 +12,7 @@ import {
 
 import { useController } from '../providers/controller';
 import { useFile } from '../providers/file';
+import { useTransport } from '../providers/transport';
 
 
 function positionToX(position, measureWidth, snapTo = 'beat') {
@@ -143,7 +144,7 @@ export function Timeline ({
   initialLength = 100,
   labelInterval = 10,
 }) {
-  const transport = useController().transport;
+  const transport = useTransport();
   
   const [ loaded, setLoaded ] = useState(false);
   const [ position, setPosition ] = useState(transport.position);
@@ -156,7 +157,6 @@ export function Timeline ({
   const [ playFrom, setPlayFrom ] = useState(transport.playFrom);
   const [ playTo, setPlayTo ] = useState(transport.playTo);
 
-  
   if (!loaded) {
     transport.on('changed:loop', ({ newValue }) => (setLoop(newValue)));
     transport.on('changed:loopFrom', ({ newValue }) => (setLoopFrom(newValue)));

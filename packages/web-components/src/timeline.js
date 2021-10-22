@@ -193,7 +193,9 @@ export function TimelineCursorLayer({
     setActive(true);
   }
 
-  function onMouseLeave(e) { 
+  function onMouseLeave(e) {
+    setSelectionFrom(null);
+    setSelectionTo(null);
     setActive(false);
   }
 

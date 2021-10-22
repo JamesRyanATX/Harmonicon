@@ -42,10 +42,15 @@ export function Transport () {
     // transport.blockWhile(renderWaveformTask({ controller }));
   }
 
+  function resetTransport() {
+    transport.reset();
+  }
+
   useEventListener(transport, 'changed:state', onStateChange);
 
   // Re-render when tab/file is selected
   useEventListener(controller, 'file:selected', renderWaveform);
+  useEventListener(controller, 'file:selected', resetTransport);
 
   // Initial render
   useEffect(renderWaveform, []);

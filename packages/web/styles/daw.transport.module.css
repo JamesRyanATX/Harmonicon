@@ -20,13 +20,12 @@
 
 .transport {
   border-radius: var(--theme-border-radius);
-  color: #fff;
   display: flex;
   flex-direction: row;
   margin: 0 0px 6px 6px;
-  position: relative;
   overflow: hidden;
-  border-radius: var(--theme-border-radius);
+  position: relative;
+  user-select: none;
 }
 
 .transportGroup {
