@@ -5,6 +5,7 @@ import styles from '../styles/tree.module.css';
 
 export function TreeItem({
   label = 'Item',
+  description = null,
   icon = () => {},
   onClick = () => {},
   actions = () => {}
@@ -17,9 +18,13 @@ export function TreeItem({
       <span className={styles.treeItemLabel}>
         {label}
       </span>
+      <span className={styles.treeItemDescription}>
+        {description}
+      </span>
       <span className={styles.treeItemActions}>
         {actions()}
       </span>
+
     </div>
   )
 }

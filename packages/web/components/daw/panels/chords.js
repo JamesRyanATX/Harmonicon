@@ -21,6 +21,13 @@ import { CgPiano } from 'react-icons/cg';
 
 const notes = [ 'A', 'Ab', 'A#', 'B', 'Bb', 'C', 'C#', 'D', 'Db', 'D#', 'E', 'Eb', 'F', 'F#', 'G', 'Gb', 'G#' ];
 const octaves = [ 1, 2, 3, 4, 5, 6 ];
+const qualities = [
+  'Augmented',
+  'Diminished',
+  'Major',
+  'Minor',
+  'Unknown'
+]
 
 const ChordTemplate = ({ symbol, octave }) => {
   return `quarter.note('*${symbol}', { octave: ${octave} })`;
@@ -38,21 +45,23 @@ function Chords({
   return (
     <>
       {chords.map((chord) => {
+        const actionParams = { root, tonic, octave, symbol: chord.symbol };
+
         return (
           <TreeItem 
             key={chord.symbol}
-            label={chord.symbol}
+            label={chord.name}
+            description={chord.notes.join(' ')}
             icon={icon}
+            onClick={() => (onPlay(actionParams))}
             actions={() => {
-              const actionParams = { root, tonic, octave, symbol: chord.symbol };
-
               return (
                 <>
-                  <a onClick={() => (onCopy(actionParams))} title="Copy to clipboard">
-                    <IoCodeSharp />
-                  </a>
                   <a onClick={() => (onPlay(actionParams))} title="Play chord">
                     <IoVolumeHighSharp />
+                  </a>
+                  <a onClick={() => (onCopy(actionParams))} title="Copy to clipboard">
+                    <IoCodeSharp />
                   </a>
                 </>
               );
@@ -67,12 +76,14 @@ function Chords({
 export function ChordsPanel() {
   const [ root, setRoot ] = useState('C');
   const [ tonic, setTonic ] = useState('C');
-  const [ lock, setLock ] = useState(false);
+  const [ lock, setLock ] = useState(true);
   const [ octave, setOctave ] = useState(4);
+  const [ quality, setQuality ] = useState('Major');
 
   const chords = root ? ChordModel.chordsFor({ 
     root: `${root}${octave}`,
     tonic: tonic || root,
+    quality
   }) : [];
 
   function selectRoot(value) {
@@ -117,9 +128,16 @@ export function ChordsPanel() {
             </Select>
           </PanelFilterRow>
           <PanelFilterRow>
-            <Select label="Oct" value={octave} onChange={setOctave} span={1}>
+            <Select label="Octave" value={octave} onChange={setOctave} span={1}>
               {octaves.map((octave) => (
                 <option key={octave}>{octave}</option>
+              ))}
+            </Select>
+          </PanelFilterRow>
+          <PanelFilterRow>
+            <Select label="Quality" value={quality} onChange={setQuality} span={1}>
+              {qualities.map((quality) => (
+                <option key={quality}>{quality}</option>
               ))}
             </Select>
           </PanelFilterRow>

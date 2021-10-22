@@ -44,14 +44,21 @@ export class ChordModel extends BaseModel {
 
   static chordsFor({
     root = 'c4',
-    tonic = null
+    tonic = null,
+    quality = null,
   }) {
     return this.chordTypes.reduce((chords, type) => {
       const chord = TonalChord.getChord(type.symbol, tonic || root, root);
 
-      if (!chord.empty) {
+      if (
+        chord.empty ||
+        quality && (chord.quality !== quality)
+      ) {
+        // skip (for legibility)
+      }
+      else {
         chords.push(new this({
-          name: chord.name,
+          name: chord.name.length === 2 ? chord.symbol : chord.name,
           symbol: chord.symbol,
           notes: chord.notes,
           quality: chord.quality,
@@ -62,7 +69,8 @@ export class ChordModel extends BaseModel {
       }
 
       return chords;
-    }, []);
+    }, [])
+      .sort((a, b) => ((a.name < b.name) ? -1 : 1));
   }
 
   static getDefinition({

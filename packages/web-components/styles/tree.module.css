@@ -23,6 +23,10 @@
   cursor: pointer;
   display: flex;
   flex-direction: row;
+  position: relative;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
   .treeItemIcon {
@@ -32,17 +36,26 @@
   }
 
   .treeItemLabel {
+  }
+
+  .treeItemDescription {
     flex: 1;
+    color: var(--theme-neutral-color-7);
+    margin-left: 5px;
   }
 
   .treeItemActions {
     display: none;
+    position: absolute;
+    top: 6px;
+    right: 2px;
   }
 
     .treeItemActions a {
       margin-left: 5px;
       background-color: rgb(70, 70, 70);
       border-radius: var(--theme-border-radius);
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
       height: 12px;
       width: 12px;
       padding: 2px 3px 0 3px;
