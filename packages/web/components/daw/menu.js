@@ -11,16 +11,20 @@ import { HelpDropdown } from './menu/help';
 import { MidiDropdown } from './menu/midi';
 
 import styles from '../../styles/daw.menu.module.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { GiSoundWaves } from 'react-icons/gi';
 
 function Bars() {
   const [ offstage, setOffstage ] = useState(true);
 
-  if (offstage) {
-    setTimeout(() => (setOffstage(false)), 2000);
-  }
+  useEffect(() => {
+    let timer = setTimeout(() => (setOffstage(false)), 2000);
+
+    return () => {
+      clearTimeout(timer);
+    }
+  });
 
   return (
     <div onClick={() => (setOffstage(true))} className={[
