@@ -1,10 +1,11 @@
-<img src="packages/web/public/screenshot.png" />
-
 # Harmonicon
 
-This is the source code for https://harmonicon.studio, an experimental music-as-code DAW for browsers.
+This repository contains the source code for [harmonicon.studio](https://harmonicon.studio), an experimental music-as-code DAW for browsers.
 
-## Setup
+<img src="packages/web/public/screenshot.png" />
+
+
+# Development
 
 To run Harmonicon locally, clone this repository and run:
 
