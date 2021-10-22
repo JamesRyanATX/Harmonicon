@@ -1,4 +1,4 @@
-<img src="./public/screenshot.png" />
+<img src="packages/web/public/screenshot.png" />
 
 # Harmonicon
 
