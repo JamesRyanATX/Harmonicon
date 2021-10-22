@@ -31,7 +31,7 @@ The UI is served on port 3000.
 * ~~Timeline: add "updating" overlay~~
 * ~~Feature: Expressions - cycle (loop), randomize, transpose, bounce~~
 * ~~Bug: mouseexit selection really buggy~~
-* Bug: transport display not updating as song plays
+* ~~Bug: transport display not updating as song plays~~
 * Bug: live update controller issue
 * Bug: Clean up about modal
 * Bug: GitHub project

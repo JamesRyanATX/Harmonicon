@@ -1,5 +1,6 @@
 import { BaseModel } from './base';
 import { PositionModel } from './position';
+import { Harmonicon } from '@composer/core';
 import { measure } from '@composer/util';
 
 export class TransportModel extends BaseModel {
@@ -86,8 +87,16 @@ export class TransportModel extends BaseModel {
   get canRestart() { return !this.position.zero; }
   get canBlock() { return this.stopped || this.paused; }
 
+  get driver() { return Harmonicon.drivers.audio; }
+
   constructor(properties) {
     super(properties);
+
+    // Catch low-level driver events
+    this.driver.on('start', this.onDriverStart.bind(this));
+    this.driver.on('stop', this.onDriverStop.bind(this));
+    this.driver.on('pause', this.onDriverPause.bind(this));
+    this.driver.on('loop', this.onDriverLoop.bind(this));
 
     this.on('changed:renderer', () => {
       this.delegate('observePosition', this.onDriverPositionChange.bind(this));
@@ -96,6 +105,21 @@ export class TransportModel extends BaseModel {
     this.on('changed:loop', ({ newValue }) => { this.delegate('setLoop', newValue); });
     this.on('changed:loopFrom', ({ newValue }) => { this.delegate('setLoopFrom', newValue); }); 
     this.on('changed:loopTo', ({ newValue }) => { this.delegate('setLoopTo', newValue); });
+  }
+
+  onDriverStart() {
+    this.state = 'started';
+  }
+
+  onDriverStop() {
+    this.state = 'stopped';
+  }
+
+  onDriverPause() {
+    this.state = 'stopped';
+  }
+
+  onDriverLoop() {
   }
 
   onDriverPositionChange({

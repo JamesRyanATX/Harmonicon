@@ -37,13 +37,6 @@ export class Controller {
     this.allow('modal:open');
     this.allow('modal:close');
 
-    // TODO: remove these
-    this.allow('transport:start');
-    this.allow('transport:stop');
-    this.allow('transport:pause');
-    this.allow('transport:loop');
-    this.allow('transport:position');
-
     this.allow('file:selected');
     this.allow('file:created');
     this.allow('file:destroyed');
@@ -78,18 +71,6 @@ export class Controller {
     Harmonicon.on('composer:parsing', (c) => (this.emit('composer:parsing', c)));
     Harmonicon.on('composer:parsed', (c) => (this.emit('composer:parsed', c)));
     Harmonicon.on('composer:rendering', (c) => (this.emit('composer:rendering', c)));
-
-    // Observe transport events directly from audio driver
-    [
-      'start',
-      'stop',
-      'pause',
-      'loop',
-    ].forEach((eventName) => {
-      this.audio.on(eventName, () => {
-        this.emit(`transport:${eventName}`, this.state);
-      });
-    });
 
     // Fan out panel changes
     this.on('workspace:panels:changed', ({ panel, action }) => {
