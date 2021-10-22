@@ -28,9 +28,14 @@ The UI is served on port 3000.
 * ~~CI: fix pipeline and deploy~~
 * ~~Timeline: set position not working~~
 * ~~Controller: move export rendering into tasks~~
-* Timeline: add "updating" overlay
-* Timeline: update waveform when rendering changes
-* Google analytics
-* Clean up about modal
-* Add GitHub project
-* CI: build docs during deploy
+* ~~Timeline: add "updating" overlay~~
+* ~~Feature: Expressions - cycle (loop), randomize, transpose, bounce~~
+* Bug: Clean up about modal
+* Bug: GitHub project
+* Bug: build docs during deploy
+* Bug: transport display not updating as song plays
+* Feature: note volume
+* Feature: note velocity
+* Feature: faster waveform rendering
+* Feature: Disable editor while playing
+* Feature: Google analytics
