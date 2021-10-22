@@ -115,10 +115,7 @@ export class RendererBaseModel extends BaseModel {
   }
 
   async renderPhrase (phrase) {
-    // this.logger.info(`render.session.phrase: [+] name = ${phrase.name}`);
-    // this.logger.debug(`render.session.phrase:     number of steps = ${phrase.steps.length}`);
-
-    this.cache.phrases[phrase.name] = phrase;
+    this.cache.phrases[phrase.name] = phrase.compile();
   }
 
   async renderTracks () {
@@ -151,10 +148,6 @@ export class RendererBaseModel extends BaseModel {
       model: track,
     });
 
-    // this.logger.info(`render.session.track: [+] name = ${track.name}`);
-    // this.logger.debug(`render.session.track:     number of events = ${track.events.length}`);
-    // this.logger.debug(`render.session.track:     number of inputs = ${track.inputs.length}`);
-
     if (inputs.length === 0) {
       this.logger.error(`#renderTrack(): no input nodes for ${track.name}; is a patch missing?`);
       return;
@@ -162,8 +155,6 @@ export class RendererBaseModel extends BaseModel {
 
     return mapSeries(inputs, async (input, i) => {
       const instrumentNode = this.getNode(input.inputType, input.input);
-
-      // this.logger.debug(`render.session.track:     input ${i} source = ${input.inputType}:${input.input} (${instrumentNode.node})`);
 
       return await track.events.mapSeries(async (event) => {
         return this.renderTrackEvent({
@@ -180,11 +171,6 @@ export class RendererBaseModel extends BaseModel {
     trackNode,
     instrumentNode
   }) {
-    // this.logger.info(`render.session.track.event: [+] at = ${event.at}`);
-    // this.logger.debug(`render.session.track.event:     type = ${event.type}`);
-    // this.logger.debug(`render.session.track.event:     value = ${event.value}`);
-    // this.logger.debug(`render.session.track.event:     instrumentNode = ${instrumentNode.node}`);
-
     return this.scheduleEvent({
       audioNode: trackNode,
       event,
@@ -200,10 +186,6 @@ export class RendererBaseModel extends BaseModel {
   async renderPatch (patch) {
     const inputNode = this.getNode(patch.inputType, patch.input);
     const outputNode = this.getNode(patch.outputType, patch.output);
-
-    // this.logger.info(`render.session.patch: [+] path = ${patch.inputType}:${patch.input} -> ${patch.outputType}:${patch.output}`);
-    // this.logger[inputNode ? 'debug' : 'error'](`render.session.patch:     input node = ${inputNode}`);
-    // this.logger[outputNode ? 'debug' : 'error'](`render.session.patch:     output node = ${outputNode}`);
 
     if (inputNode && outputNode) {
       try {

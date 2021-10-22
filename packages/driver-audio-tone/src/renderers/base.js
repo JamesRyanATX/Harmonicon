@@ -116,15 +116,9 @@ export class BaseRenderer extends AudioDriver.Renderer {
       const track = trackNode.model;
       const phraseName = event.value;
       const phrase = this.renderer.cache.phrases[phraseName];
-      const steps = phrase.steps;
+      const steps = phrase.compiledSteps;
       
       let position = Tone.Time(event.at.toString());
-
-      // this.logger.info(`render.session.event.phrase: [+] at = ${event.at}`);
-      // this.logger.debug(`render.session.event.phrase:   phrase = ${phraseName}`);
-      // this.logger.debug(`render.session.event.phrase:   number of steps = ${phrase.steps.length}`);
-      // this.logger.debug(`render.session.event.phrase:   position = ${position.toBarsBeatsSixteenths()}`);
-      // this.logger.debug(`render.session.event.phrase:   instrument = ${instrument}`);
 
       await this.transport.set({
         position: position.toBarsBeatsSixteenths()

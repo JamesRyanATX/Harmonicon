@@ -27,6 +27,7 @@ export { ScriptModel } from './src/models/script';
 export { ScaleModel } from './src/models/scale';
 export { AnnotationModel } from './src/models/annotation';
 export { TransportModel } from './src/models/transport';
+export { ExpressionModel } from './src/models/expression';
 
 export {
   LargeUnit,

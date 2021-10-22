@@ -125,8 +125,8 @@ export class Model {
     return this;
   }
 
-  clone () {
-    return new this.constructor(Object.assign({}, this.properties));
+  clone (properties = {}) {
+    return new this.constructor({ ...this.properties, ...properties });
   }
 
   validateProperty(property, value) {

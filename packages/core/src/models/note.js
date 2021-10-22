@@ -1,6 +1,6 @@
-import { BaseModel } from './base.js';
 import { Note as TonalNote } from "@tonaljs/tonal";
-
+import { BaseModel } from './base.js';
+import { ExpressionModel } from './expression';
 
 export class NoteModel extends BaseModel {
 
@@ -109,6 +109,30 @@ export class NoteModel extends BaseModel {
       properties,
       this.propertiesForPitch(properties),
     ));
+  }
+
+  sanitize() {
+    this.pitchType = this.constructor.pitchType(this.pitch);
+    return this;
+  }
+
+  toExpression(properties = {}) {
+    return ExpressionModel.parse({ ...properties,
+      source: [ this ]
+    })
+  }
+
+  transpose(interval) {
+    return this.clone().setProperties({
+      pitch: TonalNote.transpose(this.pitch, interval)
+    }).sanitize();
+  }
+
+  multiply(n) {
+    return this.toExpression({
+      transform: 'multiply',
+      options: { n },
+    });
   }
 
   computedPitch(keySignature) {
