@@ -18,27 +18,27 @@ export function ViewDropdown() {
     <div>
       <MenuDropdownItem
         label="Library"
-        onClick={controller.toggleLibraryPanel.bind(controller)}
+        onClick={() => (controller.toggleLibraryPanel()) }
         icon={workspace.panels.library.enabled ? IoCheckmarkSharp : undefined}
       />
       <MenuDropdownItem
         label="Route Graph"
-        onClick={controller.toggleRoutesPanel.bind(controller)}
+        onClick={() => (controller.toggleRoutesPanel()) }
         icon={workspace.panels.routes.enabled ? IoCheckmarkSharp : undefined}
       />
       <MenuDropdownItem
         label="Chord Browser"
-        onClick={controller.toggleChordsPanel.bind(controller)}
+        onClick={() => (controller.toggleChordsPanel()) }
         icon={workspace.panels.chords.enabled ? IoCheckmarkSharp : undefined}
       />
       <MenuDropdownItem
         label="Keyboard"
-        onClick={controller.toggleKeyboardPanel.bind(controller)}
+        onClick={() => (controller.toggleKeyboardPanel()) }
         icon={workspace.panels.keyboard.enabled ? IoCheckmarkSharp : undefined}
       />
       <MenuDropdownItem
         label="Console"
-        onClick={controller.toggleConsolePanel.bind(controller)}
+        onClick={() => (controller.toggleConsolePanel()) }
         icon={workspace.panels.console.enabled ? IoCheckmarkSharp : undefined}
       />
     </div>
