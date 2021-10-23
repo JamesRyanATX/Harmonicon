@@ -1,3 +1,7 @@
+export function oneOf(items) {
+  return items[Math.floor(Math.random() * items.length)];
+}
+
 export async function mapParallel(items, fn) {
   return Promise.all(items.map((item, i) => {
     return fn(item, i);
@@ -12,4 +16,10 @@ export async function mapSeries(items, fn) {
   }
 
   return results;
+}
+
+export function times(n, fn) {
+  return Array.from(Array(n)).map((x, i) => {
+    return fn(i)
+  });
 }

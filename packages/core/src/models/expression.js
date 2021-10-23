@@ -1,6 +1,15 @@
-import { times } from '@composer/util';
 import { BaseModel } from './base.js';
 import { NoteModel } from './note.js';
+
+import { ascendExpression } from './expressions/ascend';
+import { bounceExpression } from './expressions/bounce';
+import { curveExpression } from './expressions/curve';
+import { cycleExpression } from './expressions/cycle';
+import { descendExpression } from './expressions/descend';
+import { eachExpression } from './expressions/each';
+import { multiplyExpression } from './expressions/multiply';
+import { randomizeExpression } from './expressions/randomize';
+import { transposeExpression } from './expressions/transpose';
 
 function oneOf(items) {
   return items[Math.floor(Math.random() * items.length)];
@@ -23,157 +32,92 @@ export class ExpressionModel extends BaseModel {
   }
 
   static transforms = {
-
-    transpose: {
-      options: {
-        interval: '0M',
-      },
-      fn: ({ source, options: { interval } }) => {
-        return source.map((note) => {
-          return note.transpose(interval);
-        });
-      }
-    },
-
-    each: {
-      options: {
-        fn: (note) => (note),
-      },
-      fn: ({ source, options: { fn } }) => {
-        return source.map((note) => {
-          return fn(note.clone()).sanitize();
-        });
-      }
-    },
-
-    randomize: {
-      options: {
-        property: null,
-        values: [],
-      },
-      fn: ({ source, options: { property, values } }) => {
-        return source.map((note) => {
-          return note.clone({ [property]: oneOf(values) }).sanitize();
-        });
-      }
-    },
-
-    bounce: {
-      options: {
-        property: null,
-        values: [],
-      },
-      fn: ({ source, options: { property, values} }) => {
-        let descending = false;
-        let position = 0;
-  
-        return source.map((original, i) => {
-          const note = original.clone({
-            [property]: values[position]
-          }).sanitize();
-
-          // End of range; begin descending
-          if (position === values.length - 1) {
-            position -= 1;
-            descending = true;
-          }
-
-          // Beginning of range
-          else if (position === 0) {
-            position = 1;
-            descending = false;
-          }
-
-          // Mid-range
-          else {
-            position += (descending) ? -1 : 1;
-          }
-
-          return note;
-        });
-      }
-    },
-
-    cycle: {
-      options: {
-        property: null,
-        values: [],
-        reverse: false,
-      },
-      fn: ({ source, options: { values, property, reverse } }) => {
-        return source.map((note, i) => {
-          return note.clone({
-            [property]: reverse
-              ? values[(values.length - 1) - (i % values.length)]
-              : values[i % values.length]
-          }).sanitize();
-        });
-      }
-    },
-
-    multiply: {
-      options: {
-        n: 5,
-      },
-      fn: ({ source, options: { n } }) => {
-        const iterations = times(n, (i) => (i));
-
-        return iterations.reduce((notes) => {
-          return notes.concat(source.map((s) => (s.clone())));
-        }, []);
-      }
-    },
+    ascend: ascendExpression,
+    bounce: bounceExpression,
+    curve: curveExpression,
+    cycle: cycleExpression,
+    descend: descendExpression,
+    each: eachExpression,
+    multiply: multiplyExpression,
+    randomize: randomizeExpression,
+    transpose: transposeExpression,
   }
 
   toExpression(properties = {}) {
     return new ExpressionModel({ source: this, ...properties });
   }
 
-  each(fn) {
+  // Expression helpers
+  // ------------------
+
+
+  ascend(to, options = {}) {
     return this.toExpression({
-      transform: 'each',
-      options: { fn }
+      transform: 'curve',
+      options: { ...options, property: 'pitch', to }
     });
   }
 
-  transpose(interval) {
-    return this.toExpression({
-      transform: 'transpose',
-      options: { interval }
-    });
-  }
 
-  multiply(n) {
-    return this.toExpression({
-      transform: 'multiply',
-      options: { n }
-    });
-  }
-
-  randomize(property, values = []) {
-    return this.toExpression({
-      transform: 'randomize',
-      options: { property, values }
-    });
-  }
-
-  bounce(property, values = [], reverse = false) {
+  bounce(property, values = [], options = {}) {
     return this.toExpression({
       transform: 'bounce',
-      options: { property, values }
+      options: { ...options, property, values }
     });
   }
 
-  cycle(property, values = [], reverse = false) {
+
+  curve(property, options = {}) {
+    return this.toExpression({
+      transform: 'curve',
+      options: { ...options, property }
+    });
+  }
+
+
+  cycle(property, values = [], options = {}) {
     return this.toExpression({
       transform: 'cycle',
-      options: { property, values, reverse }
+      options: { ...options, property, values }
     });
   }
 
-  cycleReverse(property, values) {
-    return this.cycle(property, values, true);
+  descend(to, options = {}) {
+    return this.toExpression({
+      transform: 'curve',
+      options: { ...options, property: 'pitch', to }
+    });
   }
+
+  each(fn, options = {}) {
+    return this.toExpression({
+      transform: 'each',
+      options: { ...options, fn }
+    });
+  }
+
+  multiply(n, options = {}) {
+    return this.toExpression({
+      transform: 'multiply',
+      options: { ...options, n }
+    });
+  }
+
+  randomize(property, values = [], options = {}) {
+    return this.toExpression({
+      transform: 'randomize',
+      options: { ...options, property, values }
+    });
+  }
+
+  transpose(interval, options = {}) {
+    return this.toExpression({
+      transform: 'transpose',
+      options: { ...options, interval }
+    });
+  }
+
+
 
   /**
    * Prepare the source property for transformation.

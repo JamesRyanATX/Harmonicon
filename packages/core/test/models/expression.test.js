@@ -5,9 +5,10 @@ describe('ExpressionModel', function () {
 
   function testNote({
     pitch = 0,
-    duration = QuarterUnit
+    duration = QuarterUnit,
+    velocity = null,
   } = {}) {
-    return new NoteModel({ pitch, duration });
+    return NoteModel.parse({ pitch, duration, velocity });
   }
 
   function testExpression({
@@ -23,95 +24,232 @@ describe('ExpressionModel', function () {
 
   describe('transforms', function () {
 
+    function compileExpression({ transform, source, options }) {
+      const expression = new ExpressionModel({
+        transform, source, options
+      });
+
+      return expression.compile();
+    }
+
     describe('curve', function () {
+
+      function compileCurveExpression({ source, ...options }) {
+        return compileExpression({
+          transform: 'curve', source, options
+        });
+      }
+
       describe('pitch', function () {
-        it.todo('curves single notes');
-        it.skip('curves expressions', function () {
-          const expression = new ExpressionModel({
-            source: testExpression(),
-            transform: 'curve',
-            options: {
-              property: 'pitch',
-              shape: 'linear',
-              from: 'c4',
-              to: 'd5'
-            }
+
+        describe('relative', function () {
+          describe('fixed to/from', function () {
+            it('curves single notes', function () {
+              const notes = compileCurveExpression({
+                source: [ testNote({ pitch: 'c4' }) ],
+                property: 'pitch',
+                from: 12,
+                to: 20
+              });
+            
+              expect(notes.length).toEqual(1);
+              expect(notes[0].pitch).toEqual(12);
+            });
+
+            it('curves in-key expressions', function () {
+              const notes = compileCurveExpression({
+                source: testExpression({ note: { pitch: 7 }}),
+                property: 'pitch',
+                from: 0,
+                to: 11,
+                chromatic: false
+              });
+            
+              expect(notes.length).toEqual(4);
+              expect(notes[0].pitch).toEqual(0);
+              expect(notes[1].pitch).toEqual(4);
+              expect(notes[2].pitch).toEqual(7);
+              expect(notes[3].pitch).toEqual(11);
+            });
+            
+            it('curves chromatic expressions', function () {
+              const notes = compileCurveExpression({
+                source: testExpression({ note: { pitch: 7 }}),
+                property: 'pitch',
+                from: 0,
+                to: 11
+              });
+            
+              expect(notes.length).toEqual(4);
+              expect(notes[0].pitch).toEqual(0);
+              expect(notes[1].pitch).toEqual(3.5);
+              expect(notes[2].pitch).toEqual(7.5);
+              expect(notes[3].pitch).toEqual(11);
+            });
           });
-  
-          const notes = expression.compile();
-  
-          expect(notes.length).toEqual(4);
-          expect(notes[0].pitch).toEqual('c4');
-          expect(notes[1].pitch).toEqual('F#2');
-          expect(notes[2].pitch).toEqual('F#2');
-          expect(notes[3].pitch).toEqual('c5');
+        });
+
+        describe('absolute', function () {
+
+          describe('variable origin', function () {
+            it('curves single notes', function () {
+              const notes = compileCurveExpression({
+                source: [ testNote({ pitch: 'c4' }) ],
+                property: 'pitch',
+                from: null,
+                to: 'd5'
+              });
+            
+              expect(notes.length).toEqual(1);
+              expect(notes[0].pitch).toEqual('C4');
+            });
+            
+            it('curves expressions', function () {
+              const notes = compileCurveExpression({
+                source: testExpression({ note: { pitch: 'c0' }}),
+                property: 'pitch',
+                from: null,
+                to: 'd5'
+              });
+            
+              expect(notes.length).toEqual(4);
+              expect(notes[0].pitch).toEqual('C0');
+              expect(notes[1].pitch).toEqual('A1');
+              expect(notes[2].pitch).toEqual('F3');
+              expect(notes[3].pitch).toEqual('D5');
+            });
+          });
+
+          describe('fixed to/from', function () {
+            it('curves single notes', function () {
+              const notes = compileCurveExpression({
+                source: [ testNote({ pitch: 'c4' }) ],
+                property: 'pitch',
+                from: 'c0',
+                to: 'd5'
+              });
+            
+              expect(notes.length).toEqual(1);
+              expect(notes[0].pitch).toEqual('C0');
+            });
+            
+            it('curves expressions', function () {
+              const notes = compileCurveExpression({
+                source: testExpression({ note: { pitch: 'c4' }}),
+                property: 'pitch',
+                from: 'c0',
+                to: 'd5'
+              });
+            
+              expect(notes.length).toEqual(4);
+              expect(notes[0].pitch).toEqual('C0');
+              expect(notes[1].pitch).toEqual('A1');
+              expect(notes[2].pitch).toEqual('F3');
+              expect(notes[3].pitch).toEqual('D5');
+            });
+          });
         });
       });
 
-      describe('volume', function () {
-        it.todo('curves single notes');
-
-        it.skip('curves expressions', function () {
-          const expression = new ExpressionModel({
-            source: testExpression(),
-            transform: 'curve',
-            options: {
-              property: 'volume',
-              shape: 'linear',
-              from: -15,
-              to: 0
-            }
+      describe('velocity', function () {
+        describe('variable origin', function () {
+          it('curves single notes', function () {
+            const notes = compileCurveExpression({
+              source: [ testNote({ pitch: 'c4', velocity: 10 }) ],
+              property: 'velocity',
+              from: null,
+              to: 100
+            });
+          
+            expect(notes.length).toEqual(1);
+            expect(notes[0].velocity).toEqual(10);
           });
-  
-          const notes = expression.compile();
-  
-          expect(notes.length).toEqual(4);
-          expect(notes[0].volume).toEqual(-15);
-          expect(notes[1].volume).toEqual(-10);
-          expect(notes[2].volume).toEqual(-5);
-          expect(notes[3].volume).toEqual(0);
+          
+          it('curves expressions', function () {
+            const notes = compileCurveExpression({
+              source: testExpression({ note: { pitch: 'c0', velocity: 100 }}),
+              property: 'velocity',
+              from: null,
+              to: 50
+            });
+          
+            expect(notes.length).toEqual(4);
+            expect(notes[0].velocity).toEqual(100);
+            expect(notes[1].velocity).toEqual(83);
+            expect(notes[2].velocity).toEqual(67);
+            expect(notes[3].velocity).toEqual(50);
+          });
         });
-      });
 
-      it.skip('multiplies expressions', function () {
-        const expression = new ExpressionModel({
-          source: testExpression({ note: { pitch: 'd2' }}),
-          transform: 'transpose',
-          options: { interval: '3M' }
+        describe('fixed to/from', function () {
+          it('curves single notes', function () {
+            const notes = compileCurveExpression({
+              source: [ testNote({ pitch: 'c4' }) ],
+              property: 'velocity',
+              from: 10,
+              to: 15
+            });
+          
+            expect(notes.length).toEqual(1);
+            expect(notes[0].velocity).toEqual(10);
+          });
+          
+          it('curves descending expressions', function () {
+            const notes = compileCurveExpression({
+              source: testExpression({ note: { pitch: 'c4' }}),
+              property: 'velocity',
+              from: 100,
+              to: 20
+            });
+          
+            expect(notes.length).toEqual(4);
+            expect(notes[0].velocity).toEqual(100);
+            expect(notes[1].velocity).toEqual(73);
+            expect(notes[2].velocity).toEqual(47);
+            expect(notes[3].velocity).toEqual(20);
+          });
+
+          it('curves ascending expressions', function () {
+            const notes = compileCurveExpression({
+              source: testExpression({ note: { pitch: 'c4' }}),
+              property: 'velocity',
+              from: 1,
+              to: 127
+            });
+          
+            expect(notes.length).toEqual(4);
+            expect(notes[0].velocity).toEqual(1);
+            expect(notes[1].velocity).toEqual(43);
+            expect(notes[2].velocity).toEqual(85);
+            expect(notes[3].velocity).toEqual(127);
+          });
         });
-
-        const notes = expression.compile();
-
-        expect(notes.length).toEqual(4);
-        expect(notes[0].pitch).toEqual('F#2');
-        expect(notes[1].pitch).toEqual('F#2');
-        expect(notes[2].pitch).toEqual('F#2');
-        expect(notes[3].pitch).toEqual('F#2');
       });
     });
 
     describe('transpose', function () {
-      it('transposes single notes', function () {
-        const expression = new ExpressionModel({
-          source: [ testNote({ pitch: 'c4' }) ],
-          transform: 'transpose',
-          options: { interval: '3M' }
-        });
 
-        const notes = expression.compile();
+      function compileTransposeExpression({ source, ...options }) {
+        return compileExpression({
+          transform: 'transpose', source, options
+        });
+      }
+
+      it('transposes single notes', function () {
+        const notes = compileTransposeExpression({
+          source: [ testNote({ pitch: 'c4' }) ],
+          interval: '3M'
+        });
 
         expect(notes.length).toEqual(1);
         expect(notes[0].pitch).toEqual('E4');
       });
 
       it('multiplies expressions', function () {
-        const expression = new ExpressionModel({
+        const notes = compileTransposeExpression({
           source: testExpression({ note: { pitch: 'd2' }}),
-          transform: 'transpose',
-          options: { interval: '3M' }
+          interval: '3M'
         });
-
-        const notes = expression.compile();
 
         expect(notes.length).toEqual(4);
         expect(notes[0].pitch).toEqual('F#2');
@@ -122,14 +260,18 @@ describe('ExpressionModel', function () {
     });
 
     describe('multiply', function () {
-      it('multiplies single notes', function () {
-        const expression = new ExpressionModel({
-          source: [ testNote() ],
-          transform: 'multiply',
-          options: { n: 2 }
-        });
 
-        const notes = expression.compile();
+      function compileMultiplyExpression({ source, ...options }) {
+        return compileExpression({
+          transform: 'multiply', source, options
+        });
+      }
+
+      it('multiplies single notes', function () {
+        const notes = compileMultiplyExpression({
+          source: [ testNote() ],
+          n: 2
+        });
 
         expect(notes.length).toEqual(2);
         expect(notes[0].pitch).toEqual(0);
@@ -139,13 +281,10 @@ describe('ExpressionModel', function () {
       });
 
       it('multiplies expressions', function () {
-        const expression = new ExpressionModel({
+        const notes = compileMultiplyExpression({
           source: testExpression(),
-          transform: 'multiply',
-          options: { n: 2 }
+          n: 2
         });
-
-        const notes = expression.compile();
 
         expect(notes.length).toEqual(8);
         expect(notes[0].pitch).toEqual(0);
@@ -156,35 +295,32 @@ describe('ExpressionModel', function () {
     });
 
     describe('each', function () {
+
+      function compileEachExpression({ source, ...options }) {
+        return compileExpression({
+          transform: 'each', source, options 
+        });
+      }
+
       it('transforms notes', function () {
-        const expression = new ExpressionModel({
+        const notes = compileEachExpression({
           source: [ testNote() ],
-          transform: 'each',
-          options: {
-            fn: (note) => {
-              return note.clone({ pitch: 18 });
-            }
+          fn: (note) => {
+            return note.clone({ pitch: 18 });
           }
         });
-
-        const notes = expression.compile();
 
         expect(notes.length).toEqual(1);
         expect(notes[0].pitch).toEqual(18);
       });
       
       it('transforms expressions', function () {
-        const expression = new ExpressionModel({
+        const notes = compileEachExpression({
           source: testExpression(),
-          transform: 'each',
-          options: {
-            fn: (note) => {
-              return note.clone({ pitch: 18 });
-            }
+          fn: (note) => {
+            return note.clone({ pitch: 18 });
           }
         });
-
-        const notes = expression.compile();
 
         expect(notes.length).toEqual(4);
         expect(notes[0].pitch).toEqual(18);
@@ -195,67 +331,69 @@ describe('ExpressionModel', function () {
     });
 
     describe('randomize', function () {
+
+      function compileRandomizeExpression({ source, ...options }) {
+        return compileExpression({
+          transform: 'randomize', source, options
+        });
+      }
+
       describe('pitch', function () {
 
         it('randomizes notes', function () {
-          const expression = new ExpressionModel({
+          const notes = compileRandomizeExpression({
             source: [ testNote() ],
-            transform: 'randomize',
-            options: { property: 'pitch', values: [ 1, 2, 3, 4 ] }
+            property: 'pitch',
+            values: [ 1, 2, 3, 4 ]
           });
 
-          const notes = expression.compile();
-
           expect(notes.length).toEqual(1);
-          expect(expression.options.values.indexOf(notes[0].pitch)).toBeGreaterThan(-1);
+          expect([ 1, 2, 3, 4 ]).toContain(notes[0].pitch);
         });
       
         it('randomizes expressions', function () {
-          const expression = new ExpressionModel({
+          const notes = compileRandomizeExpression({
             source: testExpression(),
-            transform: 'randomize',
-            options: { property: 'pitch', values: [ 1, 2, 3, 4 ] }
+            property: 'pitch',
+            values: [ 1, 2, 3, 4 ]
           });
-
-          const notes = expression.compile();
 
           expect(notes.length).toEqual(4);
 
-          expect(expression.options.values.indexOf(notes[0].pitch))
-            .toBeGreaterThan(-1);
-          expect(expression.options.values.indexOf(notes[1].pitch))
-            .toBeGreaterThan(-1);
-          expect(expression.options.values.indexOf(notes[2].pitch))
-            .toBeGreaterThan(-1);
-          expect(expression.options.values.indexOf(notes[3].pitch))
-            .toBeGreaterThan(-1);
+          expect([ 1, 2, 3, 4 ]).toContain(notes[0].pitch);
+          expect([ 1, 2, 3, 4 ]).toContain(notes[1].pitch);
+          expect([ 1, 2, 3, 4 ]).toContain(notes[2].pitch);
+          expect([ 1, 2, 3, 4 ]).toContain(notes[3].pitch);
         });
       });
     });
 
     describe('cycle', function () {
+
+      function compileCycleExpression({ source, ...options }) {
+        return compileExpression({
+          transform: 'cycle', source, options
+        });
+      }
+
       describe('pitch', function () {
         it('cycles notes', function () {
-          const expression = new ExpressionModel({
+          const notes = compileCycleExpression({
             source: testNote(),
-            transform: 'cycle',
-            options: { property: 'pitch', values: [ 1, 2, 3 ] }
+            property: 'pitch',
+            values: [ 1, 2, 3 ]
           });
-  
-          const notes = expression.compile();
-  
+    
           expect(notes.length).toEqual(1);
           expect(notes[0].pitch).toEqual(1);
         });
 
         it('cycles expressions', function () {
-          const expression = new ExpressionModel({
+          const notes = compileCycleExpression({
             source: testExpression(),
-            transform: 'cycle',
-            options: { property: 'pitch', values: [ 1, 2, 3 ] }
+            property: 'pitch',
+            values: [ 1, 2, 3 ]
           });
-  
-          const notes = expression.compile();
   
           expect(notes.length).toEqual(4);
           expect(notes[0].pitch).toEqual(1);
@@ -265,14 +403,13 @@ describe('ExpressionModel', function () {
         });
 
         it('cycles expressions in reverse', function () {
-          const expression = new ExpressionModel({
+          const notes = compileCycleExpression({
             source: testExpression(),
-            transform: 'cycle',
-            options: { reverse: true, property: 'pitch', values: [ 1, 2, 3 ] }
+            property: 'pitch',
+            values: [ 1, 2, 3 ],
+            reverse: true,
           });
-  
-          const notes = expression.compile();
-  
+    
           expect(notes.length).toEqual(4);
           expect(notes[0].pitch).toEqual(3);
           expect(notes[1].pitch).toEqual(2);
@@ -283,28 +420,31 @@ describe('ExpressionModel', function () {
     });
 
     describe('bounce', function () {
+
+      function compileBounceExpression({ source, ...options }) {
+        return compileExpression({
+          transform: 'bounce', source, options
+        });
+      }
+
       describe('pitch', function () {
         it('bounces notes', function () {
-          const expression = new ExpressionModel({
+          const notes = compileBounceExpression({
             source: testNote(),
-            transform: 'cycle',
-            options: { property: 'pitch', values: [ 1, 2, 3 ] }
+            property: 'pitch',
+            values: [ 1, 2, 3 ],
           });
-  
-          const notes = expression.compile();
-  
+    
           expect(notes.length).toEqual(1);
           expect(notes[0].pitch).toEqual(1);
         });
 
         it('bounces expressions', function () {
-          const expression = new ExpressionModel({
+          const notes = compileBounceExpression({
             source: testExpression({ options: { n: 8 }}),
-            transform: 'bounce',
-            options: { property: 'pitch', values: [ 1, 2, 3 ] }
+            property: 'pitch',
+            values: [ 1, 2, 3 ]
           });
-  
-          const notes = expression.compile();
   
           expect(notes.length).toEqual(8);
           expect(notes[0].pitch).toEqual(1);
@@ -317,6 +457,70 @@ describe('ExpressionModel', function () {
           expect(notes[7].pitch).toEqual(2);
         });  
       });
+    });
+
+    describe('ascend', function () {
+
+      function compileAscendExpression({ source, ...options }) {
+        return compileExpression({
+          transform: 'ascend', source, options
+        });
+      }
+
+      it('supports notes', function () {
+        const notes = compileAscendExpression({
+          source: testNote({ pitch: 'c4' }),
+          to: 'c7',
+        });
+  
+        expect(notes.length).toEqual(1);
+        expect(notes[0].pitch).toEqual('C4');
+      });
+
+      it('supports expressions', function () {
+        const notes = compileAscendExpression({
+          source: testExpression({ note: { pitch: 'a3' }}),
+          to: 'c7',
+        });
+
+        expect(notes.length).toEqual(4);
+        expect(notes[0].pitch).toEqual('A3');
+        expect(notes[1].pitch).toEqual('Bb4');
+        expect(notes[2].pitch).toEqual('B5');
+        expect(notes[3].pitch).toEqual('C7');
+      });  
+    });
+
+    describe('descend', function () {
+
+      function compileDescendExpression({ source, ...options }) {
+        return compileExpression({
+          transform: 'descend', source, options
+        });
+      }
+
+      it('supports notes', function () {
+        const notes = compileDescendExpression({
+          source: testNote({ pitch: 'c4' }),
+          to: 'c0',
+        });
+  
+        expect(notes.length).toEqual(1);
+        expect(notes[0].pitch).toEqual('C4');
+      });
+
+      it('supports expressions', function () {
+        const notes = compileDescendExpression({
+          source: testExpression({ note: { pitch: 'ab3' }}),
+          to: 'c0',
+        });
+
+        expect(notes.length).toEqual(4);
+        expect(notes[0].pitch).toEqual('Ab3');
+        expect(notes[1].pitch).toEqual('F2');
+        expect(notes[2].pitch).toEqual('Eb1');
+        expect(notes[3].pitch).toEqual('C0');
+      });  
     });
   });
 

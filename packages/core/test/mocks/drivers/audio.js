@@ -37,4 +37,6 @@ export class Driver extends AudioDriver.Driver {
     });
   }
 
+  on() {}
+
 }

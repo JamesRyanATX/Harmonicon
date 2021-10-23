@@ -1,4 +1,4 @@
-import { mapParallel, mapSeries } from './async';
+import { mapParallel, mapSeries } from './enumerable';
 
 export class Collection {
 

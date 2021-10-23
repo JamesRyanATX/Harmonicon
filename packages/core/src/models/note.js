@@ -14,6 +14,9 @@ export class NoteModel extends BaseModel {
     duration: {
       json: (v) => (v.toDecimal())
     },
+    velocity: {
+      type: Number,
+    },
     octave: {
       defaultValue: null
     }

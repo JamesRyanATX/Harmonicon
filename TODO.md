@@ -20,20 +20,25 @@
 * ~~Bug: mouseexit selection really buggy~~
 * ~~Bug: transport display not updating as song plays~~
 * ~~Bug: live update controller issue~~
-* Bug: Clean up about modal, remove logo component
-* Bug: GitHub project
-* Bug: build docs during deploy
+* ~~Bug: Clean up about modal, remove logo component~~
+* ~~Bug: Fix GitHub project~~
+* ~~Feature: expression: curve('pitch', { from, to })~~
+* ~~Feature: expression: curve('velocity', { from, to })~~
+* ~~Feature: expression: ascend(to)~~
+* ~~Feature: expression: descend(to)~~
+* Bug: Build docs during deploy
+* Bug: transport resets to zero after parsing
+* Housekeeping: remove "daw" abstraction in web
+* Housekeeping: rename "web" to "daw"
+* Housekeeping: rename "web-components" to "daw-components"
 * Feature: Disable editor while playing
-* Feature: expression: curve('pitch', { from, to })
-* Feature: expression: ascend(to)
-* Feature: expression: descend(to)
 * Feature: expression: fill(duration, unit)
 * Feature: note volume
 * Feature: note velocity
-* Feature: expression: curve('volume', { from, to })
-* Feature: expression: curve('velocity', { from, to })
 * Feature: Google analytics
 * Feature: Add "sidebars" toggle
 * Feature: save panel dimensions to session
 * Feature: record notes played on keyboard/midi
 * Feature: faster waveform rendering
+* Feature: merge phrases and expressions
+* Feature: loader during instrument download
