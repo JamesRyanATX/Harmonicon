@@ -18,7 +18,7 @@
       "search": false
   },
   "opts": {
-      "destination": "../web/public/doc/compose",
+      "destination": "./doc",
       "encoding": "utf8",
       "private": true,
       "recurse": true,

@@ -4,6 +4,7 @@ pages:
   script:
     - yarn install
     - yarn build
+    - yarn doc
     - yarn export
     - mv packages/web/out ./public
   artifacts:
