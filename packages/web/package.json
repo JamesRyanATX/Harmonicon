@@ -10,7 +10,7 @@
     "export:web": "next export",
     "export:include-library-core": "mkdir -p out/libraries/core/instruments && cp -r ../library-core/samples/* out/libraries/core/instruments",
     "export:include-docs": "yarn export:include-docs:compose",
-    "export:include-docs:compose": "mkdir -p out/public/doc/compose && cp -r ../compose/doc/* out/public/doc/compose",
+    "export:include-docs:compose": "mkdir -p out/doc/compose && cp -r ../compose/doc/* out/doc/compose",
     "lint": "next lint",
     "test": "node --experimental-vm-modules node_modules/.bin/jest",
     "test:watch": "node --experimental-vm-modules node_modules/.bin/jest --watch"
