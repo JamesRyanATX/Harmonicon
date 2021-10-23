@@ -19,6 +19,7 @@
     "build:web": "yarn workspace @composer/web run build",
     "export": "yarn workspace @composer/web run export",
     "dev": "npx lerna run dev --parallel",
+    "doc": "npx lerna run doc --parallel",
     "test": "npx lerna run test --parallel"
   },
   "devDependencies": {
