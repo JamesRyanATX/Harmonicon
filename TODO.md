@@ -27,11 +27,12 @@
 * ~~Feature: expression: ascend(to)~~
 * ~~Feature: expression: descend(to)~~
 * ~~Bug: Build docs during deploy~~
+* ~~Feature: Disable editor while playing~~
 * Bug: transport resets to zero after parsing
-* Housekeeping: remove "daw" abstraction in web
 * Housekeeping: rename "web" to "daw"
 * Housekeeping: rename "web-components" to "daw-components"
-* Feature: Disable editor while playing
+* Housekeeping: remove "daw" abstraction in web
+* Housekeeping: add "test" task to build
 * Feature: expression: fill(duration, unit)
 * Feature: note volume
 * Feature: note velocity

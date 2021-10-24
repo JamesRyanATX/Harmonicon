@@ -10,14 +10,14 @@
     "packages/jsdoc-template",
     "packages/library-core",
     "packages/util",
-    "packages/web",
-    "packages/web-components"
+    "packages/daw",
+    "packages/daw-components"
   ],
   "scripts": {
-    "build": "yarn build:components && yarn build:web",
-    "build:components": "yarn workspace @composer/web-components run build",
-    "build:web": "yarn workspace @composer/web run build",
-    "export": "yarn workspace @composer/web run export",
+    "build": "yarn build:daw-components && yarn build:daw",
+    "build:daw-components": "yarn workspace @composer/daw-components run build",
+    "build:daw": "yarn workspace @composer/daw run build",
+    "export": "yarn workspace @composer/daw run export",
     "dev": "npx lerna run dev --parallel",
     "doc": "npx lerna run doc --parallel",
     "test": "npx lerna run test --parallel"
