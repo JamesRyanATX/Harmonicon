@@ -1,6 +1,6 @@
-import { Tabs, NewTab, Tab, TabSpace } from './switcher/tabs';
-import { IoMusicalNotesSharp } from "react-icons/io5";
 import { useState } from 'react';
+import { Tabs, Tab, TabIcon } from '@composer/web-components';
+import { IoAddSharp } from "react-icons/io5";
 
 function FileTab({
   file,
@@ -11,7 +11,6 @@ function FileTab({
     <Tab
       key={file.id}
       label={file.name}
-      icon={IoMusicalNotesSharp}
       selected={selected}
       onRename={(value) => {
         file.setProperties({ name: value });
@@ -56,9 +55,12 @@ export function Switcher ({ controller }) {
           selected={selectedFile.id === file.id}
           />
       ))}
-      <NewTab 
-        onClick={controller.addFile.bind(controller)}
-      />
+      {/* <Tab>
+        <TabIcon
+          onClick={controller.addFile.bind(controller)}
+          icon={IoAddSharp}
+        />
+      </Tab> */}
     </Tabs>
   )
 }

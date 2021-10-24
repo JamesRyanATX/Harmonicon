@@ -57,6 +57,10 @@ import {
 } from './src/hooks';
 
 import {
+  Editable,
+} from './src/editable';
+
+import {
   Timeline,
   TimelineCursorLayer,
   TimelineCursorPointerLayer,
@@ -65,11 +69,20 @@ import {
   TimelineWaveformLayer,
 } from './src/timeline';
 
+import {
+  Tab,
+  TabClose,
+  TabIcon,
+  TabLabel,
+  Tabs,
+} from './src/tabs';
+
 module.exports = {
   ConfirmModal,
   Console,
   ConsoleProvider,
   DialogModal,
+  Editable,
   IconButton,
   Keyboard,
   LoadingBar,
@@ -86,6 +99,11 @@ module.exports = {
   Panels,
   Patches,
   Select,
+  Tab,
+  Tabs,
+  TabLabel,
+  TabIcon,
+  TabClose,
   Timeline,
   TimelineCursorLayer,
   TimelineCursorPointerLayer,

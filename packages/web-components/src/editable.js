@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import styles from '../../../styles/daw.controls.editable.module.css';
+import React, { useState } from 'react';
+import styles from '../styles/editable.module.css';
 
 export function Editable({ 
   value = '', 

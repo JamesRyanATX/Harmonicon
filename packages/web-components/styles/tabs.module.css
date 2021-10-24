@@ -1,0 +1,93 @@
+.tabs {
+  height: 32px;
+  display: flex;
+  flex-direction: row;
+  color: #fff;
+  border-bottom: 1px solid var(--theme-neutral-color-6);
+  margin-top: 10px;
+  padding-left: 5px;
+}
+
+
+.tab {
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
+  border-bottom-color: var(--theme-neutral-color-6);
+  border-top-left-radius: var(--theme-border-radius);
+  border-top-right-radius: var(--theme-border-radius);
+  border-top: 3px solid transparent;
+  color: var(--theme-neutral-color-8);
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  font-weight: light;
+  position: relative;
+  max-width: 200px;
+  min-width: 50px;
+  padding: 6px 10px 7px 10px;
+  overflow: hidden;
+}
+
+
+  .tabIcon {
+    font-size: 13px;
+  }
+
+    .tabIcon svg {
+      vertical-align: -1px;
+    }
+
+
+  .tabLabel {
+    white-space: nowrap;
+    overflow: hidden;
+    flex: 1;
+    text-overflow: ellipsis;
+  }
+
+  .tabClose {
+    font-size: 13px;
+    padding-left: 5px;
+  }
+
+    .tabClose svg {
+      vertical-align: -2px;        
+    }
+
+
+  /* tab states */
+
+  .tabIsSelected {
+    background-color: var(--theme-neutral-color-3);
+    border-left-color: var(--theme-neutral-color-6);
+    border-right-color: var(--theme-neutral-color-6);
+    border-top-color: var(--theme-primary-color);
+    margin-bottom: -1px;
+  }
+
+    .tabIsSelected .tabLabel {
+      color: var(--theme-neutral-color-10);
+    }
+
+    .tabIsSelected .tabClose {
+      color: var(--theme-neutral-color-10);
+    }
+
+    .tabIsSelected + .tab {
+      border-left-color: transparent;
+    }
+
+  .tabIsUnselected {
+    margin-bottom: 6px;
+    margin-top: 6px;
+    border-left: 1px solid var(--theme-neutral-color-6);
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+    .tabIsUnselected .tabClose {
+    }
+
+    .tabIsUnselected:first-child {
+      border-left-color: transparent;
+    }

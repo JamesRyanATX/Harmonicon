@@ -59,17 +59,28 @@
   --theme-palette-purple: rgb(var(--theme-palette-purple-rgb));
 
   /* neutral colors for UI detailing */
-  --theme-neutral-color-0: rgb(0, 0, 0);
-  --theme-neutral-color-1: rgb(10, 10, 10);
-  --theme-neutral-color-2: rgb(20, 20, 20);
-  --theme-neutral-color-3: rgb(30, 30, 30);
-  --theme-neutral-color-4: rgb(40, 40, 40);
-  --theme-neutral-color-5: rgb(50, 50, 50);
-  --theme-neutral-color-6: rgb(60, 60, 60);
-  --theme-neutral-color-7: rgb(90, 90, 90);
-  --theme-neutral-color-8: rgb(130, 130, 130);
-  --theme-neutral-color-9: rgb(200, 200, 200);
-  --theme-neutral-color-10: rgb(255, 255, 255);
+  --theme-neutral-color-0-rgb: 0, 0, 0;
+  --theme-neutral-color-1-rgb: 10, 10, 10;
+  --theme-neutral-color-2-rgb: 20, 20, 20;
+  --theme-neutral-color-3-rgb: 30, 30, 30;
+  --theme-neutral-color-4-rgb: 40, 40, 40;
+  --theme-neutral-color-5-rgb: 50, 50, 50;
+  --theme-neutral-color-6-rgb: 60, 60, 60;
+  --theme-neutral-color-7-rgb: 90, 90, 90;
+  --theme-neutral-color-8-rgb: 130, 130, 130;
+  --theme-neutral-color-9-rgb: 200, 200, 200;
+  --theme-neutral-color-10-rgb: 255, 255, 255;
+  --theme-neutral-color-0: rgb(var(--theme-neutral-color-0-rgb));
+  --theme-neutral-color-1: rgb(var(--theme-neutral-color-1-rgb));
+  --theme-neutral-color-2: rgb(var(--theme-neutral-color-2-rgb));
+  --theme-neutral-color-3: rgb(var(--theme-neutral-color-3-rgb));
+  --theme-neutral-color-4: rgb(var(--theme-neutral-color-4-rgb));
+  --theme-neutral-color-5: rgb(var(--theme-neutral-color-5-rgb));
+  --theme-neutral-color-6: rgb(var(--theme-neutral-color-6-rgb));
+  --theme-neutral-color-7: rgb(var(--theme-neutral-color-7-rgb));
+  --theme-neutral-color-8: rgb(var(--theme-neutral-color-8-rgb));
+  --theme-neutral-color-9: rgb(var(--theme-neutral-color-9-rgb));
+  --theme-neutral-color-10: rgb(var(--theme-neutral-color-10-rgb));
 
   /* background color of app (should contrast with other colors) */
   --theme-background-color: 25, 25, 25;
