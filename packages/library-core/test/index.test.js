@@ -25,11 +25,11 @@ describe('@composer/library-core', function () {
     it('contains all instruments', async function () {
       const library = await build();
 
-      expect(library.model.instruments.length).toEqual(31);
+      expect(library.model.instruments.length).toEqual(32);
       expect(library.model.effects.length).toEqual(8);
       expect(library.model.templates.length).toEqual(2);
       expect(library.model.snippets.length).toEqual(1);
-      expect(library.model.demos.length).toEqual(2);
+      expect(library.model.demos.length).toEqual(3);
     });  
   });
 
