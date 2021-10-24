@@ -4,6 +4,7 @@ import { amSynth } from './src/instruments/am-synth';
 import { acousticGuitar } from './src/instruments/acoustic-guitar';
 import { bassoon } from './src/instruments/bassoon';
 import { cello } from './src/instruments/cello';
+import { choir } from './src/instruments/choir';
 import { clarinet } from './src/instruments/clarinet';
 import { contrabass } from './src/instruments/contrabass';
 import { duoSynth } from './src/instruments/duo-synth';
@@ -43,6 +44,7 @@ import { vibratoEffect } from './src/effects/vibrato';
 
 import { kitchenSyncDemo } from './src/demos/kitchen-sync';
 import { relativesDemo } from './src/demos/relatives';
+import { expressionsDemo } from './src/demos/expressions';
 
 import { effectChainSnippet } from './src/snippets/effect-chain';
 
@@ -62,6 +64,7 @@ export const build = async () => {
       amSynth,
       bassoon,
       cello,
+      choir,
       clarinet,
       contrabass,
       drums,
@@ -110,6 +113,7 @@ export const build = async () => {
       // Demos
       kitchenSyncDemo,
       relativesDemo,
+      expressionsDemo,
 
     ].forEach((c) => (c({ library })));
   });
