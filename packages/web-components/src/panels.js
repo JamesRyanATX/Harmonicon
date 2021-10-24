@@ -2,6 +2,7 @@ import React from 'react';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import { IoCloseSharp } from 'react-icons/io5';
 import { Mosaic } from 'react-mosaic-component';
+import { LoadingBar } from './loading';
 
 import 'react-mosaic-component/react-mosaic-component.css';
 
@@ -63,6 +64,14 @@ export function PanelFilterRow({
   );
 }
 
+export function PanelMask() {
+  return (
+    <div className={styles.panelMask}>
+      <LoadingBar height={7} />
+    </div>
+  );
+}
+
 export function Panel ({
   label = 'Panel',
   children = null,
@@ -70,6 +79,7 @@ export function Panel ({
   flex = 'none',
   width = 'auto',
   height = 'auto',
+  disabled = false,
   transparent = false,
   sticky = false,
   noscroll = false,
@@ -83,13 +93,17 @@ export function Panel ({
       className={[
         styles.panel,
         transparent ? styles.panelIsTransparent : '',
+        disabled ? styles.panelIsDisabled : '',
       ].join(' ')}
     >
       <PanelHeader label={label} onClose={onClose} sticky={sticky} />
       {filter ? (
         <PanelFilter>{filter()}</PanelFilter>
       ) : ''}
-      <PanelContent children={children} noscroll={noscroll} streaming={streaming} />
+      <PanelContent noscroll={noscroll} streaming={streaming}>
+        {children}
+      </PanelContent>
+      {disabled ? <PanelMask /> : ''}
     </div>
   )
 }

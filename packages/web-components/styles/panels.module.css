@@ -80,6 +80,24 @@
       background: rgb(60, 60, 60); 
     }
 
+  .panelMask {
+    position: absolute;
+    top: 22px;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(var(--theme-neutral-color-0-rgb), 0.25);
+  }
+
+    .panelMask > div {
+      border-radius: 50px;
+      height: 9px;
+      position: absolute;
+      right: 6px;
+      top: -15px;
+      width: 60px;
+    }
+
   .panelIsTransparent .panelContent {
     background-color: transparent;
   }

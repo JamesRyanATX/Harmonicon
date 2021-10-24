@@ -26,6 +26,7 @@
   min-width: 50px;
   padding: 6px 10px 7px 10px;
   overflow: hidden;
+  transition: all 0.25s;
 }
 
 
@@ -83,6 +84,10 @@
     border-left: 1px solid var(--theme-neutral-color-6);
     padding-top: 0;
     padding-bottom: 0;
+  }
+
+  .tabIsUnselected:hover {
+    color: var(--theme-neutral-color-10);
   }
 
     .tabIsUnselected .tabClose {

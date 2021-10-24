@@ -4,7 +4,7 @@ import { useController } from "./providers/controller";
 import styles from '../../styles/daw.editor.module.css';
 
 export function Editor ({
-  layoutChangeDelay = 1000
+  disabled = false,
 }) {
   const controller = useController();
   const editorRef = useRef(null);
@@ -62,6 +62,7 @@ export function Editor ({
           folding: true,
           tabSize: 2,
           padding: { top: 10 },
+          readOnly: disabled,
         }}
       />
     </div>

@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Tabs, Tab, TabIcon } from '@composer/web-components';
-import { IoAddSharp } from "react-icons/io5";
+import { IoAddCircleOutline } from "react-icons/io5";
+import { useController } from './providers/controller';
+
 
 function FileTab({
   file,
@@ -28,7 +30,9 @@ function FileTab({
   )
 }
 
-export function Switcher ({ controller }) {
+export function Switcher () {
+  const controller = useController();
+
   const [ loaded, setLoaded ] = useState(false);
   const [ files, setFiles ] = useState(controller.workspace.files.all);
   const [ selectedFile, setSelectedFile ] = useState(controller.file);
@@ -55,12 +59,12 @@ export function Switcher ({ controller }) {
           selected={selectedFile.id === file.id}
           />
       ))}
-      {/* <Tab>
+      <Tab>
         <TabIcon
           onClick={controller.addFile.bind(controller)}
-          icon={IoAddSharp}
+          icon={IoAddCircleOutline}
         />
-      </Tab> */}
+      </Tab>
     </Tabs>
   )
 }

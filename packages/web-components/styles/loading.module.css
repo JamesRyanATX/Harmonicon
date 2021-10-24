@@ -2,9 +2,10 @@
   position: relative;
   background: repeating-linear-gradient(to right,
     var(--theme-primary-color-light) 0%,
-    rgba(var(--theme-primary-color-rgb), 0.5) 15%,
+    rgba(var(--theme-primary-color-rgb), 0.5) 35%,
     rgba(var(--theme-primary-color-rgb), 0.35) 50%,
-    rgba(var(--theme-primary-color-rgb), 0.5) 85%,
+    rgba(var(--theme-primary-color-rgb), 0.5) 65%,
+    var(--theme-primary-color-light) 90%,
     var(--theme-primary-color-light) 100%
   );
   background-size: 200% auto;

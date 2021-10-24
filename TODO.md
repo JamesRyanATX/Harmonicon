@@ -26,7 +26,7 @@
 * ~~Feature: expression: curve('velocity', { from, to })~~
 * ~~Feature: expression: ascend(to)~~
 * ~~Feature: expression: descend(to)~~
-* Bug: Build docs during deploy
+* ~~Bug: Build docs during deploy~~
 * Bug: transport resets to zero after parsing
 * Housekeeping: remove "daw" abstraction in web
 * Housekeeping: rename "web" to "daw"
@@ -40,5 +40,6 @@
 * Feature: save panel dimensions to session
 * Feature: record notes played on keyboard/midi
 * Feature: faster waveform rendering
-* Feature: merge phrases and expressions
 * Feature: loader during instrument download
+* Feature: merge phrases and expressions
+* Feature: phrases inside phrases via expressions
