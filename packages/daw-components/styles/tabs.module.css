@@ -90,6 +90,10 @@
     color: var(--theme-neutral-color-10);
   }
 
+    .tabIsUnselected .tabIcon:hover {
+      color: var(--theme-primary-color);
+    }
+
     .tabIsUnselected .tabClose {
     }
 

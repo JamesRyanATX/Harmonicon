@@ -1,6 +1,6 @@
 node_modules
 .DS_Store
-packages/web/public/libraries/core/instruments
-packages/web-components/dist
+packages/daw/public/libraries/core/instruments
+packages/daw-components/dist
 lerna-debug.log
 yarn-error.log
