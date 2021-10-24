@@ -12,7 +12,7 @@ import { KeyboardPanel } from './panels/keyboard';
 import { ConsolePanel } from './panels/console';
 import { useController } from './providers/controller';
 
-import styles from '../../styles/daw.module.css';
+import styles from '../styles/daw.module.css';
 
 export function Interface () {
   const controller = useController();

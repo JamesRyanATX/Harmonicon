@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import styles from '../../../styles/daw.transport.module.css';
+import styles from '../../styles/daw.transport.module.css';
 
 
 export function Items({ children }) {

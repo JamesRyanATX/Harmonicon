@@ -10,7 +10,7 @@ import { renderWaveformTask } from './tasks/render_waveform';
 import { useTransport } from './providers/transport';
 import { useController } from './providers/controller';
 
-import styles from '../../styles/daw.transport.module.css';
+import styles from '../styles/daw.transport.module.css';
 
 function TransportGroup({
   flex = false,

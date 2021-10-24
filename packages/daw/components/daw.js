@@ -7,11 +7,11 @@ import * as LocalStorageDriver from '@composer/driver-storage-localstorage';
 import * as WebMidiDriver from '@composer/driver-midi-web';
 import * as CoreLibrary from '@composer/library-core';
 
-import { Controller } from '../lib/daw/controller';
-import { ControllerProvider } from './daw/providers/controller';
-import { WorkspaceProvider } from './daw/providers/workspace';
-import { LoggerProvider } from './daw/providers/logger';
-import { Interface } from './daw/interface';
+import { Controller } from '../lib/controller';
+import { ControllerProvider } from './providers/controller';
+import { WorkspaceProvider } from './providers/workspace';
+import { LoggerProvider } from './providers/logger';
+import { Interface } from './interface';
 
 export function DAW ({
   audioDriverOptions = {},

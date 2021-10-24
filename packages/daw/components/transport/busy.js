@@ -1,6 +1,6 @@
 import { LoadingBar } from '@composer/daw-components';
 
-import styles from '../../../styles/daw.transport.module.css';
+import styles from '../../styles/daw.transport.module.css';
 
 function BusyLabel({ label }) {
   return (

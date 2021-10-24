@@ -10,7 +10,7 @@ import { AudioDropdown } from './menu/audio';
 import { HelpDropdown } from './menu/help';
 import { MidiDropdown } from './menu/midi';
 
-import styles from '../../styles/daw.menu.module.css';
+import styles from '../styles/daw.menu.module.css';
 import { useState, useEffect } from 'react';
 
 import { GiSoundWaves } from 'react-icons/gi';

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import styles from '../../styles/daw.debugger.module.css';
+import styles from '../styles/daw.debugger.module.css';
 
 export function Debugger ({ controller }) {
   const [ loaded, setLoaded ] = useState(false);

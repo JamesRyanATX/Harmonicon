@@ -1,7 +1,7 @@
 import MonacoEditor from "@monaco-editor/react";
 import { useState, useRef } from "react";
 import { useController } from "./providers/controller";
-import styles from '../../styles/daw.editor.module.css';
+import styles from '../styles/daw.editor.module.css';
 
 export function Editor ({
   disabled = false,

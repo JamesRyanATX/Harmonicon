@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import styles from '../../../styles/daw.transport.module.css';
+import styles from '../../styles/daw.transport.module.css';
 import { useTransport } from '../providers/transport';
 
 function Channels({

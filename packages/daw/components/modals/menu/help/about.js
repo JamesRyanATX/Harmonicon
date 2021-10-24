@@ -2,7 +2,7 @@ import { Modal } from '@composer/daw-components';
 import { useController } from '../../../providers/controller';
 import { GiSoundWaves } from 'react-icons/gi';
 
-import styles from '../../../../../styles/logo.module.css';
+import styles from '../../../../styles/logo.module.css';
 
 function Logo({
   height = 50,
