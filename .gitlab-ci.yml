@@ -8,6 +8,8 @@ test:
 pages:
   image: node:16-alpine
   stage: deploy
+  variables:
+    DAW_GOOGLE_ANALYTICS_ID: G-XC26HJXHKF
   script:
     - yarn install
     - yarn build
