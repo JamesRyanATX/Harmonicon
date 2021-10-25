@@ -6,8 +6,13 @@ export function Modals() {
   const [ modal, setModal ] = useState();
   const controller = useController();
 
-  useEventListener(controller, 'modal:open', function onModalOpen({ component, props }) {
-    setModal({ component, props });
+  useEventListener(controller, 'modal:open', function onModalOpen({ component, props = {} }) {
+    if (component) {
+      setModal({ component, props });
+    }
+    else {
+      setModal({ component: arguments[0], props: {} });
+    }
   });
 
   useEventListener(controller, 'modal:close', function onModalClose() {

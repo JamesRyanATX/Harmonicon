@@ -1,8 +1,9 @@
-import { Logger, Task, eventify } from '@composer/util';
+import { Logger, Task, eventify, meter } from '@composer/util';
 import { ComposerError, render } from '@composer/compose';
 import { Harmonicon } from '@composer/core';
 import { TransportModel, InteractiveRendererModel } from '@composer/core';
 import { renderInteractiveTask } from './tasks/render_interactive';
+
 
 export class Controller {
 
@@ -83,6 +84,8 @@ export class Controller {
       this.emit(`workspace:panels:${panel}:${action}`, {});
     });
 
+    this.initializeMeters();
+
     this.on('error', ({ message, error }) => {
       if (error) {
         Harmonicon.console.error(error);
@@ -91,6 +94,23 @@ export class Controller {
     })
 
     document.title = 'Harmonicon';
+  }
+
+  initializeMeters () {
+    const options = {
+      interval: 10000, 
+      logger: this.logger
+    };
+
+    this.meters = {
+      saveFile: meter(() => {
+        return this.file.save();
+      }, { ...options, name: 'save-file' }),
+
+      saveWorkspace: meter(() => {
+        return this.workspace.save();
+      }, { ...options, name: 'save-workspace' })
+    };
   }
 
 
@@ -241,10 +261,32 @@ export class Controller {
     }
   }
 
-  async save() {
+  saveFile({ metered = true } = {}) {
+    if (metered) {
+      return this.meters.saveFile();
+    }
+    else {
+      return this.file.save();
+    }
+  }
+
+  saveWorkspace({ metered = true } = {}) {
+    if (metered) {
+      return this.meters.saveWorkspace();
+    }
+    else {
+      return this.workspace.save();
+    }
+  }
+
+  async save({
+    file = true,
+    workspace = true,
+    metered = false,
+  } = {}) {
     try {
-      await this.file.save();
-      await this.workspace.save(); 
+      file ? await this.saveFile({ metered }) : 1;
+      workspace ? await this.saveWorkspace({ metered }) : 1;
     }
     catch (e) {
       console.error(e);
@@ -260,7 +302,7 @@ export class Controller {
     try {
       this.file = file;
       this.workspace.selectedFile = file ? file.id : null;
-      this.workspace.save();
+      this.saveWorkspace();
 
       this.emit('file:selected', file);
 
@@ -289,7 +331,7 @@ export class Controller {
 
   setFileSource (source) {
     this.file.setProperties({ source });
-    this.file.save();
+    this.saveFile();
     this.emit('changed', this.changed);
   }
 

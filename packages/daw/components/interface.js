@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Panels, useEventListener, useViewport } from '@composer/daw-components';
+import { Panels, useEventListener, useViewport, useLocationParams } from '@composer/daw-components';
 
 import { Transport } from './transport';
 import { Menu } from './menu';
@@ -11,6 +11,8 @@ import { ChordsPanel } from './panels/chords';
 import { KeyboardPanel } from './panels/keyboard';
 import { ConsolePanel } from './panels/console';
 import { AboutModal } from './modals/menu/help/about';
+import { SwitchToDropboxModal } from './modals/menu/settings/switch_to_dropbox';
+
 import { useController } from './providers/controller';
 import { useFile } from './providers/file';
 
@@ -22,6 +24,9 @@ export function Interface ({
   const controller = useController();
   const file = useFile();
   const viewport = useViewport();
+  const location = useLocationParams();
+
+  const action = location.params.action;
   const mobile = viewport.width < breakpoint;
   const panels = controller.workspace.panels;
 
@@ -114,8 +119,13 @@ export function Interface ({
   };
 
   useEffect(() => {
-    controller.emit('modal:open', { component: AboutModal, props: {} });
-  }, [ controller ]);
+    if (action === 'switch-to-dropbox') {
+      controller.emit('modal:open', { component: SwitchToDropboxModal, props: {} });
+    }
+    else {
+      controller.emit('modal:open', { component: AboutModal, props: {} });
+    }
+  }, [ controller, action ]);
 
   return (
     <div className={styles.dawInterface}>

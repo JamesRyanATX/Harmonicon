@@ -13,6 +13,12 @@ export {
   range,
 } from './src/enumerable.js';
 
+export {
+  throttle,
+  debounce,
+  meter
+} from './src/throttle.js';
+
 export { generateIdentifier } from './src/string.js';
 export { eventify } from './src/eventify.js';
 export { measure, measureSync, measureAsync } from './src/measure.js';

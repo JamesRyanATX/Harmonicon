@@ -6,6 +6,7 @@
     "packages/core",
     "packages/driver-audio-tone",
     "packages/driver-midi-web",
+    "packages/driver-storage-dropbox",
     "packages/driver-storage-localstorage",
     "packages/jsdoc-template",
     "packages/library-core",
@@ -20,7 +21,7 @@
     "export": "yarn workspace @composer/daw run export",
     "dev": "npx lerna run dev --parallel",
     "doc": "npx lerna run doc --parallel",
-    "test": "npx lerna run test --parallel"
+    "test": "npx lerna run test --parallel --ignore=@composer/driver-storage-dropbox"
   },
   "devDependencies": {
     "lerna": "^4.0.0"

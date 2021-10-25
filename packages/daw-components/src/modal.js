@@ -131,15 +131,16 @@ export function DialogModal({
 }
 
 export function ConfirmModal({
-  onClose = () => {},
-  title = 'Confirm',
-  text = 'Text',
-  confirmLabel = 'OK',
   cancelLabel = 'Cancel',
-  showProgress = false,
+  confirmLabel = 'OK',
   initialProgress = 0.01,
+  onClose = () => {},
+  showProgress = false,
+  text = 'Text',
+  title = 'Confirm',
+  working = false,
 }) {
-  const [ percentComplete, setPercentComplete ] = useState(initialProgress);
+  const [ percentComplete, setPercentComplete ] = useState(showProgress ? initialProgress : 1);
   const [ isRunning, setIsRunning ] = useState(false);
   const [ error, setError ] = useState();
   const [ task, setTask ] = useState(arguments[0].task);
@@ -170,7 +171,7 @@ export function ConfirmModal({
       title={title}
       text={text}
       error={error}
-      working={isRunning}
+      working={working || isRunning}
       workingPercentComplete={percentComplete}
       onRequestClose={onClose}
       buttons={[
