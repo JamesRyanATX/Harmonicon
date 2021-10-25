@@ -2,7 +2,7 @@
 
 Source code for [harmonicon.studio](https://harmonicon.studio), an experimental music-as-code DAW for browsers.
 
-<img src="packages/web/public/screenshot.png" />
+<img src="packages/daw/public/screenshot.png" />
 
 
 ## Development

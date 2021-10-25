@@ -356,6 +356,10 @@ export class Controller {
   async createInteractiveRendering () {
     await this.audio.startAudioBuffer();
 
+    // Save the current transport position and selectively restore it
+    const currentPosition = this.transport.position;
+    const restorePosition = !this.renderedFile || this.renderedFile === this.file;
+
     const { composer, renderer } = await this.createRendering({
       interactive: true,
     })
@@ -363,6 +367,12 @@ export class Controller {
     this.composer = composer;
     this.renderer = this.transport.renderer = renderer;
     this.renderedSource = this.file.source;
+    this.renderedFile = this.file;
+
+    // Restore the transport cursor
+    if (restorePosition) {
+      this.transport.setPosition(currentPosition);
+    }
 
     this.emit('composer:rendered', renderer);
 
