@@ -2,6 +2,7 @@ import { Logger, Task, eventify } from '@composer/util';
 import { ComposerError, render } from '@composer/compose';
 import { Harmonicon } from '@composer/core';
 import { TransportModel, InteractiveRendererModel } from '@composer/core';
+import { renderInteractiveTask } from './tasks/render_interactive';
 
 export class Controller {
 
@@ -354,25 +355,32 @@ export class Controller {
   }
 
   async createInteractiveRendering () {
-    await this.audio.startAudioBuffer();
+    const task = renderInteractiveTask({
+      code: controller.file.source,
+      controller: this
+    });
 
-    // Save the current transport position and selectively restore it
-    const currentPosition = this.transport.position;
-    const restorePosition = !this.renderedFile || this.renderedFile === this.file;
+    // task.on('error', (error) => {
+    //   debugger;
+    // });
 
-    const { composer, renderer } = await this.createRendering({
-      interactive: true,
-    })
+    // task.on('done', (error) => {
+    //   debugger;
+    // });
 
+    // task.on('success', ({ session, composer, renderer }) => {
+    // });
+
+    const { session, composer, renderer } = await this.transport.blockWhile(task);
+
+    // Save things we need for later
+    this.session = session;
     this.composer = composer;
     this.renderer = this.transport.renderer = renderer;
+
+    // For diffs and change detection
     this.renderedSource = this.file.source;
     this.renderedFile = this.file;
-
-    // Restore the transport cursor
-    if (restorePosition) {
-      this.transport.setPosition(currentPosition);
-    }
 
     this.emit('composer:rendered', renderer);
 

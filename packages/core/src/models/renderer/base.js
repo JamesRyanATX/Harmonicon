@@ -53,7 +53,7 @@ export class RendererBaseModel extends BaseModel {
     sessionEvents = true,
     phrases = true,
     patches = true,
-    end = true
+    end = true,
   } = {}) {
     await Promise.all([
       sessionEvents ? this.renderSessionEvents() : true,

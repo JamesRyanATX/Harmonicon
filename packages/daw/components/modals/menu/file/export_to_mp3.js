@@ -1,6 +1,6 @@
 import { ConfirmModal } from '@composer/daw-components';
 import { useController } from '../../../providers/controller';
-import { renderMp3FileTask } from '../../../tasks/render_mp3_file';
+import { renderMp3FileTask } from '../../../../lib/tasks/render_mp3_file';
 
 export function ExportToMp3Modal() {
   const controller = useController();

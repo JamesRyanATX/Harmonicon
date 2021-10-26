@@ -29,7 +29,7 @@ function BusyMask({ label }) {
 }
 
 export function Busy({
-  label = 'Holup a sec'
+  label = 'Loading sounds...'
 }) {
   return (
     <div className={styles.busy}>

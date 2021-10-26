@@ -1,6 +1,6 @@
 import { ConfirmModal } from '@composer/daw-components';
 import { useController } from '../../../providers/controller';
-import { renderWavFileTask } from '../../../tasks/render_wav_file';
+import { renderWavFileTask } from '../../../../lib/tasks/render_wav_file';
 
 export function ExportToWavModal() {
   const controller = useController();

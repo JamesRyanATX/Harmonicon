@@ -275,7 +275,9 @@ export class TransportModel extends BaseModel {
     // });
 
     task.on('done', () => {
-      this.state = 'stopped';
+      if (this.busy) {
+        this.state = 'stopped';
+      }
     });
 
     return task.run();

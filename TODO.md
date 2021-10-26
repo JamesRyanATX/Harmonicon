@@ -1,5 +1,8 @@
 ## TODO
 
+
+### 1.0.0
+
 * ~~Instrument and effect name aliases~~
 * ~~Instrument note aliases~~
 * ~~Track volume~~
@@ -32,15 +35,24 @@
 * ~~Housekeeping: rename "web-components" to "daw-components"~~
 * ~~Housekeeping: remove "daw" abstraction in web~~
 * ~~Housekeeping: add "test" task to build~~
-* Bug: transport resets to zero after parsing
+* ~~Bug: transport resets to zero after parsing~~
+* ~~Feature: Google analytics~~
+* Feature: loader during instrument download
+* Bug: build size for daw-components
+* Feature: tutorials
+* Housekeeping: clean up CLI
+* Release: 1.0.0 
+
+### 1.1.0
+
+* Feature: save workspace in (dropbox|gdrive|icloud) instead of localstorage
 * Feature: expression: fill(duration, unit)
 * Feature: note volume
 * Feature: note velocity
-* Feature: Google analytics
 * Feature: Add "sidebars" toggle
 * Feature: save panel dimensions to session
 * Feature: record notes played on keyboard/midi
 * Feature: faster waveform rendering
-* Feature: loader during instrument download
 * Feature: merge phrases and expressions
 * Feature: phrases inside phrases via expressions
+* Release: 1.1.0
