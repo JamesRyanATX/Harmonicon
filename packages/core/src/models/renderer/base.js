@@ -159,6 +159,7 @@ export class RendererBaseModel extends BaseModel {
       return await track.events.mapSeries(async (event) => {
         return this.renderTrackEvent({
           event,
+          track,
           trackNode,
           instrumentNode
         });
@@ -168,12 +169,14 @@ export class RendererBaseModel extends BaseModel {
 
   async renderTrackEvent ({
     event,
+    track,
     trackNode,
     instrumentNode
   }) {
     return this.scheduleEvent({
       audioNode: trackNode,
       event,
+      track,
       trackNode,
       instrumentNode
     });
@@ -221,14 +224,26 @@ export class RendererBaseModel extends BaseModel {
   // Events
   // ------
 
-  async scheduleEvent({ event, log = true }) {
+  async scheduleEvent({
+    event,
+    instrument = null,
+    instrumentNode = null,
+    track = null,
+    trackNode,
+    meta = {},
+    log = true
+  }) {
+
+    if (track) {
+      meta.track = track;
+    }
 
     // Find driver scheduler for this event
     const scheduler = this.driverRenderer.schedulers[event.type];
 
     // Add to global event log
     if (log) {
-      this.cache.events.push(event);
+      this.cache.events.push(event, meta);
     }
 
     if (scheduler) {

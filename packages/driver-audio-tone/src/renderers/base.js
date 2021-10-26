@@ -140,6 +140,7 @@ export class BaseRenderer extends AudioDriver.Renderer {
               type: 'note',
               at: event.at.constructor.parse(this.transport.position.toString())
             }),
+            track,
             trackNode,
             instrumentNode,
           });

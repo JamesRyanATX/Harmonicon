@@ -289,13 +289,16 @@ export function TimelineWaveformLayer({
 export function TimelineLayer({
   children = null,
   opacity = 1,
+  column = false,
   className = '',
+  style = {},
 } = props = {}) {
   return (
     <div className={[
       styles.timelineLayer,
+      column ? styles.timelineLayerIsColumn : '',
       className
-    ].join(' ')} style={{
+    ].join(' ')} style={{ ...style,
       opacity,
     }}>
       {children}

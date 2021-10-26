@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { PositionModel } from '@composer/core';
 import {
   Timeline as WebComponentsTimeline,
+  TimelineLayer,
   TimelineCursorLayer,
   TimelineCursorPointerLayer,
   TimelineCursorSelectionLayer,
@@ -10,9 +11,9 @@ import {
   TimelineWaveformLayer,
 } from '@composer/daw-components';
 
-import { useController } from '../providers/controller';
 import { useFile } from '../providers/file';
 import { useTransport } from '../providers/transport';
+import { useRenderer } from '../providers/renderer';
 
 
 function positionToX(position, measureWidth, snapTo = 'beat') {
@@ -30,6 +31,67 @@ function positionToX(position, measureWidth, snapTo = 'beat') {
   // console.log(`x = ${x}; measureX = ${measureX}; beatX = ${beatX}; subdivisionX = ${subdivisionX} (${position.toMBS()})`)
 
   return x;
+}
+
+function TransportRendering({
+  measureWidth = null,
+  unitsPerSecond = null,
+  colors = [
+    'var(--theme-primary-color)',
+    'var(--theme-secondary-color)',
+    'var(--theme-palette-red)',
+    'var(--theme-palette-yellow)',
+    'var(--theme-palette-green)',
+    'var(--theme-palette-orange-lighter)',
+    'var(--theme-palette-aqua)',
+    'var(--theme-palette-blue-lighter)',
+    'var(--theme-palette-red-lighter)',
+    'var(--theme-palette-blue)',
+    'var(--theme-palette-purple)',
+    'var(--theme-palette-orange)',
+  ]
+}) {
+  const renderer = useRenderer();
+
+  if (!renderer) {
+    return '';
+  }
+
+  const tracks = renderer.session.tracks;
+  const eventsByTrack = renderer.cache.events.byTrack;
+
+  return (
+    <TimelineLayer column style={{
+      padding: '2px 0 11px 0'
+    }}>
+      {tracks.map((track, i) => {
+        const color = colors[i % colors.length];
+        const events = (eventsByTrack[track.name] || []).filter((event) => {
+          return event.type === 'note';
+        });
+
+        return events.length > 0 ? (
+          <div key={track.name} style={{
+            position: 'relative'
+          }}>
+            {events.map((event, i) => {
+              return (
+                <div key={i} style={{
+                  backgroundColor: color,
+                  top: '1px',
+                  height: '2px',
+                  left: `${positionToX(event.at, measureWidth)}px`,
+                  width: '4px',
+                  borderRadius: '5px',
+                  position: 'absolute',
+                }} />
+              )
+            })}
+          </div>
+        ) : '';
+      })}
+    </TimelineLayer>
+  );
 }
 
 function TransportWaveform({
@@ -210,6 +272,7 @@ export function Timeline ({
         length={length}
       />
       <TransportWaveform {...common} />
+      <TransportRendering {...common} />
       <TransportLoopCursorSelection {...common}
         active={showLoop}
         from={loopFrom}

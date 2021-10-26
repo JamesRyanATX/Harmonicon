@@ -37,8 +37,9 @@
 * ~~Housekeeping: add "test" task to build~~
 * ~~Bug: transport resets to zero after parsing~~
 * ~~Feature: Google analytics~~
-* Feature: loader during instrument download
-* Bug: build size for daw-components
+* ~~Feature: loader during instrument download~~
+* ~~Bug: build size for daw-components~~
+* ~~Feature: represent notes on timeline~~
 * Feature: tutorials
 * Housekeeping: clean up CLI
 * Release: 1.0.0 

@@ -32,6 +32,15 @@
   display: flex;
 }
 
+  .timelineLayerIsColumn {
+    flex-direction: column;
+  }
+
+    .timelineLayerIsColumn > div {
+      flex: 1;
+      overflow: hidden;
+    }
+
 
 /* layer: measures */
 
@@ -135,3 +144,4 @@
     left: 0;
     height: 100%;
   }
+

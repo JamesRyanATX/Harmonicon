@@ -65,6 +65,7 @@ import {
   TimelineCursorLayer,
   TimelineCursorPointerLayer,
   TimelineCursorSelectionLayer,
+  TimelineLayer,
   TimelineMeasuresLayer,
   TimelineWaveformLayer,
 } from './src/timeline';
@@ -108,6 +109,7 @@ module.exports = {
   TimelineCursorLayer,
   TimelineCursorPointerLayer,
   TimelineCursorSelectionLayer,
+  TimelineLayer,
   TimelineMeasuresLayer,
   TimelineWaveformLayer,
   Tree,
