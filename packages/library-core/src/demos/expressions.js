@@ -2,10 +2,11 @@ export const expressionsDemo = ({ library }) => {
 
   library.demo('Expressions', ({ demo }) => {
     demo.source(`
+
 session('expressions', ({ session }) => {
   session.at(0)
     .meter([ 4, 4 ])
-    .tempo(102)
+    .tempo(102) 
     .swing(0)
     .key('c')
     .scale('major');
@@ -15,7 +16,7 @@ session('expressions', ({ session }) => {
   }).as('random-1');
 
   session.use('instrument.electric-guitar', {
-    volume: -20,
+    volume: -18,
   }).as('random-2');
 
   session.use('instrument.membrane-synth', {
@@ -23,7 +24,7 @@ session('expressions', ({ session }) => {
   }).as('random-3');
 
   session.use('instrument.choir', {
-    volume: -8,
+    volume: -12,
   }).as('random-4');
 
   session.use('instrument.piano', { 
@@ -37,7 +38,7 @@ session('expressions', ({ session }) => {
   session.use('instrument.mono-synth', {
     volume: -9,
       detune: 0,
-      portamento: 0.1,
+      portamento: 0,
       envelope: {
         attack: 0,
         attackCurve: "exponential",
@@ -116,11 +117,10 @@ session('expressions', ({ session }) => {
 
   session.track('random-4', ({ track }) => {
     track.at(0).play.phrase([
-      doubleWhole.note('e3'), 
-      doubleWhole.note('d3'), 
-
-      doubleWhole.note('e3'), 
-      doubleWhole.note('d3'), 
+      doubleWhole.rest(),
+      doubleWhole.rest(),
+      doubleWhole.rest(),
+      doubleWhole.rest(),
 
       doubleWhole.note('*Bbmaj7', { octave: 3 }),
       doubleWhole.note('*Amaj7', { octave: 3 }),
@@ -128,11 +128,11 @@ session('expressions', ({ session }) => {
     ]);
 
     track.at(16).play.phrase([
-      doubleWhole.note('e3'), 
-      doubleWhole.note('d3'), 
+      doubleWhole.note('c4 e3'), 
+      doubleWhole.note('b3 d3'), 
 
-      doubleWhole.note('e3'), 
-      doubleWhole.note('d3'), 
+      doubleWhole.note('c4 e3'), 
+      doubleWhole.note('b3 d3'), 
 
       doubleWhole.note('*Bbmaj7', { octave: 3 }),
       doubleWhole.note('*Amaj7', { octave: 3 }),
@@ -248,7 +248,7 @@ session('expressions', ({ session }) => {
 
   session.use('effect.delay', {
     delayTime: "8n",
-    feedback: 0.5,
+    feedback: 0.4,
     wet: 0.3,
   });
 
