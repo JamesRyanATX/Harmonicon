@@ -40,9 +40,15 @@
 * ~~Feature: loader during instrument download~~
 * ~~Bug: build size for daw-components~~
 * ~~Feature: represent notes on timeline~~
+* ~~Bug: modal off center~~
 * Feature: tutorials
+* Feature: favicon
 * Housekeeping: clean up CLI
-* Release: 1.0.0 
+* Housekeeping: go over docs
+* Housekeeping: go over entry state
+* Housekeeping: review logs
+* Housekeeping: add license
+* Release: 1.0.0 -- hacker news post?
 
 ### 1.1.0
 

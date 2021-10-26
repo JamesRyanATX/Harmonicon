@@ -5,15 +5,14 @@
 }
 
 .modal {
-  position: absolute;
-  inset: 100px 150px auto 150px;
   background: var(--modal-background-color);
   overflow: auto;
   border-radius: var(--theme-border-radius);
   outline: none;
   box-shadow: rgb(0 0 0) 0px 0px 50px;
   height: auto;
-  width: auto;
+  width: 700px;
+  margin: 150px auto;
 }
 
   .modalTitleBar {
