@@ -154,7 +154,7 @@ export function Panels({
           : {
             direction: 'row',
             splitPercentage: 75,
-            first: column(columns.center, { splitPercentage: 50 }),
+            first: column(columns.center, { splitPercentage: 80 }),
             second: column(columns.right, { splitPercentage: 25 })
           }
       }

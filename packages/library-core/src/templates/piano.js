@@ -11,7 +11,9 @@ session('my-song', ({ session }) => {
     .key('c')
     .scale('major');
 
-  session.use.instrument('piano').from.library();
+  session.use('instrument.piano', {
+    volume: -8
+  });
 
   session.track('piano', function({ track }) {
     track.at(0).play.phrase([

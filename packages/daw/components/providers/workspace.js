@@ -23,7 +23,7 @@ export function WorkspaceProvider({
     if (workspace.files.length === 0) {
       await workspace.files.create({
         name: 'Demo',
-        source: Harmonicon.libraries.core.demos.filterByProperty('name', 'Kitchen Sync')[0].source,
+        source: Harmonicon.libraries.core.demos.filterByProperty('name', 'Expressions')[0].source,
       });
     }
 
