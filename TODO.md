@@ -41,23 +41,24 @@
 * ~~Bug: build size for daw-components~~
 * ~~Feature: represent notes on timeline~~
 * ~~Bug: modal off center~~
+* ~~Feature: favicon~~
+* ~~Housekeeping: add license~~
 * Feature: tutorials
-* Feature: favicon
+* Feature: derive tab names from session
 * Housekeeping: clean up CLI
 * Housekeeping: go over docs
 * Housekeeping: go over entry state
 * Housekeeping: review logs
-* Housekeeping: add license
 * Release: 1.0.0 -- hacker news post?
 
 ### 1.1.0
 
+* Feature: save panel dimensions to session
 * Feature: save workspace in (dropbox|gdrive|icloud) instead of localstorage
 * Feature: expression: fill(duration, unit)
 * Feature: note volume
 * Feature: note velocity
 * Feature: Add "sidebars" toggle
-* Feature: save panel dimensions to session
 * Feature: record notes played on keyboard/midi
 * Feature: faster waveform rendering
 * Feature: merge phrases and expressions

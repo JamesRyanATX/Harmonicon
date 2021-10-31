@@ -42,24 +42,41 @@
     margin: 0;
     min-width: 30px;
     padding: var(--control-padding) 15px;
+    position: relative;
     text-align: center;
+    transition: all 0.1s;
   }
 
-  .button button:hover {
-    border-color: var(--control-hover-border-color);
-  }
+    .button button span[data-external] {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: 4px;
+      height: 4px;
+      border-right: 4px solid var(--control-border-color);
+      border-top: 4px solid var(--control-border-color);
+      border-left: 4px solid transparent;
+      border-bottom: 4px solid transparent;
+    }
 
-  .button button:active {
-  }
+
+    .button button:hover {
+      border-color: var(--control-hover-border-color);
+    }
+
+    .button button:active {
+    }
 
   /* flavors */
 
   .buttonIsPrimary button {
+    background-color: rgba(var(--theme-primary-color-rgb), 0.05);
     border-color: var(--theme-primary-color);
     color: var(--theme-primary-color);
   }
 
   .buttonIsPrimary button:hover {
+    background-color: rgba(var(--theme-primary-color-rgb), 0.15);
     border-color: var(--theme-primary-color-light);
     color: var(--theme-primary-color-light);
   }
@@ -75,6 +92,16 @@
       padding: 2px 0 0 0;
     }
 
+  .buttonIsCta button {
+    font-weight: 200;
+    font-size: 16px;
+    padding: 10px 25px;
+    border-radius: var(--theme-border-radius);
+  }
+
+  .buttonIsCta.buttonIsPrimary button {
+    font-weight: 600;
+  }
 
 /* select */
 

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import {
   Menu as MenuBar,
   MenuItem,
@@ -14,6 +15,7 @@ import styles from '../styles/daw.menu.module.css';
 import { useState, useEffect } from 'react';
 
 import { GiSoundWaves } from 'react-icons/gi';
+import { IoLogoGithub } from 'react-icons/io5';
 
 function Bars() {
   const [ offstage, setOffstage ] = useState(true);
@@ -42,6 +44,24 @@ function Bars() {
       <div />
       <div />
       <h3><GiSoundWaves /> harmonicon</h3>
+    </div>
+  );
+}
+
+function Before() {
+  return (
+    <div className={styles.menuBefore}>
+      {/* <Image src="/favicon.png" height="20" width="20" alt="Harmonicon" /> */}
+    </div>
+  );
+}
+
+function After() {
+  return (
+    <div className={styles.menuAfter}>
+      <a href="https://github.com/JamesRyanATX/harmonicon" rel="noreferrer" target="_blank">
+        <IoLogoGithub />
+      </a>
     </div>
   );
 }
@@ -77,7 +97,9 @@ export function Menu({
   return (
     <MenuBar
       items={items}
-      after={() => (<Bars />)} 
+      className={styles.menu}
+      before={() => (<Before />)} 
+      after={() => (<After />)} 
     />
   )
 }

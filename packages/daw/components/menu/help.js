@@ -22,7 +22,7 @@ export function HelpDropdown() {
         icon={IoBookSharp}
       />
       <MenuDropdownItem
-        label="Source Code"
+        label="GitHub"
         href="https://github.com/JamesRyanATX/harmonicon"
         icon={IoLogoGithub}
       />

@@ -1,6 +1,6 @@
-import { useState } from 'react';
-
+import { useEffect, useState } from 'react';
 import { Panels } from '@composer/daw-components';
+
 import { Transport } from './transport';
 import { Menu } from './menu';
 import { Modals } from './modals';
@@ -10,6 +10,7 @@ import { RoutesPanel } from './panels/routes';
 import { ChordsPanel } from './panels/chords';
 import { KeyboardPanel } from './panels/keyboard';
 import { ConsolePanel } from './panels/console';
+import { AboutModal } from './modals/menu/help/about';
 import { useController } from './providers/controller';
 
 import styles from '../styles/daw.module.css';
@@ -86,6 +87,10 @@ export function Interface () {
     ],
 
   };
+
+  useEffect(() => {
+    controller.emit('modal:open', { component: AboutModal, props: {} });
+  }, [ controller ]);
 
   return (
     <div className={styles.dawInterface}>

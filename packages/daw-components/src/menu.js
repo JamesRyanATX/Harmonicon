@@ -106,12 +106,14 @@ export function Menu({
   before = () => (''),
   after = () => (''),
   items = [],
+  className = ''
 }) {
   const [ active, setActive ] = useState(null);
 
   return (
     <div className={[
       styles.menu,
+      className,
     ].join(' ')}>
       {before ? before() : ''}
       {items.map((item) => (

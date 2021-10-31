@@ -27,3 +27,302 @@
     0%   { background-position: 0 0; }
     100% { background-position: -200% 0; }
   }
+
+
+.illustration {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 50px 35px 25px 35px;
+}
+
+  .illustration h3,
+  .illustration h4 {
+    margin: 0;
+    padding: 0;
+  }
+
+  .illustration h3 {
+    padding: 6px 0 2px 0;
+    font-size: 24px;
+    color: var(--theme-neutral-color-10);
+  }
+
+  .illustration h4 {
+    font-size: 8px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .illustrationIde,
+  .illustrationPlus,
+  .illustrationDaw {
+    font-weight: 200;
+    text-align: center;
+    border-radius: var(--theme-border-radius);
+    align-content: middle;
+    border-radius: 25px;
+    border-width: 2px;
+    border-style: solid;
+    width: 250px;
+  }
+
+  .illustrationIde {
+    color: rgba(var(--theme-palette-red-rgb), 1);
+    border-color: rgba(var(--theme-palette-red-rgb), 1);
+    background-color: rgba(var(--theme-palette-red-rgb), 0.15);
+    transition: all 1s;
+    margin-right: 30px;
+  }
+
+  .illustrationPlus {
+    border-width: 0;
+    background-color: var(--theme-neutral-color-4);
+    color: var(--theme-neutral-color-10);
+    width: 64px;
+    height: 64px;
+    text-align: center;
+    padding: 0;
+    border-radius: 100px;
+    position: relative;
+    overflow: hidden;
+    transition: all 1s;
+    cursor: pointer;
+    box-shadow: -15px -15px 45px transparent;
+  }
+
+    .illustrationPlus > div {
+      position: absolute;
+      background-color: var(--theme-neutral-color-9);
+      border-radius: 5px;
+    }
+
+      .illustrationPlus > div:first-child {
+        top: 15px;
+        bottom: 15px;
+        left: 50%;
+        width: 6px;
+        margin-left: -3px;
+      }
+
+      .illustrationPlus > div:last-child {
+        top: 50%;
+        left: 15px;
+        right: 15px;
+        height: 6px;
+        margin-top: -3px;
+      }
+
+      .illustrationPlus:hover > div {
+        position: absolute;
+        background-color: var(--theme-neutral-color-10);
+        border-radius: 5px;
+      }
+
+    .illustrationPlus::before {
+      content: '';
+      background-color: #000;
+      background-image: url('/favicon.png');
+      background-size: 64px 64px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      opacity: 0;
+    }
+
+  .illustrationDaw {
+    color: rgba(var(--theme-primary-color-rgb), 1);
+    border-color: rgba(var(--theme-primary-color-rgb), 1);
+    background-color: rgba(var(--theme-primary-color-rgb), 0.25);
+    transition: all 1s;
+    margin-left: 30px;
+  }
+
+
+.controls {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+  height: 20px;
+}
+
+  .controls > div {
+    width: 10px;
+    height: 10px;
+    background-color: var(--theme-neutral-color-6);
+    border-radius: 10px;
+    margin: 0 10px;
+    cursor: pointer;
+    transition: all 0.5s ease-out;
+  }
+
+  .controls > div[current] {
+    background-color: var(--theme-neutral-color-10);
+    height: 20px;
+    width: 20px;
+    margin-top: -5px;
+  }
+
+
+.teasers {
+  font-size: 18px;
+  line-height: 175%;
+  margin-bottom: 40px;
+  text-align: center;
+  position: relative;
+  height: 100px;
+  overflow: hidden;
+}
+
+  .teasersFader {
+    height: 25px;
+    right: 0;
+    position: absolute;
+    left: 0;
+  }
+
+    .teasersFader[data-top] {
+      background: linear-gradient(to bottom,
+        var(--theme-neutral-color-3) 0%,
+        transparent 100%
+      );
+      top: 0;
+    }
+
+    .teasersFader[data-bottom] {
+      background: linear-gradient(to bottom,
+        transparent 0%,
+        var(--theme-neutral-color-3) 100%
+      );
+      bottom: 0;
+    }
+
+
+  .teasersStage {
+    position: absolute;
+    left: 10px;
+    top: 30px;
+    right: 10px;
+    transition: all 0.5s;
+  }
+
+  .teasersStage > div {
+    height: 75px;
+  }
+
+  button.teaserButton {
+    padding: 15px 60px;
+    outline: none;
+    font-weight: 400;
+    font-size: 20px;
+    font-family: var(--theme-fixed-font-family);
+    font-weight: 200;
+  }
+
+    button.teaserButtonCode {
+      border-color: var(--theme-neutral-color-6);
+      background-color: var(--theme-neutral-color-6);
+      color: var(--theme-neutral-color-8);
+      padding-left: 20px;
+      padding-right: 100px;
+    }
+
+    button.teaserButtonCode:hover {
+      color: inherit;
+      background-color: var(--theme-neutral-color-6);
+      border-color: inherit;
+    }
+
+    button.teaserButtonPlay {
+      font-size: 30px;
+      padding: 5px 17px 0 20px;
+      margin-left: 20px;
+      border-radius: var(--theme-border-radius);
+    }
+
+
+/* frame 0 */
+
+.animation[data-frame="1"] .teasersStage {
+  margin-top: -75px;
+}
+
+.animation[data-frame="1"] .illustrationIde,
+.animation[data-frame="2"] .illustrationIde {
+  background-color: rgba(var(--theme-palette-red-rgb), 1);
+  color: #fff;
+  border-radius: 100px 0 0 100px;
+  margin-right: -2px;
+}
+
+.animation[data-frame="1"] .illustrationPlus > div,
+.animation[data-frame="2"] .illustrationPlus > div {
+  display: none;
+}
+.animation[data-frame="1"] .illustrationPlus,
+.animation[data-frame="2"] .illustrationPlus {
+  background-color: var(--theme-neutral-color-4);
+  z-index: 0;
+  border-radius: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-right-width: 0;
+  border-left-width: 0;
+  box-shadow: 0 0 25px black;
+}
+
+.animation[data-frame="1"] .illustrationPlus::before,
+.animation[data-frame="2"] .illustrationPlus::before {
+  opacity: 1;
+  transition: opacity 1s ease-in-out;
+}
+
+.animation[data-frame="1"] .illustrationDaw,
+.animation[data-frame="2"] .illustrationDaw {
+  background-color: rgba(var(--theme-primary-color-rgb), 1);
+  color: #fff;
+  border-radius: 0 100px 100px 0;
+  margin-left: -2px;
+}
+
+
+/* frame 2 */
+
+.animation[data-frame="2"] .teasersStage {
+  margin-top: -160px;
+}
+
+.animation[data-frame="2"] .illustration h3 {
+  margin-top: -20px;
+  opacity: 0;
+  transition: all 0.25s;
+}
+
+.animation[data-frame="2"] .illustration h4 {
+  opacity: 0;
+}
+
+.animation[data-frame="2"] .illustrationIde,
+.animation[data-frame="2"] .illustrationDaw {
+  width: 0px;
+  opacity: 0.25;
+  /* background-color: var(--theme-neutral-color-5); */
+}
+
+.animation[data-frame="2"] .illustrationDaw {
+  border-left-color: transparent;
+}
+
+.animation[data-frame="2"] .illustrationPlus {
+  box-shadow: 0 0 35px rgba(0, 0, 0, 1);
+  transition: box-shadow 5s;
+  border-radius: 2px;
+}
+
+.animation[data-frame="2"] .illustrationIde {
+  border-right-color: transparent;
+}

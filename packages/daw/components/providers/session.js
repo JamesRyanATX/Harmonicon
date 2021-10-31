@@ -1,7 +1,8 @@
 import { createContext, useContext } from 'react';
 import { useState, useEffect } from "react";
 import { useLogger } from './logger';
-import { parseCode } from '@composer/compose';
+import { useFile } from './file';
+import { parse } from '@composer/compose';
 
 
 export const SessionContext = createContext({});
@@ -11,29 +12,23 @@ export function useSession() {
 }
 
 export function SessionProvider({
-  file = null,
   children,
 }) {
+  const file = useFile();
   const logger = useLogger('SessionProvider');
   const [ session, setSession ] = useState();
 
-  // function parseFile() {
-  //   logger.debug(`parsing ${file.name}`);
-
-  //   try {
-  //     const results = parseCode(file.source);
-  //   }
-  //   catch (e) {
-  //     // console.error(e);
-  //     // console.error(e);
-  //     logger.error(e);
-  //   }
-  // }
-
-  // function onComposerParsed(composer) {
-  //   logger.info(`parsed ${file.name}`)
-  //   setSession(composer.model);
-  // }
+  // Create session when file is loaded
+  useEffect(() => {
+    (async function parseFile() {
+      try {
+        setSession(controller.session = (await parse({ code: file.source })).model);
+      }
+      catch (e) {
+        logger.error(e);
+      }
+    })();
+  }, [ file, logger ]);
 
   // // Assign model object when parse finishes
   // useEffect(() => {

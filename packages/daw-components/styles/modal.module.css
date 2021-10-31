@@ -1,5 +1,5 @@
 .modal {
-  --modal-background-color: rgb(25, 25, 25);
+  --modal-background-color: var(--theme-neutral-color-3);
   --modal-gutter: 10px;
   --modal-gutter-2x: 20px;
 }
@@ -11,8 +11,7 @@
   outline: none;
   box-shadow: rgb(0 0 0) 0px 0px 50px;
   height: auto;
-  width: 700px;
-  margin: 150px auto;
+  margin: 100px auto;
 }
 
   .modalTitleBar {
@@ -30,6 +29,7 @@
       float: right;
       font-size: 14px;
       margin: -2px -2px 0 0;
+      color: var(--theme-neutral-color-8);
     }
 
   .modalContent {
@@ -40,6 +40,30 @@
   .modalIndicator {
   }
 
+
+.modalActions {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+  .modalActions > * {
+    margin-right: var(--modal-gutter);
+  }
+
+  .modalActions > *:last-child {
+    margin-right: 0;
+  }
+
+  .modalActionsMask {
+    background-color: var(--modal-background-color);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.75;
+  }
 
 .dialog {
 }
@@ -52,26 +76,6 @@
   .dialogText {
     margin-bottom: var(--modal-gutter-2x);    
   }
-
-  .dialogActions {
-    display: flex;
-    flex-direction: row;
-    position: relative;
-  }
-
-    .dialogActions > * {
-      margin-right: var(--modal-gutter);
-    }
-
-    .dialogActionsMask {
-      background-color: var(--modal-background-color);
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      opacity: 0.75;
-    }
 
   .dialogError {
     margin-top: var(--modal-gutter-2x);    

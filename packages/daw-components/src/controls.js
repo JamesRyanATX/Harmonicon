@@ -42,20 +42,29 @@ export function Select({
 }
 
 export function Button({
-  color = null,
   children = null,
-  onClick = () => {},
+  className = '',
+  color = null,
+  cta = false,
+  external = false,
+  flex = "none",
   narrow = false,
+  onClick = () => {},
   primary = false,
+  style = {},
 }) {
   return (
-    <Control type="button" flex="none" className={[
+    <Control type="button" flex={flex} className={[
       primary ? styles.buttonIsPrimary : '',
-      narrow ? styles.buttonIsNarrow : ''
+      narrow ? styles.buttonIsNarrow : '',
+      cta ? styles.buttonIsCta : '',
     ].join(' ')}>
-      <button onClick={onClick} style={{
-        color: color || 'inherit'
-      }}>{children}</button>
+      <button onClick={onClick} className={className} style={{ color, flex, ...style }}>
+        {children}
+        {external ? (
+          <span data-external />
+        ) : ''}
+      </button>
     </Control>
   )
 }

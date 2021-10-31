@@ -7,17 +7,26 @@ import { LoadingBar } from './loading';
 
 import styles from '../styles/modal.module.css';
 
+/**
+ * 
+ * @param {object} props
+ * @param {number} props.gutter - min spacing to the left and right of modal
+ * @param {number} width - max width of modal
+ * @returns
+ */
 export function Modal({
-  height = 'auto',
-  children = 'Modal',
   blocking = false,
+  children = 'Modal',
+  className = '',
+  gutter = 50,
+  height = 'auto',
+  onRequestClose = () => {},
   open = true,
+  padding = 20,
+  title = 'Heads Up',
+  width = 700,
   working = false,
   workingPercentComplete = 1,
-  className = '',
-  title = 'Heads Up',
-  onRequestClose = () => {},
-  padding = 20,
 }) {
   const closeable = !blocking && !working;
 
@@ -37,11 +46,12 @@ export function Modal({
       style={{
         overlay: {
           backgroundColor: 'rgba(0, 0, 0, 0.75)',
-          zIndex: 1000
+          zIndex: 1000,
+          padding: `0 ${gutter}px`
         },
         content: {
           height: height,
-          width: '700px'
+          maxWidth: `${width}px`
         }
       }}
     >
@@ -64,6 +74,19 @@ export function Modal({
     </ReactModal>
   )
 };
+
+export function ModalActions({
+  children = null,
+  disabled = false,
+  style = {},
+}) {
+  return (
+    <div className={styles.modalActions} style={style}>
+      {children}
+      {disabled ? (<div className={styles.modalActionsMask} />) : ''}
+    </div>
+  )
+}
 
 export function DialogModal({
   working = false,
@@ -92,14 +115,13 @@ export function DialogModal({
       <div className={styles.dialogText}>
         {text}
       </div>
-      <div className={styles.dialogActions}>
+      <ModalActions disabled={working}>
         {buttons.map((button) => (
           <Button key={button.label} {...button}>
             {button.label}
           </Button>
         ))}
-        {working ? (<div className={styles.dialogActionsMask} />) : ''}
-      </div>
+      </ModalActions>
       {error ? (
         <div className={styles.dialogError}>
           {error}

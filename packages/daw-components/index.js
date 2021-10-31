@@ -1,6 +1,7 @@
 "use strict";
 
 import {
+  Button,
   IconButton,
   Select
 } from './src/controls';
@@ -43,9 +44,10 @@ import {
 } from './src/tree';
 
 import {
-  Modal,
   ConfirmModal,
   DialogModal,
+  Modal,
+  ModalActions,
 } from './src/modal';
 
 import {
@@ -79,6 +81,7 @@ import {
 } from './src/tabs';
 
 module.exports = {
+  Button,
   ConfirmModal,
   Console,
   ConsoleProvider,
@@ -94,6 +97,7 @@ module.exports = {
   MenuDropdownMask,
   MenuItem,
   Modal,
+  ModalActions,
   Panel,
   PanelFilter,
   PanelFilterRow,

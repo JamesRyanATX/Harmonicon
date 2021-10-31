@@ -1,3 +1,33 @@
+.menu {
+  background-color: red;
+  background: repeating-linear-gradient(to right,
+    var(--theme-palette-red) 0%,
+    var(--theme-secondary-color) 33%,
+    var(--theme-primary-color) 66%,
+    var(--theme-palette-red) 100%
+  );
+  background-size: 200% auto;
+  background-position: 0 100%;
+  animation: menu 20s infinite;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+}
+
+  @keyframes menu { 
+    0%   { background-position: 0 0; }
+    100% { background-position: -200% 0; }
+  }
+
+
+.menuAfter {
+  padding: 5px 6px 0 0;
+}
+
+  .menuAfter a {
+    color: var(--theme-neutral-color-10);
+    font-size: 20px;
+  }
+
 .icon {
   font-size: 16px;
   padding-top: 7px;
