@@ -43,11 +43,11 @@
 * ~~Bug: modal off center~~
 * ~~Feature: favicon~~
 * ~~Housekeeping: add license~~
+* ~~Housekeeping: clean up CLI~~
+* ~~Housekeeping: go over entry state~~
+* ~~Feature: derive tab names from session~~
 * Feature: tutorials
-* Feature: derive tab names from session
-* Housekeeping: clean up CLI
 * Housekeeping: go over docs
-* Housekeeping: go over entry state
 * Housekeeping: review logs
 * Release: 1.0.0 -- hacker news post?
 

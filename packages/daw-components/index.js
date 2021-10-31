@@ -59,10 +59,6 @@ import {
 } from './src/hooks';
 
 import {
-  Editable,
-} from './src/editable';
-
-import {
   Timeline,
   TimelineCursorLayer,
   TimelineCursorPointerLayer,
@@ -86,7 +82,6 @@ module.exports = {
   Console,
   ConsoleProvider,
   DialogModal,
-  Editable,
   IconButton,
   Keyboard,
   LoadingBar,

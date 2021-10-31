@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { IoCloseSharp } from "react-icons/io5";
-import { Editable } from './editable';
 
 import styles from '../styles/tabs.module.css';
 
@@ -22,19 +21,12 @@ export function TabIcon({
 
 export function TabLabel({
   label = null,
-  onChange = () => {},
-  editable = false,
 }) {
   return (
     <div className={[
       styles.tabLabel,
     ].join(' ')}>
-      {editable ? (
-        <Editable
-          value={label}
-          onChange={onChange}
-        />
-      ) : label}
+      {label}
       <div className={styles.tabLabelEllipsis} />
     </div>
   )
@@ -91,11 +83,7 @@ export function Tab({
             />
           ) : ''}
           {label ? (
-            <TabLabel
-              label={label}
-              editable={selected}
-              onChange={onRename}
-            />
+            <TabLabel label={label} />
            ) : ''}
           {close ? (
             <TabClose

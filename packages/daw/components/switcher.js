@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Tabs, Tab, TabIcon } from '@composer/daw-components';
+import { Tabs, Tab, TabIcon, useEventListener } from '@composer/daw-components';
 import { IoAddCircleOutline } from "react-icons/io5";
 import { useController } from './providers/controller';
 
@@ -9,15 +9,17 @@ function FileTab({
   controller,
   selected,
 }) {
+  const [ name, setName ] = useState(file.name);
+
+  useEventListener(file, 'changed:name', ({ newValue }) => {
+    setName(newValue);
+  });
+
   return (
     <Tab
       key={file.id}
-      label={file.name}
+      label={name}
       selected={selected}
-      onRename={(value) => {
-        file.setProperties({ name: value });
-        file.save();
-      }}
       onTabClick={() => {
         controller.selectFile(file);
       }}

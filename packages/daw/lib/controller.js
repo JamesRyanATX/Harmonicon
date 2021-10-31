@@ -69,6 +69,11 @@ export class Controller {
       this.emit('error', { message: e.message, error: e })
     });
 
+    // Update filename after parsing
+    Harmonicon.on('composer:parsed', (composer) => {
+      this.file.name = composer.name;
+    });
+
     Harmonicon.on('composer:parsing', (c) => (this.emit('composer:parsing', c)));
     Harmonicon.on('composer:parsed', (c) => (this.emit('composer:parsed', c)));
     Harmonicon.on('composer:rendering', (c) => (this.emit('composer:rendering', c)));
@@ -191,10 +196,13 @@ export class Controller {
     source = null
   } = {}) {
     try {
+      name = name || this.newFileName();
+      source = (
+        source || Harmonicon.libraries.core.templates.filterByProperty('name', 'Blank')[0].source
+      ).replace('my-song', name);
+
       const file = await this.workspace.files.create({
-        name: name || this.newFileName(),
-        source: source || Harmonicon.libraries.core.templates.filterByProperty('name', 'Blank')[0].source,
-        workspace: this.workspace,
+        workspace: this.workspace, name, source
       });
 
       this.emit('file:created', file);

@@ -1,7 +1,0 @@
-.editable:focus {
-  outline: none;
-  color: #fff;
-  background-color: #ffffff22;
-  border-bottom: 1px solid rgba(var(--brand-color-2), 1);
-  cursor: text;
-}
