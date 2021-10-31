@@ -1,57 +1,30 @@
+import { IoLogoGithub } from 'react-icons/io5';
 import Image from 'next/image';
+
 import {
   Menu as MenuBar,
-  MenuItem,
 } from '@composer/daw-components';
 
 import { FileDropdown } from './menu/file';
-import { EditDropdown } from './menu/edit';
 import { ViewDropdown } from './menu/view';
-import { AudioDropdown } from './menu/audio';
 import { HelpDropdown } from './menu/help';
 import { MidiDropdown } from './menu/midi';
+import { AboutModal } from './modals/menu/help/about';
+import { useController } from './providers/controller';
 
 import styles from '../styles/daw.menu.module.css';
-import { useState, useEffect } from 'react';
 
-import { GiSoundWaves } from 'react-icons/gi';
-import { IoLogoGithub } from 'react-icons/io5';
-
-function Bars() {
-  const [ offstage, setOffstage ] = useState(true);
-
-  useEffect(() => {
-    let timer = setTimeout(() => (setOffstage(false)), 2000);
-
-    return () => {
-      clearTimeout(timer);
-    }
-  });
-
-  return (
-    <div onClick={() => (setOffstage(true))} className={[
-      styles.bars,
-      offstage ? styles.barsIsOffstage : ''
-    ].join(' ')}>
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
-      <h3><GiSoundWaves /> harmonicon</h3>
-    </div>
-  );
-}
 
 function Before() {
+  const controller = useController();
+
   return (
     <div className={styles.menuBefore}>
-      {/* <Image src="/favicon.png" height="20" width="20" alt="Harmonicon" /> */}
+      <a onClick={() => {
+        controller.emit('modal:open', { component: AboutModal, props: {} });
+      }}>
+        <Image src="/icon.white.png" height="17" width="17" alt="Harmonicon" />
+      </a>
     </div>
   );
 }
