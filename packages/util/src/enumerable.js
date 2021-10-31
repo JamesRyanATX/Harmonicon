@@ -23,3 +23,7 @@ export function times(n, fn) {
     return fn(i)
   });
 }
+
+export function range(from, to) {
+  return Array.from(new Array((to - from) + 1)).map((x, i) => (from + i));
+}

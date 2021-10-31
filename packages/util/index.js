@@ -9,7 +9,8 @@ export {
   oneOf,
   mapParallel,
   mapSeries,
-  times
+  times,
+  range,
 } from './src/enumerable.js';
 
 export { generateIdentifier } from './src/string.js';
