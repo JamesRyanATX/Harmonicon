@@ -242,12 +242,12 @@ footer {
   background-size: 100% 100%;
 }
 
-.code-badge-copy-icon::before {
+/* .code-badge-copy-icon::before {
   font-size: 12px !important;
   content: 'Copy';
   font-style: normal;
   text-decoration: underline;
-}
+} */
 
 .code-badge > .code-badge-check-icon {
   background: green;

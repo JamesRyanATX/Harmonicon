@@ -23,22 +23,26 @@ It focuses on composition over live performance and emphasizes music theory in t
 This is Hello World! in Harmonicon.  Copy and paste the following snippet into the editor on [harmonicon.studio](https://harmonicon.studio) and press "Play":
 
 ``` javascript
-// Herein lies a musical greeting
-session('hello-world', ({ library }) => {
+// Create a new session named "Hello World"
+session('Hello World', ({ session }) => {
 
-  // Create an instrument (in this case, a synthesizer from ToneJS)
-  session.use('core.instrument.mono-synth').as('synth');
+  // Import a monophonic synthesizer
+  session.use('instrument.mono-synth');
 
   // Create a track
-  session.track('synth', ({ track }) => {
+  session.track('mono-synth', ({ track }) => {
+
+     // At measure 0, play a quarter note at pitch C4
      track.at(0).play(quarter.note('C4'));
+
   });
 
   // Send the "synth" instrument to the "synth" track
-  session.send.instrument('synth').to.track('synth');
+  session.send.instrument('mono-synth').to.track('mono-synth');
 
   // Send the "synth" track to the main output
-  session.send.track('synth').to.main();
+  session.send.track('mono-synth').to.main();
+
 });
 ```
 

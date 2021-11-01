@@ -2,6 +2,34 @@ function toneDocumentationUrl(toneObject) {
   return `https://tonejs.github.io/docs/14.7.7/${toneObject}`;
 }
 
+export const demoHeader = `
+/**
+ *    __ _____   ___  __  _______  _  _______________  _  __
+ *   / // / _ | / _  /  |/  / __  / |/ /  _/ ___/ __  / |/ /
+ *  / _  / __ |/ , _/ /|_/ / /_/ /    // // /__/ /_/ /    / 
+ * /_//_/_/ |_/_/|_/_/  /_/\\____/_/|_/___/\\___/\\____/_/|_/  
+ *
+ * ===========================================================
+ * 
+ * Harmonicon is an experimental music-as-code DAW for your 
+ * browser.  It's like GarageBand, but for code!
+ * 
+ * Features:
+ * 
+ *  - A high-level composition language rooted in music theory
+ *  - Baked in library of instruments and synthesizers
+ *  - Multi-track sequencing
+ *  - Effects, loops, sends, etc.
+ *  - Powered by the Web Audio API, Tonejs, Tonaljs, Monaco,
+ *    and a multitude of other things.
+ * 
+ * This project is experimental, so use at your own risk :-)
+ * 
+ * Click the [PLAY] button to hear what this file sounds like.
+ * 
+ */
+`.trim();
+
 export const toneSynthesizerInstrument = ({
   name = null,
   group = 'Synthesizers',

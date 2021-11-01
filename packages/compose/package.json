@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "doc": "npx jsdoc --configure jsdoc.json --verbose",
-    "dev": "npx nodemon --exec 'npm run doc' --ext js,css,tmpl --watch src --watch ../jsdoc-template/static --watch ../jsdoc-template/tmpl --watch ../jsdoc-template/publish.js",
+    "dev": "npx nodemon --exec 'npm run doc' --ext js,css,tmpl --watch README.md --watch src --watch ../jsdoc-template/static --watch ../jsdoc-template/tmpl --watch ../jsdoc-template/publish.js",
     "test": "node --experimental-vm-modules node_modules/.bin/jest",
     "test:watch": "node --experimental-vm-modules node_modules/.bin/jest --watch"
   },
