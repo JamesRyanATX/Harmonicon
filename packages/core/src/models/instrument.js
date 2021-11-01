@@ -57,7 +57,7 @@ export class InstrumentModel extends BaseNodeModel {
   // Render an audio node and ensure it's ready for use
   async render () {
     const node = await this.fn(this.options);
-    const timeout = 1;
+    const timeout = 15;
     const poll = 0.5;
 
     if (node.loaded !== false) {
