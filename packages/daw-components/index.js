@@ -56,6 +56,7 @@ import {
 
 import {
   useEventListener,
+  useViewport,
 } from './src/hooks';
 
 import {
@@ -117,4 +118,5 @@ module.exports = {
   TreeItem,
   useConsoleLogs,
   useEventListener,
+  useViewport,
 };

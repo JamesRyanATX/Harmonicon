@@ -1,4 +1,20 @@
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
+
+export function useViewport() {
+  const [ width, setWidth ] = React.useState(window.innerWidth);
+
+  React.useEffect(() => {
+    const handleWindowResize = () => setWidth(window.innerWidth);
+
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    }
+  }, []);
+
+  return { width };
+}
 
 /**
  * Hook for simplifying load/unload event callbacks.
