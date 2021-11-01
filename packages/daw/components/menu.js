@@ -24,7 +24,8 @@ function Before() {
       <a onClick={() => {
         controller.emit('modal:open', { component: AboutModal, props: {} });
       }}>
-        <Image src="/icon.white.png" height="17" width="17" alt="Harmonicon" />
+        { /* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/icon.white.png" height="17" width="17" alt="Harmonicon" />
       </a>
     </div>
   );
