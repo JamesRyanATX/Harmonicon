@@ -13,6 +13,7 @@ import { AboutModal } from './modals/menu/help/about';
 import { useController } from './providers/controller';
 
 import styles from '../styles/daw.menu.module.css';
+import { useViewport } from '@composer/daw-components';
 
 
 function Before() {
@@ -44,24 +45,34 @@ export function Menu({
     {
       label: 'File',
       dropdown: FileDropdown,
+      mobile: true,
     },
     {
       label: 'View',
       dropdown: ViewDropdown,
+      mobile: false,
     },
     {
       label: 'MIDI',
       dropdown: MidiDropdown,
+      mobile: true,
     },
     {
       label: 'Help',
       dropdown: HelpDropdown,
+      mobile: true,
     },
   ]
 }) {
+  const viewport = useViewport();
+  const mobile = viewport.width < 800;
+  const visibleItems = items.filter((item) => {
+    return !mobile || (mobile && item.mobile);
+  });
+
   return (
     <MenuBar
-      items={items}
+      items={visibleItems}
       className={styles.menu}
       before={() => (<Before />)} 
       after={() => (<After />)} 

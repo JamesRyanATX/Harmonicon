@@ -13,12 +13,15 @@
   animation: logo 5s infinite;
   animation-fill-mode: forwards;
   animation-timing-function: linear;
+  font-size: 43px;
 }
 
-  .logo > span:first-child {
+  .logoIcon svg {
+    vertical-align: -15px;
+    font-size: 55px;
   }
 
-  .logo > span:last-child {
+  .logoName {
     text-transform: uppercase;
     font-family: 'Poiret One';
   }
@@ -28,12 +31,21 @@
     100% { background-position: -200% 0; }
   }
 
+  @media screen and (max-width: 800px) {
+    .modal {
+      margin: 0;
+      height: 100% !important;
+      border-radius: 0;
+    }
+  }
+
+
 
 .illustration {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin: 50px 35px 25px 35px;
+  margin: 50px 0px 25px 0px;
 }
 
   .illustration h3,
@@ -142,6 +154,32 @@
   }
 
 
+  @media screen and (max-width: 800px) {
+
+    .illustration h3 {
+      padding-top: 13px;
+      font-size: 28px;
+    }
+
+    .illustration h4 {
+      display: none;
+    }
+
+    .illustrationDaw,
+    .illustrationIde {
+      width: 100px;
+    }
+
+    .illustrationIde {
+      margin-right: 20px;
+    }
+
+    .illustrationDaw {
+      margin-left: 20px;
+    }
+  }
+
+
 .controls {
   text-align: center;
   display: flex;
@@ -167,6 +205,15 @@
     margin-top: -5px;
   }
 
+  @media screen and (max-width: 800px) {
+    .controls {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+  }
+
 
 .teasers {
   font-size: 18px;
@@ -176,6 +223,7 @@
   position: relative;
   height: 100px;
   overflow: hidden;
+  white-space: nowrap;
 }
 
   .teasersFader {
@@ -243,6 +291,17 @@
       margin-left: 20px;
       border-radius: var(--theme-border-radius);
     }
+
+  @media screen and (max-width: 800px) {
+    .teasers {
+      font-size: 14px;
+      white-space: normal;
+    }
+
+    button.teaserButtonCode {
+      padding: 5px 10px;
+    }
+  }
 
 
 /* frame 0 */

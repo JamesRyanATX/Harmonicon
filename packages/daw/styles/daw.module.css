@@ -4,6 +4,7 @@
   flex: 1;
   position: relative;
   overflow: hidden;
+  min-width: 375px;
 }
 
 .dawInterfaceTile {

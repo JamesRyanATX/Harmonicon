@@ -136,7 +136,13 @@ export function Panels({
       }
     }
 
-    if (columns.left.length === 0) {
+    // Center
+    if (columns.left.length === 0 && columns.right.length === 0) {
+      layout = column(columns.center, { splitPercentage: 80 });
+    }
+
+    // Center + Right
+    else if (columns.left.length === 0) {
       layout = {
         direction: 'row',
         splitPercentage: 80,
@@ -144,19 +150,29 @@ export function Panels({
         second: column(columns.right, { splitPercentage: 25 }),
       }
     }
+
+    // Left + Center
+    else if (columns.right.length === 0) {
+      layout = {
+        direction: 'row',
+        splitPercentage: 20,
+        first: column(columns.left, { splitPercentage: 33 }),
+        second: column(columns.center, { splitPercentage: 50 })
+      }
+    }
+
+    // Left + Center + Right
     else {
       layout = {
         direction: 'row',
         splitPercentage: 20,
         first: column(columns.left, { splitPercentage: 33 }),
-        second: columns.right.length === 0
-          ? column(columns.center, { splitPercentage: 50 })
-          : {
-            direction: 'row',
-            splitPercentage: 75,
-            first: column(columns.center, { splitPercentage: 80 }),
-            second: column(columns.right, { splitPercentage: 25 })
-          }
+        second: {
+          direction: 'row',
+          splitPercentage: 75,
+          first: column(columns.center, { splitPercentage: 80 }),
+          second: column(columns.right, { splitPercentage: 25 })
+        }
       }
     }
 

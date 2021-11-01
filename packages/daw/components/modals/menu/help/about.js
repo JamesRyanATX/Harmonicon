@@ -1,10 +1,9 @@
-import { Button, Modal, ModalActions } from '@composer/daw-components';
+import { Button, Modal, useViewport } from '@composer/daw-components';
 import { range } from '@composer/util';
 import { useController } from '../../../providers/controller';
 import { GiSoundWaves } from 'react-icons/gi';
 import { IoPlaySharp } from 'react-icons/io5';
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 
 import styles from '../../../../styles/logo.module.css';
 
@@ -19,16 +18,13 @@ function Logo({
       height: `${height + (padding * 2)}px`,
       padding: `${padding}px`,
     }}>
-      <span style={{
-        fontSize: `${height * 1.2}px`,
+      <span className={styles.logoIcon} style={{
         marginRight: `${height / 4}px`,
         marginTop: `${height * -0.1}px`,
       }}>
         <GiSoundWaves />
       </span>
-      <span style={{
-        fontSize: `${height}px`,
-        lineHeight: `${height}px`,
+      <span className={styles.logoName} style={{
       }}>
         harmonicon
       </span>
@@ -108,7 +104,10 @@ export function AboutModal({
   lastFrame = 2,
 }) {
   const controller = useController();
+  const viewport = useViewport();
+
   const [ frame, setFrame ] = useState(firstFrame);
+  const scale = viewport.width < 800 ? 1 : 1;
 
   useEffect(() => {
     if (frame === lastFrame) {
@@ -138,35 +137,39 @@ export function AboutModal({
         onClick={() => (setFrame(frame === lastFrame ? 0 : frame + 1))}
       >
         <Logo />
-        <Illustration frame={frame} />
-        <Teasers>
-          <div data-frame="0">
-            Harmonicon is an <strong>experimental</strong>{' '} tool for composing music as code.
-          </div>
-          <div data-frame="1">
-            Use JavaScript to compose <strong>tracks</strong>, <strong>effects</strong> and <strong>instruments</strong> all in your browser.
-          </div>
-          <div data-frame="2" style={{ display: 'flex', height: 'auto', justifyContent: 'center' }}>
-            <Button
-              onClick={() => (controller.emit('modal:close'))}
-              className={[ styles.teaserButton, styles.teaserButtonCode ].join(' ')}
-              primary
-              cta
-            >
-              <span style={{ color: 'var(--theme-palette-purple)' }}>try</span> &#123;{' '}
-              <span style={{ color: 'var(--theme-neutral-color-10)' }}>Harmonicon()</span> &#125;
-            </Button>
 
-            <Button
-              onClick={() => (controller.emit('modal:close'))}
-              className={[ styles.teaserButton, styles.teaserButtonPlay ].join(' ')}
-              primary
-              cta
-            >
-              <IoPlaySharp />
-            </Button>
-          </div>
-        </Teasers>
+        <div style={{ transform: `scale(${scale})` }}>
+          <Illustration frame={frame} />
+          <Teasers>
+            <div data-frame="0">
+              Harmonicon is an <strong>experimental</strong>{' '} tool for composing music as code.
+            </div>
+            <div data-frame="1">
+              Use JavaScript to compose <strong>tracks</strong>, <strong>effects</strong> and <strong>instruments</strong> all in your browser.
+            </div>
+            <div data-frame="2" style={{ display: 'flex', height: 'auto', justifyContent: 'center' }}>
+              <Button
+                onClick={() => (controller.emit('modal:close'))}
+                className={[ styles.teaserButton, styles.teaserButtonCode ].join(' ')}
+                primary
+                cta
+              >
+                <span style={{ color: 'var(--theme-palette-purple)' }}>try</span> &#123;{' '}
+                <span style={{ color: 'var(--theme-neutral-color-10)' }}>Harmonicon()</span> &#125;
+              </Button>
+
+              <Button
+                onClick={() => (controller.emit('modal:close'))}
+                className={[ styles.teaserButton, styles.teaserButtonPlay ].join(' ')}
+                primary
+                cta
+              >
+                <IoPlaySharp />
+              </Button>
+            </div>
+          </Teasers>
+        </div>
+
         <Controls
           frame={frame}
           firstFrame={firstFrame}

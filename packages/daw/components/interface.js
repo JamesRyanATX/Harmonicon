@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Panels } from '@composer/daw-components';
+import { Panels, useEventListener, useViewport } from '@composer/daw-components';
 
 import { Transport } from './transport';
 import { Menu } from './menu';
@@ -16,48 +16,71 @@ import { useFile } from './providers/file';
 
 import styles from '../styles/daw.module.css';
 
-export function Interface () {
+export function Interface ({
+  breakpoint = 800
+}) {
   const controller = useController();
   const file = useFile();
+  const viewport = useViewport();
+  const mobile = viewport.width < breakpoint;
   const panels = controller.workspace.panels;
 
-  const [ loaded, setLoaded ] = useState(false);
-  
   const [ libraryEnabled, setLibraryEnabled ] = useState(panels.library.enabled);
   const [ routesEnabled, setRoutesEnabled ] = useState(panels.routes.enabled);
   const [ chordsEnabled, setChordsEnabled ] = useState(panels.chords.enabled);
   const [ keyboardEnabled, setKeyboardEnabled ] = useState(panels.keyboard.enabled);
   const [ consoleEnabled, setConsoleEnabled ] = useState(panels.console.enabled);
 
-  if (!loaded) {
-    controller.on('workspace:panels:library:show', () => (setLibraryEnabled(true)));
-    controller.on('workspace:panels:library:hide', () => (setLibraryEnabled(false)));
+  useEventListener(controller, 'workspace:panels:library:show', function onLibraryShow() {
+    setLibraryEnabled(true)
+  });
 
-    controller.on('workspace:panels:routes:show', () => (setRoutesEnabled(true)));
-    controller.on('workspace:panels:routes:hide', () => (setRoutesEnabled(false)));
+  useEventListener(controller, 'workspace:panels:library:hide', function onLibraryHide () {
+    setLibraryEnabled(false)
+  });
 
-    controller.on('workspace:panels:chords:show', () => (setChordsEnabled(true)));
-    controller.on('workspace:panels:chords:hide', () => (setChordsEnabled(false)));
+  useEventListener(controller, 'workspace:panels:routes:show', function onRoutesShow () {
+    setRoutesEnabled(true)
+  });
 
-    controller.on('workspace:panels:keyboard:show', () => (setKeyboardEnabled(true)));
-    controller.on('workspace:panels:keyboard:hide', () => (setKeyboardEnabled(false)));
+  useEventListener(controller, 'workspace:panels:routes:hide', function onRoutesHide () {
+    setRoutesEnabled(false)
+  });
 
-    controller.on('workspace:panels:console:show', () => (setConsoleEnabled(true)));
-    controller.on('workspace:panels:console:hide', () => (setConsoleEnabled(false)));
+  useEventListener(controller, 'workspace:panels:chords:show', function onChordsShow () {
+    setChordsEnabled(true)
+  });
 
-    setLoaded(true);
-  }
+  useEventListener(controller, 'workspace:panels:chords:hide', function onChordsHide () {
+    setChordsEnabled(false)
+  });
+
+  useEventListener(controller, 'workspace:panels:keyboard:show', function onKeyboardShow () {
+    setKeyboardEnabled(true)
+  });
+
+  useEventListener(controller, 'workspace:panels:keyboard:hide', function onKeyboardHide () {
+    setKeyboardEnabled(false)
+  });
+
+  useEventListener(controller, 'workspace:panels:console:show', function onConsoleShow () {
+    setConsoleEnabled(true)
+  });
+
+  useEventListener(controller, 'workspace:panels:console:hide', function onConsoleHide () {
+    setConsoleEnabled(false)
+  });
 
   const columns = {
     left: [
       {
         id: 'library',
-        enabled: libraryEnabled,
+        enabled: mobile ? false : libraryEnabled,
         component: (<LibraryPanel />)
       },
       {
         id: 'chords',
-        enabled: chordsEnabled,
+        enabled: mobile ? false : chordsEnabled,
         component: (<ChordsPanel />)
       },
     ],
@@ -78,12 +101,12 @@ export function Interface () {
     right: [
       {
         id: 'routes',
-        enabled: routesEnabled,
+        enabled: mobile ? false : routesEnabled,
         component: (<RoutesPanel />)
       },
       {
         id: 'keyboard',
-        enabled: keyboardEnabled,
+        enabled: mobile ? false : keyboardEnabled,
         component: (<KeyboardPanel />)
       },
     ],

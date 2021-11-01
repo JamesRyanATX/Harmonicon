@@ -4,6 +4,21 @@
   --modal-gutter-2x: 20px;
 }
 
+.overlay {
+  background-color: rgba(0, 0, 0, 0.75);
+  inset: 0;
+  padding: 0 20px;
+  position: fixed;
+  z-index: 1000;
+}
+
+  @media screen and (max-width: 800px) {
+    .overlay {
+      padding: 0;
+    }
+  }
+
+
 .modal {
   background: var(--modal-background-color);
   overflow: auto;
@@ -40,6 +55,20 @@
   .modalIndicator {
   }
 
+
+  @media screen and (max-width: 800px) {
+    .modal {
+      margin: 0;
+      height: 100% !important;
+      border-radius: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modalContent {
+      flex: 1;
+    }
+  }
 
 .modalActions {
   display: flex;

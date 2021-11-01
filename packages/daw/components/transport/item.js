@@ -20,6 +20,7 @@ export function Item({
   text = false,
   flat = false,
   mini = false,
+  flex = false,
   children
 }) {
   const [ active, setActive ] = useState(false);
@@ -38,6 +39,7 @@ export function Item({
         mini ? styles.itemIsMini : null,
         flat ? styles.itemIsFlat : null,
         text ? styles.itemIsText : null,
+        flex ? styles.itemIsFlexed : null,
         active ? styles.itemIsActive : null 
       ].join(' ')}
     >

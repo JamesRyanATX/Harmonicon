@@ -60,7 +60,7 @@ export function Display () {
           meter
         </ItemLabel>
       </Item>
-      <Item flat wide>
+      <Item flat wide flex>
         <ItemPrimary>
           {String(position.measure).padStart(2, '0')}:
           {String(position.beat + 1).padStart(1, '0')}

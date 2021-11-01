@@ -37,6 +37,10 @@ export function Modal({
       ariaHideApp={false}
       shouldCloseOnOverlayClick={closeable}
       shouldCloseOnEsc={closeable}
+      overlayClassName={[
+        'ReactModal__Overlay',
+        styles.overlay
+      ].join(' ')}
       className={[
         'ReactModal__Content',
         styles.modal,
@@ -44,11 +48,6 @@ export function Modal({
         className,
       ].join(' ')}
       style={{
-        overlay: {
-          backgroundColor: 'rgba(0, 0, 0, 0.75)',
-          zIndex: 1000,
-          padding: `0 ${gutter}px`
-        },
         content: {
           height: height,
           maxWidth: `${width}px`

@@ -11,6 +11,7 @@ import { useTransport } from './providers/transport';
 import { useController } from './providers/controller';
 
 import styles from '../styles/daw.transport.module.css';
+import { useViewport } from '@composer/daw-components/src/hooks';
 
 function TransportGroup({
   flex = false,
@@ -31,6 +32,7 @@ function TransportGroup({
 export function Transport () {
   const transport = useTransport();
   const controller = useController();
+  const viewport = useViewport();
 
   const [ busy, setBusy ] = useState(transport.busy);
 
@@ -55,21 +57,50 @@ export function Transport () {
   // Initial render
   useEffect(renderWaveform, []);
 
-  return (
-    <div className={styles.transport}>
-      <TransportGroup>
-        <Actions controller={controller} />
-      </TransportGroup>
-      <TransportGroup transparent>
-        <Meter />
-      </TransportGroup>
-      <TransportGroup flex transparent>
-        <Timeline controller={controller} />
-      </TransportGroup>
-      <TransportGroup>
-        <Display controller={controller} />
-      </TransportGroup>
-      {busy ? <Busy /> : ''}
-    </div>
-  )
+  // Mobile rendering
+  if (viewport.width < 800) {
+    return (
+      <>
+        <div className={styles.transport}>
+          <TransportGroup transparent>
+            <Meter />
+          </TransportGroup>
+          <TransportGroup flex transparent>
+            <Timeline controller={controller} />
+          </TransportGroup>
+          {busy ? <Busy /> : ''}
+        </div>
+        <div className={styles.transport}>
+          <TransportGroup>
+            <Actions controller={controller} />
+          </TransportGroup>
+          <TransportGroup flex>
+            <Display controller={controller} />
+          </TransportGroup>
+          {busy ? <Busy /> : ''}
+        </div>
+      </>
+    );
+  }
+
+  // Desktop rendering
+  else {
+    return (
+      <div className={styles.transport}>
+        <TransportGroup>
+          <Actions controller={controller} />
+        </TransportGroup>
+        <TransportGroup transparent>
+          <Meter />
+        </TransportGroup>
+        <TransportGroup flex transparent>
+          <Timeline controller={controller} />
+        </TransportGroup>
+        <TransportGroup>
+          <Display controller={controller} />
+        </TransportGroup>
+        {busy ? <Busy /> : ''}
+      </div>
+    );
+  }
 }
