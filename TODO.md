@@ -47,7 +47,7 @@
 * ~~Housekeeping: go over entry state~~
 * ~~Feature: derive tab names from session~~
 * ~~Bug: event memory leaks~~
-* Bug: mobile experience
+* ~~Bug: mobile experience~~
 * Feature: tutorials
 * Housekeeping: go over docs
 * Housekeeping: review logs

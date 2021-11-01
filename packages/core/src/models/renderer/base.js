@@ -39,11 +39,19 @@ export class RendererBaseModel extends BaseModel {
       throw new RendererError('No available audio driver.')
     }
 
-    await this.reset();
-    await this.renderSession(options)
-    await this.driverRenderer.setPosition(PositionModel.parse(0));
+    return new Promise(async (accept, reject) => {
+      try {
+        await this.reset();
+        await this.renderSession(options).catch(reject);
+        await this.driverRenderer.setPosition(PositionModel.parse(0));
 
-    return this;
+        accept(this);
+      }
+      catch (e) {
+        this.logger.error(e);
+        reject(new RendererError(`Unable to render session.`));
+      }
+    });
   }
 
   async renderSession ({
@@ -60,16 +68,14 @@ export class RendererBaseModel extends BaseModel {
       instruments ? this.renderInstruments() : true,
       effects ? this.renderEffects() : true,
       phrases ? this.renderPhrases() : true,        
-    ]);
-
+    ])
+      
     tracks ? await this.renderTracks() : true;
 
     await Promise.all([
       patches ? this.renderPatches() : true,
       end ? this.renderEnd() : true,
     ]);
-
-    return;
   }
 
   async renderSessionEvents () {
@@ -89,7 +95,7 @@ export class RendererBaseModel extends BaseModel {
   }
 
   async renderInstrument (instrument) {
-    this.createNode({
+    return this.createNode({
       type: 'instrument',
       name: instrument.name, 
       node: await instrument.render(),
@@ -102,7 +108,7 @@ export class RendererBaseModel extends BaseModel {
   }
 
   async renderEffect (effect) {    
-    this.createNode({
+    return this.createNode({
       type: 'effect',
       name: effect.name,
       node: await effect.render(),

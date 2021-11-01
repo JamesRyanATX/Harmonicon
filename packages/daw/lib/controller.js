@@ -372,14 +372,15 @@ export class Controller {
     });
 
     // task.on('error', (error) => {
-    //   debugger;
+    //   this.logger.info(`#createInteractiveRendering() error`);
     // });
 
-    // task.on('done', (error) => {
-    //   debugger;
+    // task.on('done', () => {
+    //   this.logger.info(`#createInteractiveRendering() done`);
     // });
 
     // task.on('success', ({ session, composer, renderer }) => {
+    //   this.logger.info(`#createInteractiveRendering() success`);
     // });
 
     const { session, composer, renderer } = await this.transport.blockWhile(task);

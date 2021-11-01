@@ -1,3 +1,4 @@
+import { RendererError } from '../errors.js';
 import { BaseNodeModel } from './base/node.js';
 
 export class InstrumentModel extends BaseNodeModel {
@@ -49,9 +50,15 @@ export class InstrumentModel extends BaseNodeModel {
     return 'instrument';
   }
 
+  get loggerName () {
+    return `InstrumentModel`;
+  }
+
   // Render an audio node and ensure it's ready for use
   async render () {
     const node = await this.fn(this.options);
+    const timeout = 1;
+    const poll = 0.5;
 
     if (node.loaded !== false) {
       return node;
@@ -59,10 +66,20 @@ export class InstrumentModel extends BaseNodeModel {
 
     // Audio node may need time to load samples and external objects
     return new Promise((accept, reject) => {
+      let tries = 0;
+
       const interval = setInterval(() => {
         if (node.loaded) {
           clearInterval(interval);
           accept(node);
+        }
+        else if (tries * poll > timeout) {
+          clearInterval(interval);
+          this.logger.error(`#render() timeout loading "${this.name}"`);
+          reject(new RendererError(`Timeout loading instrument: ${this.name}`));
+        }
+        else {
+          tries += 1;
         }
       }, 500);
     });

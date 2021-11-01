@@ -22,7 +22,7 @@ export class KeySignatureModel extends BaseModel {
   }
 
   computeRelativeNote(note) {
-    const pitch = this.notes.at(note.pitch % this.notes.length);
+    const pitch = this.notes[(note.pitch % this.notes.length)];
     const octaveDelta = Math.floor(note.pitch / this.notes.length);
     const pitchClass = Note.pitchClass(pitch);
     const octave = Note.octave(pitch) + octaveDelta;

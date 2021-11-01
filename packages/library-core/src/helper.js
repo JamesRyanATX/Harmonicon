@@ -2,6 +2,12 @@ function toneDocumentationUrl(toneObject) {
   return `https://tonejs.github.io/docs/14.7.7/${toneObject}`;
 }
 
+function isMimetypeSupported(mimetype) {
+  const a = document.createElement('audio');
+
+  return !!(a.canPlayType && a.canPlayType(mimetype).replace(/no/, ''));
+}
+
 export const demoHeader = `
 /**
  *    __ _____   ___  __  _______  _  _______________  _  __
@@ -61,7 +67,9 @@ export const toneSamplerInstrument = ({
   urls = {},
   volume = 0,
   suggestedOctave = 4,
+  oggFallback = 'wav'
 }) => {
+
   return ({ library }) => {
     library.instrument(name, ({ instrument }) => {
       instrument.url('https://tonejs.github.io/');
@@ -72,7 +80,14 @@ export const toneSamplerInstrument = ({
       instrument.defaultOptions({ volume });
       instrument.suggestedOctave(suggestedOctave);
       instrument.fn((options) => {
-        return new Tone.Sampler(Object.assign({
+
+      if (oggFallback && !isMimetypeSupported('audio/ogg')) {
+        Object.entries(urls).forEach(([ k, v ]) => {
+          urls[k] = v.replace('.ogg', '.wav');
+        });
+      }
+      
+      return new Tone.Sampler(Object.assign({
           urls,
           volume,
           baseUrl: `/libraries/core/instruments/${name}/`,
