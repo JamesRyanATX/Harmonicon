@@ -5,13 +5,13 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <meta property="twitter:title" content="Harmonicon" />
-          <meta property="twitter:description" content="Experimental DAW for composing music as code." />
+          <meta property="twitter:title" content="Write music with code | Harmonicon" />
+          <meta property="twitter:description" content="An IDE, DAW, and songwriting language rolled into one.  It's like GarageBand, but for code!" />
           <meta property="twitter:image" content="https://harmonicon.studio/screenshot.png" />
           <meta property="twitter:card" content="summary_large_image" />
 
-          <meta property="og:title" content="Harmonicon" />
-          <meta property="og:description" content="Experimental DAW for composing music as code." />
+          <meta property="og:title" content="Write music with code | Harmonicon" />
+          <meta property="og:description" content="An IDE, DAW, and songwriting language rolled into one.  It's like GarageBand, but for code!" />
           <meta property="og:image" content="https://harmonicon.studio/screenshot.png" />
           <meta property="og:url" content="https://harmonicon.studio" />
 
