@@ -5,6 +5,16 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          <meta property="twitter:title" content="Harmonicon" />
+          <meta property="twitter:description" content="Experimental DAW for composing music as code." />
+          <meta property="twitter:image" content="https://harmonicon.studio/screenshot.png" />
+          <meta property="twitter:card" content="summary_large_image" />
+
+          <meta property="og:title" content="Harmonicon" />
+          <meta property="og:description" content="Experimental DAW for composing music as code." />
+          <meta property="og:image" content="https://harmonicon.studio/screenshot.png" />
+          <meta property="og:url" content="https://harmonicon.studio" />
+
           {/* Global Site Tag (gtag.js) - Google Analytics */}
           <script
             async
