@@ -36,9 +36,9 @@ export function useEventListener(obj, event, originalFn) {
 
   fn.originalFn = originalFn;
 
-  if (!originalFn.name) {
-    console.warn(`[useEventListener] ${event} => fn() is anonymous, this may create a memory leak.`);
-  }
+  // if (!originalFn.name) {
+  //   console.warn(`[useEventListener] ${event} => fn() is anonymous, this may create a memory leak.`);
+  // }
 
   useEffect(() => {
     mounted.current = true;

@@ -236,14 +236,14 @@
     .teasersFader[data-top] {
       background: linear-gradient(to bottom,
         var(--theme-neutral-color-3) 0%,
-        transparent 100%
+        rgba(var(--theme-neutral-color-3-rgb), 0) 100%
       );
       top: 0;
     }
 
     .teasersFader[data-bottom] {
       background: linear-gradient(to bottom,
-        transparent 0%,
+        rgba(var(--theme-neutral-color-3-rgb), 0) 0%,
         var(--theme-neutral-color-3) 100%
       );
       bottom: 0;
