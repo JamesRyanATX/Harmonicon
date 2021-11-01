@@ -1,9 +1,46 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
-export function useEventListener(obj, event, fn) {
+/**
+ * Hook for simplifying load/unload event callbacks.
+ * 
+ * @param {object} obj 
+ * @param {string} event 
+ * @param {function} fn 
+ */
+export function useEventListener(obj, event, originalFn) {
+  const mounted = useRef(false);
+  const fn = function () {
+    if (!mounted.current) {
+      console.warn(`[useEventListener] ${event} => ${originalFn.name}() halted (unmounted client).`)
+    }
+    else {
+      originalFn.apply(this, arguments);
+    }
+  };
+
+  fn.originalFn = originalFn;
+
+  if (!originalFn.name) {
+    console.warn(`[useEventListener] ${event} => fn() is anonymous, this may create a memory leak.`);
+  }
+
+  useEffect(() => {
+    mounted.current = true;
+
+    return () => {
+      mounted.current = false;
+    }
+  }, []);
+
   useEffect(() => {
     obj.on(event, fn);
 
-    return () => { obj.off(event, fn);  }
+    return () => {
+      if (obj.listeners[event].indexOf(fn) === -1) {
+        console.warn(`[useEventListener] ${event} not found during unmount.`)
+      }
+      obj.off(event, fn);
+    }
   }, [ obj ]);
+
 }

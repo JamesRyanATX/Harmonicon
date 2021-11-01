@@ -12,11 +12,13 @@ import { KeyboardPanel } from './panels/keyboard';
 import { ConsolePanel } from './panels/console';
 import { AboutModal } from './modals/menu/help/about';
 import { useController } from './providers/controller';
+import { useFile } from './providers/file';
 
 import styles from '../styles/daw.module.css';
 
 export function Interface () {
   const controller = useController();
+  const file = useFile();
   const panels = controller.workspace.panels;
 
   const [ loaded, setLoaded ] = useState(false);
@@ -95,8 +97,12 @@ export function Interface () {
   return (
     <div className={styles.dawInterface}>
       <Menu controller={controller} />
-      <Panels columns={columns} />
-      <Transport controller={controller} />
+      {file ? (
+        <>
+          <Panels columns={columns} />
+          <Transport controller={controller} />
+        </>
+      ) : ''}
       <Modals />
     </div>
   )

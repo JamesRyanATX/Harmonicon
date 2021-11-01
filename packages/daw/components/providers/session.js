@@ -22,7 +22,9 @@ export function SessionProvider({
   useEffect(() => {
     (async function parseFile() {
       try {
-        setSession(controller.session = (await parse({ code: file.source })).model);
+        if (file) {
+          setSession(controller.session = (await parse({ code: file.source })).model);
+        }
       }
       catch (e) {
         logger.error(e);
@@ -51,9 +53,9 @@ export function SessionProvider({
 
   logger.debug('render')
 
-  return file ? (
+  return (
     <SessionContext.Provider value={session}>
       {children}
     </SessionContext.Provider>
-  ) : '';
+  );
 }

@@ -45,14 +45,6 @@ export function Menu({
       label: 'File',
       dropdown: FileDropdown,
     },
-    // {
-    //   label: 'Edit',
-    //   dropdown: EditDropdown,
-    // },
-    // {
-    //   label: 'Audio',
-    //   dropdown: AudioDropdown,
-    // },
     {
       label: 'View',
       dropdown: ViewDropdown,

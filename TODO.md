@@ -46,6 +46,7 @@
 * ~~Housekeeping: clean up CLI~~
 * ~~Housekeeping: go over entry state~~
 * ~~Feature: derive tab names from session~~
+* Bug: event memory leaks
 * Feature: tutorials
 * Housekeeping: go over docs
 * Housekeeping: review logs

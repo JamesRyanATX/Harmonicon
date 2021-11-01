@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import { PositionModel } from '@composer/core';
+import { useEventListener } from '@composer/daw-components';
 import {
   Timeline as WebComponentsTimeline,
   TimelineLayer,
@@ -208,7 +209,6 @@ export function Timeline ({
 }) {
   const transport = useTransport();
   
-  const [ loaded, setLoaded ] = useState(false);
   const [ position, setPosition ] = useState(transport.position);
   const [ length, setLength ] = useState(initialLength);
 
@@ -219,16 +219,29 @@ export function Timeline ({
   const [ playFrom, setPlayFrom ] = useState(transport.playFrom);
   const [ playTo, setPlayTo ] = useState(transport.playTo);
 
-  if (!loaded) {
-    transport.on('changed:loop', ({ newValue }) => (setLoop(newValue)));
-    transport.on('changed:loopFrom', ({ newValue }) => (setLoopFrom(newValue)));
-    transport.on('changed:loopTo', ({ newValue }) => (setLoopTo(newValue)));
-    transport.on('changed:playFrom', ({ newValue }) => (setPlayFrom(newValue)));
-    transport.on('changed:playTo', ({ newValue }) => (setPlayTo(newValue)));
-    transport.on('changed:position', ({ newValue }) => (setPosition(newValue)));
+  useEventListener(transport, 'changed:loop', function onLoopChanged ({ newValue }) {
+    setLoop(newValue)
+  });
 
-    setLoaded(true);
-  }
+  useEventListener(transport, 'changed:loopFrom', function onLoopFromChanged ({ newValue }) {
+    setLoopFrom(newValue);
+  });
+
+  useEventListener(transport, 'changed:loopTo', function onLoopToChanged ({ newValue }) {
+    setLoopTo(newValue);
+  });
+
+  useEventListener(transport, 'changed:playFrom', function onPlayFromChanged ({ newValue }) {
+    setPlayFrom(newValue);
+  });
+
+  useEventListener(transport, 'changed:playTo', function onPlayToChanged ({ newValue }) {
+    setPlayTo(newValue);
+  });
+
+  useEventListener(transport, 'changed:position', function onPositionChanged ({ newValue }) {
+    setPosition(newValue);
+  });
 
   function onSelect(from, to) {
     const fromPosition = PositionModel.parse(Math.floor(from / measureWidth));

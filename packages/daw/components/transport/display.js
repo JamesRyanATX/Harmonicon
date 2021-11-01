@@ -1,27 +1,36 @@
 import { useState } from 'react'
-import NumberFormat from 'react-number-format';
+import { useEventListener } from '@composer/daw-components';
 import { useTransport } from '../providers/transport';
 import { Items, Item, ItemPrimary, ItemLabel } from './item';
 
 export function Display () {
   const transport = useTransport();
 
-  const [ loaded, setLoaded ] = useState(false);
   const [ position, setPosition ] = useState(transport.position);
   const [ key, setKey ] = useState(transport.key);
   const [ scale, setScale ] = useState(transport.scale);
   const [ tempo, setTempo ] = useState(transport.tempo);
   const [ meter, setMeter ] = useState(transport.meter);
 
-  if (!loaded) {
-    transport.on('changed:position', ({ newValue }) => (setPosition(newValue)));
-    transport.on('changed:key', ({ newValue }) => (setKey(newValue)));
-    transport.on('changed:scale', ({ newValue }) => (setScale(newValue)));
-    transport.on('changed:tempo', ({ newValue }) => (setTempo(newValue)));
-    transport.on('changed:meter', ({ newValue }) => (setMeter(newValue)));
-
-    setLoaded(true);
-  }
+  useEventListener(transport, 'changed:position', function onPositionChanged ({ newValue }) {
+    setPosition(newValue);
+  });
+  
+  useEventListener(transport, 'changed:key', function onKeyChanged ({ newValue }) {
+    setKey(newValue);
+  });
+  
+  useEventListener(transport, 'changed:scale', function onScaleChanged ({ newValue }) {
+    setScale(newValue);
+  });
+  
+  useEventListener(transport, 'changed:tempo', function onTempoChanged ({ newValue }) {
+    setTempo(newValue);
+  });
+  
+  useEventListener(transport, 'changed:meter', function onMeterChanged ({ newValue }) { 
+    setMeter(newValue);
+  });
 
   return (
     <Items>

@@ -1,9 +1,8 @@
-import { Panel, Patches } from '@composer/daw-components';
+import { Panel, Patches, useEventListener } from '@composer/daw-components';
 import { useController } from '../providers/controller';
 import { useState } from 'react';
 
 export function RoutesPanel() {
-  const [ loaded, setLoaded ] = useState(false);
   const [ session, setSession ] = useState();
   const controller = useController();
 
@@ -11,10 +10,7 @@ export function RoutesPanel() {
     setSession(composer.model);
   }
 
-  if (!loaded) {
-    controller.on('composer:parsed', parsed);
-    setLoaded(true);
-  }
+  useEventListener(controller, 'composer:parsed', parsed);
 
   return (
     <Panel 

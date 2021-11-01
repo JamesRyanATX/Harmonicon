@@ -13,9 +13,11 @@ import { ExportToWavModal } from '../modals/menu/file/export_to_wav';
 import { ExportToMp3Modal } from '../modals/menu/file/export_to_mp3';
 
 import { useController } from '../providers/controller';
+import { useFile } from '../providers/file';
 
 export function FileDropdown() {
   const controller = useController();
+  const file = useFile();
 
   return (
     <div>
@@ -27,30 +29,29 @@ export function FileDropdown() {
       <MenuDropdownDivider />
       <MenuDropdownItem
         label="Save"
+        disabled={!file}
         onClick={() => { controller.save(); }}
       />
       <MenuDropdownItem
         label="Delete"
+        disabled={!file}
         onClick={() => { 
           if (confirm(`Are you sure you want to delete ${controller.file.name}?`)) {
             controller.destroyFile(controller.file);
           };
         }}
       />
-      <MenuDropdownItem
-        label="Download"
-        icon={IoDownloadOutline}
-        disabled
-      />
       <MenuDropdownDivider />
       <MenuDropdownItem
         label="Export to WAV..."
+        disabled={!file}
         onClick={() => {
           controller.emit('modal:open', { component: ExportToWavModal, props: {} })
         }}
       />
       <MenuDropdownItem
         label="Export to MP3..."
+        disabled={!file}
         onClick={() => {
           controller.emit('modal:open', { component: ExportToMp3Modal, props: {} })
         }}

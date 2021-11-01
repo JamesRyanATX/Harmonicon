@@ -1,15 +1,16 @@
 import { useState } from 'react';
+import { useEventListener } from '@composer/daw-components';
 import { useController } from './providers/controller';
 
 export function Modals() {
   const [ modal, setModal ] = useState();
   const controller = useController();
 
-  controller.on('modal:open', ({ component, props }) => {
+  useEventListener(controller, 'modal:open', function onModalOpen({ component, props }) {
     setModal({ component, props });
   });
 
-  controller.on('modal:close', () => {
+  useEventListener(controller, 'modal:close', function onModalClose() {
     setModal(null);
   });
 

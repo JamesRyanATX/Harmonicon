@@ -1,23 +1,24 @@
 import MonacoEditor from "@monaco-editor/react";
+import { useEventListener } from "@composer/daw-components";
 import { useState, useRef } from "react";
 import { useController } from "./providers/controller";
+import { useFile } from "./providers/file";
+
 import styles from '../styles/daw.editor.module.css';
 
 export function Editor ({
   disabled = false,
 }) {
   const controller = useController();
+  const file = useFile();
   const editorRef = useRef(null);
 
-  const [ loaded, setLoaded ] = useState(false);
-  const [ source, setSource ] = useState(controller.file.source);
+  const [ source, setSource ] = useState(file ? file.source : '');
 
-  if (!loaded) {
-    controller.on('file:selected', (file) => {
+  function onFileSelected(file) {
+    if (file) {
       setSource(file.source);
-    });
-
-    setLoaded(true);
+    }
   }
 
   function onMount(editor) {
@@ -45,26 +46,30 @@ export function Editor ({
     }
   }
 
+  useEventListener(controller, 'file:selected', onFileSelected);
+
   return (
     <div 
       className={styles.editor}
       onKeyDown={onKeyDown}
     >
-      <MonacoEditor
-        height="100%"
-        width="100%"
-        defaultLanguage="javascript"
-        value={source}
-        onChange={onChange}
-        onMount={onMount}
-        theme="vs-dark"
-        options={{
-          folding: true,
-          tabSize: 2,
-          padding: { top: 10 },
-          readOnly: disabled,
-        }}
-      />
+      {file ? (
+        <MonacoEditor
+          height="100%"
+          width="100%"
+          defaultLanguage="javascript"
+          value={source}
+          onChange={onChange}
+          onMount={onMount}
+          theme="vs-dark"
+          options={{
+            folding: true,
+            tabSize: 2,
+            padding: { top: 10 },
+            readOnly: disabled,
+          }}
+        />
+      ) : ''}
     </div>
-  )
+  );
 }

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Items, Item, ItemPrimary, ItemLabel, ItemGrid, ItemGridRow } from './item';
 import { useController } from '../providers/controller';
+import { useEventListener } from '@composer/daw-components';
 
 import {
   IoStopSharp,
@@ -46,23 +47,31 @@ export function Actions ({
   const controller = useController();
   const transport = controller.transport;
 
-  const [ loaded, setLoaded ] = useState(false);
-  const [ state, setState ] = useState(transport.state);
-  
+  const [ state, setState ] = useState(transport.state);  
   const [ position, setPosition ] = useState(transport.position);
   const [ loop, setLoop ] = useState(transport.loop);
   const [ loopFrom, setLoopFrom ] = useState(transport.loopFrom);
   const [ loopTo, setLoopTo ] = useState(transport.loopTo);
 
-  if (!loaded) {
-    transport.on('changed:position', ({ newValue }) => (setPosition(newValue)));
-    transport.on('changed:loop', ({ newValue }) => (setLoop(newValue)));
-    transport.on('changed:loopFrom', ({ newValue }) => (setLoopFrom(newValue)));
-    transport.on('changed:loopTo', ({ newValue }) => (setLoopTo(newValue)));
-    transport.on('changed:state', ({ newValue }) => { setState(newValue); });
+  useEventListener(transport, 'changed:position', function onPositionChanged ({ newValue }) {
+    setPosition(newValue)
+  });
 
-    setLoaded(true);
-  }
+  useEventListener(transport, 'changed:loop', function onLoopChanged ({ newValue }) {
+    setLoop(newValue)
+  });
+
+  useEventListener(transport, 'changed:loopFrom', function onLoopFromChanged ({ newValue }) {
+    setLoopFrom(newValue)
+  });
+
+  useEventListener(transport, 'changed:loopTo', function onLoopToChanged ({ newValue }) {
+    setLoopTo(newValue)
+  });
+
+  useEventListener(transport, 'changed:state', function onStateChanged ({ newValue }) {
+    setState(newValue);
+  });
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Tabs, Tab, TabIcon, useEventListener } from '@composer/daw-components';
 import { IoAddCircleOutline } from "react-icons/io5";
 import { useController } from './providers/controller';
@@ -11,7 +11,7 @@ function FileTab({
 }) {
   const [ name, setName ] = useState(file.name);
 
-  useEventListener(file, 'changed:name', ({ newValue }) => {
+  useEventListener(file, 'changed:name', function onNameChanged ({ newValue }) {
     setName(newValue);
   });
 
@@ -35,7 +35,6 @@ function FileTab({
 export function Switcher () {
   const controller = useController();
 
-  const [ loaded, setLoaded ] = useState(false);
   const [ files, setFiles ] = useState(controller.workspace.files.all);
   const [ selectedFile, setSelectedFile ] = useState(controller.file);
 
@@ -43,13 +42,13 @@ export function Switcher () {
     setFiles(controller.workspace.files.all);
   }
 
-  if (!loaded) {
-    controller.on('file:created', updateFiles);
-    controller.on('file:destroyed', updateFiles);
-    controller.on('file:selected', setSelectedFile);
-
-    setLoaded(true);
+  function updateSelectedFile (file) {
+    setSelectedFile(file);
   }
+
+  useEventListener(controller, 'file:created', updateFiles);
+  useEventListener(controller, 'file:destroyed', updateFiles);
+  useEventListener(controller, 'file:selected', updateSelectedFile);
 
   return (
     <Tabs>

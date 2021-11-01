@@ -222,7 +222,10 @@ export class Controller {
     try {
       await this.workspace.files.destroy(file);
 
-      if (file.id === this.file.id) {
+      if (this.workspace.files.length === 0) {
+        this.selectFile(null);
+      }
+      else if (file.id === this.file.id) {
         this.selectFile(this.workspace.files.first());
       }
 
@@ -256,7 +259,7 @@ export class Controller {
   async selectFile(file) {
     try {
       this.file = file;
-      this.workspace.setProperties({  selectedFile: file.id });
+      this.workspace.selectedFile = file ? file.id : null;
       this.workspace.save();
 
       this.emit('file:selected', file);
