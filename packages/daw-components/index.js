@@ -56,6 +56,7 @@ import {
 
 import {
   useEventListener,
+  useErrorBoundary,
   useLocationHash,
   useLocationParams,
   useViewport,
@@ -119,6 +120,7 @@ module.exports = {
   TreeGroupItems,
   TreeItem,
   useConsoleLogs,
+  useErrorBoundary,
   useEventListener,
   useLocationHash,
   useLocationParams,

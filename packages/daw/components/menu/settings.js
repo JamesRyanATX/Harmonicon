@@ -3,15 +3,13 @@ import {
   MenuDropdownHeader,
 } from '@composer/daw-components';
 
-import * as DropboxStorageDriver from '@composer/driver-storage-dropbox';
-
+import { config } from '../../lib/config';
 import { IoCheckmarkSharp } from "react-icons/io5";
-
 import { SwitchToLocalstorageModal } from '../modals/menu/settings/switch_to_localstorage';
 import { SwitchToDropboxModal } from '../modals/menu/settings/switch_to_dropbox';
 
 function StorageSettings() {
-  const current = localStorage['harmonicon.storage'] || 'localstorage';
+  const current = config.get('storage');
   const drivers = [
     {
       modal: SwitchToLocalstorageModal,

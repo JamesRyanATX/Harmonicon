@@ -1,41 +1,20 @@
 import { useState, useEffect } from 'react';
-import { ConfirmModal, DialogModal, useLocationHash } from '@composer/daw-components';
-import { Task } from '@composer/util';
-import { config } from '@composer/core';
+import { IoLogoDropbox } from 'react-icons/io5';
+import { DialogModal, useLocationHash } from '@composer/daw-components';
+import { config } from '../../../../lib/config';
+
 import * as DropboxStorageDriver from '@composer/driver-storage-dropbox';
 import { useController } from '../../../providers/controller';
 
 function createDriver(accessToken) {
   return new DropboxStorageDriver.Driver({
-    clientId: config.dropbox.clientId,
-    prefix: config.dropbox.prefix,
+    clientId: config.core.dropbox.clientId,
+    prefix: config.core.dropbox.prefix,
     applicationUrl: document.location.origin,
     accessToken,
   });
 }
 
-function ConnectedModal({
-  onSelect = () => {},
-  onCancel = () => {},
-}) {
-  return (
-    <DialogModal
-      title={"Dropbox Setup"}
-      text={"Verified.  Would you like to use Dropbox for file storage?"}
-      buttons={[
-        {
-          label: 'Yes, Switch to Dropbox',
-          onClick: onSelect,
-          primary: true,
-        },
-        {
-          label: 'Cancel',
-          onClick: onCancel
-        },
-      ]}
-    />
-  )
-}
 
 function ConnectingModal({ 
   onCancel = () => {}
@@ -44,6 +23,7 @@ function ConnectingModal({
     <DialogModal
       title="Dropbox Setup"
       text="Testing connection; one moment..."
+      icon={IoLogoDropbox}
       buttons={[]}
       working
     />
@@ -58,6 +38,7 @@ function FailureModal({
     <DialogModal
       title={"Connection Failed"}
       text={"Unable to verify connection to Dropbox.  Do you want to retry?"}
+      icon={IoLogoDropbox}
       buttons={[
         {
           label: 'Retry',
@@ -73,7 +54,7 @@ function FailureModal({
   )
 }
 
-function PreauthModal({ 
+function PreauthorizeModal({ 
   onAuthorize = () => {},
   onCancel = () => {}
 }) {
@@ -81,6 +62,7 @@ function PreauthModal({
     <DialogModal
       title={"Switch to Dropbox"}
       text={"Would you like to connect your Dropbox account and store music in the cloud?"}
+      icon={IoLogoDropbox}
       buttons={[
         {
           label: 'Connect to Dropbox',
@@ -96,7 +78,33 @@ function PreauthModal({
   )
 }
 
-export function SwitchToDropboxModal() {
+function ReauthorizeModal({ 
+  onAuthorize = () => {},
+  onCancel = () => {}
+}) {
+  return (
+    <DialogModal
+      title={"Reconnect to Dropbox"}
+      text={"Your Dropbox connection has expired.  Would you like to reconnect?"}
+      icon={IoLogoDropbox}
+      buttons={[
+        {
+          label: 'Reconnect to Dropbox',
+          onClick: onAuthorize,
+          primary: true,
+        },
+        {
+          label: 'Cancel',
+          onClick: onCancel
+        },
+      ]}
+    />
+  )
+}
+
+export function SwitchToDropboxModal({
+  reauthorize = false
+}) {
   const controller = useController();
   const locationHash = useLocationHash();
   const accessToken = locationHash.params.access_token;
@@ -111,8 +119,8 @@ export function SwitchToDropboxModal() {
         const refreshedToken = await driver.refreshToken();
         await driver.list();
 
-        localStorage.setItem('harmonicon.storage', 'dropbox');
-        localStorage.setItem('harmonicon.dropbox.accessToken', refreshedToken);
+        config.set('storage', 'dropbox');
+        config.set('dropbox.accessToken', refreshedToken);
 
         window.location = '/';
       }
@@ -143,7 +151,10 @@ export function SwitchToDropboxModal() {
   else if (accessToken) {
     return <ConnectingModal onCancel={onCancel} />
   }
+  else if (reauthorize) {
+    return <ReauthorizeModal onAuthorize={onAuthorize} onCancel={onCancel} />
+  }
   else {
-    return <PreauthModal onAuthorize={onAuthorize} onCancel={onCancel} />
+    return <PreauthorizeModal onAuthorize={onAuthorize} onCancel={onCancel} />
   }
 }

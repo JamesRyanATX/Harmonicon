@@ -94,8 +94,21 @@
     opacity: 0.75;
   }
 
-.dialog {
+.dialog .modalContent {
+  display: flex;
+  flex-direction: row;
 }
+
+  .dialogIcon {
+    font-size: 46px;
+    margin-right: 20px;
+    margin-left: 5px;
+    color: var(--theme-neutral-color-9);
+  }
+
+  .dialogContent {
+    flex: 1;
+  }
 
   .dialogTitle {
     font-size: 18px;

@@ -3,6 +3,7 @@ import { ComposerError, render } from '@composer/compose';
 import { Harmonicon } from '@composer/core';
 import { TransportModel, InteractiveRendererModel } from '@composer/core';
 import { renderInteractiveTask } from './tasks/render_interactive';
+import { config } from './config';
 
 
 export class Controller {
@@ -29,6 +30,7 @@ export class Controller {
     this.listeners = {};
     this.midi = { assignments: {} };
 
+    this.config = config;
     this.logger = new Logger('Web.DAW');
     this.transport = new TransportModel();
     this.renderer = new InteractiveRendererModel();

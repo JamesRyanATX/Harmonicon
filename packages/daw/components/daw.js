@@ -7,18 +7,21 @@ import * as LocalStorageDriver from '@composer/driver-storage-localstorage';
 import * as DropboxStorageDriver from '@composer/driver-storage-dropbox';
 import * as WebMidiDriver from '@composer/driver-midi-web';
 import * as CoreLibrary from '@composer/library-core';
+import { useErrorBoundary } from '@composer/daw-components';
 
 import { Controller } from '../lib/controller';
 import { ControllerProvider } from './providers/controller';
 import { WorkspaceProvider } from './providers/workspace';
 import { LoggerProvider } from './providers/logger';
 import { Interface } from './interface';
+import { Errors } from './errors';
+import { config } from '../lib/config';
 
 
 function getStorageDriver(options) {
-  if (localStorage['harmonicon.storage'] === 'dropbox') {
+  if (config.get('storage') === 'dropbox') {
     return new DropboxStorageDriver.Driver({
-      accessToken: localStorage['harmonicon.dropbox.accessToken'],
+      accessToken: config.get('dropbox.accessToken'),
       ...options
     })
   }
@@ -81,13 +84,17 @@ export function DAW ({
   window.ToneAudioDriver = ToneAudioDriver;
   window.Tone = ToneAudioDriver.Tone; 
 
-  return loaded ? (
-    <LoggerProvider>
-      <ControllerProvider controller={controller}>
-        <WorkspaceProvider workspace={workspace}>
-          <Interface />
-        </WorkspaceProvider>
-      </ControllerProvider>
-    </LoggerProvider>
-  ) : '';
+  return (
+    <Errors>
+      {loaded ? (
+        <LoggerProvider>
+          <ControllerProvider controller={controller}>
+            <WorkspaceProvider workspace={workspace}>
+              <Interface />
+            </WorkspaceProvider>
+          </ControllerProvider>
+        </LoggerProvider>
+      ) : ''}
+    </Errors>
+  );
 }

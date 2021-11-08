@@ -1,4 +1,7 @@
 import React, { useEffect, useRef } from 'react';
+import { useErrorBoundary } from 'react-use-error-boundary';
+
+export { useErrorBoundary };
 
 export function useLocationParams() {
 

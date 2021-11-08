@@ -119,11 +119,16 @@ export function Interface ({
   };
 
   useEffect(() => {
-    if (action === 'switch-to-dropbox') {
-      controller.emit('modal:open', { component: SwitchToDropboxModal, props: {} });
+    if (action === 'dropbox-expired') {
+      controller.emit('modal:open', { component: SwitchToDropboxModal, props: {
+        reauthorize: true
+      }});
+    }
+    else if (action === 'switch-to-dropbox') {
+      controller.emit('modal:open', SwitchToDropboxModal);
     }
     else {
-      controller.emit('modal:open', { component: AboutModal, props: {} });
+      controller.emit('modal:open', AboutModal);
     }
   }, [ controller, action ]);
 

@@ -1,12 +1,13 @@
 import { DialogModal } from '@composer/daw-components';
 import { useController } from '../../../providers/controller';
+import { config } from '../../../../lib/config';
 
 export function SwitchToLocalstorageModal() {
   const controller = useController();
 
   async function onConfirm() {
-    localStorage['harmonicon.storage'] = 'localstorage'
-    delete localStorage['harmonicon.dropbox.accessToken'];
+    config.set('storage', 'localstorage');
+    config.unset('dropbox.accessToken');
 
     window.location = '/';
   }
