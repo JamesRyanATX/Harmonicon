@@ -1,4 +1,5 @@
 import { config as core } from '@composer/core';
+import './polyfills';
 
 export const config = {
   core,
