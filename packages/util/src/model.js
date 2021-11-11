@@ -1,17 +1,25 @@
 import { Logger } from "./logger";
 import { Collection } from "./collection";
+import { ModelValidationError } from "./errors";
 import { eventify } from './eventify';
 
+import { type } from './model/validators/type';
 import { oneOf } from './model/validators/one_of';
+import { withinRange } from './model/validators/within_range';
+import { validate } from './model/validators/validate';
 
 const defaultPropertyDefinition = {
   validate: false,
   defaultValue: undefined,
-  type: String,
+  allowNull: true,
 }
 
 export class Model {
   get loggerGroup () { return 'Util'; }
+
+  static validators = {
+    type, oneOf, withinRange, validate
+  }
 
   static parse (properties) {
     return new this(properties);
@@ -56,7 +64,8 @@ export class Model {
     ]
   }
 
-  constructor (properties) {
+  constructor (properties = {}) {
+    this.properties = {};
 
     // Logger specific to this record
     this.logger = new Logger(`${this.loggerGroup}.${
@@ -65,12 +74,9 @@ export class Model {
       this.constructor.name
     }`);
 
-    // Make a copy of original properties object
-    this.properties = Object.assign({}, properties);
-
     // Initialize properties
     this.constructor.forEachProperty((property, definition) => {
-      const currentValue = this[property];
+      const currentValue = properties[property];
       const defaultValue = definition.defaultValue;
 
       // Register associated events
@@ -88,10 +94,15 @@ export class Model {
         this.properties[property] = new Collection({
           obj: this,
           type: definition.type,
-          records: this.properties[property] || [],
+          records: properties[property] || [],
           property: property,
           definition: definition,
         });
+      }
+
+      // Assign normal property without emitting change event
+      else {
+        this.setProperties({ [property]: currentValue }, { emit: false });
       }
     });
 
@@ -137,9 +148,18 @@ export class Model {
       definition.validate(value);
     }
 
-    // oneOf: [ ...
-    if (definition.oneOf) {
-      oneOf({ record: this, property, value, definition });
+    // Early return if null is allowed
+    if (value === null && definition.allowNull) {
+      return true;
+    }
+
+    // Standard validators
+    else {
+      Object.entries(this.constructor.validators).forEach(([ validator, fn ]) => {
+        if (definition[validator]) {
+          fn({ record: this, property, value, definition });
+        }
+      });
     }
 
     return true;

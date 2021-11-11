@@ -1,4 +1,9 @@
-export class ApplicationError extends Error {}
+import {
+  ApplicationError,
+  ModelValidationError,
+} from "@composer/util";
+
+export { ApplicationError, ModelValidationError };
 
 export class InitializationError extends ApplicationError {}
 

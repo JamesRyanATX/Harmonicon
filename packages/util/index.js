@@ -1,9 +1,13 @@
 export { Collection } from './src/collection.js';
 export { Console } from './src/console.js';
-export { ExpandedError, createErrorType } from './src/error.js';
 export { Logger } from './src/logger.js';
 export { Model } from './src/model.js';
 export { Task } from './src/task.js';
+
+export {
+  ApplicationError,
+  ModelValidationError,
+} from './src/errors';
 
 export {
   oneOf,
