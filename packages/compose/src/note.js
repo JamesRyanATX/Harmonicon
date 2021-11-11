@@ -244,8 +244,12 @@ export class NoteComposer {
   /**
    * Sequence one or more pitches at a position on the timeline.
    *
+   * @example
+   * quarter.note('c4', { velocity: 0.5 })
+   * 
    * @param {(Array|Integer|String)} pitch - pitch, chord, or array of pitches
    * @param {Object} options
+   * @param {Integer} options.velocity - velocity (0 to 1)
    * @param {Integer} options.octave - octave (0 to 7)
    * @returns {(NoteModel|NoteModel[])}
    */

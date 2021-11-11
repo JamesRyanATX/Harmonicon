@@ -4,6 +4,7 @@ import { InitializationError } from './errors';
 import { config } from './config';
 
 export class Harmonicon {
+  static version = '1.1.0';
 
   // Console to use for logging
   static console = null;

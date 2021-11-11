@@ -60,11 +60,11 @@ propertyCurves.pitch = ({ source, options: {
 
 propertyCurves.velocity = ({ source, options: { property, from = null, to, shape } }) => {
 
-  if (from && (typeof from !== 'number' || from < 1 || from > 127)) {
+  if (from && (typeof from !== 'number' || from < 0 || from > 1)) {
     throw new TypeError(`Velocity curve origin out of bounds: "${from}"`);
   }
 
-  if (!to || typeof to !== 'number' || to < 1 || to > 127) {
+  if (!to || typeof to !== 'number' || to < 0 || to > 1) {
     throw new TypeError(`Velocity curve origin out of bounds: "${from}"`);
   }
 
@@ -76,7 +76,7 @@ propertyCurves.velocity = ({ source, options: { property, from = null, to, shape
 
     // Compute the percentage through the curve of the current iteration
     const pct = i / ((source.length - 1) || 1);
-    const velocity = Math.round(min + (pct * distance));
+    const velocity = Math.round((min + (pct * distance)) * 100) / 100;
 
     // console.log(`i=${i} pct=${pct} velocity=${velocity}`);
 

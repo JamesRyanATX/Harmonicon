@@ -11,45 +11,51 @@ import { multiplyExpression } from './expressions/multiply';
 import { randomizeExpression } from './expressions/randomize';
 import { transposeExpression } from './expressions/transpose';
 
-function oneOf(items) {
-  return items[Math.floor(Math.random() * items.length)];
+const transforms = {
+  ascend: ascendExpression,
+  bounce: bounceExpression,
+  curve: curveExpression,
+  cycle: cycleExpression,
+  descend: descendExpression,
+  each: eachExpression,
+  multiply: multiplyExpression,
+  randomize: randomizeExpression,
+  transpose: transposeExpression,
 }
 
 export class ExpressionModel extends BaseModel {
 
   static properties = {
+
+    // The object that should be transformed
     source: {
-      type: Array,
+      type: [ Array, NoteModel, ExpressionModel ],
       defaultValue: () => ([]),
     },
+
+    // Options object passes to transform function
     options: {
       type: Object,
       defaultValue: () => ({}),
     },
+
+    // Name of transformation to apply
     transform: {
+      type: String,
+      oneOf: Object.keys(transforms),
       defaultValue: () => ((source) => (source))
     },
   }
 
-  static transforms = {
-    ascend: ascendExpression,
-    bounce: bounceExpression,
-    curve: curveExpression,
-    cycle: cycleExpression,
-    descend: descendExpression,
-    each: eachExpression,
-    multiply: multiplyExpression,
-    randomize: randomizeExpression,
-    transpose: transposeExpression,
-  }
+  static transforms = transforms;
 
   toExpression(properties = {}) {
     return new ExpressionModel({ source: this, ...properties });
   }
 
+
   // Expression helpers
   // ------------------
-
 
   ascend(to, options = {}) {
     return this.toExpression({
@@ -58,7 +64,6 @@ export class ExpressionModel extends BaseModel {
     });
   }
 
-
   bounce(property, values = [], options = {}) {
     return this.toExpression({
       transform: 'bounce',
@@ -66,14 +71,12 @@ export class ExpressionModel extends BaseModel {
     });
   }
 
-
   curve(property, options = {}) {
     return this.toExpression({
       transform: 'curve',
       options: { ...options, property }
     });
   }
-
 
   cycle(property, values = [], options = {}) {
     return this.toExpression({

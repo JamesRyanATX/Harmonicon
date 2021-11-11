@@ -1,3 +1,4 @@
+import { ModelValidationError } from "@composer/util";
 import { Note as TonalNote } from "@tonaljs/tonal";
 import { BaseModel } from './base.js';
 import { ExpressionModel } from './expression';
@@ -5,19 +6,48 @@ import { ExpressionModel } from './expression';
 export class NoteModel extends BaseModel {
 
   static properties = {
+
     pitch: {
+      type: [ String, Number ],
       defaultValue: null,
+      validate: (value) => {
+
+        // Valid integer
+        if (Number.isInteger(value)) {
+          return true;
+        }
+
+        // Half step integer (4.5)
+        if (typeof value === 'number' && Number.isInteger(value * 2)) {
+          return true;
+        }
+
+        // Not an malformed ABC note
+        if (value.match && value.match(/^[abcdefg][\#b]{0,3}[0-9]{0,1}\.{0,1}5{0,1}$/i)) {
+          return true;
+        }
+
+        throw new ModelValidationError(`pitch must be in ABC notation or an integer; got ${value}`);
+      }
     },
+
     pitchType: {
-      defaultValue: null,
+      type: String,
+      defaultValue: 'absolute',
     },
+
     duration: {
       json: (v) => (v.toDecimal())
     },
+
     velocity: {
       type: Number,
+      defaultValue: 1,
+      withinRange: [ 0, 1 ]
     },
+
     octave: {
+      type: Number,
       defaultValue: null
     }
   }

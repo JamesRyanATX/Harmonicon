@@ -163,6 +163,7 @@ export class BaseRenderer extends AudioDriver.Renderer {
       const meter = track.meterAt(event.at);
       const pitch = instrument.pitchAliases[note.pitch] || note.computedPitch(keySignature);
       const duration = note.duration.toMBS(meter);
+      const velocity = note.velocity || 1;
 
       // this.logger.info(`render.session.event.note: [+] position = ${event.at}`);
       // this.logger.debug(`render.session.event.note:     pitch = ${note.pitch} => ${pitch}`);
@@ -175,7 +176,7 @@ export class BaseRenderer extends AudioDriver.Renderer {
           instrumentNode.node.triggerAttackRelease(duration, time);
         }
         else {
-          instrumentNode.node.triggerAttackRelease(pitch, duration, time);
+          instrumentNode.node.triggerAttackRelease(pitch, duration, time, velocity);
         }
 
         if (this.interactive) {

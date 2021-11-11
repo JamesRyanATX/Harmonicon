@@ -155,29 +155,29 @@ describe('ExpressionModel', function () {
         describe('variable origin', function () {
           it('curves single notes', function () {
             const notes = compileCurveExpression({
-              source: [ testNote({ pitch: 'c4', velocity: 10 }) ],
+              source: [ testNote({ pitch: 'c4', velocity: 0 }) ],
               property: 'velocity',
               from: null,
-              to: 100
+              to: 1
             });
           
             expect(notes.length).toEqual(1);
-            expect(notes[0].velocity).toEqual(10);
+            expect(notes[0].velocity).toEqual(0);
           });
           
           it('curves expressions', function () {
             const notes = compileCurveExpression({
-              source: testExpression({ note: { pitch: 'c0', velocity: 100 }}),
+              source: testExpression({ note: { pitch: 'c0', velocity: 1 }}),
               property: 'velocity',
               from: null,
-              to: 50
+              to: 0.5
             });
           
             expect(notes.length).toEqual(4);
-            expect(notes[0].velocity).toEqual(100);
-            expect(notes[1].velocity).toEqual(83);
-            expect(notes[2].velocity).toEqual(67);
-            expect(notes[3].velocity).toEqual(50);
+            expect(notes[0].velocity).toEqual(1);
+            expect(notes[1].velocity).toEqual(0.83);
+            expect(notes[2].velocity).toEqual(0.67);
+            expect(notes[3].velocity).toEqual(0.5);
           });
         });
 
@@ -186,42 +186,42 @@ describe('ExpressionModel', function () {
             const notes = compileCurveExpression({
               source: [ testNote({ pitch: 'c4' }) ],
               property: 'velocity',
-              from: 10,
-              to: 15
+              from: 0.1,
+              to: 0.15
             });
           
             expect(notes.length).toEqual(1);
-            expect(notes[0].velocity).toEqual(10);
+            expect(notes[0].velocity).toEqual(0.1);
           });
           
           it('curves descending expressions', function () {
             const notes = compileCurveExpression({
               source: testExpression({ note: { pitch: 'c4' }}),
               property: 'velocity',
-              from: 100,
-              to: 20
+              from: 1,
+              to: 0.2
             });
           
             expect(notes.length).toEqual(4);
-            expect(notes[0].velocity).toEqual(100);
-            expect(notes[1].velocity).toEqual(73);
-            expect(notes[2].velocity).toEqual(47);
-            expect(notes[3].velocity).toEqual(20);
+            expect(notes[0].velocity).toEqual(1);
+            expect(notes[1].velocity).toEqual(0.73);
+            expect(notes[2].velocity).toEqual(0.47);
+            expect(notes[3].velocity).toEqual(0.20);
           });
 
           it('curves ascending expressions', function () {
             const notes = compileCurveExpression({
               source: testExpression({ note: { pitch: 'c4' }}),
               property: 'velocity',
-              from: 1,
-              to: 127
+              from: 0.01,
+              to: 1
             });
           
             expect(notes.length).toEqual(4);
-            expect(notes[0].velocity).toEqual(1);
-            expect(notes[1].velocity).toEqual(43);
-            expect(notes[2].velocity).toEqual(85);
-            expect(notes[3].velocity).toEqual(127);
+            expect(notes[0].velocity).toEqual(0.01);
+            expect(notes[1].velocity).toEqual(0.34);
+            expect(notes[2].velocity).toEqual(0.67);
+            expect(notes[3].velocity).toEqual(1);
           });
         });
       });

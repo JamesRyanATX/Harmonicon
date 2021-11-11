@@ -148,7 +148,8 @@ export class SessionComposer extends BaseSequencedComposer {
 
       const itemComposer = this[composer](name, item.fn, options);
 
-      if (itemComposer.pitchAliases) {
+      // [TODO] this doesn't belong here and will create long-term problems
+      if (itemComposer.pitchAliases && item.pitchAliases) {
         itemComposer.pitchAliases(item.pitchAliases);
       }
 
