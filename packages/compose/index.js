@@ -2,9 +2,10 @@ import { session, SessionComposer } from './src/session';
 import { library, LibraryComposer } from './src/library';
 import { instrument, InstrumentComposer } from './src/instrument';
 import { track, TrackComposer } from './src/track';
+import { expression } from './src/expression';
 
 import { ComposerError } from './src/errors';
-import { Harmonicon } from '@composer/core';
+import { Harmonicon, ExpressionModel } from '@composer/core';
 
 import { large } from './src/note/large';
 import { long } from './src/note/long';
@@ -34,6 +35,7 @@ export {
   library,
   session,
   track,
+  expression,
 
   dotted,
   doubleDotted,
@@ -55,10 +57,12 @@ export {
 
 export const parseCode = (code) => {
   const ns = {
+    ExpressionModel,
     SessionComposer,
     session,
     instrument,
     track,
+    expression,
 
     dotted,
     doubleDotted,

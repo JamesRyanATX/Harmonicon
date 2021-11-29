@@ -61,7 +61,7 @@ describe('NoteModel', function () {
         NoteModel.parse({
           pitch: 'apples',
         })
-      }).toThrow(`pitch must be in ABC notation or an integer`);
+      }).toThrow(`pitch must be in ABC notation, an integer or an alias; got apples`);
     });
   });
 

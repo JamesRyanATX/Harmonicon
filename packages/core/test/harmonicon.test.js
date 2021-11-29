@@ -26,6 +26,7 @@ describe('Harmonicon', function () {
       expect(Harmonicon.drivers.audio).toEqual(drivers.audio);
       expect(Harmonicon.drivers.storage).toEqual(drivers.storage);
       expect(Harmonicon.libraries.test).toEqual(library);
+      expect(Harmonicon.pitchAliases).toEqual({});
 
       expect(workspace).toBeInstanceOf(WorkspaceModel);
     });

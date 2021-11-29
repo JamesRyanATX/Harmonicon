@@ -11,6 +11,12 @@ export const config = {
     prefix: 'data',
   },
 
-  libraries: {}
+  // -- do not modify below --
+
+  // Installed libraries
+  libraries: {},
+
+  // Pitch aliases available to sessions
+  pitchAliases: {},
 
 };

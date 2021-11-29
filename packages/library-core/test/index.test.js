@@ -1,12 +1,25 @@
 import { build } from "../";
-import { session } from "@composer/compose";
-import { Harmonicon } from "@composer/core";
+import { SessionComposer, session, render } from "@composer/compose";
+import {
+  Harmonicon,
+  InteractiveRendererModel,
+  MockAudioDriver,
+  MockMidiDriver,
+  MockStorageDriver,
+} from "@composer/core";
 
 describe('@composer/library-core', function () {
   let library;
 
   beforeEach(async () => {
-    return Harmonicon.install(library = await build());
+    await Harmonicon.initialize({
+      drivers: {
+        audio: new MockAudioDriver.Driver(),
+        midi: new MockMidiDriver.Driver(),
+        storage: new MockStorageDriver.Driver(),
+      },
+      libraries: [ library = await build() ],
+    });
   });
 
   afterEach(() => {
@@ -60,6 +73,38 @@ describe('@composer/library-core', function () {
         });
       })
     })
+  });
+
+  describe('demos', function () {
+
+    beforeEach(() => {
+      library.model.instruments.forEach((instrument) => {
+        instrument.fn = () => {
+          return { loaded: true };
+        }
+      });
+
+      library.model.effects.forEach((effect) => {
+        effect.fn = () => {
+          return { loaded: true };
+        }
+      });
+    });
+
+    [
+      'Expressions',
+    ].forEach((name) => {
+      describe(name, function () {
+        it('renders', async () => {
+          const demo = library.model.demos.getByName(name);
+          const code = demo.source;
+          const result = await render({ code });
+
+          expect(result.composer).toBeInstanceOf(SessionComposer);
+          expect(result.renderer).toBeInstanceOf(InteractiveRendererModel);
+        });
+      });
+    });
   });
 
   describe('instruments', function () {

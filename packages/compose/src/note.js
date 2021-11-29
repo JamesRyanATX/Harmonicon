@@ -1,6 +1,7 @@
 import {
   ApplicationError,
   ChordModel,
+  ExpressionModel,
   NoteModel,
   RestModel,
 } from "@composer/core";
@@ -264,17 +265,23 @@ export class NoteComposer {
     }
 
     parsers.unnamedChord = (pitches) => {
-      return pitches.map((pitch) => {
-        return NoteModel.parse(
-          Object.assign({ duration, pitch }, options)
-        );
+      return ExpressionModel.parse({
+        sequence: false,
+        source: pitches.map((pitch) => {
+          return NoteModel.parse(
+            Object.assign({ duration, pitch }, options)
+          )
+        })
       });
     }
 
     parsers.namedChord = (symbol) => {
-      return ChordModel.parse(
-        Object.assign({ duration, symbol }, options)
-      ).toNotes();
+      return ExpressionModel.parse({
+        sequence: false,
+        source: ChordModel.parse(
+          Object.assign({ duration, symbol }, options)
+        ).toNotes()
+      });
     }
 
     try {

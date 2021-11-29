@@ -4,23 +4,25 @@ import { ExpressionModel } from './expression';
 export class PhraseModel extends BaseModel {
 
   static properties = {
-    steps: {},
-    compiledSteps: {},
-    session: {},
-    name: {},
+    sequence: {
+      type: ExpressionModel
+    },
+
+    compiled: {
+      type: Array
+    },
+
+    session: {
+      type: Object,
+    },
+
+    name: {
+      type: String
+    },
   }
 
   compile() {
-    this.compiledSteps = this.steps.reduce((steps, step) => {
-      if (step instanceof ExpressionModel) {
-        return steps.concat(step.compile());
-      }
-      else {
-        steps.push(step);
-      }
-      return steps;
-    }, []);
-
+    this.compiled = this.sequence.compile();
     return this;
   }
 

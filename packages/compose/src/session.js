@@ -6,6 +6,7 @@ import {
   PatchModel,
   NoteModel,
   Harmonicon,
+  ExpressionModel,
 } from '@composer/core';
 
 import { Logger, mapSeries } from '@composer/util';
@@ -236,10 +237,10 @@ export class SessionComposer extends BaseSequencedComposer {
    * 
    * @sort 30
    * @param {String} name - name of new phrase
-   * @param {sessionComposerPhraseCallback|Array} steps - sequenced notes as array or a builder function
+   * @param {sessionComposerPhraseCallback|Array|ExpressionModel} sequence - sequenced notes as array or a builder function
    * @returns {PhraseComposer}
    */
-  phrase(name, steps) {
+  phrase(name, sequence) {
     const phrase = PhraseModel.parse({
       session: this.model,
       name: name,
@@ -247,14 +248,14 @@ export class SessionComposer extends BaseSequencedComposer {
 
     this.model.phrases.add(phrase);
 
-    if (typeof steps === 'function') {
-      return PhraseComposer.compose(name, steps, {
+    if (typeof sequence === 'function') {
+      return PhraseComposer.compose(name, sequence, {
         session: this,
         model: phrase,
       });  
     }
     else {
-      phrase.properties.steps = steps;
+      phrase.properties.sequence = ExpressionModel.coerce(sequence);
     }
   }
 

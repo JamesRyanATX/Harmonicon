@@ -1,4 +1,4 @@
-import { TrackModel, PhraseModel } from '@composer/core';
+import { TrackModel, PhraseModel, ExpressionModel } from '@composer/core';
 import { SequencedEventProxy } from './util/sequenced_event_proxy';
 import { ComposerError } from './errors';
 import { BaseSequencedComposer } from './base/sequenced';
@@ -98,24 +98,24 @@ export class TrackComposer extends BaseSequencedComposer {
   // By name:
   //   phrase(name)
   //
-  // By steps (anonymous)
+  // By sequence or expression (anonymous)
   //   phrase([ ... ])
-  phrase(nameOrSteps, proxy) {
-    const anonymous = typeof nameOrSteps !== 'string';
+  phrase(nameOrSequence, proxy) {
+    const anonymous = typeof nameOrSequence !== 'string';
     const phrase = (() => {
       if (anonymous) {
         return this.model.session.phrases.add(PhraseModel.parse({
           name: `${this.model.name}-${generateIdentifier()}`,
-          steps: nameOrSteps
+          sequence: ExpressionModel.coerce(nameOrSequence)
         }));
       }
       else {
-        return this.model.session.phrases.filterByProperty('name', nameOrSteps)[0];
+        return this.model.session.phrases.filterByProperty('name', nameOrSequence)[0];
       }
     })();
 
     if (!phrase) {
-      throw new ComposerError(`Phrase "${nameOrSteps}" is not defined.`)
+      throw new ComposerError(`Phrase "${nameOrSequence}" is not defined.`)
     }
 
     this.sequence({

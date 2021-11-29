@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { SessionComposer } from '@composer/compose';
-import { Harmonicon } from '@composer/core';
+import { ExpressionModel, Harmonicon } from '@composer/core';
 import * as ToneAudioDriver from '@composer/driver-audio-tone';
 import * as LocalStorageDriver from '@composer/driver-storage-localstorage';
 import * as DropboxStorageDriver from '@composer/driver-storage-dropbox';
@@ -81,6 +81,7 @@ export function DAW ({
   // [TODO] eventually, this should not be necessary
   window.controller = controller;
   window.SessionComposer = SessionComposer;
+  window.ExpressionModel = ExpressionModel;
   window.ToneAudioDriver = ToneAudioDriver;
   window.Tone = ToneAudioDriver.Tone; 
 

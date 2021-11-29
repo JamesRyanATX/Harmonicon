@@ -45,12 +45,10 @@ export class TransportModel extends BaseModel {
     },
 
     key: {
-      type: String,
       defaultValue: 'C'
     },
 
     scale: {
-      type: String,
       defaultValue: 'major',
     },
 
@@ -65,17 +63,14 @@ export class TransportModel extends BaseModel {
     },
 
     realtime: {
-      type: Number,
       defaultValue: 0,
     },
 
     swing: {
-      type: Number,
       defaultValue: 0,
     },
 
     ticks: {
-      type: Number,
       defaultValue: 0,
     },
 
