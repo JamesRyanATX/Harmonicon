@@ -2,6 +2,7 @@ import { ModelValidationError } from "@composer/util";
 import { Note as TonalNote } from "@tonaljs/tonal";
 import { BaseModel } from './base.js';
 import { ExpressionModel } from './expression';
+import { config } from '../config';
 
 export class NoteModel extends BaseModel {
 
@@ -12,22 +13,27 @@ export class NoteModel extends BaseModel {
       defaultValue: null,
       validate: (value) => {
 
-        // Valid integer
+        // Is a valid integer (relative pitch)
         if (Number.isInteger(value)) {
           return true;
         }
 
-        // Half step integer (4.5)
+        // Is a valid half step integer (4.5)
         if (typeof value === 'number' && Number.isInteger(value * 2)) {
           return true;
         }
 
-        // Not an malformed ABC note
+        // Is a valid ABC note
         if (value.match && value.match(/^[abcdefg][\#b]{0,3}[0-9]{0,1}\.{0,1}5{0,1}$/i)) {
           return true;
         }
 
-        throw new ModelValidationError(`pitch must be in ABC notation or an integer; got ${value}`);
+        // Is a valid pitch alias
+        if (config.pitchAliases[value]) {
+          return true;
+        }
+
+        throw new ModelValidationError(`pitch must be in ABC notation, an integer or an alias; got ${value}`);
       }
     },
 

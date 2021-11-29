@@ -1,3 +1,6 @@
+import { ExpressionModel } from '@composer/core';
+import { ModelValidationError } from '@composer/util';
+
 import {
   session,
   whole,
@@ -9,16 +12,16 @@ import {
   sixtyFourth,
 } from '../';
 
-function testPhrase(steps) {
+function testPhrase(sequence) {
   const results = {};
 
   session('my-song', function ({ session }) {
     session.phrase('a-phrase', ({ phrase }) => {
-      if (steps) {
-        phrase.steps(steps);
+      if (sequence) {
+        phrase.sequence(sequence);
       }
       else {
-        phrase.steps(
+        phrase.sequence(
           whole.note(0),
           half.note(1),
           quarter.note(2),
@@ -43,7 +46,8 @@ describe('session.phrase', function () {
     
     expect(session.model.phrases.length).toEqual(1);
     expect(phrase.model.name).toEqual('a-phrase');
-    expect(phrase.model.steps.length).toEqual(7);
+    expect(phrase.model.sequence).toBeInstanceOf(ExpressionModel);
+    expect(phrase.model.sequence.length).toEqual(7);
   });
 
   it('parses phrases as arrays', function () {
@@ -59,7 +63,7 @@ describe('session.phrase', function () {
     
     expect(session.model.phrases.length).toEqual(1);
     expect(phrase.model.name).toEqual('a-phrase');
-    expect(phrase.model.steps.length).toEqual(7);
+    expect(phrase.model.sequence.length).toEqual(7);
   });
 
   it('parses phrases without a function', function () {
@@ -79,6 +83,14 @@ describe('session.phrase', function () {
 
     expect(composer.model.phrases.length).toEqual(1);
     expect(phrase.name).toEqual('a-phrase');
-    expect(phrase.steps.length).toEqual(7);
+    expect(phrase.sequence.length).toEqual(7);
+  });
+
+  it('rejects invalid types', function () {
+    expect(() => {
+      session('my-song', function ({ session }) {
+        session.phrase('a-phrase', 'potato');
+      });
+    }).toThrow(ModelValidationError);
   });
 });

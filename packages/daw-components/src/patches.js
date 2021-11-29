@@ -10,31 +10,31 @@ export function Patches({
   tracks = [],
   effects = [],
 }) {
-  const nodes = [ { id: 'track:main', label: 'Main', color: '#F94144' }];
+
   const edges = [];
+  const nodes = {
+    'track:main': { label: 'Main', color: '#F94144' }
+  };
 
   instruments.forEach((instrument) => {
-    nodes.push({
-      id: `instrument:${instrument.name}`,
+    nodes[`instrument:${instrument.name}`] = {
       group: 'Instruments',
       label: instrument.name,
-    });
+    };
   });
 
   tracks.forEach((track) => {
-    nodes.push({
-      id: `track:${track.name}`,
+    nodes[`track:${track.name}`] = {
       group: 'Tracks',
       label: track.name,
-    });
+    };
   });
 
   effects.forEach((effect) => {
-    nodes.push({
-      id: `effect:${effect.name}`,
+    nodes[`effect:${effect.name}`] = {
       group: 'Effects',
       label: effect.name,
-    });
+    };
   });
 
   patches.forEach((patch) => {
@@ -45,8 +45,10 @@ export function Patches({
   });
 
   const graph = {
-    nodes: nodes,
-    edges: edges
+    edges: edges,
+    nodes: Object.keys(nodes).map((id) => ({
+      id, ...nodes[id]
+    })),
   };
 
   const options = {

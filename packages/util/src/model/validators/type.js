@@ -34,7 +34,6 @@ export function type({ property, value, definition }) {
   }, false);
 
   if (!isValid) {
-    console.log(value)
     throw new ModelValidationError(
       `${property} must be a kind of ${types.map((t) => (t.name)).join(' or ')}; got "${typeof value}"`
     );
