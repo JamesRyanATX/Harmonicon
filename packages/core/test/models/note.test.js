@@ -51,4 +51,44 @@ describe('NoteModel', function () {
     });
   });
 
-})
+  describe('#pitch', function () {
+    it('must be a valid pitch', function () {
+      expect(NoteModel.parse({ pitch: 'c4' }).pitch).toEqual('C4');
+      expect(NoteModel.parse({ pitch: 0 }).pitch).toEqual(0);
+      expect(NoteModel.parse({ pitch: -10 }).pitch).toEqual(-10);
+
+      expect(() => {
+        NoteModel.parse({
+          pitch: 'apples',
+        })
+      }).toThrow(`pitch must be in ABC notation, an integer or an alias; got apples`);
+    });
+  });
+
+  describe('#velocity', function () {
+    it('must be a number', function () {
+      expect(() => {
+        NoteModel.parse({
+          pitch: 'c4',
+          velocity: '2'
+        })
+      }).toThrow(`velocity must be a kind of Number`);
+    })
+
+    it('must be between 0 and 1', function () {
+      expect(() => {
+        NoteModel.parse({
+          pitch: 'c4',
+          velocity: 2
+        })
+      }).toThrow(`velocity must be between 0 and 1`);
+    })
+
+    it('defaults to 1', function () {
+      expect(NoteModel.parse({
+        pitch: 'c4',
+      }).velocity).toEqual(1);
+    });
+  });
+
+});

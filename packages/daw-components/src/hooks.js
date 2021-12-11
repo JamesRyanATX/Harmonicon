@@ -1,4 +1,40 @@
 import React, { useEffect, useRef } from 'react';
+import { useErrorBoundary } from 'react-use-error-boundary';
+
+export { useErrorBoundary };
+
+export function useLocationParams() {
+
+  function parse() {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    return Array.from(urlParams.entries())
+      .reduce((params, [ param, value ]) => {
+        return { ...params, [param]: value };
+      }, {});
+  }
+
+  return {
+    params: parse(),
+  }
+}
+
+export function useLocationHash() {
+
+  function parse() {
+    const locationHash = window.location.hash.replace(/^#/, '');
+    const urlParams = new URLSearchParams(locationHash);
+
+    return Array.from(urlParams.entries())
+      .reduce((params, [ param, value ]) => {
+        return { ...params, [param]: value };
+      }, {});
+  }
+
+  return {
+    params: parse(),
+  }
+}
 
 export function useViewport() {
   const [ width, setWidth ] = React.useState(window.innerWidth);

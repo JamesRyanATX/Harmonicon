@@ -30,6 +30,7 @@ export class ChordModel extends BaseModel {
     notes: {},
     root: {},
     tonic: {},
+    velocity: {},
   }
 
   static get chordTypes() {
@@ -132,7 +133,8 @@ export class ChordModel extends BaseModel {
     return this.notes.map((note) => (NoteModel.parse({
       pitch: note,
       duration: this.duration,
-      octave: this.octave
+      octave: this.octave,
+      velocity: this.velocity,
     })))
   }
 

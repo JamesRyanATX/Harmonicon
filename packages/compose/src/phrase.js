@@ -1,4 +1,4 @@
-import { PhraseModel } from '@composer/core';
+import { ExpressionModel, PhraseModel } from '@composer/core';
 import { BaseComposer } from './base';
 
 
@@ -7,7 +7,7 @@ import { BaseComposer } from './base';
  * 
  * ``` javascript
  * session.phrase('progression', ({ phrase }) => {
- *   phrase.steps([
+ *   phrase.sequence([
  *     whole.note('cmaj'),
  *     whole.note('fmaj'),
  *     whole.note('cmaj'),
@@ -70,11 +70,11 @@ export class PhraseComposer extends BaseComposer {
   static model = PhraseModel;
 
   /**
-   * Assign steps to a phrase.
+   * Assign a sequence of notes to a phrase.
    * 
    * @example
    * phrase('melody', ({ phrase }) => {
-   *   phrase.steps([
+   *   phrase.sequence([
    *     quarter.note(0),
    *     quarter.note(4),
    *     quarter.note(2),
@@ -82,10 +82,24 @@ export class PhraseComposer extends BaseComposer {
    *   ])
    * })
    * 
-   * @param {Array} steps - Sequence of notes and rests
+   * @example
+   * phrase('melody', ({ phrase }) => {
+   *   phrase.sequence(expression(...))
+   * })
+   * 
+   * @param {Array|ExpressionModel} sequence - Sequence of notes and rests
    */
-  steps(steps = []) {
-    this.model.properties.steps = Array.isArray(steps) ? steps : [ ...arguments ];
+  sequence(sequence) {
+    this.model.properties.sequence = (() => {
+      if (sequence instanceof ExpressionModel) {
+        return sequence;
+      }
+      else {
+        return ExpressionModel.coerce(
+          Array.isArray(sequence) ? sequence : [ ...arguments ]
+        );
+      }
+    })();
   }
 }
 

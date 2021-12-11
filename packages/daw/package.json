@@ -1,6 +1,6 @@
 {
   "name": "@composer/daw",
-  "version": "0.1.0",
+  "version": "1.1.0",
   "private": true,
   "scripts": {
     "dev": "npx livereload ./public/doc/ & next dev",
@@ -21,14 +21,15 @@
     "react-icons": "^4.3.1"
   },
   "dependencies": {
-    "@composer/compose": "1.0.0",
-    "@composer/core": "1.0.0",
-    "@composer/driver-audio-tone": "1.0.0",
-    "@composer/driver-midi-web": "1.0.0",
-    "@composer/driver-storage-localstorage": "1.0.0",
-    "@composer/library-core": "1.0.0",
-    "@composer/util": "1.0.0",
-    "@composer/daw-components": "1.0.0",
+    "@composer/compose": "^1.1.0",
+    "@composer/core": "^1.1.0",
+    "@composer/daw-components": "^1.1.0",
+    "@composer/driver-audio-tone": "^1.1.0",
+    "@composer/driver-midi-web": "^1.1.0",
+    "@composer/driver-storage-dropbox": "^1.1.0",
+    "@composer/driver-storage-localstorage": "^1.1.0",
+    "@composer/library-core": "^1.1.0",
+    "@composer/util": "^1.1.0",
     "@monaco-editor/react": "^4.2.2",
     "file-saver": "^2.0.5",
     "midi-message-parser": "^2.0.1",

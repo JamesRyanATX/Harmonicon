@@ -1,8 +1,4 @@
-export {
-  ApplicationError,
-  InvalidPositionError,
-  RendererError,
-} from './src/errors';
+export * from './src/errors';
 
 export { BaseModel } from './src/models/base';
 export { AudioNodeModel } from './src/models/audio_node';
@@ -104,5 +100,7 @@ export * as StorageDriver from './src/driver/storage';
 export * as MidiDriver from './src/driver/midi';
 export * as MockStorageDriver from './test/mocks/drivers/storage';
 export * as MockAudioDriver from './test/mocks/drivers/audio';
+export * as MockMidiDriver from './test/mocks/drivers/midi';
 
 export { Harmonicon } from './src/harmonicon';
+export { config } from './src/config';

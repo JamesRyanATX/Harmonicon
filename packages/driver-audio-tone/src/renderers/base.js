@@ -116,7 +116,6 @@ export class BaseRenderer extends AudioDriver.Renderer {
       const track = trackNode.model;
       const phraseName = event.value;
       const phrase = this.renderer.cache.phrases[phraseName];
-      const steps = phrase.compiledSteps;
       
       let position = Tone.Time(event.at.toString());
 
@@ -124,8 +123,10 @@ export class BaseRenderer extends AudioDriver.Renderer {
         position: position.toBarsBeatsSixteenths()
       });
 
-      return await mapSeries(steps, async (step) => {
+      return await mapSeries(phrase.compiled, async (step) => {
         const notes = (Array.isArray(step)) ? step : [ step ];
+        const meter = track.meterAt(event.at);
+        const duration = notes[0].duration.toMBS(meter);
 
         await mapSeries(notes, async (note) => {
 
@@ -148,7 +149,7 @@ export class BaseRenderer extends AudioDriver.Renderer {
         });
 
         return await this.transport.set({
-          position: `+${notes[0].duration.toMBS(track.meterAt(event.at))}`,
+          position: `+${duration}`,
         });
       });
     },
@@ -158,32 +159,37 @@ export class BaseRenderer extends AudioDriver.Renderer {
       const track = trackNode.model;
       const instrument = instrumentNode.model;
 
-      const note = event.value;
-      const keySignature = track.keySignatureAt(event.at);
-      const meter = track.meterAt(event.at);
-      const pitch = instrument.pitchAliases[note.pitch] || note.computedPitch(keySignature);
-      const duration = note.duration.toMBS(meter);
+      // Could be <NoteModel> or [ <NoteModel>, <NoteModel, ... ]
+      const notes = Array.isArray(event.value) ? event.value : [ event.value ];
 
-      // this.logger.info(`render.session.event.note: [+] position = ${event.at}`);
-      // this.logger.debug(`render.session.event.note:     pitch = ${note.pitch} => ${pitch}`);
-      // this.logger.debug(`render.session.event.note:     duration = ${duration}`);
-      // this.logger.debug(`render.session.event.note:     key signature = ${keySignature}`);
-      // this.logger.debug(`render.session.event.note:     instrument = ${instrument}`);
+      return mapSeries(notes, (note) => {
+        const keySignature = track.keySignatureAt(event.at);
+        const meter = track.meterAt(event.at);
+        const duration = note.duration.toMBS(meter);
+        const velocity = note.velocity || 1;
+        const pitch = instrument.pitchAliases[note.pitch] || note.computedPitch(keySignature);
 
-      return this.transport.schedule((time) => {
-        if (instrumentNode.node.triggerAttackRelease.length === 2) {
-          instrumentNode.node.triggerAttackRelease(duration, time);
-        }
-        else {
-          instrumentNode.node.triggerAttackRelease(pitch, duration, time);
-        }
+        // this.logger.info(`render.session.event.note: [+] position = ${event.at}`);
+        // this.logger.debug(`render.session.event.note:     pitch = ${note.pitch} => ${pitch}`);
+        // this.logger.debug(`render.session.event.note:     duration = ${duration}`);
+        // this.logger.debug(`render.session.event.note:     key signature = ${keySignature}`);
+        // this.logger.debug(`render.session.event.note:     instrument = ${instrument}`);
 
-        if (this.interactive) {
-          Tone.Draw.schedule(() => {
-            Harmonicon.emit(`play:${pitch.toLowerCase()}`);
-          }, time);
-        }
-      }, event.at.toString());
+        return this.transport.schedule((time) => {
+          if (instrumentNode.node.triggerAttackRelease.length === 2) {
+            instrumentNode.node.triggerAttackRelease(duration, time);
+          }
+          else {
+            instrumentNode.node.triggerAttackRelease(pitch, duration, time, velocity);
+          }
+  
+          if (this.interactive) {
+            Tone.Draw.schedule(() => {
+              Harmonicon.emit(`play:${pitch.toLowerCase()}`);
+            }, time);
+          }
+        }, event.at.toString());  
+      });   
     }
   }
 

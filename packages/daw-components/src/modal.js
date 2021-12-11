@@ -88,18 +88,14 @@ export function ModalActions({
 }
 
 export function DialogModal({
+  buttons = [ { label: 'OK', onClick: () => {} } ],
+  error = null,
+  icon = null,
+  onRequestClose = () => {},
+  text = 'Text',
+  title = 'Dialog',
   working = false,
   workingPercentComplete = 1,
-  title = 'Dialog',
-  text = 'Text',
-  error = null,
-  onRequestClose = () => {},
-  buttons = [
-    {
-      label: 'OK',
-      onClick: () => {}
-    }
-  ],
 }) {
   return (
     <Modal
@@ -108,38 +104,46 @@ export function DialogModal({
       working={working}
       workingPercentComplete={workingPercentComplete}
     >
-      <div className={styles.dialogTitle}>
-        {title}
-      </div>
-      <div className={styles.dialogText}>
-        {text}
-      </div>
-      <ModalActions disabled={working}>
-        {buttons.map((button) => (
-          <Button key={button.label} {...button}>
-            {button.label}
-          </Button>
-        ))}
-      </ModalActions>
-      {error ? (
-        <div className={styles.dialogError}>
-          {error}
+      {icon ? (
+        <div className={styles.dialogIcon}>
+          {icon()}
         </div>
       ) : ''}
+      <div className={styles.dialogContent}>
+        <div className={styles.dialogTitle}>
+          {title}
+        </div>
+        <div className={styles.dialogText}>
+          {text}
+        </div>
+        <ModalActions disabled={working}>
+          {buttons.map((button) => (
+            <Button key={button.label} {...button}>
+              {button.label}
+            </Button>
+          ))}
+        </ModalActions>
+        {error ? (
+          <div className={styles.dialogError}>
+            {error}
+          </div>
+        ) : ''}
+      </div>
     </Modal>
   )
 }
 
 export function ConfirmModal({
-  onClose = () => {},
-  title = 'Confirm',
-  text = 'Text',
-  confirmLabel = 'OK',
   cancelLabel = 'Cancel',
-  showProgress = false,
+  confirmLabel = 'OK',
   initialProgress = 0.01,
+  onClose = () => {},
+  showProgress = false,
+  text = 'Text',
+  title = 'Confirm',
+  working = false,
 }) {
-  const [ percentComplete, setPercentComplete ] = useState(initialProgress);
+  const [ percentComplete, setPercentComplete ] = useState(showProgress ? initialProgress : 1);
   const [ isRunning, setIsRunning ] = useState(false);
   const [ error, setError ] = useState();
   const [ task, setTask ] = useState(arguments[0].task);
@@ -170,7 +174,7 @@ export function ConfirmModal({
       title={title}
       text={text}
       error={error}
-      working={isRunning}
+      working={working || isRunning}
       workingPercentComplete={percentComplete}
       onRequestClose={onClose}
       buttons={[

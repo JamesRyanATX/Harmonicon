@@ -1,6 +1,6 @@
 {
   "name": "@composer/util",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -20,6 +20,7 @@
   "dependencies": {
     "chalk": "^4.1.2",
     "nanoid": "^3.1.25",
-    "shortid": "^2.2.16"
+    "shortid": "^2.2.16",
+    "throttle-debounce": "^3.0.1"
   }
 }

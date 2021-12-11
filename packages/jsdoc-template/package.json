@@ -1,7 +1,7 @@
 {
   "name": "jsdoc-template",
-  "version": "3.4.0",
-  "description": "Braintree JSDoc 3 Template",
+  "version": "1.1.0",
+  "description": "Template derived from Braintree JSDoc 3 Template",
   "main": "publish.js",
   "files": [
     "static",
@@ -11,24 +11,6 @@
     "LICENSE",
     "README.md"
   ],
-  "scripts": {
-    "preversion": "./scripts/preversion"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/braintree/jsdoc-template"
-  },
-  "author": "Braintreeps <code@getbraintree.com>",
-  "licenses": [
-    {
-      "type": "Apache-2.0",
-      "url": "http://www.apache.org/licenses/LICENSE-2.0"
-    }
-  ],
-  "bugs": {
-    "url": "https://github.com/braintree/jsdoc-template"
-  },
-  "homepage": "https://github.com/braintree/jsdoc-template",
   "devDependencies": {
     "taffydb": "^2.7.3"
   }

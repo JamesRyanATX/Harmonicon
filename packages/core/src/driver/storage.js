@@ -5,6 +5,18 @@ export class Driver extends BaseDriver {
   get loggerGroup() { return 'StorageDriver'; }
   get loggerName() { return 'Driver'; }
 
+  /**
+   * Get authentication URL for OAuth2 flow.
+   * 
+   * @param {object} options 
+   * @param {string} options.returnPath - URL to return user to post-authorization
+   */
+  getAuthenticationUrl({
+    returnPath = '/'
+  } = {}) {
+    throw new DriverError('#getAuthenticationUrl() not implemented');
+  }
+
   test () {
     throw new DriverError('#test() not implemented');
   }

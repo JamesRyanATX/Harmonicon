@@ -56,6 +56,9 @@ import {
 
 import {
   useEventListener,
+  useErrorBoundary,
+  useLocationHash,
+  useLocationParams,
   useViewport,
 } from './src/hooks';
 
@@ -117,6 +120,9 @@ module.exports = {
   TreeGroupItems,
   TreeItem,
   useConsoleLogs,
+  useErrorBoundary,
   useEventListener,
+  useLocationHash,
+  useLocationParams,
   useViewport,
 };

@@ -3382,6 +3382,11 @@ binary-extensions@^2.0.0:
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.2.0.tgz#75f502eeaf9ffde42fc98829645be4ea76bd9e2d"
   integrity sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==
 
+blob-util@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/blob-util/-/blob-util-2.0.2.tgz#3b4e3c281111bb7f11128518006cdc60b403a1eb"
+  integrity sha512-T7JQa+zsXXEa6/8ZhHcQEW1UFfVM49Ts65uBkFL6fz2QmrElqmbajIDJvuA0tEhRe5eIjpV9ZF+0RfZR9voJFQ==
+
 bluebird@^3.7.2:
   version "3.7.2"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.7.2.tgz#9f229c15be272454ffa973ace0dbee79a1b0c36f"
@@ -4934,6 +4939,13 @@ dot-prop@^6.0.1:
   integrity sha512-tE7ztYzXHIeyvc7N+hR3oi7FIbf/NIjVP9hmAt3yMXzrQ072/fpjGLx2GxNxGxUl5V73MEqYzioOMoVhGMJ5cA==
   dependencies:
     is-obj "^2.0.0"
+
+dropbox@^10.17.0:
+  version "10.17.0"
+  resolved "https://registry.yarnpkg.com/dropbox/-/dropbox-10.17.0.tgz#82bb4ca60e3c850913fa3820dd0ed7300b434bab"
+  integrity sha512-2TqprEB3tvXMjHusUuUiggYNdYTtSXlJnMpOzwNCMMmmxigqgHIbcXfruDDpJV7Z0wZ/Das6v1vo7fIOSYUocw==
+  dependencies:
+    node-fetch "^2.6.1"
 
 duplexer3@^0.1.4:
   version "0.1.4"
@@ -9616,6 +9628,11 @@ react-scroll-to-bottom@^4.1.2:
     prop-types "15.7.2"
     simple-update-in "2.2.0"
 
+react-use-error-boundary@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/react-use-error-boundary/-/react-use-error-boundary-0.0.6.tgz#a9fa500fbaa4da8911f448195b443e9699802050"
+  integrity sha512-yZOqNvu0HVK57D32JOVtSqA63vpZgyZ80Om61WKdNTuRMfEOoMXCN+CvYtkcVzbzKIZ1CygEJCznyX4nyB5aZQ==
+
 react@17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react/-/react-17.0.2.tgz#d0b5cc516d29eb3eee383f75b62864cfb6800037"
@@ -10853,6 +10870,11 @@ throat@^6.0.1:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/throat/-/throat-6.0.1.tgz#d514fedad95740c12c2d7fc70ea863eb51ade375"
   integrity sha512-8hmiGIJMDlwjg7dlJ4yKGLK8EsYqKgPWbG3b4wjJddKNwc7N7Dpn08Df4szr/sZdMVeOstrdYSsqzX6BYbcB+w==
+
+throttle-debounce@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/throttle-debounce/-/throttle-debounce-3.0.1.tgz#32f94d84dfa894f786c9a1f290e7a645b6a19abb"
+  integrity sha512-dTEWWNu6JmeVXY0ZYoPuH5cRIwc0MeGbJwah9KUNYSJwommQpCzTySTpEe8Gs1J23aeWEuAobe4Ag7EHVt/LOg==
 
 through2@^2.0.0:
   version "2.0.5"

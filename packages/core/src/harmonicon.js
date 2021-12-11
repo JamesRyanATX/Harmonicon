@@ -4,6 +4,7 @@ import { InitializationError } from './errors';
 import { config } from './config';
 
 export class Harmonicon {
+  static version = '1.1.0';
 
   // Console to use for logging
   static console = null;
@@ -19,6 +20,11 @@ export class Harmonicon {
   // Libraries available to sessions
   static get libraries() {
     return config.libraries;
+  };
+
+  // Pitch aliases available to sessions
+  static get pitchAliases() {
+    return config.pitchAliases;
   };
 
   /**
@@ -56,6 +62,19 @@ export class Harmonicon {
       throw new InitializationError('No storage driver present.');
     }
 
+    // Compile all note aliases so they're available to note pitch validators
+    config.pitchAliases = Object.values(this.libraries).reduce((pitchAliases, library) => {
+      library.instruments.forEach((instrument) => {
+        Object.entries(instrument.pitchAliases).forEach(([ alias, pitch ]) => {
+          pitchAliases[alias] = pitchAliases[alias] || [];
+          pitchAliases[alias].push(pitch);
+        });
+      });
+
+      return pitchAliases;
+    }, {});
+
+    // Create a workspace
     this.workspace = await WorkspaceModel.loadOrCreate('default');
 
     return this.workspace;

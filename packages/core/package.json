@@ -1,6 +1,6 @@
 {
   "name": "@composer/core",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -14,10 +14,8 @@
   "jest": {
     "transform": {}
   },
-  "peerDependencies": {
-  },
   "dependencies": {
-    "@composer/util": "1.0.0",
+    "@composer/util": "^1.1.0",
     "@tonaljs/tonal": "^4.6.2",
     "audio-encoder": "^1.0.2",
     "uuid": "^8.3.2"

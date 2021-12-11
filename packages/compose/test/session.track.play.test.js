@@ -13,7 +13,7 @@ function testTrack(fn) {
     });
 
     session.phrase('a-phrase', ({ phrase }) => {
-      phrase.steps(
+      phrase.sequence(
         quarter.note(0),
         quarter.note(1),
         quarter.note(2),
@@ -112,34 +112,34 @@ describe('session.track.play', function () {
       const track = results.track.model;
       const event = track.events.first();
       const phrase = session.phrases.filterByProperty('name', event.value)[0];
-      const steps = phrase.steps;
+      const sequence = phrase.sequence.source;
 
-      expect(steps.length).toEqual(4);
-      expect(steps[0].length).toEqual(3);
+      expect(sequence.length).toEqual(4);
+      expect(sequence[0].length).toEqual(3);
 
-      expect(steps[0][0].duration).toEqual(QuarterUnit);
-      expect(steps[0][0].octave).toEqual(null);
-      expect(steps[0][0].pitch).toEqual(0);
+      expect(sequence[0].source[0].duration).toEqual(QuarterUnit);
+      expect(sequence[0].source[0].octave).toEqual(null);
+      expect(sequence[0].source[0].pitch).toEqual(0);
 
-      expect(steps[0][1].duration).toEqual(QuarterUnit);
-      expect(steps[0][1].octave).toEqual(null);
-      expect(steps[0][1].pitch).toEqual(2);
+      expect(sequence[0].source[1].duration).toEqual(QuarterUnit);
+      expect(sequence[0].source[1].octave).toEqual(null);
+      expect(sequence[0].source[1].pitch).toEqual(2);
 
-      expect(steps[0][2].duration).toEqual(QuarterUnit);
-      expect(steps[0][2].octave).toEqual(null);
-      expect(steps[0][2].pitch).toEqual(3);
+      expect(sequence[0].source[2].duration).toEqual(QuarterUnit);
+      expect(sequence[0].source[2].octave).toEqual(null);
+      expect(sequence[0].source[2].pitch).toEqual(3);
 
-      expect(steps[1].duration).toEqual(QuarterUnit);
-      expect(steps[1].octave).toEqual(null);
-      expect(steps[1].pitch).toEqual(1);
+      expect(sequence[1].duration).toEqual(QuarterUnit);
+      expect(sequence[1].octave).toEqual(null);
+      expect(sequence[1].pitch).toEqual(1);
 
-      expect(steps[2].duration).toEqual(QuarterUnit);
-      expect(steps[2].octave).toEqual(null);
-      expect(steps[2].pitch).toEqual(2);
+      expect(sequence[2].duration).toEqual(QuarterUnit);
+      expect(sequence[2].octave).toEqual(null);
+      expect(sequence[2].pitch).toEqual(2);
 
-      expect(steps[3].duration).toEqual(QuarterUnit);
-      expect(steps[3].octave).toEqual(null);
-      expect(steps[3].pitch).toEqual(3);
+      expect(sequence[3].duration).toEqual(QuarterUnit);
+      expect(sequence[3].octave).toEqual(null);
+      expect(sequence[3].pitch).toEqual(3);
     });
 
     it('sequences rests in a phrase step', () => {
@@ -153,10 +153,10 @@ describe('session.track.play', function () {
       const track = results.track.model;
       const event = track.events.first();
       const phrase = session.phrases.filterByProperty('name', event.value)[0];
-      const steps = phrase.steps;
+      const sequence = phrase.sequence.source;
 
-      expect(steps[0].duration).toEqual(QuarterUnit);
-      expect(steps[0].pitch).toEqual(undefined);
+      expect(sequence[0].duration).toEqual(QuarterUnit);
+      expect(sequence[0].pitch).toEqual(undefined);
     });
 
   });

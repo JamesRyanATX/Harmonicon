@@ -10,46 +10,73 @@ import { eachExpression } from './expressions/each';
 import { multiplyExpression } from './expressions/multiply';
 import { randomizeExpression } from './expressions/randomize';
 import { transposeExpression } from './expressions/transpose';
+import { noopExpression } from './expressions/noop';
 
-function oneOf(items) {
-  return items[Math.floor(Math.random() * items.length)];
+
+const transforms = {
+  ascend: ascendExpression,
+  bounce: bounceExpression,
+  curve: curveExpression,
+  cycle: cycleExpression,
+  descend: descendExpression,
+  each: eachExpression,
+  multiply: multiplyExpression,
+  randomize: randomizeExpression,
+  transpose: transposeExpression,
+  noop: noopExpression,
 }
 
 export class ExpressionModel extends BaseModel {
 
   static properties = {
+
+    // The object that should be transformed
     source: {
-      type: Array,
+      type: [ Array, NoteModel, ExpressionModel ],
       defaultValue: () => ([]),
     },
+
+    // Whether or not the expression represents a sequence of notes or a single moment in time
+    sequence: {
+      type: Boolean,
+      defaultValue: true,
+    },
+
+    // Options object passes to transform function
     options: {
       type: Object,
       defaultValue: () => ({}),
     },
+
+    // Name of transformation to apply
     transform: {
-      defaultValue: () => ((source) => (source))
+      type: String,
+      oneOf: Object.keys(transforms),
+      defaultValue: 'noop'
     },
   }
 
-  static transforms = {
-    ascend: ascendExpression,
-    bounce: bounceExpression,
-    curve: curveExpression,
-    cycle: cycleExpression,
-    descend: descendExpression,
-    each: eachExpression,
-    multiply: multiplyExpression,
-    randomize: randomizeExpression,
-    transpose: transposeExpression,
+  static transforms = transforms;
+
+  static coerce(source) {
+    if (source instanceof this) {
+      return source;
+    }
+    else {
+      return this.parse({ source });
+    }
   }
 
   toExpression(properties = {}) {
     return new ExpressionModel({ source: this, ...properties });
   }
 
+  get length() {
+    return this.source.length;
+  }
+
   // Expression helpers
   // ------------------
-
 
   ascend(to, options = {}) {
     return this.toExpression({
@@ -58,7 +85,6 @@ export class ExpressionModel extends BaseModel {
     });
   }
 
-
   bounce(property, values = [], options = {}) {
     return this.toExpression({
       transform: 'bounce',
@@ -66,14 +92,12 @@ export class ExpressionModel extends BaseModel {
     });
   }
 
-
   curve(property, options = {}) {
     return this.toExpression({
       transform: 'curve',
       options: { ...options, property }
     });
   }
-
 
   cycle(property, values = [], options = {}) {
     return this.toExpression({
@@ -125,15 +149,38 @@ export class ExpressionModel extends BaseModel {
    * @returns {Array}
    */
   compiledSource() {
-    if (this.source instanceof ExpressionModel) {
-      return this.source.compile();
-    }
-    else if (this.source instanceof NoteModel) {
-      return [ this.source ];
-    }
-    else {
-      return this.source;
-    }
+
+    const compiled = (function compile(source) {
+
+      // source = <ExpressionModel>
+      if (source instanceof ExpressionModel) {
+        return source.compile();
+      }
+
+      // source = <NoteModel>
+      else if (source instanceof NoteModel) {
+        return source;
+      }
+
+      // source = [ <ExpressionModel>, <NoteModel>, ... ]
+      else if (Array.isArray(source)) {
+        return source.reduce((compiled, sourcePart) => {
+          const part = compile(sourcePart);
+
+          return compiled.concat(sourcePart.sequence
+            ? compile(sourcePart)
+            : [ compile(sourcePart) ]
+          );
+        }, []);
+      }
+
+      // source = ?
+      else {
+        return source;
+      }
+    })(this.source);
+
+    return Array.isArray(compiled) ? compiled : [ compiled ];
   }
 
   compile() {

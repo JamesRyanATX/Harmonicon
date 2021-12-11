@@ -281,14 +281,7 @@ session('Expressions', ({ session }) => {
   session.send.effect('vibrato').to.effect('compressor');
 
   session.send.track('reverb-fx').to.effect('reverb');
-  session.send.effect('reverb').to.effect('compressor');
-
-
-  session.effect('compressor', () => {
-    return new Tone.Compressor();
-  })
-
-  session.send.effect('compressor').to.main();
+  session.send.effect('reverb').to.main();
 
 });
 

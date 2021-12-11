@@ -9,6 +9,7 @@ import { FileDropdown } from './menu/file';
 import { ViewDropdown } from './menu/view';
 import { HelpDropdown } from './menu/help';
 import { MidiDropdown } from './menu/midi';
+import { SettingsDropdown } from './menu/settings';
 import { AboutModal } from './modals/menu/help/about';
 import { useController } from './providers/controller';
 
@@ -56,7 +57,12 @@ export function Menu({
     {
       label: 'MIDI',
       dropdown: MidiDropdown,
-      mobile: true,
+      mobile: false,
+    },
+    {
+      label: 'Settings',
+      dropdown: SettingsDropdown,
+      mobile: false,
     },
     {
       label: 'Help',

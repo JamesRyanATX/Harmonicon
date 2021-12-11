@@ -113,6 +113,10 @@ export function toneEffect({
       effect.group(group);
       effect.defaultOptions(defaultOptions);
       effect.fn((options) => {
+        if (!Tone[toneEffect]) {
+          throw new Error(`Tone.${toneEffect} is not defined`);
+        }
+
         return new Tone[toneEffect](Object.assign({},
           toneOptions, defaultOptions, options));
       });

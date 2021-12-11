@@ -9,7 +9,7 @@ export class TransportModel extends BaseModel {
     renderer: {},
 
     state: {
-      type: 'string',
+      type: String,
       defaultValue: 'stopped',
       oneOf: [ 'started', 'stopped', 'paused', 'busy' ]
     },
@@ -53,10 +53,12 @@ export class TransportModel extends BaseModel {
     },
 
     tempo: {
+      type: Number,
       defaultValue: 120
     },
 
     meter: {
+      type: Array,
       defaultValue: [ 4, 4 ]
     },
 
@@ -89,7 +91,7 @@ export class TransportModel extends BaseModel {
 
   get driver() { return Harmonicon.drivers.audio; }
 
-  constructor(properties) {
+  constructor(properties = {}) {
     super(properties);
 
     // Catch low-level driver events

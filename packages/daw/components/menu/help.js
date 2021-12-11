@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Harmonicon } from '@composer/core';
 
 import {
   MenuDropdownItem,
@@ -7,6 +8,7 @@ import {
 import {
   IoBookSharp, IoLogoGithub
 } from "react-icons/io5";
+
 
 import { AboutModal } from '../modals/menu/help/about';
 import { useController } from '../providers/controller';
@@ -18,7 +20,7 @@ export function HelpDropdown() {
     <div>
       <MenuDropdownItem
         label="Documentation"
-        href="/doc/compose/@composer/compose/1.0.0/index.html"
+        href={`/doc/compose/@composer/compose/${Harmonicon.version}/index.html`}
         icon={IoBookSharp}
       />
       <MenuDropdownItem
