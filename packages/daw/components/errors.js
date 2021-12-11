@@ -20,7 +20,7 @@ const handlers = [
 
   // Generic handler
   (error) => {
-    throw error;
+    console.debug(`captured ${error}`);
     return true;
   }
 
@@ -33,6 +33,7 @@ export function Errors({
   const [ asyncError, setAsyncError ] = useState();
 
   function onUnhandledRejection(event) {
+    event.preventDefault();
     setAsyncError(event.reason);
   }
 
@@ -55,12 +56,7 @@ export function Errors({
         return handled;
       }
     }, false);
+  }
 
-    return (
-      <div>OH NO</div>
-    );
-  }
-  else {
-    return children;
-  }
+  return children;
 }
