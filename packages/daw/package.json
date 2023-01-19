@@ -3,7 +3,9 @@
   "version": "1.1.0",
   "private": true,
   "scripts": {
-    "dev": "npx livereload ./public/doc/ & next dev",
+    "dev": "yarn dev:livereload & yarn dev:nextjs",
+    "dev:livereload": "NODE_OPTIONS=--openssl-legacy-provider npx livereload ./public/doc/",
+    "dev:nextjs": "NODE_OPTIONS=--openssl-legacy-provider next dev",
     "build": "NODE_OPTIONS=--openssl-legacy-provider next build",
     "start": "NODE_OPTIONS=--openssl-legacy-provider next start",
     "export": "yarn export:web && yarn export:include-library-core && yarn export:include-docs",

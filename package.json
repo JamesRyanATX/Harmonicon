@@ -20,6 +20,7 @@
     "build:daw": "yarn workspace @composer/daw run build",
     "export": "yarn workspace @composer/daw run export",
     "dev": "npx lerna run dev --parallel",
+    "dev:daw": "yarn workspace @composer/daw run dev",
     "doc": "npx lerna run doc --parallel",
     "test": "npx lerna run test --parallel --ignore=@composer/driver-storage-dropbox"
   },
