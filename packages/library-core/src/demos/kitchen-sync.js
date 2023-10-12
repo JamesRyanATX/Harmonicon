@@ -1,11 +1,12 @@
 import { demoHeader } from '../helper';
 
 export const kitchenSyncDemo = ({ library }) => {
+  const name = 'Kitchen Sync';
 
-  library.demo('Kitchen Sync', ({ demo }) => {
+  library.demo(name, ({ demo }) => {
     demo.source(`${demoHeader}
 
- session('demo', ({ session }) => {
+ session('${name}', ({ session }) => {
    session.at(0)        // At measure zero...
      .meter([ 4, 4 ])   //   ...set the time signature to 4/4
      .tempo(160)        //   ...set the tempo to 160

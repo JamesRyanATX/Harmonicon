@@ -1,11 +1,12 @@
 import { demoHeader } from '../helper';
 
 export const relativesDemo = ({ library }) => {
+  const name = 'Relative Pitches';
 
-  library.demo('Relative Pitches', ({ demo }) => {
+  library.demo(name, ({ demo }) => {
     demo.source(`${demoHeader}
 
-session('relatives', ({ session }) => {
+session('${name}', ({ session }) => {
   session.at(0, 0, 0)
     .meter([ 4, 4 ])
     .tempo(120)

@@ -1,11 +1,12 @@
 import { demoHeader } from '../helper';
 
 export const expressionsDemo = ({ library }) => {
+  const name = 'Expressions';
 
-  library.demo('Expressions', ({ demo }) => {
+  library.demo(name, ({ demo }) => {
     demo.source(`${demoHeader}
 
-session('Expressions', ({ session }) => {
+session('${name}', ({ session }) => {
   session.at(0)
     .meter([ 4, 4 ])
     .tempo(102) 
@@ -60,6 +61,7 @@ session('Expressions', ({ session }) => {
       }
   }).as('bass');
 
+  // Example of using expressions to simplify sequencing
   session.phrase('random-a', [
     eighth.note('c3')
       .multiply(64)
@@ -272,13 +274,13 @@ session('Expressions', ({ session }) => {
   session.send.track('random-4').to.track('delay-fx');
   session.send.track('piano').to.track('space-fx');
   session.send.track('drums').to.track('reverb-fx');
-  session.send.track('bass').to.effect('compressor');
+  session.send.track('bass').to.effect('reverb');
 
   session.send.track('delay-fx').to.effect('delay');
   session.send.effect('delay').to.track('reverb-fx');
 
   session.send.track('space-fx').to.effect('vibrato');
-  session.send.effect('vibrato').to.effect('compressor');
+  session.send.effect('vibrato').to.effect('reverb');
 
   session.send.track('reverb-fx').to.effect('reverb');
   session.send.effect('reverb').to.main();
