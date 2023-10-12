@@ -1,12 +1,12 @@
+image: node:20-alpine
+
 test:
-  image: node:20-alpine
   stage: test
   script:
     - yarn install
     - yarn test
 
 pages:
-  image: node:16-alpine
   stage: deploy
   variables:
     DAW_GOOGLE_ANALYTICS_ID: G-XC26HJXHKF
