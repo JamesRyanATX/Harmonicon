@@ -28,7 +28,7 @@ import { ComposerError } from './errors';
  * ##### Example
  * 
  * ``` javascript
- * session('my-masterpiece', ({ library }) => {
+ * session('my-masterpiece', ({ session }) => {
  *   session.use('core.instrument.mono-synth').as('synth');
  * 
  *   session.track('synth', ({ track }) => {
